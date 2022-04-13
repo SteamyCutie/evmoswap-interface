@@ -29,7 +29,7 @@ import { USDC } from 'app/config/tokens'
 import { prisaleToken } from 'app/constants/prisale'
 import { tryParseAmount } from 'app/functions'
 import { useApproveCallback, ApprovalState } from 'app/hooks'
-import { PRIVATESALE_ADDRESS } from 'app/constants/addresses'
+import { PRIVATE_SALE_ADDRESS } from 'app/constants/addresses'
 
 export default function Prisale() {
   const { i18n } = useLingui()
@@ -44,7 +44,7 @@ export default function Prisale() {
   const prisaleContract = usePrivateSaleContract()
 
   const parsedStakeAmount = tryParseAmount(investValue, usdcBalanceBignumber?.currency)
-  const [approvalState, approve] = useApproveCallback(parsedStakeAmount, PRIVATESALE_ADDRESS[chainId])
+  const [approvalState, approve] = useApproveCallback(parsedStakeAmount, PRIVATE_SALE_ADDRESS[chainId])
 
   const isWhitelisted = useRef(false)
   const purchasedToken = useRef(0)
@@ -239,7 +239,7 @@ export default function Prisale() {
               after launched).
             </div>
             <div>5, Participation method: whitelist allowed, the first come, first served purchase method.</div>
-            <div className="overflow-x-auto">6, Private Sale contract: 0x309afba23f791B5c38Ab9057D11D6869755fAcaf</div>
+            <div className="overflow-x-auto">6, Private Sale contract: 0xD5bDcd9477ac5F8Bd79833f79F64AcAdA709117f</div>
           </div>
         </div>
       </div>

@@ -81,6 +81,7 @@ import {
   ZAP_ADDRESS,
   FAUCET_ADDRESS,
   PRIVATESALE_ADDRESS,
+  PRIVATE_SALE_ADDRESS,
 } from '../constants/addresses'
 
 const UNI_FACTORY_ADDRESS = '0x5C69bEe701ef814a2B6a3EDD4B1652CB9cc5aA6f'
@@ -303,5 +304,5 @@ export function useFaucetContract(withSignerIfPossible?: boolean): Contract | nu
 
 export function usePrivateSaleContract(withSignerIfPossible?: boolean): Contract | null {
   const { chainId } = useActiveWeb3React()
-  return useContract(PRIVATESALE_ADDRESS[chainId], PRIATESALE_ABI, withSignerIfPossible)
+  return useContract(PRIVATE_SALE_ADDRESS[chainId], PRIATESALE_ABI, withSignerIfPossible)
 }
