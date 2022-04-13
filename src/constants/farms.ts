@@ -1,0 +1,103 @@
+import { ChainId } from '@evmoswap/core-sdk'
+
+export type TokenInfo = {
+  id: string
+  name: string
+  symbol: string
+  decimals?: number
+}
+
+export type PairInfo = {
+  id: number
+  pid: number
+  token0: TokenInfo
+  token1?: TokenInfo
+  name?: string
+  symbol?: string
+  pair?: string
+  isCommunity?: boolean
+  migrate?: boolean
+  isVote?: boolean
+  isZap?: boolean
+}
+
+export type FarmPairInfo = {
+  id: number
+  pid: number
+  token0: TokenInfo
+  token1?: TokenInfo
+  name?: string
+  symbol?: string
+  pair?: string
+  isCommunity?: boolean
+  migrate?: boolean
+  isVote?: boolean
+  isZap?: boolean
+  lpToken?: string
+  chef?: number
+  type?: string
+  tokenPrice?: number
+  totalTvlInUSD?: number
+  flpBalance?: number
+  tvl?: number
+  apr?: number
+  lpPrice?: number
+  boostApr?: number
+  multiplier?: number
+}
+
+export type AddressMap = {
+  [chainId: number]: {
+    [address: string]: PairInfo
+  }
+}
+
+export const FARMS: AddressMap = {
+  [ChainId.EVMOS]: {},
+
+  [ChainId.BSC_TESTNET]: {
+    '0x33919a080caD90B8E3d7dB7f9f8CAF3C451C1fE2': {
+      id: 0,
+      pid: 1,
+      symbol: 'ELP',
+      name: 'EMO-BNB',
+      token0: { id: '0xd41223b4Ed7e68275D3C567c237217Fbb2575568', name: 'EvmoSwap', symbol: 'EMO', decimals: 18 },
+      token1: { id: '0xab0D0540b724D7A1BCF64A651fc245BEDb11C091', name: 'WBNB Token', symbol: 'BNB', decimals: 18 },
+      isVote: true,
+      isZap: false,
+    },
+
+    '0xF6210A01E8F271862871a80Dbf3fdCD720F8Ef3C': {
+      id: 1,
+      pid: 2,
+      symbol: 'ELP',
+      name: 'EMO-USDC',
+      token0: { id: '0x9b5bb7F5BE680843Bcd3B54D4E5C6eE889c124Df', name: 'USD Coin', symbol: 'USDC', decimals: 6 },
+      token1: { id: '0xd41223b4Ed7e68275D3C567c237217Fbb2575568', name: 'EvmoSwap', symbol: 'EMO', decimals: 18 },
+      isVote: true,
+      isZap: false,
+    },
+
+    '0x1658E34386Cc5Ec3B703a34567790d95F1C94cCb': {
+      id: 2,
+      pid: 3,
+      symbol: 'ELP',
+      name: 'USDC-USDT',
+      isVote: true,
+      isZap: true,
+      token0: { id: '0x9b5bb7F5BE680843Bcd3B54D4E5C6eE889c124Df', name: 'USD Coin', symbol: 'USDC', decimals: 6 },
+      token1: { id: '0x648D3d969760FDabc71ea9d59c020AD899237b32', name: 'Tether USD', symbol: 'USDT', decimals: 6 },
+    },
+
+    '0x87ce4e5bBCE1Ee646Fa28B61CbC7EFac4722680e': {
+      id: 3,
+      pid: 4,
+      symbol: 'ELP',
+      name: 'USDC-BNB',
+      token0: { id: '0x9b5bb7F5BE680843Bcd3B54D4E5C6eE889c124Df', name: 'USD Coin', symbol: 'USDC', decimals: 6 },
+      token1: { id: '0xab0D0540b724D7A1BCF64A651fc245BEDb11C091', name: 'WBNB Token', symbol: 'BNB', decimals: 18 },
+      isVote: true,
+      isZap: false,
+    },
+  },
+}

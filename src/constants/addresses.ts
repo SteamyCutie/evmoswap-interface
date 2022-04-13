@@ -1,0 +1,88 @@
+import { ChainId } from '@evmoswap/core-sdk'
+
+type AddressMap = { [chainId: number]: string }
+
+// masterChef
+export const MASTERCHEF_ADDRESS: AddressMap = {
+  [ChainId.EVMOS]: '0x7B1982b896CF2034A0674Acf67DC7924444637E4',
+  [ChainId.EVMOS_TESTNET]: '0xc09fB2ef107A3c33B3523c85AA0a76D5484f8229',
+
+  [ChainId.BSC_TESTNET]: '0x7Eb15Cd44D990d9D004280b2e96FeF3828715FA7',
+}
+
+// boost
+export const VOTING_ESCROW_ADDRESS: AddressMap = {
+  [ChainId.EVMOS]: '0x1E9d7DD649A1714f424f178036dbb79FA702b37d',
+  [ChainId.EVMOS_TESTNET]: '0x57fc66Ec66Eb05E292A2ec5ba1728450C51dC3a1',
+
+  [ChainId.BSC_TESTNET]: '0x2be89b235825F9B1AB4B81d7a96875189A62b196',
+}
+
+export const REWARD_POOL_ADDRESS: AddressMap = {
+  [ChainId.EVMOS]: '0x79956c0ccC9906Ee24B96CCF02234da1FB456dD8',
+  [ChainId.EVMOS_TESTNET]: '0xb8cF67ECA3923daF019f767c0dbcbAe16dcAf548',
+
+  [ChainId.BSC_TESTNET]: '0xd441ea0A60f84a872614Ec6875627BC0c8D0f433',
+}
+
+export const DASHBOARD_ADDRESS: AddressMap = {
+  [ChainId.EVMOS]: '0xcB9a81865d908eBF0F877fea6a45a60a9FE83c47',
+  [ChainId.EVMOS_TESTNET]: '0x3c75d3D228c15D592f807553321E16DF234434EC',
+
+  [ChainId.BSC_TESTNET]: '0x984eba7Cb30e99487A3f37495551d0dC09545A6b',
+}
+
+export const PRIVATE_SALE_ADDRESS: AddressMap = {
+  [ChainId.EVMOS]: '',
+  [ChainId.EVMOS_TESTNET]: '',
+  
+  [ChainId.BSC_TESTNET]: '0xD5bDcd9477ac5F8Bd79833f79F64AcAdA709117f',
+}
+
+export const FAUCET_ADDRESS: AddressMap = {
+  [ChainId.BSC_TESTNET]: '0x6693c3381ab0F11B7a6F878720B466A64a2d1d32',
+}
+
+// unused contracts /////////////////// will be removed
+export const EMOSVAULT_ADDRESS: AddressMap = {
+  [ChainId.EVMOS]: '0xDf3EBc46F283eF9bdD149Bb24c9b201a70d59389',
+  [ChainId.EVMOS_TESTNET]: '0xEC2c9b42d56588654d2626F13D8F4FFd30fdf199',
+
+  [ChainId.BSC_TESTNET]: '0x88Ec8078E4468adE096BD097A352FEc90079ad1B',
+}
+
+// Seed / Private / Public Sale
+export const SEED_SALE_ADDRESS: AddressMap = {
+  [ChainId.EVMOS]: '0x94f3Dfc9E8AE00892984d8fA003BF09a46987DFd',
+  [ChainId.EVMOS_TESTNET]: '',
+}
+
+export const PRIVATE_SALEA_ADDRESS: AddressMap = {
+  [ChainId.EVMOS]: '0xD5bDcd9477ac5F8Bd79833f79F64AcAdA709117f',
+  [ChainId.EVMOS_TESTNET]: '',
+}
+
+export const PRIVATE_SALEB_ADDRESS: AddressMap = {
+  [ChainId.EVMOS]: '0x309afba23f791B5c38Ab9057D11D6869755fAcaf',
+  [ChainId.EVMOS_TESTNET]: '',
+}
+
+export const PUBLIC_SALE_ADDRESS: AddressMap = {
+  [ChainId.EVMOS]: '0x941a3703E106707668f38E779c7984383638173e',
+  [ChainId.EVMOS_TESTNET]: '',
+}
+
+export const VOTE_ADDRESS: AddressMap = {
+  [ChainId.EVMOS]: '0x2Cb151D71D5EE6FD5a805a8614803e0e48e67c3B',
+  [ChainId.BSC_TESTNET]: '0x6a8c1ba309136D78245f1F0a14790239b71a9577',
+}
+
+export const ZAP_ADDRESS: AddressMap = {
+  [ChainId.EVMOS]: '0xe7CD641c86B6F2Ccf63b95B9b2951beb5fe567e9',
+  [ChainId.EVMOS_TESTNET]: '',
+  [ChainId.BSC_TESTNET]: '0xF4E667173f6983A81fABFAf8d71e6078F261E596',
+}
+
+export const PRIVATESALE_ADDRESS: AddressMap = {
+  [ChainId.BSC_TESTNET]: '0xf3CAb862A2f696fa493db85749736411635fA273',
+}
