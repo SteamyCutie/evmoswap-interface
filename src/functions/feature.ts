@@ -29,7 +29,7 @@ const features = {
     // Feature.IFO,
     // Feature.STAKING,
     // Feature.BRIDGE,
-    Feature.BOOST,
+    // Feature.BOOST,
     // Feature.GAMEFI,
   ],
 
@@ -41,7 +41,7 @@ const features = {
     // Feature.LENDING,
     // Feature.IFO,
     // Feature.STAKING,
-    Feature.BOOST,
+    // Feature.BOOST,
     // Feature.GAMEFI,
   ],
 
