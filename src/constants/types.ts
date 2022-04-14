@@ -10,7 +10,7 @@ export type IfoStatus = 'idle' | 'coming_soon' | 'live' | 'finished'
 interface IfoPoolInfo {
   saleAmount: string
   raiseAmount: string
-  emosToBurn: string
+  emoToBurn: string
   distributionRatio: number // Range [0-1]
   raiseToken: ChainTokenMap
 }
@@ -23,7 +23,7 @@ export interface Ifo {
   offerToken: ChainTokenMap
   releaseTimestamp: number
   claimDelayTime: number
-  veEmosCheckPoint: number
+  veEmoCheckPoint: number
   articleUrl: string
   campaignId: string
   tokenOfferingPrice: number

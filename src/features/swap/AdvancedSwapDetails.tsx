@@ -86,9 +86,9 @@ export function AdvancedSwapDetails({ trade, allowedSlippage }: AdvancedSwapDeta
 
       {/* <RowBetween>
         <RowFixed>
-          <div className="text-sm text-secondary">{i18n._(t`XEMOS Fee`)}</div>
+          <div className="text-sm text-secondary">{i18n._(t`XEMO Fee`)}</div>
           <QuestionHelper
-            text={i18n._(t`A portion of each trade (0.05%) goes to XEMOS holders as a protocol incentive.`)}
+            text={i18n._(t`A portion of each trade (0.05%) goes to XEMO holders as a protocol incentive.`)}
           />
         </RowFixed>
         <div className="text-sm font-bold text-high-emphesis">

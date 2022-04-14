@@ -67,14 +67,14 @@ export const USDT: ChainTokenMap = {
   ),
 }
 
-export const XEMOS: ChainTokenMap = {
-  [ChainId.EVMOS]: new Token(ChainId.EVMOS, '0x25f0965F285F03d6F6B3B21c8EC3367412Fd0ef6', 18, 'xEMOS', 'EmosBar'),
+export const XEMO: ChainTokenMap = {
+  [ChainId.EVMOS]: new Token(ChainId.EVMOS, '0x25f0965F285F03d6F6B3B21c8EC3367412Fd0ef6', 18, 'xEMO', 'EmoBar'),
   [ChainId.EVMOS_TESTNET]: new Token(
     ChainId.EVMOS_TESTNET,
     '0x369Fe974508fdca2FbdE32375Ea72D4B525f6566',
     18,
-    'xEMOS',
-    'EmosBar'
+    'xEMO',
+    'EmoBar'
   ),
 }
 

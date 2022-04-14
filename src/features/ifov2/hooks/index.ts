@@ -8,7 +8,7 @@ import { useMemo } from 'react'
 import { getStatus } from './helpers'
 import { useWeb3React } from '@web3-react/core'
 import { ChainId } from '@evmoswap/core-sdk'
-import { getEMOSPrice } from 'app/features/staking/useStaking'
+import { getEMOPrice } from 'app/features/staking/useStaking'
 
 const TAX_PRECISION = FixedNumber.from(10000000000)
 
@@ -25,7 +25,7 @@ const formatPool = (pool) => ({
 export function useGetPublicIfoData(ifo: Ifo) {
   const { chainId } = useWeb3React()
   const { address, releaseTimestamp } = ifo
-  const emosPrice = new BigNumber(getEMOSPrice())
+  const emoPrice = new BigNumber(getEMOPrice())
   const usdcPrice = BIG_ONE
   const currentTime = Date.parse(new Date().toString()) / 1000
 
@@ -82,7 +82,7 @@ export function useGetPublicIfoData(ifo: Ifo) {
       ...poolBasicFormatted,
       taxRate: 0,
       raiseToken: ifo.poolBasic.raiseToken[chainId ? chainId : ChainId.EVMOS],
-      raiseTokenPriceInUSD: emosPrice,
+      raiseTokenPriceInUSD: emoPrice,
     },
     poolUnlimited: {
       ...poolUnlimitedFormatted,
@@ -104,7 +104,7 @@ export function useGetWalletIfoData(ifo: Ifo) {
   const { account, chainId } = useWeb3React()
   const { address } = ifo
   const ifoContract = useIfoV2Contract(address[chainId])
-  const veEmosContract = useVotingEscrowAtContract()
+  const veEmoContract = useVotingEscrowAtContract()
 
   if (!account) {
     return {
@@ -138,24 +138,22 @@ export function useGetWalletIfoData(ifo: Ifo) {
   const results = useSingleContractMultipleMethods(ifoContract, callsData)
   const [{ result: userInfo }, { result: amounts }] = results
 
-  // Calc VeEMOS
+  // Calc VeEMO
   const args = useMemo(() => {
     if (!account) {
       return
     }
-    return [String(account), ifo.veEmosCheckPoint]
+    return [String(account), ifo.veEmoCheckPoint]
   }, [account, ifo])
 
-  const veEmos = useSingleCallResult(args ? veEmosContract : null, 'balanceOf', args)?.result
+  const veEmo = useSingleCallResult(args ? veEmoContract : null, 'balanceOf', args)?.result
 
-  // const creditLeftWithNegative = veEmos?.[0].minus(new BigNumber(userInfo?.[0][0].toString())).minus(new BigNumber(userInfo?.[0][1].toString()))
-  const creditLeftWithNegative = new BigNumber(veEmos?.[0].toString()).minus(
-    new BigNumber(userInfo?.[0][1].toString())
-  )
+  // const creditLeftWithNegative = veEmo?.[0].minus(new BigNumber(userInfo?.[0][0].toString())).minus(new BigNumber(userInfo?.[0][1].toString()))
+  const creditLeftWithNegative = new BigNumber(veEmo?.[0].toString()).minus(new BigNumber(userInfo?.[0][1].toString()))
 
-  const ifoVeEmos = {
-    veEmos: veEmos?.[0].toString(),
-    veEmosLeft: BigNumber.maximum(BIG_ZERO, creditLeftWithNegative),
+  const ifoVeEmo = {
+    veEmo: veEmo?.[0].toString(),
+    veEmoLeft: BigNumber.maximum(BIG_ZERO, creditLeftWithNegative),
   }
 
   return {
@@ -175,6 +173,6 @@ export function useGetWalletIfoData(ifo: Ifo) {
       taxAmountInLP: new BigNumber(amounts?.[0][1][2].toString()),
       hasClaimed: userInfo?.[1][1],
     },
-    ifoVeEmos,
+    ifoVeEmo,
   }
 }

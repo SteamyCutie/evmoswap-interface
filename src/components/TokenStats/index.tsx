@@ -7,7 +7,7 @@ import { ChainId } from '@evmoswap/core-sdk'
 import { useEmoUsdcPrice } from 'app/features/farm/hooks'
 
 const supportedTokens = {
-  EMOS: {
+  EMO: {
     name: 'EvmoSwap Token',
     symbol: 'EMO',
     icon: '/icons/icon-72x72.png',

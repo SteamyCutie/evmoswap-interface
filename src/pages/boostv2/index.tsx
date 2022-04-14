@@ -5,7 +5,7 @@ import Head from 'next/head'
 import Image from 'next/image'
 import { t } from '@lingui/macro'
 import { ApprovalState, useApproveCallback } from '../../hooks/useApproveCallback'
-import { EvmoSwap, XEMOS } from '../../config/tokens'
+import { EvmoSwap, XEMO } from '../../config/tokens'
 import Button from '../../components/Button'
 import Container from '../../components/Container'
 import Dots from '../../components/Dots'
@@ -35,7 +35,7 @@ import { VotingChart } from 'app/features/boost/VotingChart'
 import { useVotingContract } from 'app/hooks'
 import { useTransactionAdder } from 'app/state/transactions/hooks'
 import { getBalanceAmount } from 'functions/formatBalance'
-import { getEMOSPrice } from 'features/staking/useStaking'
+import { getEMOPrice } from 'features/staking/useStaking'
 import NavLink from 'app/components/NavLink'
 import { useSingleCallResult, useSingleContractMultipleData } from 'app/state/multicall/hooks'
 import { ChartIconButton, VoteChartModal } from 'app/features/boost/ChartModal'
@@ -67,9 +67,9 @@ export default function Boostv2() {
   const { account, chainId } = useActiveWeb3React()
   const balance = useTokenBalance(account ?? undefined, EvmoSwap[chainId])
 
-  const emosInfo = useTokenInfo(useEmosContract())
+  const emoInfo = useTokenInfo(useEmosContract())
 
-  const { rewards, harvestRewards, lockAmount, lockEnd, veEmos, emosSupply, veEmosSupply } = useLockedBalance()
+  const { rewards, harvestRewards, lockAmount, lockEnd, veEmo, emoSupply, veEmoSupply } = useLockedBalance()
 
   const { manualAPY, autoAPY } = getAPY()
 
@@ -86,24 +86,24 @@ export default function Boostv2() {
   const voteContract = useVotingContract()
   const WEEK = 7 * 86400
 
-  const emosvaultContract = useEmosVaultContract()
-  const autoemosBountyValue = useRef(0)
+  const emovaultContract = useEmosVaultContract()
+  const autoemoBountyValue = useRef(0)
 
-  const getEmosVault = async () => {
-    const autoemosBounty = await emosvaultContract.calculateHarvestEmosRewards()
-    autoemosBountyValue.current = getBalanceAmount(autoemosBounty._hex, 18).toNumber()
+  const getEmoVault = async () => {
+    const autoemoBounty = await emovaultContract.calculateHarvestEmoRewards()
+    autoemoBountyValue.current = getBalanceAmount(autoemoBounty._hex, 18).toNumber()
   }
-  getEmosVault()
+  getEmoVault()
 
-  const emosPrice = getEMOSPrice()
+  const emoPrice = getEMOPrice()
   const [pendingBountyTx, setPendingBountyTx] = useState(false)
   const handleBountyClaim = async () => {
     setPendingBountyTx(true)
     try {
-      const gasLimit = await emosvaultContract.estimateGas.harvest()
-      const tx = await emosvaultContract.harvest({ gasLimit: gasLimit.mul(120).div(100) })
+      const gasLimit = await emovaultContract.estimateGas.harvest()
+      const tx = await emovaultContract.harvest({ gasLimit: gasLimit.mul(120).div(100) })
       addTransaction(tx, {
-        summary: `${i18n._(t`Claim`)} EMOS`,
+        summary: `${i18n._(t`Claim`)} EMO`,
       })
       setPendingBountyTx(false)
     } catch (error) {
@@ -411,46 +411,46 @@ export default function Boostv2() {
                   showBoost={false}
                   showCompound={false}
                   Lpbalance={Number((lockAmount / 1e18).toFixed(2))}
-                  name={'EMOS'}
+                  name={'EMO'}
                   apr={manualAPY}
                 />
                 <h2 className="flex flex-row items-center justify-self-center self-start text-[16px] md:text-[21px] text-[#798090]">
-                  veEmos APY&nbsp;
-                  <QuestionHelper text="The reward apy of lock EMOS." />
+                  veEmo APY&nbsp;
+                  <QuestionHelper text="The reward apy of lock EMO." />
                 </h2>
               </div>
               <div className="grid items-center grid-cols-1 p-4 rounded-lg bg-dark-800">
                 <h1 className="text-[24px] md:text-[32px] self-end justify-self-center text-center font-bold text-white">
                   {formatPercent(
                     formatNumber(
-                      Number(formatBalance(emosSupply ? emosSupply : 1)) /
-                        Number(emosInfo.circulatingSupply ? emosInfo.circulatingSupply : 1)
+                      Number(formatBalance(emoSupply ? emoSupply : 1)) /
+                        Number(emoInfo.circulatingSupply ? emoInfo.circulatingSupply : 1)
                     )
                   )}
                 </h1>
                 <h2 className="flex items-center place-content-center self-start text-center text-[16px] md:text-[21px] text-[#798090]">
-                  % of EMOS locked&nbsp;
+                  % of EMO locked&nbsp;
                   <span className="mt-[4px]">
-                    <QuestionHelper text="Percentage of circulating EMOS locked in veEMOS earning protocol revenue." />
+                    <QuestionHelper text="Percentage of circulating EMO locked in veEMO earning protocol revenue." />
                   </span>
                 </h2>
               </div>
               <div className="grid items-center grid-cols-1 p-4 rounded-lg bg-dark-800">
                 <h1 className="text-[24px] md:text-[32px] self-end justify-self-center text-center font-bold text-white">
-                  {formatNumber((Number(veEmosSupply) / Number(emosSupply)) * 4)} years
+                  {formatNumber((Number(veEmoSupply) / Number(emoSupply)) * 4)} years
                 </h1>
                 <h2 className="flex items-center place-content-center self-start text-center text-[16px] md:text-[21px] text-[#798090]">
                   Average lock time&nbsp;
                   <span className="mt-[6px]">
-                    <QuestionHelper text="Average EMOS lock time in veEMOS." />
+                    <QuestionHelper text="Average EMO lock time in veEMO." />
                   </span>
                 </h2>
               </div>
               <div className="grid items-center grid-cols-1 p-4 px-8 rounded-lg bg-dark-800">
                 <div className="flex flex-row items-center text-[16px] md:text-[21px] text-[#798090]">
-                  {i18n._(t`Auto Emos Bounty`)}&nbsp;
+                  {i18n._(t`Auto Emo Bounty`)}&nbsp;
                   <span className="mt-[6px]">
-                    <QuestionHelper text="This bounty is given as a reward for providing a service to other users. Whenever you successfully claim the bounty, you’re also helping out by activating the Auto EMOS Pool’s compounding function for everyone.Auto-Compound Bounty: 0.25% of all Auto EMOS pool users pending yield" />
+                    <QuestionHelper text="This bounty is given as a reward for providing a service to other users. Whenever you successfully claim the bounty, you’re also helping out by activating the Auto EMO Pool’s compounding function for everyone.Auto-Compound Bounty: 0.25% of all Auto EMO pool users pending yield" />
                   </span>
                 </div>
                 <div className="flex items-center justify-between">
@@ -461,7 +461,7 @@ export default function Boostv2() {
                     <div className="text-[14px] text-light-blue">
                       {'~$'}
                       {formatNumber(
-                        Number(Number(harvestRewards?.toFixed(18)) * Number(emosPrice.toFixed(3))).toFixed(3)
+                        Number(Number(harvestRewards?.toFixed(18)) * Number(emoPrice.toFixed(3))).toFixed(3)
                       )}
                     </div>
                   </div>
@@ -483,16 +483,16 @@ export default function Boostv2() {
             </div>
 
             <div className="gap-4 md:flex">
-              {/* lock emos */}
+              {/* lock emo */}
               <div className="rounded-lg md:w-1/2 bg-dark-900">
                 <div className="px-8 py-6 rounded-t-lg md:py-8 bg-dark-800">
-                  <h1 className="text-xl font-bold md:text-2xl">EMOS Boost Lock</h1>
+                  <h1 className="text-xl font-bold md:text-2xl">EMO Boost Lock</h1>
                 </div>
                 <div className="p-6">
                   <div className="flex items-center justify-between w-full">
-                    <p className="text-sm md:text-lg text-high-emphesis">{i18n._(t`Your EMOS Balance`)}</p>
+                    <p className="text-sm md:text-lg text-high-emphesis">{i18n._(t`Your EMO Balance`)}</p>
                     <div className="text-sm font-medium text-high-emphesis md:text-lg md:font-normal">
-                      {balance?.toSignificant(12)} EMOS
+                      {balance?.toSignificant(12)} EMO
                     </div>
                   </div>
 
@@ -528,7 +528,7 @@ export default function Boostv2() {
                             input ? 'text-high-emphesis' : 'text-secondary'
                           }`}
                         >
-                          {`${input ? input : '0'} EMOS`}
+                          {`${input ? input : '0'} EMO`}
                         </p>
                       </div>
                       <div className="flex items-center text-sm text-secondary md:text-base">
@@ -622,12 +622,12 @@ export default function Boostv2() {
                   </div>
                   <div className="flex flex-col pb-4 mt-6 space-y-2">
                     <div className="flex flex-row items-center justify-between text-base">
-                      <div className="text-sm">My EMOS Locked</div>
+                      <div className="text-sm">My EMO Locked</div>
                       <div className="text-sm">{formatNumber(lockAmount?.toFixed(18))}</div>
                     </div>
                     <div className="flex flex-row items-center justify-between text-base">
-                      <div className="text-sm">My veEMOS balance</div>
-                      <div className="text-sm">{formatNumber(veEmos?.toFixed(18))}</div>
+                      <div className="text-sm">My veEMO balance</div>
+                      <div className="text-sm">{formatNumber(veEmo?.toFixed(18))}</div>
                     </div>
                     <div className="flex flex-row items-center justify-between text-base">
                       <div className="text-sm">Unlock Time</div>
@@ -696,7 +696,7 @@ export default function Boostv2() {
                     >
                       {!walletConnected
                         ? i18n._(t`Connect Wallet`)
-                        : i18n._(t`Your lock ended, you can withdraw your EMOS`)}
+                        : i18n._(t`Your lock ended, you can withdraw your EMO`)}
                     </Button>
                   ) : (
                     <></>

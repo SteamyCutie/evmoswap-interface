@@ -12,7 +12,7 @@ import ModalHeader from '../ModalHeader/index'
 import Typography from 'app/components/Typography'
 import Input from 'components/Input'
 import Checkbox from 'app/components/Checkbox'
-import { getEMOSPrice, aprToApy } from 'features/staking/useStaking'
+import { getEMOPrice, aprToApy } from 'features/staking/useStaking'
 
 interface RoiCalculatorModalProps {
   isfarm: boolean
@@ -65,15 +65,15 @@ const ROICalculatorModal: React.FC<RoiCalculatorModalProps> = ({
   const [isBoost, setIsBoost] = useState(false)
 
   if (isfarm === false) {
-    lpPrice = getEMOSPrice()
+    lpPrice = getEMOPrice()
   }
   const ROIcalculator = (principal: number, apr: number) => {
     const aprAsDecimal = isBoost ? apr / 40 : apr / 100
     const daysAsDecimalOfYear = stakedPeriod / 365
     const timesCompounded = isCompounding ? 365 / compoundingPeriod : 365
     const ROI = principal * (1 + aprAsDecimal / timesCompounded) ** (timesCompounded * daysAsDecimalOfYear) - principal
-    const emosPriceInUSD = getEMOSPrice()
-    const ROIInTokens = earningTokenPrice ? (ROI / earningTokenPrice).toFixed(3) : (ROI / emosPriceInUSD).toFixed(3)
+    const emoPriceInUSD = getEMOPrice()
+    const ROIInTokens = earningTokenPrice ? (ROI / earningTokenPrice).toFixed(3) : (ROI / emoPriceInUSD).toFixed(3)
     const ROIPercentage = Number(usdValue) === 0 ? '0' : ((ROI / Number(usdValue)) * 100).toFixed(2)
     return { ROI, ROIInTokens, ROIPercentage }
   }
@@ -289,7 +289,7 @@ const ROICalculatorModal: React.FC<RoiCalculatorModalProps> = ({
                 </div>
               )}
               <div className="flex justify-between gap-2">
-                <Typography>{i18n._(t`Base APR (EMOS yield only)`)}</Typography>
+                <Typography>{i18n._(t`Base APR (EMO yield only)`)}</Typography>
                 <p className="text-cyan-blue">{Number(apr).toFixed(2)}%</p>
               </div>
               <div className="flex justify-between gap-2">
@@ -329,10 +329,10 @@ const ROICalculatorModal: React.FC<RoiCalculatorModalProps> = ({
               ) : (
                 <ExternalLink
                   startIcon={<LinkIcon size={16} className="text-cyan-blue" />}
-                  href={`https://app.evmoswap.org/swap/EVMOS/EMOS`}
+                  href={`https://app.evmoswap.org/swap/EVMOS/EMO`}
                 >
                   <Typography variant="sm" className="text-cyan-blue">
-                    Get EMOS
+                    Get EMO
                   </Typography>
                 </ExternalLink>
               )}

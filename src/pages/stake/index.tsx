@@ -8,7 +8,7 @@ import { useEmosVaultContract } from 'hooks/useContract'
 import { ArrowRightIcon } from '@heroicons/react/outline'
 import { useTransactionAdder } from '../../state/transactions/hooks'
 import { formatNumber, getBalanceAmount } from 'functions/formatBalance'
-import { getEMOSPrice } from 'features/staking/useStaking'
+import { getEMOPrice } from 'features/staking/useStaking'
 import AutoPoolCard from 'app/features/staking/AutoPoolCard/AutoPoolCard'
 import ManualPoolCard from 'app/features/staking/ManualPoolCard/ManualPoolCard'
 import Typography from 'app/components/Typography'
@@ -24,25 +24,25 @@ export default function Stake() {
   const { i18n } = useLingui()
   const addTransaction = useTransactionAdder()
 
-  const emosvaultContract = useEmosVaultContract()
+  const emovaultContract = useEmosVaultContract()
 
-  const autoemosBountyValue = useRef(0)
+  const autoemoBountyValue = useRef(0)
 
-  const getEmosVault = async () => {
-    const autoemosBounty = await emosvaultContract.calculateHarvestEmosRewards()
-    autoemosBountyValue.current = getBalanceAmount(autoemosBounty._hex, 18).toNumber()
+  const getEmoVault = async () => {
+    const autoemoBounty = await emovaultContract.calculateHarvestEmoRewards()
+    autoemoBountyValue.current = getBalanceAmount(autoemoBounty._hex, 18).toNumber()
   }
-  getEmosVault()
+  getEmoVault()
 
-  const emosPrice = getEMOSPrice()
+  const emoPrice = getEMOPrice()
   const [pendingBountyTx, setPendingBountyTx] = useState(false)
   const handleBountyClaim = async () => {
     setPendingBountyTx(true)
     try {
-      const gasLimit = await emosvaultContract.estimateGas.harvest()
-      const tx = await emosvaultContract.harvest({ gasLimit: gasLimit.mul(120).div(100) })
+      const gasLimit = await emovaultContract.estimateGas.harvest()
+      const tx = await emovaultContract.harvest({ gasLimit: gasLimit.mul(120).div(100) })
       addTransaction(tx, {
-        summary: `${i18n._(t`Claim`)} EMOS`,
+        summary: `${i18n._(t`Claim`)} EMO`,
       })
       setPendingBountyTx(false)
     } catch (error) {
@@ -62,13 +62,13 @@ export default function Stake() {
         <div className="flex-row items-center justify-between w-full px-8 py-6 space-y-2 rounded md:flex bg-cyan-blue bg-opacity-20">
           <div className="w-8/12 mb-5 space-y-2 gap-y-10 md:mb-0">
             <Typography variant="h2" className="mb-2 text-high-emphesis" weight={700}>
-              {i18n._(t`Emos Stake`)}
+              {i18n._(t`Emo Stake`)}
             </Typography>
             <Typography variant="sm" weight={400}>
               {i18n._(t`Looking for a less resource-intensive alternative to mining?`)}
             </Typography>
             <Typography variant="sm" weight={400}>
-              {i18n._(t`Use your EMOS tokens to earn more tokens,for Free.`)}
+              {i18n._(t`Use your EMO tokens to earn more tokens,for Free.`)}
             </Typography>
             <a href="https://forms.gle/4MTpS6NquqWUVSZw8" target="_blank" rel="noreferrer">
               <div className="flex items-center gap-2 mt-2 text-sm font-bold font-Poppins">
@@ -80,15 +80,15 @@ export default function Stake() {
 
           <div className="w-full px-4 py-4 m-auto rounded-lg md:w-4/12 md:px-6 bg-cyan-blue bg-opacity-30">
             <div className="flex flex-row items-center text-lg font-bold text-white">
-              {i18n._(t`Auto Emos Bounty`)}
-              <QuestionHelper text="This bounty is given as a reward for providing a service to other users. Whenever you successfully claim the bounty, you’re also helping out by activating the Auto EMOS Pool’s compounding function for everyone.Auto-Compound Bounty: 0.25% of all Auto EMOS pool users pending yield" />
+              {i18n._(t`Auto Emo Bounty`)}
+              <QuestionHelper text="This bounty is given as a reward for providing a service to other users. Whenever you successfully claim the bounty, you’re also helping out by activating the Auto EMO Pool’s compounding function for everyone.Auto-Compound Bounty: 0.25% of all Auto EMO pool users pending yield" />
             </div>
             <div className="flex items-center justify-between space-x-10">
               <div>
-                <div className="text-xl font-bold text-white">{Number(autoemosBountyValue.current).toFixed(3)}</div>
+                <div className="text-xl font-bold text-white">{Number(autoemoBountyValue.current).toFixed(3)}</div>
                 <div className="text-base text-light-blue">
                   {' '}
-                  {Number(autoemosBountyValue.current * emosPrice).toFixed(3)} USD
+                  {Number(autoemoBountyValue.current * emoPrice).toFixed(3)} USD
                 </div>
               </div>
               <div>
@@ -97,7 +97,7 @@ export default function Stake() {
                   color="gradient"
                   variant="outlined"
                   size="sm"
-                  disabled={!autoemosBountyValue.current || pendingBountyTx}
+                  disabled={!autoemoBountyValue.current || pendingBountyTx}
                   onClick={handleBountyClaim}
                 >
                   {pendingBountyTx ? <Dots>{i18n._(t`Claiming`)} </Dots> : i18n._(t`Claim`)}

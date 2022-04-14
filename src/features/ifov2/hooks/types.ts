@@ -53,12 +53,12 @@ export interface WalletIfoData {
   contract: Contract
   [PoolIds.poolBasic]?: UserPoolCharacteristics
   [PoolIds.poolUnlimited]: UserPoolCharacteristics
-  ifoVeEmos?: {
-    veEmos: BigNumber
+  ifoVeEmo?: {
+    veEmo: BigNumber
     /**
      * credit left is the ifo credit minus the amount of `amountTokenCommittedInLP` in pool basic and unlimited
      * minimum is 0
      */
-    veEmosLeft: BigNumber
+    veEmoLeft: BigNumber
   }
 }

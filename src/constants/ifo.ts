@@ -17,14 +17,14 @@ const ifos: Ifo[] = [
     poolBasic: {
       saleAmount: '1,350,000',
       raiseAmount: '$202,500',
-      emosToBurn: '$90,000',
+      emoToBurn: '$90,000',
       distributionRatio: 0.3,
       raiseToken: SUSHI,
     },
     poolUnlimited: {
       saleAmount: '2,650,000',
       raiseAmount: '$397,500',
-      emosToBurn: '$110,000',
+      emoToBurn: '$110,000',
       distributionRatio: 0.7,
       raiseToken: USDC,
     },
@@ -41,12 +41,12 @@ const ifos: Ifo[] = [
     },
     releaseTimestamp: 1646922000,
     claimDelayTime: 10800, //delay 3 hours
-    veEmosCheckPoint: 1646813700, //start time
+    veEmoCheckPoint: 1646813700, //start time
 
     // TESTNET
     // releaseTimestamp: 1644667500,
     // claimDelayTime: 900, //delay 3 hours 1644760800
-    // veEmosCheckPoint: 1644665700, //start time
+    // veEmoCheckPoint: 1644665700, //start time
 
     campaignId: '511160000',
     twitterUrl: 'https://twitter.com/thearcanefi',

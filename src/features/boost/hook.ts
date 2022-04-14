@@ -8,9 +8,9 @@ export function useLockedBalance() {
 
   if (!account) {
     return {
-      emosSupply: undefined,
-      veEmosSupply: undefined,
-      veEmos: undefined,
+      emoSupply: undefined,
+      veEmoSupply: undefined,
+      veEmo: undefined,
       lockEnd: undefined,
       lockAmount: undefined,
       rewards: undefined,
@@ -18,7 +18,7 @@ export function useLockedBalance() {
     }
   }
 
-  const harvestRewards = useSingleCallResult(useRewardPoolContract(), 'calculateHarvestEmosRewards', undefined)?.result
+  const harvestRewards = useSingleCallResult(useRewardPoolContract(), 'calculateHarvestEmoRewards', undefined)?.result
   const rewards = useSingleCallResult(
     useRewardPoolContract(),
     'calculateUserRewards',
@@ -38,13 +38,13 @@ export function useLockedBalance() {
 
   const results = useSingleContractMultipleMethods(booster, callsData)
 
-  // lockAmount, lockEnd, veEmos, emosSupply, veEmosSupply
+  // lockAmount, lockEnd, veEmo, emoSupply, veEmoSupply
   if (results && Array.isArray(results) && results.length === callsData.length) {
-    const [{ result: emosSupply }, { result: veEmosSupply }, { result: veEmos }, { result: lockInfo }] = results
+    const [{ result: emoSupply }, { result: veEmoSupply }, { result: veEmo }, { result: lockInfo }] = results
     return {
-      emosSupply: emosSupply?.[0],
-      veEmosSupply: veEmosSupply?.[0],
-      veEmos: veEmos?.[0],
+      emoSupply: emoSupply?.[0],
+      veEmoSupply: veEmoSupply?.[0],
+      veEmo: veEmo?.[0],
       lockEnd: lockInfo?.end,
       lockAmount: lockInfo?.amount,
       rewards: rewards?.[0],
@@ -53,9 +53,9 @@ export function useLockedBalance() {
   }
 
   return {
-    emosSupply: undefined,
-    veEmosSupply: undefined,
-    veEmos: undefined,
+    emoSupply: undefined,
+    veEmoSupply: undefined,
+    veEmo: undefined,
     lockEnd: undefined,
     lockAmount: undefined,
     rewards: undefined,

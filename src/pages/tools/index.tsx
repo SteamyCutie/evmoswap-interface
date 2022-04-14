@@ -16,7 +16,7 @@ import { EvmoSwap, USDC, USDT } from 'app/config/tokens'
 const faucetTokenAddress = {
   USDC: '0xFCBdf3F929e049F2F062cd7e4084fd6f2E5b9c73',
   USDT: '0xb75fdC39459DAfA30Bc4ec9ca15B40C14084FB4e',
-  EMOS: '0xb9Bd45e536D678c6AdCBE49Ee0e8959Bd3b3774F',
+  EMO: '0xb9Bd45e536D678c6AdCBE49Ee0e8959Bd3b3774F',
 }
 
 export default function Tools() {
@@ -26,7 +26,7 @@ export default function Tools() {
 
   const faucetContract = useFaucetContract()
   const faucetAddress = '0xC6E69C6C64914864A848784159A219627d175D51'
-  const emosBalance = Number(useTokenBalance(faucetAddress ?? undefined, EvmoSwap[chainId])?.toSignificant(8))
+  const emoBalance = Number(useTokenBalance(faucetAddress ?? undefined, EvmoSwap[chainId])?.toSignificant(8))
   const usdcBalance = Number(useTokenBalance(faucetAddress ?? undefined, USDC[chainId])?.toSignificant(8))
   const usdtBalance = Number(useTokenBalance(faucetAddress ?? undefined, USDT[chainId])?.toSignificant(8))
   const handleFaucetToken = async (token: string) => {
@@ -59,14 +59,14 @@ export default function Tools() {
         <BscNetworkModal />
       </div>
       <Button
-        color={emosBalance >= 500 ? 'blue' : 'gray'}
+        color={emoBalance >= 500 ? 'blue' : 'gray'}
         size="sm"
-        onClick={() => handleFaucetToken('EMOS')}
-        className={`w-48 m-10 flex gap-2 items-center justify-center ${emosBalance >= 500 ? `hover:bg-red` : `bg-gray`}`}
-        disabled={!emosBalance}
+        onClick={() => handleFaucetToken('EMO')}
+        className={`w-48 m-10 flex gap-2 items-center justify-center ${emoBalance >= 500 ? `hover:bg-red` : `bg-gray`}`}
+        disabled={!emoBalance}
       >
-        {emosBalance >= 500 ? 'Take test EMOS' : 'Not enough faucet EMOS'}
-        <QuestionHelper text="You send little native token to the protocol and get 500 EMOS" />
+        {emoBalance >= 500 ? 'Take test EMO' : 'Not enough faucet EMO'}
+        <QuestionHelper text="You send little native token to the protocol and get 500 EMO" />
       </Button>
       <Button
         color={usdcBalance >= 500 ? 'blue' : 'gray'}
