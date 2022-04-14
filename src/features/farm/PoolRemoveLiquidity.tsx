@@ -439,7 +439,7 @@ const PoolWithdraw = ({ currencyA, currencyB, header }) => {
                 onClick={onAttemptToApprove}
                 disabled={approval !== ApprovalState.NOT_APPROVED || signatureData !== null}
               >
-                {i18n._(t`Approve`)}
+                {approval === ApprovalState.PENDING ? <Dots>{i18n._(t`Approving`)}</Dots> : i18n._(t`Approve`)}
               </Button>
             ) : (
               <Button
