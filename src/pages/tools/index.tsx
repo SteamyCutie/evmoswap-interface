@@ -13,20 +13,21 @@ import { useTokenBalance } from 'state/wallet/hooks'
 import QuestionHelper from 'app/components/QuestionHelper'
 import { EvmoSwap, USDC, USDT } from 'app/config/tokens'
 import Link from 'next/link'
-
-const faucetTokenAddress = {
-  USDC: '0xFCBdf3F929e049F2F062cd7e4084fd6f2E5b9c73',
-  USDT: '0xb75fdC39459DAfA30Bc4ec9ca15B40C14084FB4e',
-  EMO: '0xb9Bd45e536D678c6AdCBE49Ee0e8959Bd3b3774F',
-}
+import { FAUCET_ADDRESS } from 'app/constants/addresses'
 
 export default function Tools() {
   const { chainId } = useActiveWeb3React()
   const toggleNetworkModal = useNetworkModalToggle()
   const addTransaction = useTransactionAdder()
 
+  const faucetTokenAddress = {
+    USDC: USDC[chainId],
+    USDT: USDT[chainId],
+    EMO: EvmoSwap[chainId],
+  }
+
   const faucetContract = useFaucetContract()
-  const faucetAddress = '0xC6E69C6C64914864A848784159A219627d175D51'
+  const faucetAddress = FAUCET_ADDRESS[chainId]
   const emoBalance = Number(useTokenBalance(faucetAddress ?? undefined, EvmoSwap[chainId])?.toSignificant(8))
   const usdcBalance = Number(useTokenBalance(faucetAddress ?? undefined, USDC[chainId])?.toSignificant(8))
   const usdtBalance = Number(useTokenBalance(faucetAddress ?? undefined, USDT[chainId])?.toSignificant(8))
