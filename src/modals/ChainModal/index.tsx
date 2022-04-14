@@ -67,7 +67,7 @@ export const SUPPORTED_NETWORKS: {
       symbol: 'EVMOS',
       decimals: 18,
     },
-    rpcUrls: ['https://evmos-archive-testnet.api.bdnodes.net:8545'],
+    rpcUrls: ['https://eth.bd.evmos.dev:8545'],
     blockExplorerUrls: ['https://evm.evmos.dev/'],
   },
 }
