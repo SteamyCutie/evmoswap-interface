@@ -312,7 +312,7 @@ export default function Boostv3 () {
 
                                     {/** lock actions */ }
                                     <div className="my-4">
-                                        <div className="flex flex-cols flex-wrap space-x-4">
+                                        <div className="flex flex-cols flex-wrap">
                                             {
                                                 LOCK_PERIODS.map( ( period, index ) => (
                                                     <Button
@@ -320,7 +320,7 @@ export default function Boostv3 () {
                                                         variant={ lockPeriod.day === period.day ? "filled" : "outlined" }
                                                         color={ "blue" }
                                                         size={ "sm" }
-                                                        className={ "w-auto" }
+                                                        className={ "w-auto ml-2 mb-2" }
                                                         onClick={ () => setLockPeriod( period ) }
                                                     >
                                                         { period.title }
@@ -388,9 +388,15 @@ export default function Boostv3 () {
 
                     {/** Staked table */ }
                     <div className="w-full mt-12">
-                        <h2 className="font-bold text-lg">{ i18n._( t`Staked EVMOS` ) }</h2>
+                        <RowBetween className="md:items-center flex-col md:flex-row">
+                            <h2 className="font-bold text-lg">{ i18n._( t`Staked EVMOS` ) }</h2>
+                            <div className="flex space-x-2">
+                                <Button variant="outlined" color="green" className="border-0" disabled>{ i18n._( t`Withdraw all staked` ) }</Button>
+                                <Button variant="outlined" color="red">{ i18n._( t`Withdraw all unlocked` ) }</Button>
+                            </div>
+                        </RowBetween>
                         <div className="relative overflow-auto">
-                            <table className="border-collapse table-auto w-full text-sm mt-4">
+                            <table className="border-collapse table-auto w-full text-sm mt-3">
                                 <thead className="bg-dark-900 bg-opacity-80">
                                     <tr>
                                         <th className="text-center p-4 rounded-tl">{ i18n._( t`Staked Time` ) }</th>
