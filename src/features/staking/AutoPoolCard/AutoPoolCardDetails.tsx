@@ -107,7 +107,7 @@ export default function AutoPoolCardDetails() {
     }
   }
 
-  const stakeInputError = (emoPrice && emoPrice.equalTo(ZERO)) || parsedStakeAmount?.greaterThan(emoPrice)
+  const stakeInputError = (emoBalance && emoBalance.equalTo(ZERO)) || parsedStakeAmount?.greaterThan(emoBalance)
   const unstakeInputError = (xBalanceAuto && xBalanceAuto === 0) || Number(inputUnStake) > xBalanceAuto
 
   const [pendingTxAuto, setPendingTxAuto] = useState(false)

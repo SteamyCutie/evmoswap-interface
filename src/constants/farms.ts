@@ -72,7 +72,7 @@ export const FARMS: AddressMap = {
       pid: 2,
       symbol: 'ELP',
       name: 'EMO-USDC',
-      token0: { id: '0x36dD1fb6DA561AddCaa66b909eF571b92Dffc594', name: 'USD Coin', symbol: 'USDC', decimals: 6 },
+      token0: { id: '0xae95d4890bf4471501E0066b6c6244E1CAaEe791', name: 'USD Coin', symbol: 'USDC', decimals: 6 },
       token1: { id: '0x7cBa32163a8f4c56C846f5C3685E3b7a450c9002', name: 'EvmoSwap', symbol: 'EMO', decimals: 18 },
       isVote: true,
       isZap: false,

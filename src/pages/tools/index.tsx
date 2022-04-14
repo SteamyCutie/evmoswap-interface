@@ -11,14 +11,15 @@ import { useTransactionAdder } from 'app/state/transactions/hooks'
 import Button from 'app/components/Button'
 import { useTokenBalance } from 'state/wallet/hooks'
 import QuestionHelper from 'app/components/QuestionHelper'
-import { EvmoSwap, USDC, USDT } from 'app/config/tokens'
+import { DAI, EvmoSwap, USDC, USDT } from 'app/config/tokens'
 import Link from 'next/link'
 
 const faucetTokenAddress = {
-  USDC: '0xFCBdf3F929e049F2F062cd7e4084fd6f2E5b9c73',
-  USDT: '0xb75fdC39459DAfA30Bc4ec9ca15B40C14084FB4e',
-  EMO: '0xb9Bd45e536D678c6AdCBE49Ee0e8959Bd3b3774F',
+  USDC: '0xae95d4890bf4471501E0066b6c6244E1CAaEe791',
+  USDT: '0x397F8aBd481B7c00883fb70da2ea5Ae70999c37c',
+  DAI: '0x7c4a1D38A755a7Ce5521260e874C009ad9e4Bf9c',
 }
+
 
 export default function Tools() {
   const { chainId } = useActiveWeb3React()
@@ -26,8 +27,8 @@ export default function Tools() {
   const addTransaction = useTransactionAdder()
 
   const faucetContract = useFaucetContract()
-  const faucetAddress = '0xC6E69C6C64914864A848784159A219627d175D51'
-  const emoBalance = Number(useTokenBalance(faucetAddress ?? undefined, EvmoSwap[chainId])?.toSignificant(8))
+  const faucetAddress = '0x68D9bFf34e446673C90DDbb0630B7d2572c936cB'
+  const daiBalance = Number(useTokenBalance(faucetAddress ?? undefined, DAI[chainId])?.toSignificant(8))
   const usdcBalance = Number(useTokenBalance(faucetAddress ?? undefined, USDC[chainId])?.toSignificant(8))
   const usdtBalance = Number(useTokenBalance(faucetAddress ?? undefined, USDT[chainId])?.toSignificant(8))
   const handleFaucetToken = async (token: string) => {
@@ -41,7 +42,7 @@ export default function Tools() {
   if (!chainId) return null
   return (
     <>
-      <div
+      {/* <div
         className="flex items-center rounded bg-dark-900 hover:bg-dark-800 p-0.5 whitespace-nowrap text-sm font-bold cursor-pointer select-none pointer-events-auto"
         onClick={() => toggleNetworkModal()}
       >
@@ -58,44 +59,44 @@ export default function Tools() {
         )}
 
         <BscNetworkModal />
-      </div>
-      <div className='flex items-center justify-between px-10 py-4 my-4 rounded-md bg-dark-850'> 
+      </div> */}
+      <div className='flex items-center justify-between mt-12 px-10 py-4 my-4 rounded-md bg-dark-850'> 
         <div className='w-3/5'>
           <div className='text-2xl'>tEVMOS Faucet</div>
-          <div>Looking for a less resource-intensive alternative to mining?</div>
+          <div>Get the test token from the faucet. There is a limit for each address!</div>
         </div>
-        <Link href="https://faucet.evmos.dev/" >
+        <a href="https://faucet.evmos.dev/" target="_blank" rel="noreferrer">
           <Button
-            color={'blue'}
+            color="gradient"
             size="sm"
             className="flex items-center justify-center w-48 gap-2 hover:bg-red bg-gray"
           >
             Get tEVMOS
           </Button>
-        </Link>
+        </a>
       </div>
 
       <div className='flex items-center justify-between px-10 py-4 my-4 rounded-md bg-dark-850'> 
         <div className='w-3/5'>
-          <div className='text-2xl'>EMO Faucet</div>
-          <div>Looking for a less resource-intensive alternative to mining?</div>
+          <div className='text-2xl'>DAI Faucet</div>
+          <div>Get the test token from the faucet. There is a limit for each address!</div>
         </div>
         <Button
-          color={emoBalance >= 500 ? 'blue' : 'gray'}
+          color={daiBalance >= 500 ? 'blue' : 'gray'}
           size="sm"
-          onClick={() => handleFaucetToken('EMO')}
-          className={`w-48 flex gap-2 items-center justify-center ${emoBalance >= 500 ? `hover:bg-red` : `bg-gray`}`}
-          disabled={!emoBalance}
+          onClick={() => handleFaucetToken('DAI')}
+          className={`w-48 flex gap-2 items-center justify-center ${daiBalance >= 500 ? `hover:bg-red` : `bg-gray`}`}
+          disabled={!daiBalance}
         >
-          {emoBalance >= 500 ? 'Take test EMO' : 'Not enough faucet EMO'}
-          <QuestionHelper text="You send little native token to the protocol and get 500 EMO" />
+          {daiBalance >= 500 ? 'Take test DAI' : 'Not enough faucet DAI'}
+          <QuestionHelper text="You send little native token to the protocol and get 500 DAI" />
         </Button>
       </div>
 
       <div className='flex items-center justify-between px-10 py-4 my-4 rounded-md bg-dark-850'> 
         <div className='w-3/5'>
           <div className='text-2xl'>USDC Faucet</div>
-          <div>Looking for a less resource-intensive alternative to mining?</div>
+          <div>Get the test token from the faucet. There is a limit for each address!</div>
         </div>
         <Button
           color={usdcBalance >= 500 ? 'blue' : 'gray'}
@@ -114,7 +115,7 @@ export default function Tools() {
       <div className='flex items-center justify-between px-10 py-4 my-4 rounded-md bg-dark-850'> 
         <div className='w-3/5'>
           <div className='text-2xl'>USDT Faucet</div>
-          <div>Looking for a less resource-intensive alternative to mining?</div>
+          <div>Get the test token from the faucet. There is a limit for each address!</div>
         </div>
         <Button
           color={usdtBalance >= 500 ? 'blue' : 'gray'}
