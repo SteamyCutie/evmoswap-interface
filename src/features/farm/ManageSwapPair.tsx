@@ -7,10 +7,13 @@ import Typography from 'app/components/Typography'
 import { classNames } from 'app/functions'
 import { useCurrency } from 'app/hooks/Tokens'
 import React, { useMemo, useState } from 'react'
-import { useDerivedMintInfo } from 'app/state/mint/hooks'
+import { Percent } from '@evmoswap/core-sdk'
+import { useUserSlippageToleranceWithDefault } from 'app/state/user/hooks'
 
 import PoolAddLiquidity from './PoolAddLiquidity'
 import PoolRemoveLiquidity from './PoolRemoveLiquidity'
+
+const DEFAULT_ADD_V2_SLIPPAGE_TOLERANCE = new Percent(50, 10_000)
 
 // @ts-ignore TYPE NEEDS FIXING
 const ManageSwapPair = ({ farm }) => {
@@ -20,6 +23,8 @@ const ManageSwapPair = ({ farm }) => {
   const token0 = useCurrency(farm.token0.id)
   const token1 = useCurrency(farm.token1.id)
 
+  const allowedSlippage = useUserSlippageToleranceWithDefault(DEFAULT_ADD_V2_SLIPPAGE_TOLERANCE) // custom from users
+  
   const header = useMemo(
     () => (
       <div className="flex flex-col gap-2">
@@ -35,8 +40,7 @@ const ManageSwapPair = ({ farm }) => {
               checkedIcon={<PlusIcon className="text-dark-1000" />}
               uncheckedIcon={<MinusIcon className="text-dark-1000" />}
             />
-            {/* <Settings className="w-[unset] h-[unset]" /> */}
-            <Settings />
+            <Settings placeholderSlippage={allowedSlippage} />
           </div>
         </div>
       </div>
