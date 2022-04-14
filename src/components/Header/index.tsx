@@ -142,7 +142,7 @@ function AppBar(): JSX.Element {
                 <div className="fixed bottom-0 left-0 z-10 flex flex-row items-center justify-center w-full p-4 lg:w-auto bg-dark-1000 lg:relative lg:p-0 lg:bg-transparent">
                   <div className="flex items-center justify-between w-full space-x-2 sm:justify-end">
                     <div className="flex items-center w-auto mr-1 text-xs font-bold rounded shadow-sm cursor-pointer pointer-events-auto select-none bg-dark-800 text-primary hover:bg-dark-700 whitespace-nowrap sm:block">
-                      <TokenStats token="EMOS" />
+                      <TokenStats token="EMO" />
                     </div>
                     {library && library.provider.isMetaMask && (
                       <div className="hidden sm:inline-block">

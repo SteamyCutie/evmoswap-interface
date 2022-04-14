@@ -26,8 +26,8 @@ const IncentivePoolItem = ({ pool, ...rest }) => {
   const { apr, endInBlock, bonusEndBlock, totalStaked, stakingTokenPrice, earningTokenPrice } = usePoolsInfo(pool)
 
   const pendingReward = usePendingReward(pool, earningToken)
-  const emosBalance = useTokenBalance(account ?? undefined, SUSHI[chainId])
-  const balance = Number(emosBalance?.toSignificant(8))
+  const emoBalance = useTokenBalance(account ?? undefined, SUSHI[chainId])
+  const balance = Number(emoBalance?.toSignificant(8))
   const [showCalc, setShowCalc] = useState(false)
 
   return (
@@ -54,9 +54,9 @@ const IncentivePoolItem = ({ pool, ...rest }) => {
                 <div className="flex flex-col justify-center">
                   <div className="text-xs font-bold md:text-base">Earn {earningToken?.symbol}</div>
                   {formatNumber(pendingReward?.toFixed(earningToken?.decimals)) != '0' ? (
-                    <div className="text-xs text-blue">{i18n._(t`STAKING EMOS`)}</div>
+                    <div className="text-xs text-blue">{i18n._(t`STAKING EMO`)}</div>
                   ) : (
-                    <div className="text-xs text-gray">{i18n._(t`Stake EMOS`)}</div>
+                    <div className="text-xs text-gray">{i18n._(t`Stake EMO`)}</div>
                   )}
                 </div>
               </div>
@@ -90,7 +90,7 @@ const IncentivePoolItem = ({ pool, ...rest }) => {
                   onDismiss={() => setShowCalc(false)}
                   showBoost={false}
                   showCompound={false}
-                  name={'EMOS'}
+                  name={'EMO'}
                   apr={apr}
                   Lpbalance={balance}
                   earningTokenPrice={Number(earningTokenPrice?.toFixed(18))}

@@ -175,7 +175,7 @@ export const IfoFinishedCard = ({
               <Image src="/images/ifo/ifo-bg.png" className="object-cover w-full" layout="fill" />
             </div>
             <div className="mx-auto">
-              <Image src="/images/ifo/emos.png" alt="EvmoSwap" width="285px" height="55px" />
+              <Image src="/images/ifo/emo.png" alt="EvmoSwap" width="285px" height="55px" />
             </div>
             <div className="flex gap-1 mx-auto mt-10 text-high-emphesis">
               <div className="flex items-baseline gap-1">

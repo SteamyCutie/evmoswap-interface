@@ -48,7 +48,7 @@ const Strategies = () => {
         {/* Not need for now, so hidden */}
         {/* <div className="space-y-10 md:block">
           <div className="relative w-full p-4 overflow-hidden rounded bg-dark-600">
-            <div className="text-lg font-bold text-white">{i18n._(t`Claim EMOS For Airdrop Activity`)}</div>
+            <div className="text-lg font-bold text-white">{i18n._(t`Claim EMO For Airdrop Activity`)}</div>
             <div className="pt-2 text-sm font-bold text-gray-400">
               <ul className="px-6 list-disc ">
                 <li>
@@ -66,9 +66,7 @@ const Strategies = () => {
 
         <div className="space-y-10 md:block">
           <div className="relative w-full p-4 overflow-hidden rounded bg-cyan-blue">
-            <div className="text-lg font-bold text-white">
-              {i18n._(t`Claim EMOS For Seed / Private / Public Sale`)}
-            </div>
+            <div className="text-lg font-bold text-white">{i18n._(t`Claim EMO For Seed / Private / Public Sale`)}</div>
             <div className="pt-2 text-sm font-bold text-gray-400">
               <ul className="px-6 text-white list-disc">
                 <li>
@@ -111,7 +109,7 @@ const PrivateSaleAVesting = () => {
     try {
       const tx = await privateSaleAContract.claim()
       addTransaction(tx, {
-        summary: `${i18n._(t`Claim`)} EMOS`,
+        summary: `${i18n._(t`Claim`)} EMO`,
       })
     } catch (error) {
       console.error(error)
@@ -137,35 +135,35 @@ const PrivateSaleAVesting = () => {
   const userClaimable = useClaimable(privateSaleAContract)
   const userClaimed = useClaimed(privateSaleAContract)
 
-  const hasFetchedEmosAmount = userPurchased ? userPurchased.gte(0) : false
-  const purchasedEmos = hasFetchedEmosAmount ? getBalanceNumber(userPurchased, 18) : 0
-  const claimableEmos = hasFetchedEmosAmount ? getBalanceNumber(userClaimable, 18) : 0
-  const unclaimedEmos = hasFetchedEmosAmount ? purchasedEmos - getBalanceNumber(userClaimed) : 0
+  const hasFetchedEmoAmount = userPurchased ? userPurchased.gte(0) : false
+  const purchasedEmo = hasFetchedEmoAmount ? getBalanceNumber(userPurchased, 18) : 0
+  const claimableEmo = hasFetchedEmoAmount ? getBalanceNumber(userClaimable, 18) : 0
+  const unclaimedEmo = hasFetchedEmoAmount ? purchasedEmo - getBalanceNumber(userClaimed) : 0
 
   return (
     <div className="flex flex-col gap-3 md:max-w-full">
       <div className="relative w-full h-full overflow-hidden rounded bg-dark-900">
         <div className="flex flex-col gap-3 p-4">
-          <div className="text-lg font-bold text-white">{i18n._(t`Claimable EMOS from Private Sale Round A`)}</div>
+          <div className="text-lg font-bold text-white">{i18n._(t`Claimable EMO from Private Sale Round A`)}</div>
           <div className="flex flex-col items-baseline pb-4">
-            <div className="font-bold text-white text-[26px]">{claimableEmos}</div>
+            <div className="font-bold text-white text-[26px]">{claimableEmo}</div>
             {account ? (
-              <div className="text-sm text-secondary">{i18n._(t`Your Claimable EMOSs`)}</div>
+              <div className="text-sm text-secondary">{i18n._(t`Your Claimable EMO`)}</div>
             ) : (
-              <div className="text-sm text-secondary">{i18n._(t`Your Claimable EMOSs: Connect Wallet`)}</div>
+              <div className="text-sm text-secondary">{i18n._(t`Your Claimable EMO: Connect Wallet`)}</div>
             )}
           </div>
           <div className="flex flex-col pb-4 space-y-2">
             <div className="flex flex-row justify-between text-md">
-              <h2>Your Purchased EMOSs</h2> <span>{purchasedEmos}</span>
+              <h2>Your Purchased EMO</h2> <span>{purchasedEmo}</span>
             </div>
             <div className="flex flex-row justify-between text-lg">
-              <h2>Your UnClaimed EMOSs</h2> <span>{unclaimedEmos}</span>
+              <h2>Your UnClaimed EMO</h2> <span>{unclaimedEmo}</span>
             </div>
           </div>
           <Button
-            color={!claimableEmos ? 'gray' : 'gradient'}
-            disabled={!claimableEmos}
+            color={!claimableEmo ? 'gray' : 'gradient'}
+            disabled={!claimableEmo}
             size="default"
             onClick={handleClaim}
             className="inline-flex items-center justify-center"
@@ -173,7 +171,7 @@ const PrivateSaleAVesting = () => {
             {pendingTx ? (
               <Dots>{i18n._(t`Pending Claim`)}</Dots>
             ) : (
-              <> {claimConfirmed ? i18n._(t`Claimed`) : i18n._(t`Claim EMOS`)}</>
+              <> {claimConfirmed ? i18n._(t`Claimed`) : i18n._(t`Claim EMO`)}</>
             )}
 
             {attempting && (
@@ -213,7 +211,7 @@ const PrivateSaleBVesting = () => {
     try {
       const tx = await privateSaleBContract.claim()
       addTransaction(tx, {
-        summary: `${i18n._(t`Claim`)} EMOS`,
+        summary: `${i18n._(t`Claim`)} EMO`,
       })
     } catch (error) {
       console.error(error)
@@ -239,35 +237,35 @@ const PrivateSaleBVesting = () => {
   const userClaimable = useClaimable(privateSaleBContract)
   const userClaimed = useClaimed(privateSaleBContract)
 
-  const hasFetchedEmosAmount = userPurchased ? userPurchased.gte(0) : false
-  const purchasedEmos = hasFetchedEmosAmount ? getBalanceNumber(userPurchased, 18) : 0
-  const claimableEmos = hasFetchedEmosAmount ? getBalanceNumber(userClaimable, 18) : 0
-  const unclaimedEmos = hasFetchedEmosAmount ? purchasedEmos - getBalanceNumber(userClaimed) : 0
+  const hasFetchedEmoAmount = userPurchased ? userPurchased.gte(0) : false
+  const purchasedEmo = hasFetchedEmoAmount ? getBalanceNumber(userPurchased, 18) : 0
+  const claimableEmo = hasFetchedEmoAmount ? getBalanceNumber(userClaimable, 18) : 0
+  const unclaimedEmo = hasFetchedEmoAmount ? purchasedEmo - getBalanceNumber(userClaimed) : 0
 
   return (
     <div className="flex flex-col gap-3 md:max-w-full">
       <div className="relative w-full h-full overflow-hidden rounded bg-dark-900">
         <div className="flex flex-col gap-3 p-4">
-          <div className="text-lg font-bold text-white">{i18n._(t`Claimable EMOS from Private Sale Round B`)}</div>
+          <div className="text-lg font-bold text-white">{i18n._(t`Claimable EMO from Private Sale Round B`)}</div>
           <div className="flex flex-col items-baseline pb-4">
-            <div className="font-bold text-white text-[26px]">{claimableEmos}</div>
+            <div className="font-bold text-white text-[26px]">{claimableEmo}</div>
             {account ? (
-              <div className="text-sm text-secondary">{i18n._(t`Your Claimable EMOSs`)}</div>
+              <div className="text-sm text-secondary">{i18n._(t`Your Claimable EMO`)}</div>
             ) : (
-              <div className="text-sm text-secondary">{i18n._(t`Your Claimable EMOSs: Connect Wallet`)}</div>
+              <div className="text-sm text-secondary">{i18n._(t`Your Claimable EMO: Connect Wallet`)}</div>
             )}
           </div>
           <div className="flex flex-col pb-4 space-y-2">
             <div className="flex flex-row justify-between text-md">
-              <h2>Your Purchased EMOSs</h2> <span>{purchasedEmos}</span>
+              <h2>Your Purchased EMO</h2> <span>{purchasedEmo}</span>
             </div>
             <div className="flex flex-row justify-between text-lg">
-              <h2>Your UnClaimed EMOSs</h2> <span>{unclaimedEmos}</span>
+              <h2>Your UnClaimed EMO</h2> <span>{unclaimedEmo}</span>
             </div>
           </div>
           <Button
-            color={!claimableEmos ? 'gray' : 'gradient'}
-            disabled={!claimableEmos}
+            color={!claimableEmo ? 'gray' : 'gradient'}
+            disabled={!claimableEmo}
             size="default"
             onClick={handleClaim}
             className="inline-flex items-center justify-center"
@@ -275,7 +273,7 @@ const PrivateSaleBVesting = () => {
             {pendingTx ? (
               <Dots>{i18n._(t`Pending Claim`)}</Dots>
             ) : (
-              <> {claimConfirmed ? i18n._(t`Claimed`) : i18n._(t`Claim EMOS`)}</>
+              <> {claimConfirmed ? i18n._(t`Claimed`) : i18n._(t`Claim EMO`)}</>
             )}
 
             {attempting && (
@@ -315,7 +313,7 @@ const SeedSaleVesting = () => {
     try {
       const tx = await seedSaleContract.claim()
       addTransaction(tx, {
-        summary: `${i18n._(t`Claim`)} EMOS`,
+        summary: `${i18n._(t`Claim`)} EMO`,
       })
     } catch (error) {
       console.error(error)
@@ -341,35 +339,35 @@ const SeedSaleVesting = () => {
   const userClaimable = useClaimable(seedSaleContract)
   const userClaimed = useClaimed(seedSaleContract)
 
-  const hasFetchedEmosAmount = userPurchased ? userPurchased.gte(0) : false
-  const purchasedEmos = hasFetchedEmosAmount ? getBalanceNumber(userPurchased, 18) : 0
-  const claimableEmos = hasFetchedEmosAmount ? getBalanceNumber(userClaimable, 18) : 0
-  const unclaimedEmos = hasFetchedEmosAmount ? purchasedEmos - getBalanceNumber(userClaimed) : 0
+  const hasFetchedEmoAmount = userPurchased ? userPurchased.gte(0) : false
+  const purchasedEmo = hasFetchedEmoAmount ? getBalanceNumber(userPurchased, 18) : 0
+  const claimableEmo = hasFetchedEmoAmount ? getBalanceNumber(userClaimable, 18) : 0
+  const unclaimedEmo = hasFetchedEmoAmount ? purchasedEmo - getBalanceNumber(userClaimed) : 0
 
   return (
     <div className="flex flex-col gap-3 md:max-w-full">
       <div className="relative w-full h-full overflow-hidden rounded bg-dark-900">
         <div className="flex flex-col gap-3 p-4">
-          <div className="text-lg font-bold text-white">{i18n._(t`Claimable EMOS from Seed Sale`)}</div>
+          <div className="text-lg font-bold text-white">{i18n._(t`Claimable EMO from Seed Sale`)}</div>
           <div className="flex flex-col items-baseline pb-4">
-            <div className="font-bold text-white text-[26px]">{claimableEmos}</div>
+            <div className="font-bold text-white text-[26px]">{claimableEmo}</div>
             {account ? (
-              <div className="text-sm text-secondary">{i18n._(t`Your Claimable EMOSs`)}</div>
+              <div className="text-sm text-secondary">{i18n._(t`Your Claimable EMO`)}</div>
             ) : (
-              <div className="text-sm text-secondary">{i18n._(t`Your Claimable EMOSs: Connect Wallet`)}</div>
+              <div className="text-sm text-secondary">{i18n._(t`Your Claimable EMO: Connect Wallet`)}</div>
             )}
           </div>
           <div className="flex flex-col pb-4 space-y-2">
             <div className="flex flex-row justify-between text-md">
-              <h2>Your Purchased EMOSs</h2> <span>{purchasedEmos}</span>
+              <h2>Your Purchased EMO</h2> <span>{purchasedEmo}</span>
             </div>
             <div className="flex flex-row justify-between text-lg">
-              <h2>Your UnClaimed EMOSs</h2> <span>{unclaimedEmos}</span>
+              <h2>Your UnClaimed EMO</h2> <span>{unclaimedEmo}</span>
             </div>
           </div>
           <Button
-            color={!claimableEmos ? 'gray' : 'gradient'}
-            disabled={!claimableEmos}
+            color={!claimableEmo ? 'gray' : 'gradient'}
+            disabled={!claimableEmo}
             size="default"
             onClick={handleClaim}
             className="inline-flex items-center justify-center"
@@ -377,7 +375,7 @@ const SeedSaleVesting = () => {
             {pendingTx ? (
               <Dots>{i18n._(t`Pending Claim`)}</Dots>
             ) : (
-              <> {claimConfirmed ? i18n._(t`Claimed`) : i18n._(t`Claim EMOS`)}</>
+              <> {claimConfirmed ? i18n._(t`Claimed`) : i18n._(t`Claim EMO`)}</>
             )}
 
             {attempting && (
@@ -427,7 +425,7 @@ const PublicSaleVesting = () => {
     try {
       const tx = await pubSaleContract.claim()
       addTransaction(tx, {
-        summary: `${i18n._(t`Claim`)} EMOS`,
+        summary: `${i18n._(t`Claim`)} EMO`,
       })
     } catch (error) {
       console.error(error)
@@ -477,35 +475,35 @@ const PublicSaleVesting = () => {
   const userClaimable = useClaimable(pubSaleContract)
   const userClaimed = useClaimed(pubSaleContract)
 
-  const hasFetchedEmosAmount = userPurchased ? userPurchased.gte(0) : false
-  const purchasedEmos = hasFetchedEmosAmount ? getBalanceNumber(userPurchased, 18) : 0
-  const claimableEmos = hasFetchedEmosAmount ? getBalanceNumber(userClaimable, 18) : 0
-  const unclaimedEmos = hasFetchedEmosAmount ? purchasedEmos - getBalanceNumber(userClaimed) : 0
+  const hasFetchedEmoAmount = userPurchased ? userPurchased.gte(0) : false
+  const purchasedEmo = hasFetchedEmoAmount ? getBalanceNumber(userPurchased, 18) : 0
+  const claimableEmo = hasFetchedEmoAmount ? getBalanceNumber(userClaimable, 18) : 0
+  const unclaimedEmo = hasFetchedEmoAmount ? purchasedEmo - getBalanceNumber(userClaimed) : 0
 
   return (
     <div className="flex flex-col gap-3 md:max-w-full">
       <div className="relative w-full h-full overflow-hidden rounded bg-dark-900">
         <div className="flex flex-col gap-3 p-4">
-          <div className="text-lg font-bold text-white">{i18n._(t`Claimable EMOS from Public Sale`)}</div>
+          <div className="text-lg font-bold text-white">{i18n._(t`Claimable EMO from Public Sale`)}</div>
           <div className="flex flex-col items-baseline pb-4">
-            <div className="font-bold text-white text-[26px]">{claimableEmos}</div>
+            <div className="font-bold text-white text-[26px]">{claimableEmo}</div>
             {account ? (
-              <div className="text-sm text-secondary">{i18n._(t`Your Claimable EMOSs`)}</div>
+              <div className="text-sm text-secondary">{i18n._(t`Your Claimable EMO`)}</div>
             ) : (
-              <div className="text-sm text-secondary">{i18n._(t`Your Claimable EMOSs: Connect Wallet`)}</div>
+              <div className="text-sm text-secondary">{i18n._(t`Your Claimable EMO: Connect Wallet`)}</div>
             )}
           </div>
           <div className="flex flex-col pb-4 space-y-2">
             <div className="flex flex-row justify-between text-md">
-              <h2>Your Purchased EMOSs</h2> <span>{purchasedEmos}</span>
+              <h2>Your Purchased EMO</h2> <span>{purchasedEmo}</span>
             </div>
             <div className="flex flex-row justify-between text-lg">
-              <h2>Your UnClaimed EMOSs</h2> <span>{unclaimedEmos}</span>
+              <h2>Your UnClaimed EMO</h2> <span>{unclaimedEmo}</span>
             </div>
           </div>
           <Button
-            color={!claimableEmos ? 'gray' : 'gradient'}
-            disabled={!claimableEmos}
+            color={!claimableEmo ? 'gray' : 'gradient'}
+            disabled={!claimableEmo}
             size="default"
             onClick={handleClaim}
             className="inline-flex items-center justify-center"
@@ -513,7 +511,7 @@ const PublicSaleVesting = () => {
             {pendingTx ? (
               <Dots>{i18n._(t`Pending Claim`)}</Dots>
             ) : (
-              <> {claimConfirmed ? i18n._(t`Claimed`) : i18n._(t`Claim EMOS`)}</>
+              <> {claimConfirmed ? i18n._(t`Claimed`) : i18n._(t`Claim EMO`)}</>
             )}
 
             {attempting && (

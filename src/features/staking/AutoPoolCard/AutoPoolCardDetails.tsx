@@ -1,7 +1,7 @@
 import { ApprovalState, useApproveCallback } from '../../../hooks/useApproveCallback'
 import { ZERO, NATIVE } from '@evmoswap/core-sdk'
 import React, { useState, useRef } from 'react'
-import { EvmoSwap, XEMOS } from '../../../config/tokens'
+import { EvmoSwap, XEMO } from '../../../config/tokens'
 import BigNumber from 'bignumber.js'
 import Button from '../../../components/Button'
 import Dots from '../../../components/Dots'
@@ -21,10 +21,10 @@ import { useTransactionAdder } from '../../../state/transactions/hooks'
 import { getDecimalAmount, getBalanceNumber, getBalanceAmount } from 'functions/formatBalance'
 import {
   getAPY,
-  convertSharesToEmos,
-  convertEmosToShares,
+  convertSharesToEmo,
+  convertEmoToShares,
   useWithdrawalFeeTimer,
-  getEMOSPrice,
+  getEMOPrice,
 } from 'features/staking/useStaking'
 import { EMOSVAULT_ADDRESS } from 'constants/addresses'
 import { BIG_ZERO } from 'app/functions/bigNumber'
@@ -49,19 +49,18 @@ const buttonStyleConnectWallet = `${buttonStyle} text-high-emphesis bg-cyan-blue
 export default function AutoPoolCardDetails() {
   const { i18n } = useLingui()
   const { account, chainId } = useActiveWeb3React()
-  const emosPrice = getEMOSPrice()
-  const emosBalance = useTokenBalance(account ?? undefined, EvmoSwap[chainId])
-  // const XEMOSBalance = useTokenBalance(account ?? undefined, XEMOS[chainId])
+  const emoPrice = getEMOPrice()
+  const emoBalance = useTokenBalance(account ?? undefined, EvmoSwap[chainId])
   const [xBalanceAuto, setXBalanceAuto] = useState(0)
   const walletConnected = !!account
   const toggleWalletModal = useWalletModalToggle()
   const addTransaction = useTransactionAdder()
-  const emosvaultContract = useEmosVaultContract()
+  const emovaultContract = useEmosVaultContract()
 
   const [inputStake, setInputStake] = useState<string>('')
   const [inputUnStake, setInputUnStake] = useState<string>('')
 
-  const parsedStakeAmount = tryParseAmount(inputStake, emosBalance?.currency)
+  const parsedStakeAmount = tryParseAmount(inputStake, emoBalance?.currency)
 
   const [approvalStateAuto, approveAuto] = useApproveCallback(parsedStakeAmount, EMOSVAULT_ADDRESS[chainId])
 
@@ -73,27 +72,27 @@ export default function AutoPoolCardDetails() {
   const lastDepositedTime = useRef(0)
   const userSharesValue = useRef(BIG_ZERO)
 
-  const getEmosVault = async () => {
-    const totalstaked = await emosvaultContract.balanceOf()
+  const getEmoVault = async () => {
+    const totalstaked = await emovaultContract.balanceOf()
     if (!account) return
-    const userInfo = await emosvaultContract.userInfo(account)
+    const userInfo = await emovaultContract.userInfo(account)
     const userShares = userInfo.shares
-    const pricePerFullShare = await emosvaultContract.getPricePerFullShare()
+    const pricePerFullShare = await emovaultContract.getPricePerFullShare()
     lastDepositedTime.current = parseInt(userInfo.lastDepositedTime, 10)
     userSharesValue.current = new BigNumber(userShares._hex)
     fullShare.current = new BigNumber(pricePerFullShare._hex)
-    const { emosAsBigNumber, emosAsNumberBalance } = convertSharesToEmos(
+    const { emoAsBigNumber, emoAsNumberBalance } = convertSharesToEmo(
       new BigNumber(userShares._hex),
       new BigNumber(pricePerFullShare._hex)
     )
-    setXBalanceAuto(emosAsNumberBalance)
-    const emosAtLastUserAction = new BigNumber(userInfo.emosAtLastUserAction._hex)
-    const autoEmosProfit = emosAsBigNumber.minus(emosAtLastUserAction)
-    const recentProfit = autoEmosProfit.gte(0) ? getBalanceNumber(autoEmosProfit, 18) : 0
+    setXBalanceAuto(emoAsNumberBalance)
+    const emoAtLastUserAction = new BigNumber(userInfo.emoAtLastUserAction._hex)
+    const autoEmoProfit = emoAsBigNumber.minus(emoAtLastUserAction)
+    const recentProfit = autoEmoProfit.gte(0) ? getBalanceNumber(autoEmoProfit, 18) : 0
     const totalStakedValue = getBalanceAmount(totalstaked._hex, 18).toNumber()
     results.current = [totalStakedValue, recentProfit]
   }
-  getEmosVault()
+  getEmoVault()
 
   const { secondsRemaining } = useWithdrawalFeeTimer(lastDepositedTime.current, userSharesValue.current, 259200)
   const withdrawalFeeTimer = parseInt(secondsRemaining)
@@ -108,7 +107,7 @@ export default function AutoPoolCardDetails() {
     }
   }
 
-  const stakeInputError = (emosBalance && emosBalance.equalTo(ZERO)) || parsedStakeAmount?.greaterThan(emosBalance)
+  const stakeInputError = (emoPrice && emoPrice.equalTo(ZERO)) || parsedStakeAmount?.greaterThan(emoPrice)
   const unstakeInputError = (xBalanceAuto && xBalanceAuto === 0) || Number(inputUnStake) > xBalanceAuto
 
   const [pendingTxAuto, setPendingTxAuto] = useState(false)
@@ -125,12 +124,12 @@ export default function AutoPoolCardDetails() {
         try {
           const convertedStakeAmount = getDecimalAmount(new BigNumber(inputStake), 18)
           const args = [convertedStakeAmount.toFixed()]
-          const gasLimit = await emosvaultContract.estimateGas.deposit(...args)
-          const tx = await emosvaultContract.deposit(...args, {
+          const gasLimit = await emovaultContract.estimateGas.deposit(...args)
+          const tx = await emovaultContract.deposit(...args, {
             gasLimit: gasLimit.mul(120).div(100),
           })
           addTransaction(tx, {
-            summary: `${i18n._(t`Stake`)} EMOS`,
+            summary: `${i18n._(t`Stake`)} EMO`,
           })
         } catch (error) {
           setPendingTxAuto(false)
@@ -145,20 +144,20 @@ export default function AutoPoolCardDetails() {
     try {
       if (isWithdrawAll === 0) {
         const convertedStakeAmount = getDecimalAmount(new BigNumber(inputUnStake), 18)
-        const shareStakeToWithdraw = convertEmosToShares(convertedStakeAmount, fullShare.current)
+        const shareStakeToWithdraw = convertEmoToShares(convertedStakeAmount, fullShare.current)
         const args = [shareStakeToWithdraw.sharesAsBigNumber.toFixed()]
-        const gasLimit = await emosvaultContract.estimateGas.withdraw(...args)
-        const tx = await emosvaultContract.withdraw(...args, {
+        const gasLimit = await emovaultContract.estimateGas.withdraw(...args)
+        const tx = await emovaultContract.withdraw(...args, {
           gasLimit: gasLimit.mul(120).div(100),
         })
         addTransaction(tx, {
-          summary: `${i18n._(t`Unstake`)} EMOS`,
+          summary: `${i18n._(t`Unstake`)} EMO`,
         })
       } else {
-        const gasLimit = await emosvaultContract.estimateGas.withdrawAll()
-        const tx = await emosvaultContract.withdrawAll({ gasLimit: gasLimit.mul(120).div(100) })
+        const gasLimit = await emovaultContract.estimateGas.withdrawAll()
+        const tx = await emovaultContract.withdrawAll({ gasLimit: gasLimit.mul(120).div(100) })
         addTransaction(tx, {
-          summary: `${i18n._(t`Unstake`)} EMOS`,
+          summary: `${i18n._(t`Unstake`)} EMO`,
         })
       }
     } catch (error) {
@@ -175,10 +174,10 @@ export default function AutoPoolCardDetails() {
         {account && (
           <div className="flex flex-row justify-between">
             <div className="pr-4 mb-2 text-left cursor-pointer text-secondary">
-              {i18n._(t`Balance`)}: {formatNumberScale(emosBalance?.toSignificant(6, undefined, 2) ?? 0, false, 4)}
-              {emosPrice && emosBalance
+              {i18n._(t`Balance`)}: {formatNumberScale(emoBalance?.toSignificant(6, undefined, 2) ?? 0, false, 4)}
+              {emoPrice && emoBalance
                 ? ` (` +
-                  formatNumberScale(Number(emosPrice.toFixed(18)) * Number(emosBalance?.toFixed(18) ?? 0), true) +
+                  formatNumberScale(Number(emoBalance.toFixed(18)) * Number(emoBalance?.toFixed(18) ?? 0), true) +
                   `)`
                 : ``}
             </div>
@@ -197,8 +196,8 @@ export default function AutoPoolCardDetails() {
               color="blue"
               size="xs"
               onClick={() => {
-                if (!emosBalance?.equalTo(ZERO)) {
-                  setInputStake(emosBalance?.toFixed(18))
+                if (!emoBalance?.equalTo(ZERO)) {
+                  setInputStake(emoBalance?.toFixed(18))
                 }
               }}
               className="absolute border-0 right-4 focus:ring focus:ring-light-purple"
@@ -268,11 +267,11 @@ export default function AutoPoolCardDetails() {
       </div>
       <div className="col-span-2 md:col-span-1">
         <div className="flex justify-between">
-          <div className="mb-2 text-xs md:text-base text-secondary">EMOS Earned</div>
+          <div className="mb-2 text-xs md:text-base text-secondary">EMO Earned</div>
         </div>
         <div className="w-full p-4 text-base rounded-lg md:gap-4 bg-dark-700">
           <div className="flex justify-between">
-            <div className="mb-2 text-xs md:text-base">Recent EMOS Profit</div>
+            <div className="mb-2 text-xs md:text-base">Recent EMO Profit</div>
             <div>{results.current[1]}</div>
           </div>
           <div className="flex justify-between">

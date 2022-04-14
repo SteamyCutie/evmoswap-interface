@@ -34,34 +34,24 @@ export function getAPY() {
   return { manualAPY: apr, autoAPY: apy }
 }
 
-export function getEMOSPrice() {
-  const emosPriceInBigNumber = useEmoUsdcPrice()
-  const emosPrice = formatBalance(emosPriceInBigNumber ? emosPriceInBigNumber : 0)
-  return Number(emosPrice)
+export function getEMOPrice() {
+  const emoPriceInBigNumber = useEmoUsdcPrice()
+  const emoPrice = formatBalance(emoPriceInBigNumber ? emoPriceInBigNumber : 0)
+  return Number(emoPrice)
 }
 
-export function convertSharesToEmos(
-  shares: BigNumber,
-  emosPerFullShare: BigNumber,
-  decimals = 18,
-  decimalsToRound = 3
-) {
-  const sharePriceNumber = getBalanceNumber(emosPerFullShare, decimals)
-  const amountInEmos = new BigNumber(shares.multipliedBy(sharePriceNumber))
-  const emosAsNumberBalance = getBalanceNumber(amountInEmos, decimals)
-  const emosAsBigNumber = getDecimalAmount(new BigNumber(emosAsNumberBalance), decimals)
-  const emosAsDisplayBalance = getFullDisplayBalance(amountInEmos, decimals, decimalsToRound)
-  return { emosAsNumberBalance, emosAsBigNumber, emosAsDisplayBalance }
+export function convertSharesToEmo(shares: BigNumber, emoPerFullShare: BigNumber, decimals = 18, decimalsToRound = 3) {
+  const sharePriceNumber = getBalanceNumber(emoPerFullShare, decimals)
+  const amountInEmo = new BigNumber(shares.multipliedBy(sharePriceNumber))
+  const emoAsNumberBalance = getBalanceNumber(amountInEmo, decimals)
+  const emoAsBigNumber = getDecimalAmount(new BigNumber(emoAsNumberBalance), decimals)
+  const emoAsDisplayBalance = getFullDisplayBalance(amountInEmo, decimals, decimalsToRound)
+  return { emoAsNumberBalance, emoAsBigNumber, emoAsDisplayBalance }
 }
 
-export const convertEmosToShares = (
-  emos: BigNumber,
-  emosPerFullShare: BigNumber,
-  decimals = 18,
-  decimalsToRound = 3
-) => {
-  const sharePriceNumber = getBalanceNumber(emosPerFullShare, decimals)
-  const amountInShares = new BigNumber(emos.dividedBy(sharePriceNumber))
+export const convertEmoToShares = (emo: BigNumber, emoPerFullShare: BigNumber, decimals = 18, decimalsToRound = 3) => {
+  const sharePriceNumber = getBalanceNumber(emoPerFullShare, decimals)
+  const amountInShares = new BigNumber(emo.dividedBy(sharePriceNumber))
   const sharesAsNumberBalance = getBalanceNumber(amountInShares, decimals)
   const sharesAsBigNumber = getDecimalAmount(new BigNumber(sharesAsNumberBalance), decimals)
   const sharesAsDisplayBalance = getFullDisplayBalance(amountInShares, decimals, decimalsToRound)

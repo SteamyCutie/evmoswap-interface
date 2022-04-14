@@ -246,7 +246,7 @@ export function useERC20Permit(
 
 const REMOVE_V2_LIQUIDITY_PERMIT_INFO: PermitInfo = {
   version: '1',
-  name: 'Emos LPs',
+  name: 'Emo LPs',
   type: PermitType.AMOUNT,
 }
 

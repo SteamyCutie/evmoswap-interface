@@ -74,10 +74,10 @@ export default function YieldSimulator(): JSX.Element {
   const activeTabStyle = `${tabStyle} text-high-emphesis font-bold bg-blue`
   const inactiveTabStyle = `${tabStyle} bg-dark-700 text-secondary`
 
-  const { lockAmount, lockEnd, veEmosSupply } = useLockedBalance()
+  const { lockAmount, lockEnd, veEmoSupply } = useLockedBalance()
   const remainingTime =
     Number(lockEnd) > Date.now() / 1000 ? Math.floor((Number(lockEnd) - Date.now() / 1000) / 86400 / 7) : 0
-  const totalVeEmos = Number(veEmosSupply) / 1e18
+  const totalVeEmo = Number(veEmoSupply) / 1e18
 
   const [inputLocked, setInputLocked] = useState<string>('')
   const [lockedAmount, setLockedAmount] = useState(Number(lockAmount) / 1e18)
@@ -106,11 +106,11 @@ export default function YieldSimulator(): JSX.Element {
     activeTab > 0 && setInputDuration(activeTab.toString())
   }, [activeTab])
 
-  const calcVeEmos = (locked: number) => {
+  const calcVeEmo = (locked: number) => {
     return locked ? (locked * timeDuration) / 208 : 0
   }
 
-  const lockedveEmos = calcVeEmos(Number(lockedAmount))
+  const lockedveEmo = calcVeEmo(Number(lockedAmount))
   const [boostFactor, setBoostFactor] = useState(1.0)
   const handleBoost = (value) => {
     setBoostFactor(value)
@@ -141,7 +141,7 @@ export default function YieldSimulator(): JSX.Element {
             >
               <div className="space-y-1">
                 {items.slice(0, numDisplayed).map((farm, index) => (
-                  <SimulatorItem key={index} farm={farm} veEmos={lockedveEmos} handleBoost={handleBoost} />
+                  <SimulatorItem key={index} farm={farm} veEmo={lockedveEmo} handleBoost={handleBoost} />
                 ))}
               </div>
             </InfiniteScroll>
@@ -331,8 +331,8 @@ export default function YieldSimulator(): JSX.Element {
                     <CurrencyLogo currency={SUSHI[chainId]} size={'36px'} />
                     <div className="text-2xl">
                       {' '}
-                      {lockedveEmos / (totalVeEmos + lockedveEmos) <= 0.999999
-                        ? `${((lockedveEmos * 100) / (totalVeEmos + lockedveEmos)).toFixed(4)} %`
+                      {lockedveEmo / (totalVeEmo + lockedveEmo) <= 0.999999
+                        ? `${((lockedveEmo * 100) / (totalVeEmo + lockedveEmo)).toFixed(4)} %`
                         : account
                         ? `100.0 %`
                         : `0.0 %`}

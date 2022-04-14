@@ -24,9 +24,9 @@ export default function TokenStatsModal({ token, price }: { token: any; price: a
 
   let tokenInfo = useTokenInfo(useEmosContract())
 
-  const emosPrice = formatNumberScale(price, true)
+  const emoPrice = formatNumberScale(price, true)
 
-  const modalOpen = useModalOpen(ApplicationModal.EMOS)
+  const modalOpen = useModalOpen(ApplicationModal.EMO)
 
   const toggleWalletModal = useTokenStatsModalToggle()
 
@@ -77,7 +77,7 @@ export default function TokenStatsModal({ token, price }: { token: any; price: a
               </div>
             </div>
             <div className="flex items-center text-primary text-bold">
-              <div className="ml-2 text-2xl text-primary">{`${emosPrice}`}</div>
+              <div className="ml-2 text-2xl text-primary">{`${emoPrice}`}</div>
             </div>
           </div>
         </div>
@@ -113,7 +113,7 @@ export default function TokenStatsModal({ token, price }: { token: any; price: a
           </div>
         </div>
 
-        {/* Add EMOS to metamask */}
+        {/* Add EMO to metamask */}
         {chainId && [ChainId.EVMOS].includes(chainId) && library && library.provider.isMetaMask && (
           <Button
             color="gradient"
@@ -123,7 +123,7 @@ export default function TokenStatsModal({ token, price }: { token: any; price: a
                 type: 'ERC20',
                 options: {
                   address: SUSHI_ADDRESS[chainId],
-                  symbol: 'EMOS',
+                  symbol: 'EMO',
                   decimals: 18,
                   image:
                     'https://raw.githubusercontent.com/evmoswap/default-token-list/main/assets/tokens/cronos/0xadbd1231fb360047525BEdF962581F3eee7b49fe/logo.png',
@@ -137,7 +137,7 @@ export default function TokenStatsModal({ token, price }: { token: any; price: a
                   })
                   .then((success) => {
                     if (success) {
-                      console.log('Successfully added EMOS to MetaMask')
+                      console.log('Successfully added EMO to MetaMask')
                     } else {
                       throw new Error('Something went wrong.')
                     }

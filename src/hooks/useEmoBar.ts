@@ -4,7 +4,7 @@ import { useCallback } from 'react'
 import { useMasterChefContract } from './useContract'
 import { useTransactionAdder } from '../state/transactions/hooks'
 
-const useEmosBar = () => {
+const useEmoBar = () => {
   const addTransaction = useTransactionAdder()
   const masterchefContract = useMasterChefContract()
 
@@ -13,7 +13,7 @@ const useEmosBar = () => {
       if (amount?.quotient) {
         try {
           const tx = await masterchefContract?.enterStaking(amount?.quotient.toString())
-          return addTransaction(tx, { summary: 'Enter EmosBar' })
+          return addTransaction(tx, { summary: 'Enter EmoBar' })
         } catch (e) {
           return e
         }
@@ -27,7 +27,7 @@ const useEmosBar = () => {
       if (amount?.quotient) {
         try {
           const tx = await masterchefContract?.leaveStaking(amount?.quotient.toString())
-          return addTransaction(tx, { summary: 'Leave EmosBar' })
+          return addTransaction(tx, { summary: 'Leave EmoBar' })
         } catch (e) {
           return e
         }
@@ -39,4 +39,4 @@ const useEmosBar = () => {
   return { enterStaking, leaveStaking }
 }
 
-export default useEmosBar
+export default useEmoBar

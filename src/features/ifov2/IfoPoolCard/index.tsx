@@ -39,7 +39,7 @@ const cardConfig = (
   switch (poolId) {
     case PoolIds.poolBasic:
       return {
-        title: 'EMOS OFFERING',
+        title: 'EMO OFFERING',
         variant: 'blue',
         tooltip: 'Every person can only commit a limited amount, but may expect a higher return per token committed.',
       }
@@ -112,25 +112,25 @@ const IfoPoolCard: React.FC<IfoCardProps> = ({ poolId, ifo, publicIfoData, walle
   const { limitPerUserInLP } = publicPoolCharacteristics
   const { amountTokenCommittedInLP } = userPoolCharacteristics
 
-  const veEmosLeft = walletIfoData.ifoVeEmos?.veEmosLeft
+  const veEmoLeft = walletIfoData.ifoVeEmo?.veEmoLeft
 
   const maximumTokenEntry = useMemo(() => {
-    if (!veEmosLeft) {
+    if (!veEmoLeft) {
       return BIG_ZERO
       // return limitPerUserInLP.minus(amountTokenCommittedInLP).multipliedBy(10 ** (18 - raiseToken.decimals))
     }
 
     if (limitPerUserInLP.isGreaterThan(0)) {
       // console.log(Number(limitPerUserInLP.minus(amountTokenCommittedInLP).multipliedBy(10 ** (18 - raiseToken.decimals))))
-      // console.log(Number(veEmosLeft.multipliedBy(10)))
+      // console.log(Number(veEmoLeft.multipliedBy(10)))
 
-      //compare veemos left
+      //compare veemo left
       if (amountTokenCommittedInLP.isGreaterThan(0)) {
-        return veEmosLeft
+        return veEmoLeft
           .multipliedBy(10)
           .isGreaterThan(amountTokenCommittedInLP.multipliedBy(10 ** (18 - raiseToken.decimals)))
           ? limitPerUserInLP.minus(amountTokenCommittedInLP).multipliedBy(10 ** (18 - raiseToken.decimals))
-          : veEmosLeft.minus(amountTokenCommittedInLP).multipliedBy(10 ** (18 - raiseToken.decimals))
+          : veEmoLeft.minus(amountTokenCommittedInLP).multipliedBy(10 ** (18 - raiseToken.decimals))
       }
 
       if (limitPerUserInLP.isGreaterThan(0)) {
@@ -139,14 +139,14 @@ const IfoPoolCard: React.FC<IfoCardProps> = ({ poolId, ifo, publicIfoData, walle
         return limitPerUserInLP
           .minus(amountTokenCommittedInLP)
           .multipliedBy(10 ** (18 - raiseToken.decimals)) //$983.78
-          .isLessThanOrEqualTo(veEmosLeft.multipliedBy(10)) //$16.22
+          .isLessThanOrEqualTo(veEmoLeft.multipliedBy(10)) //$16.22
           ? limitPerUserInLP.minus(amountTokenCommittedInLP).multipliedBy(10 ** (18 - raiseToken.decimals)) //$983.78
-          : veEmosLeft.multipliedBy(10) // x $10 $16.22
+          : veEmoLeft.multipliedBy(10) // x $10 $16.22
       }
     }
 
-    return veEmosLeft.multipliedBy(10)
-  }, [veEmosLeft, limitPerUserInLP, amountTokenCommittedInLP])
+    return veEmoLeft.multipliedBy(10)
+  }, [veEmoLeft, limitPerUserInLP, amountTokenCommittedInLP])
 
   // include user balance for input
   // const maximumTokenCommittable = useMemo(() => {
@@ -233,7 +233,7 @@ const IfoPoolCard: React.FC<IfoCardProps> = ({ poolId, ifo, publicIfoData, walle
       const args = [!allowClaim]
       const tx = await ifoContract.setAllowClaim(...args)
       addTransaction(tx, {
-        summary: `${i18n._(t`Set`)} EMOS`,
+        summary: `${i18n._(t`Set`)} EMO`,
       })
       setPendingAllowTx(false)
     } catch (error) {
@@ -291,7 +291,7 @@ const IfoPoolCard: React.FC<IfoCardProps> = ({ poolId, ifo, publicIfoData, walle
             <div className="text-sm text-blue">
               {limitPerUserInLP.isGreaterThan(0) &&
                 `maxCommit: ${(<br />)}
-              ${(Number(maximumTokenEntry) / 1e18).toFixed(6)} EMOS`}
+              ${(Number(maximumTokenEntry) / 1e18).toFixed(6)} EMO`}
             </div>
           )}
         </div>

@@ -13,7 +13,7 @@ import { ArrowRightIcon, PlusIcon } from '@heroicons/react/outline'
 import { aprToApy } from '../staking/useStaking'
 import { useLockedBalance } from '../boost/hook'
 
-const SimulatorItemDetails = ({ farm, veEmos, handleBoost }) => {
+const SimulatorItemDetails = ({ farm, veEmo, handleBoost }) => {
   const { i18n } = useLingui()
 
   const { chainId } = useActiveWeb3React()
@@ -28,13 +28,13 @@ const SimulatorItemDetails = ({ farm, veEmos, handleBoost }) => {
   )
 
   const { stakedAmount } = useUserInfo(farm, liquidityToken)
-  const { veEmosSupply } = useLockedBalance()
-  const totalVeEmos = Number(veEmosSupply) / 1e18
+  const { veEmoSupply } = useLockedBalance()
+  const totalVeEmo = Number(veEmoSupply) / 1e18
   // Caculate BoostFactor
   const userBalanceInFarm = (Number(stakedAmount?.toSignificant(6, undefined, 4)) + Number(depositValue)) * farm.lpPrice
   const totalDepositedInFarm = farm.tvl * farm.lpPrice
   const derivedBalance = userBalanceInFarm * 0.4
-  const adjustedBalance = (totalDepositedInFarm * veEmos) / totalVeEmos
+  const adjustedBalance = (totalDepositedInFarm * veEmo) / totalVeEmo
   const BoostFactor =
     derivedBalance + adjustedBalance < userBalanceInFarm
       ? (derivedBalance + adjustedBalance) / derivedBalance
@@ -91,7 +91,7 @@ const SimulatorItemDetails = ({ farm, veEmos, handleBoost }) => {
               <div className="text-lg font-bold md:text-xl">{(share * 100).toFixed(2)}%</div>
             </div>
             <div className="text-white">
-              <div className="text-lg">{i18n._(t`EMOS earning`)}</div>
+              <div className="text-lg">{i18n._(t`EMO earning`)}</div>
               <div className="text-lg font-bold md:text-xl">{earning ? earning.toFixed(2) : 0}/day</div>
             </div>
           </div>
