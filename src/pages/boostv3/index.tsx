@@ -93,7 +93,7 @@ export default function Boostv3 () {
                 <div className="flex flex-col md:flex-row w-full gap-8">
 
                     {/** col 1 */ }
-                    <div className="flex flex-col w-2/3 space-y-8">
+                    <div className="flex flex-col w-full md:w-3/5 space-y-8">
 
                         <div className=" grid grid-cols-1 lg:grid-cols-3 gap-4 xl:gap-8 p-4 xl:p-6 rounded bg-dark-900  bg-opacity-60">
 
@@ -176,7 +176,7 @@ export default function Boostv3 () {
                     </div>
 
                     {/** col 2 */ }
-                    <div className="flex flex-col w-1.2/3 space-y-8">
+                    <div className="flex flex-col w-full md:w-2/5 space-y-8">
 
                         {/** Claim reward */ }
                         <div className="p-4 space-y-4 rounded bg-dark-900 bg-opacity-80">
@@ -282,7 +282,7 @@ export default function Boostv3 () {
                             {/** Lock tab content */
                                 activeTab === 1 &&
                                 <div className="mt-8">
-                                    <ul className="text-yellow text-sm text-high-emphesis list-[circle] ml-4">
+                                    <ul className="text-yellow text-sm text-high-emphesis list-[circle] ml-4 flex flex-col space-y-3">
                                         <li>
                                             { i18n._( t`Lock ${token.symbol} and earn platform fees in USDC and penalty fees in unlocked PBR.` ) }
                                         </li>
@@ -291,7 +291,7 @@ export default function Boostv3 () {
                                         </li>
                                     </ul>
 
-                                    <RowBetween className="mt-6">
+                                    <RowBetween className="mt-8">
                                         <div>{ i18n._( t`Balance` ) }: { token.balance } { token.symbol }</div>
                                         <div>{ i18n._( t`APR` ) }: 0% { token.symbol } 23.90% { token.symbol }</div>
                                     </RowBetween>
