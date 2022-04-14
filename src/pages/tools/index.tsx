@@ -60,6 +60,9 @@ export default function Tools() {
 
         <BscNetworkModal />
       </div> */}
+      <div className='flex items-center justify-between mt-12 px-10 py-4 my-4 rounded-md bg-dark-850'>
+        <a href="https://evmos.dev/guides/keys-wallets/metamask.html" className="text-2xl" target="_blank" rel="noreferrer"> 💰 How to set up network on Metamask?</a>
+      </div>
       <div className='flex items-center justify-between mt-12 px-10 py-4 my-4 rounded-md bg-dark-850'> 
         <div className='w-3/5'>
           <div className='text-2xl'>tEVMOS Faucet</div>
