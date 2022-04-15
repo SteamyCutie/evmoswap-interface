@@ -126,7 +126,7 @@ export default function TokenStatsModal({ token, price }: { token: any; price: a
                   symbol: 'EMO',
                   decimals: 18,
                   image:
-                    'https://raw.githubusercontent.com/evmoswap/default-token-list/main/assets/tokens/cronos/0xadbd1231fb360047525BEdF962581F3eee7b49fe/logo.png',
+                    'https://raw.githubusercontent.com/evmoswap/default-token-list/main/assets/tokens/evmos-testnet/0x7cBa32163a8f4c56C846f5C3685E3b7a450c9002/logo.png',
                 },
               }
               if (library && library.provider.isMetaMask && library.provider.request) {

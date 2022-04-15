@@ -198,8 +198,8 @@ export const IfoFinishedCard = ({
             <div className="space-y-2">
               <div className="text-xl font-bold">Introduction</div>
               <div className="text-[14px] text-high-emphesis">
-                EvmoSwap is the first decentralized exchange platform on the Cronos Chain to offer the lowest
-                transaction fees (0.25%). You can swap CRC-20 tokens easily on the Cronos Chain network that guarantees
+                EvmoSwap is the first decentralized exchange platform on the Evmos Chain to offer the lowest
+                transaction fees (0.25%). You can swap CRC-20 tokens easily on the Evmos Chain network that guarantees
                 superior speed and much lower network transaction costs.
               </div>
               <div className="flex items-center gap-4 pb-4">

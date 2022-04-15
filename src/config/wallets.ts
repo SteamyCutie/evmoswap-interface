@@ -32,7 +32,7 @@ export const bridgeInjected = new InjectedConnector({
   supportedChainIds: [
     1, // mainnet
     56, // binance smart chain
-    25, // cronos
+    // 25, // cronos
   ],
 })
 

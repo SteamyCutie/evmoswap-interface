@@ -54,7 +54,7 @@ const ifos: Ifo[] = [
     discordUrl: 'https://discord.gg/ajesZGddzV',
     articleUrl: 'https://arcanenft.financial/',
     description:
-      'ARCANE is the premier gaming NFT Token on EVMOS that will allow you to control an infinite supply of Protonium. Gather Protonium and become the most powerful Arcane of all time. ARCANE has one purpose: Unite the cybertornian army to protect the cronos ecosystem.',
+      'ARCANE is the premier gaming NFT Token on EVMOS that will allow you to control an infinite supply of Protonium. Gather Protonium and become the most powerful Arcane of all time. ARCANE has one purpose: Unite the cybertornian army to protect the evmos ecosystem.',
     tokenOfferingPrice: 0.15,
     version: 2,
   },
