@@ -218,7 +218,7 @@ export default function WalletModal({
           />
           <div>
             {error instanceof UnsupportedChainIdError ? (
-              <h5>{i18n._(t`Please connect to the appropriate Cronos network.`)}</h5>
+              <h5>{i18n._(t`Please connect to the appropriate Evmos network.`)}</h5>
             ) : (
               i18n._(t`Error connecting. Try refreshing the page.`)
             )}
