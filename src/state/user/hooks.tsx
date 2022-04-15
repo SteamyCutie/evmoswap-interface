@@ -315,10 +315,10 @@ export function useGasPrice(): string {
 }
 
 export enum GAS_PRICE {
-  default = '5000',
-  fast = '6000',
-  instant = '7000',
-  testnet = '5000',
+  default = '2',
+  fast = '3',
+  instant = '5',
+  testnet = '2',
 }
 
 export const GAS_PRICE_GWEI = {
