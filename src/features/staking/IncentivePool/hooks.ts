@@ -113,8 +113,8 @@ export function usePoolsInfo(pool) {
 }
 
 // Calc pool APR
-export const CRONOS_BLOCK_TIME = 6 // FIXME block time
-export const BLOCKS_PER_YEAR = (60 / CRONOS_BLOCK_TIME) * 60 * 24 * 365 // 10512000
+export const EVMOS_BLOCK_TIME = 6 // FIXME block time
+export const BLOCKS_PER_YEAR = (60 / EVMOS_BLOCK_TIME) * 60 * 24 * 365 // 10512000
 
 export const getPoolApr = (
   stakingTokenPrice: number,

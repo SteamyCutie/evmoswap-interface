@@ -184,8 +184,8 @@ export function useMultichainCurrencyBalance(
   account?: string,
   currency?: Currency
 ): CurrencyAmount<Currency> | undefined {
-  const { chainId: cronosChainId } = useActiveWeb3React()
-  const cronosBalance = useCurrencyBalance(chainId == cronosChainId && account, chainId == cronosChainId && currency)
+  const { chainId: evmosChainId } = useActiveWeb3React()
+  const evmosBalance = useCurrencyBalance(chainId == evmosChainId && account, chainId == evmosChainId && currency)
   const [value, setValue] = useState(null)
 
   const getBalance = useCallback(() => {
@@ -211,14 +211,14 @@ export function useMultichainCurrencyBalance(
   }, [account, chainId, currency])
 
   useEffect(() => {
-    if (account && chainId && currency && chainId != cronosChainId) {
+    if (account && chainId && currency && chainId != evmosChainId) {
       getBalance()
     } else {
       setValue(null)
     }
-  }, [account, chainId, currency, getBalance, cronosChainId])
+  }, [account, chainId, currency, getBalance, evmosChainId])
 
   return useMemo(() => {
-    return chainId == cronosChainId ? cronosBalance : value
-  }, [chainId, cronosBalance, cronosChainId, value])
+    return chainId == evmosChainId ? evmosBalance : value
+  }, [chainId, evmosBalance, evmosChainId, value])
 }
