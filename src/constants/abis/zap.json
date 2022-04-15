@@ -23,7 +23,7 @@
       },
       {
         "internalType": "address",
-        "name": "_crona",
+        "name": "_emo",
         "type": "address"
       },
       {
@@ -56,7 +56,7 @@
   },
   {
     "inputs": [],
-    "name": "CRONA",
+    "name": "EMO",
     "outputs": [
       {
         "internalType": "address",
