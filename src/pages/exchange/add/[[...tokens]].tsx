@@ -288,7 +288,7 @@ export default function Add() {
           router.push(`/add/${newCurrencyIdB}`)
         }
       } else {
-        router.push(`/add/${currencyIdA ? currencyIdA : 'CRO'}/${newCurrencyIdB}`)
+        router.push(`/add/${currencyIdA ? currencyIdA : 'EVMOS'}/${newCurrencyIdB}`)
       }
     },
     [currencyIdA, router, currencyIdB]

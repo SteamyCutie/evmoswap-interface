@@ -61,7 +61,7 @@ export function useZapActionHandlers(): {
       dispatch(
         selectCurrency({
           field,
-          currencyId: currency.isToken ? currency.address : currency.isNative ? 'CRO' : '',
+          currencyId: currency.isToken ? currency.address : currency.isNative ? 'EVMOS' : '',
         })
       )
     },
@@ -227,7 +227,7 @@ function parseCurrencyFromURLParameter(urlParam: any): string {
   if (typeof urlParam === 'string') {
     const valid = isAddress(urlParam)
     if (valid) return valid
-    if (urlParam.toUpperCase() === 'CRO') return 'CRO'
+    if (urlParam.toUpperCase() === 'EVMOS') return 'EVMOS'
   }
   return ''
 }
@@ -252,8 +252,8 @@ function validatedRecipient(recipient: any): string | null {
 }
 export function queryParametersToZapState(parsedQs: ParsedQs, chainId: ChainId = ChainId.ETHEREUM): ZapState {
   let inputCurrency = parseCurrencyFromURLParameter(parsedQs.inputCurrency)
-  // const eth = chainId === ChainId.CELO ? WNATIVE_ADDRESS[chainId] : 'CRO'
-  const eth = 'CRO'
+  // const eth = chainId === ChainId.CELO ? WNATIVE_ADDRESS[chainId] : 'EVMOS'
+  const eth = 'EVMOS'
   const sushi = SUSHI_ADDRESS[chainId]
   if (inputCurrency === '') {
     inputCurrency = eth

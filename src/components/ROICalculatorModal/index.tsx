@@ -318,8 +318,8 @@ const ROICalculatorModal: React.FC<RoiCalculatorModalProps> = ({
               {isfarm ? (
                 <ExternalLink
                   startIcon={<LinkIcon size={16} className="text-cyan-blue" />}
-                  href={`https://app.evmoswap.org/add/${token0?.symbol == 'CRO' ? 'CRO' : token0?.id}/${
-                    token1?.symbol == 'CRO' ? 'CRO' : token1?.id
+                  href={`https://app.evmoswap.org/add/${token0?.symbol == 'EVMOS' ? 'EVMOS' : token0?.id}/${
+                    token1?.symbol == 'EVMOS' ? 'EVMOS' : token1?.id
                   }`}
                 >
                   <Typography variant="sm" className="text-cyan-blue">

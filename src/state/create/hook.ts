@@ -25,7 +25,7 @@ export function useCreateActionHandlers(): {
       dispatch(
         selectCurrency({
           field,
-          currencyId: currency.isToken ? currency.address : currency.isNative ? 'CRO' : '',
+          currencyId: currency.isToken ? currency.address : currency.isNative ? 'EVMOS' : '',
         })
       )
     },
