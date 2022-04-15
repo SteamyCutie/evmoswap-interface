@@ -21,9 +21,9 @@ export default function Tools() {
   const addTransaction = useTransactionAdder()
 
   const faucetTokenAddress = {
-    USDC: USDC[chainId],
-    USDT: USDT[chainId],
-    EMO: EvmoSwap[chainId],
+    USDC: '0xae95d4890bf4471501E0066b6c6244E1CAaEe791',
+    USDT: '0x397F8aBd481B7c00883fb70da2ea5Ae70999c37c',
+    DAI: '0x7c4a1D38A755a7Ce5521260e874C009ad9e4Bf9c',
   }
 
   const faucetContract = useFaucetContract()
