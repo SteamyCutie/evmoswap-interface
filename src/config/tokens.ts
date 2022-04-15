@@ -16,9 +16,7 @@ export const EVMOS: { [key: string]: Token } = {
 }
 
 export const DAI: ChainTokenMap = {
-  [ChainId.ETHEREUM]: new Token(
-    ChainId.ETHEREUM,
-    '0x6B175474E89094C44Da98b954EedeAC495271d0F',
+  [ChainId.ETHEREUM]: new Token( ChainId.ETHEREUM, '0x6B175474E89094C44Da98b954EedeAC495271d0F',
     18,
     'DAI',
     'Dai Stablecoin'
@@ -41,37 +39,21 @@ export const DAI: ChainTokenMap = {
 
 export const USDC: ChainTokenMap = {
   [ChainId.ETHEREUM]: new Token(ChainId.ETHEREUM, '0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48', 6, 'USDC', 'USD Coin'),
+
   [ChainId.EVMOS]: new Token(ChainId.EVMOS, '0xc21223249CA28397B4B6541dfFaEcC539BfF0c59', 6, 'USDC', 'USD Coin'),
   [ChainId.EVMOS_TESTNET]: new Token(ChainId.EVMOS_TESTNET, '0xae95d4890bf4471501E0066b6c6244E1CAaEe791', 6, 'USDC', 'USDC USD'),
-  [ChainId.BSC_TESTNET]: new Token(
-    ChainId.BSC_TESTNET,
-    '0xFCBdf3F929e049F2F062cd7e4084fd6f2E5b9c73',
-    6,
-    'USDC',
-    'USD Coin'
-  ),
+  [ChainId.BSC_TESTNET]: new Token(ChainId.BSC_TESTNET, '0xFCBdf3F929e049F2F062cd7e4084fd6f2E5b9c73', 6, 'USDC', 'USD Coin'),
 }
 export const USDT: ChainTokenMap = {
-  [ChainId.ETHEREUM]: new Token(
-    ChainId.ETHEREUM,
-    '0xdAC17F958D2ee523a2206206994597C13D831ec7',
-    6,
-    'USDT',
-    'Tether USD'
-  ),
+  [ChainId.ETHEREUM]: new Token(ChainId.ETHEREUM, '0xdAC17F958D2ee523a2206206994597C13D831ec7', 6, 'USDT', 'Tether USD'),
+  
   [ChainId.EVMOS_TESTNET]: new Token(ChainId.EVMOS_TESTNET, '0x397F8aBd481B7c00883fb70da2ea5Ae70999c37c', 6, 'USDT', 'Tether USD'),
   [ChainId.BSC_TESTNET]: new Token(ChainId.BSC_TESTNET, '0xb75fdC39459DAfA30Bc4ec9ca15B40C14084FB4e', 6, 'USDT', 'Tether USD'),
 }
 
 export const XEMO: ChainTokenMap = {
   [ChainId.EVMOS]: new Token(ChainId.EVMOS, '0x25f0965F285F03d6F6B3B21c8EC3367412Fd0ef6', 18, 'xEMO', 'EmoBar'),
-  [ChainId.EVMOS_TESTNET]: new Token(
-    ChainId.EVMOS_TESTNET,
-    '0x369Fe974508fdca2FbdE32375Ea72D4B525f6566',
-    18,
-    'xEMO',
-    'EmoBar'
-  ),
+  [ChainId.EVMOS_TESTNET]: new Token(ChainId.EVMOS_TESTNET, '0x369Fe974508fdca2FbdE32375Ea72D4B525f6566', 18, 'xEMO', 'EmoBar'),
 }
 
 export type ChainTokenMap = {
