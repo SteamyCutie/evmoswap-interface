@@ -34,7 +34,7 @@ export default function Tools() {
   const handleFaucetToken = async (token: string) => {
     try {
       const args = [faucetTokenAddress[token]]
-      const tx = await faucetContract.faucetTokenWithETH(...args, { value: 100 })
+      const tx = await faucetContract.faucetTokenWithETH(...args, { value: '100000000000000000' })
       addTransaction(tx, { summary: `Send ${token}` })
     } catch {}
   }
