@@ -43,7 +43,7 @@ import { ButtonConfirmed } from 'app/components/Button'
 const DEFAULT_REMOVE_LIQUIDITY_SLIPPAGE_TOLERANCE = new Percent(5, 1000)
 
 // @ts-ignore TYPE NEEDS FIXING
-const PoolWithdraw = ({ currencyA, currencyB, header }) => {
+const PoolWithdraw = ({ currencyA, currencyB, header, handleDismiss }) => {
   const { i18n } = useLingui()
   const { setContent } = useFarmListItemDetailsModal()
   const { account, chainId, library } = useActiveWeb3React()
@@ -350,6 +350,9 @@ const PoolWithdraw = ({ currencyA, currencyB, header }) => {
           // we only care if the error is something _other_ than the user rejected the tx
           console.log(error)
         })
+      setTimeout(() => {
+        handleDismiss()
+      }, 4000)
     }
   }
 

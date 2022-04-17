@@ -48,7 +48,6 @@ const ManageBar = ({ farm, handleDismiss }) => {
     farm.token1 ? 18 : farm.token0 ? farm.token0.decimals : 18,
     'SLP'
   )
-  // const balance = useCurrencyBalance(account ?? undefined, liquidityToken)
   const balance = useTokenBalance(account, liquidityToken)
   const { stakedAmount } = useUserInfo(farm, liquidityToken)
   const parsedDepositValue = tryParseAmount(depositValue, liquidityToken)
@@ -93,33 +92,37 @@ const ManageBar = ({ farm, handleDismiss }) => {
           </Typography>
         </div>
 
-        <div className="flex justify-end gap-2">
-          {['25', '50', '75', '100'].map((multiplier, i) => (
-            <Button
-              variant="outlined"
-              size="xs"
-              color={toggle ? 'blue' : 'pink'}
-              key={i}
-              onClick={() => {
-                toggle
-                  ? balance
+        <div className="flex items-center justify-between pl-2">
+          <div className="text-base text-white">Balance: {toggle ? balance?.toExact() : stakedAmount?.toExact()}</div>
+          <div className="flex justify-end gap-2">
+            {['25', '50', '75', '100'].map((multiplier, i) => (
+              <Button
+                variant="outlined"
+                size="xs"
+                color={toggle ? 'blue' : 'pink'}
+                key={i}
+                onClick={() => {
+                  toggle
+                    ? balance
+                      ? // @ts-ignore TYPE NEEDS FIXING
+                        setDepositValue(balance.multiply(multiplier).divide(100).toExact())
+                      : undefined
+                    : stakedAmount
                     ? // @ts-ignore TYPE NEEDS FIXING
-                      setDepositValue(balance.multiply(multiplier).divide(100).toExact())
+                      setWithdrawValue(stakedAmount.multiply(multiplier).divide(100).toExact())
                     : undefined
-                  : stakedAmount
-                  ? // @ts-ignore TYPE NEEDS FIXING
-                    setWithdrawValue(stakedAmount.multiply(multiplier).divide(100).toExact())
-                  : undefined
-              }}
-              className={classNames(
-                'text-md border border-opacity-50',
-                toggle ? 'focus:ring-blue border-blue' : 'focus:ring-pink border-pink'
-              )}
-            >
-              {multiplier === '100' ? 'MAX' : multiplier + '%'}
-            </Button>
-          ))}
+                }}
+                className={classNames(
+                  'text-md border border-opacity-50',
+                  toggle ? 'focus:ring-blue border-blue' : 'focus:ring-pink border-pink'
+                )}
+              >
+                {multiplier === '100' ? 'MAX' : multiplier + '%'}
+              </Button>
+            ))}
+          </div>
         </div>
+
         <NumericalInput
           className="w-full px-4 py-4 pr-20 rounded bg-dark-700 focus:ring focus:ring-dark-purple"
           value={toggle ? depositValue : withdrawValue}

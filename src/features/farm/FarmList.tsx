@@ -46,9 +46,9 @@ const FarmList = ({ farms }) => {
   return (
     <>
       <div className={classNames(TABLE_WRAPPER_DIV_CLASSNAME)}>
-        <div className="grid grid-cols-4 min-w-[768px]">
+        <div className="grid grid-cols-6 min-w-[768px]">
           <div
-            className={classNames('flex gap-1 items-center cursor-pointer', TABLE_TR_TH_CLASSNAME(0, 4))}
+            className={classNames('flex gap-1 items-center cursor-pointer', TABLE_TR_TH_CLASSNAME(0, 6))}
             onClick={() => requestSort('pair.token0.symbol')}
           >
             <Typography variant="sm" weight={700}>
@@ -57,7 +57,14 @@ const FarmList = ({ farms }) => {
             <SortIcon id={sortConfig.key} direction={sortConfig.direction} active={sortConfig.key === 'symbol'} />
           </div>
           <div
-            className={classNames('flex gap-1 items-center cursor-pointer justify-end', TABLE_TR_TH_CLASSNAME(1, 4))}
+            className={classNames('flex gap-1 items-center cursor-pointer justify-end', TABLE_TR_TH_CLASSNAME(1, 6))}
+          >
+            <Typography variant="sm" weight={700}>
+              {i18n._(t`Rewards`)}
+            </Typography>
+          </div>
+          <div
+            className={classNames('flex gap-1 items-center cursor-pointer justify-end', TABLE_TR_TH_CLASSNAME(2, 6))}
             onClick={() => requestSort('tvl')}
           >
             <Typography variant="sm" weight={700}>
@@ -66,7 +73,16 @@ const FarmList = ({ farms }) => {
             <SortIcon id={sortConfig.key} direction={sortConfig.direction} active={sortConfig.key === 'tvl'} />
           </div>
           <div
-            className={classNames('flex gap-1 items-center cursor-pointer justify-end', TABLE_TR_TH_CLASSNAME(2, 4))}
+            className={classNames('flex gap-1 items-center cursor-pointer justify-end', TABLE_TR_TH_CLASSNAME(3, 6))}
+            // onClick={() => requestSort('tvl')}
+          >
+            <Typography variant="sm" weight={700}>
+              {i18n._(t`MyLPs`)}
+            </Typography>
+            {/* <SortIcon id={sortConfig.key} direction={sortConfig.direction} active={sortConfig.key === 'tvl'} /> */}
+          </div>
+          <div
+            className={classNames('flex gap-1 items-center cursor-pointer justify-end', TABLE_TR_TH_CLASSNAME(4, 6))}
             onClick={() => requestSort('multiplier')}
           >
             <Typography variant="sm" weight={700}>
@@ -75,7 +91,7 @@ const FarmList = ({ farms }) => {
             <SortIcon id={sortConfig.key} direction={sortConfig.direction} active={sortConfig.key === 'multiplier'} />
           </div>
           <div
-            className={classNames('flex gap-1 items-center cursor-pointer justify-end', TABLE_TR_TH_CLASSNAME(3, 4))}
+            className={classNames('flex gap-1 items-center cursor-pointer justify-end', TABLE_TR_TH_CLASSNAME(5, 6))}
             onClick={() => requestSort('roiPerYear')}
           >
             <Typography variant="sm" weight={700}>
