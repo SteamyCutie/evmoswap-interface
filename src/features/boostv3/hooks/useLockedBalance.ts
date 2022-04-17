@@ -12,14 +12,14 @@ export function useLockedBalance() {
     veEmos: undefined,
     lockEnd: undefined,
     lockAmount: undefined,
-    rewards: undefined,
+    rewards: { amounts: [], tokens: [] },
   }
 
   if (!account) {
     return defaultResp
   }
 
-  const rewards = useSingleCallResult(useRewardPoolContract(), 'userInfo', account ? [account] : undefined)?.result
+  const rewards = useSingleCallResult(useRewardPoolContract(), 'pendingTokens', account ? [account] : undefined)?.result
 
   const booster = useVotingEscrowContract()
   const callsData = useMemo(
@@ -43,16 +43,9 @@ export function useLockedBalance() {
       veEmos: veEmos?.[0],
       lockEnd: lockInfo?.end,
       lockAmount: lockInfo?.amount,
-      rewards: rewards?.rewardDebt, //rewards.amount
+      rewards: { amounts: rewards?.amounts || [], tokens: rewards?.tokens || [] },
     }
   }
 
-  return {
-    emosSupply: undefined,
-    veEmosSupply: undefined,
-    veEmos: undefined,
-    lockEnd: undefined,
-    lockAmount: undefined,
-    rewards: undefined,
-  }
+  return defaultResp
 }

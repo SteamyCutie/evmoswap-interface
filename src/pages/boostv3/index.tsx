@@ -20,6 +20,8 @@ import { RowBetween } from 'app/components/Row'
 import { getAPY } from 'app/features/staking/useStaking'
 import { useLockedBalance } from 'app/features/boostv3/hooks/useLockedBalance'
 import { getBalanceAmount } from 'app/functions/formatBalance'
+import { useRewardPool } from 'app/features/boostv3/hooks/useRewardPool'
+import { Zero } from '@ethersproject/constants'
 
 const INPUT_CHAR_LIMIT = 18
 
@@ -65,9 +67,9 @@ export default function Boostv3 () {
     const { account, chainId } = useActiveWeb3React()
 
     const balance = useTokenBalance( account ?? undefined, EvmoSwap[ chainId ] )
-
+    const rewards = useRewardPool();
     const emosInfo = useTokenInfo( useEmosContract() )
-    const { rewards, lockAmount, lockEnd, veEmos, emosSupply, veEmosSupply } = useLockedBalance()
+    const { lockAmount, lockEnd, veEmos, emosSupply, veEmosSupply } = useLockedBalance()
     const [ activeTab, setActiveTab ] = useState( 0 );
 
     const [ input, setInput ] = useState( '' )
@@ -202,13 +204,19 @@ export default function Boostv3 () {
                             <div className="grid grid-cols-1 lg:grid-cols-3 gap-2 lg:gap-0 w-full justify-between p-2 py-4">
                                 <div className="col-span-2">
                                     <div className="text-lg mb-4">{ i18n._( t`Rewards` ) }</div>
-                                    <div>{ formatNumber( getBalanceAmount( rewards ).toString() ) } { token.symbol }</div>
+                                    <div>
+                                        {
+                                            rewards && rewards.tokens.map( ( rewardToken, i ) => (
+                                                <span>{ formatNumber( rewards.amounts[ i ].toSignificant( 18 ) ) } { rewardToken.symbol }</span>
+                                            ) )
+                                        }
+                                    </div>
                                 </div>
 
 
                                 <div className="flex items-center">
                                     {
-                                        rewards && rewards.lte( -10 ) ? (
+                                        rewards && rewards.total.lte( 0 ) ? (
                                             <Button color="red" className="truncate opacity-80" disabled>
                                                 { i18n._( t`No rewards` ) }
                                             </Button>
@@ -258,7 +266,7 @@ export default function Boostv3 () {
                                     </ul>
 
                                     <RowBetween className="mt-6">
-                                        <div>{ i18n._( t`Balance` ) }: { token.balance } { token.symbol }</div>
+                                        <div>{ i18n._( t`Balance` ) }: { balance?.toSignificant( 4 ) } { balance?.currency?.symbol }</div>
                                         <div>{ i18n._( t`APR` ) }: { formatPercent( APR ) }</div>
                                     </RowBetween>
                                     <div>
@@ -271,7 +279,13 @@ export default function Boostv3 () {
                                             ) }
                                             placeholder="0.0"
                                         />
-                                        <button className="absolute rounded p-2 -ml-16 mt-[0.9rem] border border-blue hover:bg-blue hover:bg-opacity-20" onClick={ () => setInput( String( token.balance ) ) }>
+                                        <button
+                                            className="absolute rounded p-2 -ml-16 mt-[0.9rem] border border-blue hover:bg-blue hover:bg-opacity-20"
+                                            onClick={ () => {
+                                                if ( !balance.equalTo( ZERO ) ) {
+                                                    setInput( balance?.toSignificant( balance.currency.decimals ) )
+                                                }
+                                            } }>
                                             { i18n._( t`MAX` ) }
                                         </button>
                                     </div>
@@ -307,8 +321,8 @@ export default function Boostv3 () {
                                     </ul>
 
                                     <RowBetween className="mt-8">
-                                        <div>{ i18n._( t`Balance` ) }: { token.balance } { token.symbol }</div>
-                                        <div>{ i18n._( t`APR` ) }: { formatPercent( APR ) } { token.symbol }</div>
+                                        <div>{ i18n._( t`Balance` ) }: { balance?.toSignificant( 4 ) } { balance?.currency?.symbol }</div>
+                                        <div>{ i18n._( t`APR` ) }: { formatPercent( APR ) }</div>
                                     </RowBetween>
                                     <div>
                                         <Input.Numeric
