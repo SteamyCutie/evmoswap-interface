@@ -14,9 +14,12 @@ import ButtonNew from 'app/components/Button/index.new'
 import Web3Connect from 'app/components/Web3Connect'
 import Button from 'app/components/Button'
 import Input from 'app/components/Input'
-import { classNames, tryParseAmount } from 'app/functions'
+import { classNames, formatBalance, formatNumber, formatNumberScale, formatPercent, tryParseAmount } from 'app/functions'
 import { ZERO } from '@evmoswap/core-sdk'
 import { RowBetween } from 'app/components/Row'
+import { getAPY } from 'app/features/staking/useStaking'
+import { useLockedBalance } from 'app/features/boostv3/hooks/useLockedBalance'
+import { getBalanceAmount } from 'app/functions/formatBalance'
 
 const INPUT_CHAR_LIMIT = 18
 
@@ -60,17 +63,17 @@ const LOCK_PERIODS = [
 export default function Boostv3 () {
     const { i18n } = useLingui()
     const { account, chainId } = useActiveWeb3React()
-    console.log( chainId );
+
     const balance = useTokenBalance( account ?? undefined, EvmoSwap[ chainId ] )
 
     const emosInfo = useTokenInfo( useEmosContract() )
-
+    const { rewards, lockAmount, lockEnd, veEmos, emosSupply, veEmosSupply } = useLockedBalance()
     const [ activeTab, setActiveTab ] = useState( 0 );
 
     const [ input, setInput ] = useState( '' )
     const [ usingBalance, setUsingBalance ] = useState( false )
     const parsedAmount = usingBalance ? balance : tryParseAmount( input, balance?.currency )
-
+    console.log( { rewards, lockAmount, lockEnd, veEmos, veEmosSupply, emosSupply } )
     const handleInput = ( v: string ) => {
         if ( v.length <= INPUT_CHAR_LIMIT ) {
             setUsingBalance( false )
@@ -83,6 +86,8 @@ export default function Boostv3 () {
 
     const [ lockPeriod, setLockPeriod ] = useState( LOCK_PERIODS[ 0 ] );
 
+    const { manualAPY: APR } = getAPY()
+
     return (
         <Container id="boostv3-page" className="py-4 md:py-8 lg:py-12" maxWidth="full">
             <Head>
@@ -93,7 +98,7 @@ export default function Boostv3 () {
                 <div className="flex flex-col md:flex-row w-full gap-8">
 
                     {/** col 1 */ }
-                    <div className="flex flex-col w-full md:w-3/5 space-y-8">
+                    <div className="flex flex-col w-full lg:w-3/5 space-y-8">
 
                         <div className=" grid grid-cols-1 lg:grid-cols-3 gap-4 xl:gap-8 p-4 xl:p-6 rounded bg-dark-900  bg-opacity-60">
 
@@ -109,7 +114,17 @@ export default function Boostv3 () {
                                     />
                                 }
                                 title={ i18n._( t`Total Locked` ) }
-                                value={ i18n._( t`509k ${token.symbol}` ) }
+                                value={
+                                    `
+                                    ${formatNumberScale(
+                                        formatNumber(
+                                            Number( formatBalance( emosSupply ? emosSupply : 1 ) ) /
+                                            Number( emosInfo.circulatingSupply ? emosInfo.circulatingSupply : 1 )
+                                        )
+                                    )}
+                                    ${token.symbol}
+                                    `
+                                }
                             />
 
                             <StatButton
@@ -124,7 +139,7 @@ export default function Boostv3 () {
                                     />
                                 }
                                 title={ i18n._( t`Circulating Supply` ) }
-                                value={ i18n._( t`100k ${token.symbol}` ) }
+                                value={ `${formatNumberScale( emosInfo.circulatingSupply )} ${token.symbol}` }
                             />
 
                             <StatButton
@@ -139,7 +154,7 @@ export default function Boostv3 () {
                                     />
                                 }
                                 title={ i18n._( t`Monthly Emissions` ) }
-                                value={ i18n._( t`109.39M ${token.symbol}` ) }
+                                value={ i18n._( t`${formatNumberScale( emosInfo.burnt )} ${token.symbol}` ) }
                             />
                         </div>
 
@@ -176,7 +191,7 @@ export default function Boostv3 () {
                     </div>
 
                     {/** col 2 */ }
-                    <div className="flex flex-col w-full md:w-2/5 space-y-8">
+                    <div className="flex flex-col w-full lg:w-2/5 space-y-8">
 
                         {/** Claim reward */ }
                         <div className="p-4 space-y-4 rounded bg-dark-900 bg-opacity-80">
@@ -184,22 +199,22 @@ export default function Boostv3 () {
                                 <div className="mb-4 text-lg text-high-emphesis">{ i18n._( t`${token.symbol} Staking and Lock Rewards` ) }</div>
                                 <span></span>
                             </div>
-                            <div className="grid grid-cols-1 md:grid-cols-3 gap-2 md:gap-0 w-full justify-between p-2 py-4">
+                            <div className="grid grid-cols-1 lg:grid-cols-3 gap-2 lg:gap-0 w-full justify-between p-2 py-4">
                                 <div className="col-span-2">
                                     <div className="text-lg mb-4">{ i18n._( t`Rewards` ) }</div>
-                                    <div>{ token.balance } { token.symbol } + { token.balance } { token.symbol } + { token.balance } { token.symbol }</div>
+                                    <div>{ formatNumber( getBalanceAmount( rewards ).toString() ) } { token.symbol }</div>
                                 </div>
 
 
                                 <div className="flex items-center">
                                     {
-                                        token.balance <= 0 ? (
-                                            <Button color="red" className="truncate" disabled>
-                                                { i18n._( t`No reward` ) }
+                                        rewards && rewards.lte( -10 ) ? (
+                                            <Button color="red" className="truncate opacity-80" disabled>
+                                                { i18n._( t`No rewards` ) }
                                             </Button>
                                         ) : !account ? (
                                             <Web3Connect color="blue" className="truncate" />
-                                        ) : <Button color="blue" className="bg-blue w-full md:w-[90%] md:truncate md:hover:whitespace-normal" variant="filled">
+                                        ) : <Button color="blue" className="bg-blue w-full lg:w-[90%] lg:truncate lg:hover:whitespace-normal" variant="filled">
                                             { i18n._( t`Claim Rewards` ) }
                                         </Button>
                                     }
@@ -238,13 +253,13 @@ export default function Boostv3 () {
                                 <div className="mt-8">
                                     <ul className="text-yellow text-sm text-high-emphesis list-[circle] ml-4">
                                         <li>
-                                            { i18n._( t`Stake PRB and earn platform fees in USDC without lock-up.` ) }
+                                            { i18n._( t`Stake ${token.symbol} and earn platform fees in USDC without lock-up.` ) }
                                         </li>
                                     </ul>
 
                                     <RowBetween className="mt-6">
                                         <div>{ i18n._( t`Balance` ) }: { token.balance } { token.symbol }</div>
-                                        <div>{ i18n._( t`APR` ) }: 0%</div>
+                                        <div>{ i18n._( t`APR` ) }: { formatPercent( APR ) }</div>
                                     </RowBetween>
                                     <div>
                                         <Input.Numeric
@@ -293,7 +308,7 @@ export default function Boostv3 () {
 
                                     <RowBetween className="mt-8">
                                         <div>{ i18n._( t`Balance` ) }: { token.balance } { token.symbol }</div>
-                                        <div>{ i18n._( t`APR` ) }: 0% { token.symbol } 23.90% { token.symbol }</div>
+                                        <div>{ i18n._( t`APR` ) }: { formatPercent( APR ) } { token.symbol }</div>
                                     </RowBetween>
                                     <div>
                                         <Input.Numeric
