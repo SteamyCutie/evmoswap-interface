@@ -1,4 +1,4 @@
-import React, { ReactNode, useState } from 'react'
+import React, { ReactNode, useMemo, useState } from 'react'
 import { useLingui } from '@lingui/react'
 import Head from 'next/head'
 import { EvmoSwap } from '../../config/tokens'
@@ -15,22 +15,27 @@ import Web3Connect from 'app/components/Web3Connect'
 import Button from 'app/components/Button'
 import Input from 'app/components/Input'
 import { classNames, formatBalance, formatNumber, formatNumberScale, formatPercent, tryParseAmount } from 'app/functions'
-import { ZERO } from '@evmoswap/core-sdk'
+import { Currency, CurrencyAmount, Token, ZERO } from '@evmoswap/core-sdk'
 import { RowBetween } from 'app/components/Row'
 import { getAPY } from 'app/features/staking/useStaking'
-import { useLockedBalance } from 'app/features/boostv3/hooks/useLockedBalance'
+import { useLockedBalance, useRewardsBalance } from 'app/features/boostv3/hooks/balance'
 import { getBalanceAmount } from 'app/functions/formatBalance'
 import { useRewardPool } from 'app/features/boostv3/hooks/useRewardPool'
-import { Zero } from '@ethersproject/constants'
+import Dots from 'app/components/Dots'
+import { useStakingBalance } from 'app/features/boostv3/hooks/useStakingBalance'
+import { timestampToDate } from 'app/features/boostv3/functions/app'
+import { BigNumber } from '@ethersproject/bignumber'
+import { VOTING_ESCROW_ADDRESS } from 'app/constants/addresses'
+import { ApprovalState, useApproveCallback } from 'app/hooks'
+import useVotingEscrow from 'app/features/boost/useVotingEscrow'
+import { format, addDays, getUnixTime } from 'date-fns'
 
 const INPUT_CHAR_LIMIT = 18
+const MAX_WEEK = 52 * 4
+const SECONDS_PER_WEEK = 7 * 86400
 
-const token = {
-    name: 'EvmoSwap Token',
-    symbol: 'EMO',
-    icon: '/icons/icon-72x72.png',
-    balance: 30,
-};
+const emosIcon = "/icons/icon-72x72.png";
+
 const tabStyle = 'rounded-lg p-3'
 const activeTabStyle = `${tabStyle} flex justify-center items-center w-full h-8 rounded font-bold md:font-medium lg:text-lg text-sm bg-blue`
 const inactiveTabStyle = `${tabStyle} flex justify-center items-center w-full h-8 rounded font-bold md:font-medium lg:text-lg text-sm bg-transparent text-secondary`
@@ -39,6 +44,10 @@ interface StatButtonProps {
     title: string,
     value: string,
     icon: ReactNode
+}
+
+type VestingRow = {
+    unlockTime: string, amount: CurrencyAmount<Currency>, expired: boolean;
 }
 
 const StatButton = ( props: StatButtonProps ) => {
@@ -57,25 +66,76 @@ const StatButton = ( props: StatButtonProps ) => {
 
 //stake lock period
 const LOCK_PERIODS = [
-    { multiplier: 1.2, week: 13, day: 90, title: 'Lock 90 days', hint: 'Locked 90 days and enjoy {multiplier} rewards.' },
-    { multiplier: 1.5, week: 26, day: 180, title: 'Lock 180 days', hint: 'Locked 180 days and enjoy {multiplier} rewards.' },
-    { multiplier: 2.5, week: 52, day: 360, title: 'Lock 360 days', hint: 'Locked 360 days and enjoy {multiplier} rewards.' },
+    { multiplier: 1.2, week: 1, day: 7, title: '7 days', hint: 'Locked 7 days and enjoy {multiplier} rewards.' },
+    { multiplier: 1.2, week: 2, day: 14, title: '2 weeks', hint: 'Locked 14 days and enjoy {multiplier} rewards.' },
+    { multiplier: 1.2, week: 13, day: 90, title: '3 months', hint: 'Locked 3 months and enjoy {multiplier} rewards.' },
+    { multiplier: 1.5, week: 26, day: 180, title: '6 months', hint: 'Locked 180 days and enjoy {multiplier} rewards.' },
+    { multiplier: 2.5, week: 52, day: 360, title: '1 year', hint: 'Locked 2 years and enjoy {multiplier} rewards.' },
+    { multiplier: 2.5, week: 52 * 2, day: 360 * 2, title: '2 year', hint: 'Locked 2 years and enjoy {multiplier} rewards.' },
+    { multiplier: 2.5, week: 52 * 4, day: 360 * 4, title: '4 years', hint: 'Locked 4 years and enjoy {multiplier} rewards.' },
 ]
+
+const sendTx = async ( txFunc: () => Promise<any> ): Promise<boolean> => {
+    let success = true
+    try {
+        const ret = await txFunc()
+        if ( ret?.error ) {
+            success = false
+        }
+    } catch ( e ) {
+        console.error( e )
+        success = false
+    }
+    return success
+}
 
 export default function Boostv3 () {
     const { i18n } = useLingui()
     const { account, chainId } = useActiveWeb3React()
-
+    const {
+        claimRewards,
+        claimHarvestRewards,
+        createLockWithMc,
+        increaseAmountWithMc,
+        increaseUnlockTimeWithMc,
+        withdrawWithMc,
+    } = useVotingEscrow()
     const balance = useTokenBalance( account ?? undefined, EvmoSwap[ chainId ] )
-    const rewards = useRewardPool();
+    const token = balance?.currency || { symbol: '' };
+
+    const { harvestRewards, withdrawEarnings } = useRewardPool();
     const emosInfo = useTokenInfo( useEmosContract() )
     const { lockAmount, lockEnd, veEmos, emosSupply, veEmosSupply } = useLockedBalance()
-    const [ activeTab, setActiveTab ] = useState( 0 );
+    const { earnedBalances, withdrawableBalance, totalBalance } = useStakingBalance();
+    const rewards = useRewardsBalance();
+    const showVesting = withdrawableBalance ? BigNumber.from( withdrawableBalance.penaltyAmount ).gt( 0 ) : false
+    const vestingRows = useMemo( () => {
+        const rows = [];
+
+        if ( withdrawableBalance ) {
+            rows.push( {
+                unlockTime: "-",
+                amount: CurrencyAmount.fromRawAmount( balance?.currency, withdrawableBalance?.amount?.toString() || "0" ),
+                expired: true,
+            } )
+        }
+
+        if ( earnedBalances && earnedBalances?.earningsData?.length )
+            earnedBalances.earningsData.map( ( earning: { unlockTime: number; amount: number }, index: number ) => {
+                rows.push( {
+                    unlockTime: timestampToDate( earning?.unlockTime?.toString() ),
+                    amount: CurrencyAmount.fromRawAmount( balance?.currency, earning?.amount?.toString() || "0" ),
+                    expired: false,
+                } )
+            } )
+        return rows;
+    }, [ earnedBalances, withdrawableBalance ] )
+
+    const [ activeTab, setActiveTab ] = useState( 1 );
 
     const [ input, setInput ] = useState( '' )
     const [ usingBalance, setUsingBalance ] = useState( false )
     const parsedAmount = usingBalance ? balance : tryParseAmount( input, balance?.currency )
-    console.log( { rewards, lockAmount, lockEnd, veEmos, veEmosSupply, emosSupply } )
     const handleInput = ( v: string ) => {
         if ( v.length <= INPUT_CHAR_LIMIT ) {
             setUsingBalance( false )
@@ -83,12 +143,92 @@ export default function Boostv3 () {
         }
     }
 
-    const insufficientFunds = ( balance && balance.equalTo( ZERO ) ) || parsedAmount?.greaterThan( balance )
+    const [ week, setWeek ] = useState( '' )
+    const [ lockPeriod, setLockPeriod ] = useState( LOCK_PERIODS[ 0 ] );
+    const handleWeek = ( v: string ) => {
+
+        const vN = parseInt( v );
+        if ( vN === 0 || v === '' ) {
+            setWeek( '' );
+            return;
+        }
+        if ( vN > 0 && vN < MAX_WEEK )
+            setWeek( String( vN ) )
+    }
+    const handleLockPeriod = ( period ) => {
+        if ( week ) setWeek( '' );
+        setLockPeriod( period )
+    }
+
+    const insufficientFunds = ( balance && balance?.equalTo( ZERO ) ) || parsedAmount?.greaterThan( balance )
     const inputError = insufficientFunds
 
-    const [ lockPeriod, setLockPeriod ] = useState( LOCK_PERIODS[ 0 ] );
-
     const { manualAPY: APR } = getAPY()
+
+    const [ pendingTx, setPendingTx ] = useState( false )
+    const [ pendingLock, setPendingLock ] = useState( false )
+    const [ withdrawing, setWithdrawing ] = useState( false )
+    const buttonDisabled = !input || pendingTx || ( parsedAmount && parsedAmount.equalTo( ZERO ) )
+    const [ approvalState, approve ] = useApproveCallback( parsedAmount, VOTING_ESCROW_ADDRESS[ chainId ] )
+
+    const lockDays = Number( week ? week : lockPeriod.week ) * 7
+    const newLockTime = Math.floor( getUnixTime( addDays( Date.now(), lockDays ) ) );
+    const lockTimeBtnDisabled = pendingLock || newLockTime <= Number( lockEnd ) || !input
+    console.log( new Date( newLockTime * 1000 ), newLockTime, lockDays )
+    const handleClaimRewards = async () => {
+
+        setPendingTx( true )
+        const success = await sendTx( () => ( harvestRewards() ) )
+        console.log( success )
+        if ( !success ) {
+            setPendingTx( false )
+            return
+        }
+        setTimeout( () => {
+            setPendingTx( false )
+        }, 4000 )
+    }
+
+    const handleWithdrawWithPenalty = async () => {
+
+        if ( !withdrawableBalance ) return;
+        setWithdrawing( true )
+        const amount = BigNumber.from( withdrawableBalance.penaltyAmount );
+        const success = await sendTx( () => ( withdrawEarnings( amount ) ) )
+        console.log( success, amount.toFixed( 4 ) )
+        if ( !success ) {
+            setWithdrawing( false )
+            return
+        }
+        setTimeout( () => {
+            setWithdrawing( false )
+        }, 4000 )
+    }
+
+    const handleLock = async () => {
+
+        if ( !input ) return;
+        setPendingLock( true )
+
+        if ( approvalState === ApprovalState.NOT_APPROVED ) {
+            const success = await sendTx( () => approve() )
+            if ( !success ) {
+                setPendingLock( false )
+                return
+            }
+        }
+
+        const success = await sendTx( () => createLockWithMc( parsedAmount, newLockTime ) )
+        if ( !success ) {
+            setPendingLock( false )
+            return
+        }
+
+        handleInput( '' )
+        setTimeout( () => {
+            setPendingLock( false )
+        }, 4000 )
+    }
 
     return (
         <Container id="boostv3-page" className="py-4 md:py-8 lg:py-12" maxWidth="full">
@@ -107,7 +247,7 @@ export default function Boostv3 () {
                             <StatButton
                                 icon={
                                     <Image
-                                        src={ token.icon }
+                                        src={ emosIcon }
                                         alt={ token.symbol }
                                         width="24px"
                                         height="24px"
@@ -132,7 +272,7 @@ export default function Boostv3 () {
                             <StatButton
                                 icon={
                                     <Image
-                                        src={ token.icon }
+                                        src={ emosIcon }
                                         alt={ token.symbol }
                                         width="24px"
                                         height="24px"
@@ -147,7 +287,7 @@ export default function Boostv3 () {
                             <StatButton
                                 icon={
                                     <Image
-                                        src={ token.icon }
+                                        src={ emosIcon }
                                         alt={ token.symbol }
                                         width="24px"
                                         height="24px"
@@ -163,7 +303,7 @@ export default function Boostv3 () {
                         <Card
                             header={ <div className="flex items-center space-x-4">
                                 <Image
-                                    src={ token.icon }
+                                    src={ emosIcon }
                                     alt={ token.symbol }
                                     width="24px"
                                     height="24px"
@@ -207,7 +347,7 @@ export default function Boostv3 () {
                                     <div>
                                         {
                                             rewards && rewards.tokens.map( ( rewardToken, i ) => (
-                                                <span>{ formatNumber( rewards.amounts[ i ].toSignificant( 18 ) ) } { rewardToken.symbol }</span>
+                                                <span key={ i }>{ rewards.amounts[ i ].toFixed( 4 ) } { rewardToken.symbol }</span>
                                             ) )
                                         }
                                     </div>
@@ -222,8 +362,8 @@ export default function Boostv3 () {
                                             </Button>
                                         ) : !account ? (
                                             <Web3Connect color="blue" className="truncate" />
-                                        ) : <Button color="blue" className="bg-blue w-full lg:w-[90%] lg:truncate lg:hover:whitespace-normal" variant="filled">
-                                            { i18n._( t`Claim Rewards` ) }
+                                        ) : <Button onClick={ handleClaimRewards } disabled={ pendingTx } color="blue" className="w-full disabled:bg-opacity-40 lg:truncate lg:hover:whitespace-normal" variant="filled">
+                                            { pendingTx ? <Dots>{ i18n._( t`Harvesting` ) } </Dots> : i18n._( t`Claim Rewards` ) }
                                         </Button>
                                     }
                                 </div>
@@ -234,8 +374,8 @@ export default function Boostv3 () {
                         <div className="p-4 rounded bg-dark-900 h-full bg-opacity-80">
 
                             <div className="flex flex-row items-center justify-between w-full">
-                                <div className="text-lg text-high-emphesis">{ i18n._( t`Staking ${token.symbol}` ) }</div>
-                                <div className="grid grid-cols-2 gap-0 p-1 rounded border-[0.5px]">
+                                <div className="text-lg text-high-emphesis">{ i18n._( t`Lock ${token.symbol}` ) }</div>
+                                <div className="grid grid-cols-1 gap-0 p-1 rounded border-[0.5px]">
                                     <button
                                         className={ activeTab === 1 ? activeTabStyle : inactiveTabStyle }
                                         onClick={ () => {
@@ -245,18 +385,18 @@ export default function Boostv3 () {
                                         { i18n._( t`Lock` ) }
                                     </button>
 
-                                    <button
+                                    {/*<button
                                         className={ activeTab === 0 ? activeTabStyle : inactiveTabStyle }
                                         onClick={ () => {
                                             setActiveTab( 0 )
                                         } }
                                     >
                                         { i18n._( t`Stake` ) }
-                                    </button>
+                                    </button>*/}
                                 </div>
                             </div>
 
-                            { /** Stake tab content */
+                            { /** Stake tab content 
                                 activeTab === 0 &&
                                 <div className="mt-8">
                                     <ul className="text-yellow text-sm text-high-emphesis list-[circle] ml-4">
@@ -282,8 +422,8 @@ export default function Boostv3 () {
                                         <button
                                             className="absolute rounded p-2 -ml-16 mt-[0.9rem] border border-blue hover:bg-blue hover:bg-opacity-20"
                                             onClick={ () => {
-                                                if ( !balance.equalTo( ZERO ) ) {
-                                                    setInput( balance?.toSignificant( balance.currency.decimals ) )
+                                                if ( !balance?.equalTo( ZERO ) ) {
+                                                    setInput( balance?.toSignificant( balance?.currency.decimals ) )
                                                 }
                                             } }>
                                             { i18n._( t`MAX` ) }
@@ -292,7 +432,7 @@ export default function Boostv3 () {
 
                                     <div className="flex items-center">
                                         {
-                                            token.balance <= 0 ? (
+                                            !balance?.greaterThan( ZERO ) ? (
                                                 <Button color="red" className="truncate" disabled>
                                                     { i18n._( t`Insufficient Balance` ) }
                                                 </Button>
@@ -304,7 +444,7 @@ export default function Boostv3 () {
                                         }
                                     </div>
                                 </div>
-                            /** Stake tab content */ }
+                            Stake tab content */ }
 
 
 
@@ -329,49 +469,67 @@ export default function Boostv3 () {
                                             value={ input }
                                             onUserInput={ handleInput }
                                             className={ classNames(
-                                                'w-full h-14 px-3 md:px-5 my-2 mb-6  rounded bg-dark-700 text-sm md:text-xl font-bold text-dark-900 whitespace-nowrap caret-high-emphesis',
+                                                'w-full h-14 px-3 md:px-5 my-2 mb-6  rounded bg-dark-700 text-sm md:text-xl font-bold whitespace-nowrap caret-high-emphesis',
                                                 inputError ? ' pl-9 md:pl-12' : ''
                                             ) }
                                             placeholder="0.0"
                                         />
-                                        <button className="absolute rounded p-2 -ml-16 mt-[0.9rem] border border-blue hover:bg-blue hover:bg-opacity-20" onClick={ () => setInput( String( token.balance ) ) }>
+                                        <button className="absolute rounded p-2 -ml-16 mt-[0.9rem] border border-blue hover:bg-blue hover:bg-opacity-20"
+                                            onClick={ () => {
+                                                if ( !balance?.equalTo( ZERO ) ) {
+                                                    setInput( balance?.toSignificant( balance?.currency.decimals ) )
+                                                }
+                                            } }>
                                             { i18n._( t`MAX` ) }
                                         </button>
                                     </div>
 
                                     {/** lock actions */ }
                                     <div className="my-4">
-                                        <div className="flex flex-cols flex-wrap">
+                                        <div className="grid grid-cols-2 gap-2 mt-4 md:grid-cols-3">
                                             {
                                                 LOCK_PERIODS.map( ( period, index ) => (
                                                     <Button
                                                         key={ index }
-                                                        variant={ lockPeriod.day === period.day ? "filled" : "outlined" }
+                                                        variant={ lockPeriod.day === period.day && !week ? "filled" : "outlined" }
                                                         color={ "blue" }
                                                         size={ "sm" }
                                                         className={ "w-auto ml-2 mb-2" }
-                                                        onClick={ () => setLockPeriod( period ) }
+                                                        onClick={ () => handleLockPeriod( period ) }
                                                     >
                                                         { period.title }
                                                     </Button>
                                                 ) )
                                             }
+                                            <Input.Numeric
+                                                value={ week }
+                                                onUserInput={ handleWeek }
+                                                className={ classNames(
+                                                    'w-48 h-auto min-h-[3rem] flex-none h-auto px-3 md:px-5 ml-2 mb-2 rounded  text-sm md:text-xl font-bold caret-high-emphesis',
+                                                    inputError ? ' pl-9 md:pl-12' : '',
+                                                    week ? 'bg-blue text-white bg-opacity-50' : 'bg-dark-700 text-dark-900'
+                                                ) }
+                                                placeholder={ i18n._( t`Custom week` ) }
+                                                max={ MAX_WEEK }
+                                                min={ 1 }
+                                                step={ 1 }
+                                            />
                                         </div>
-                                        <p className="text-red w-full mt-2">* { lockPeriod.hint.replace( '{multiplier}', String( lockPeriod.multiplier + "x" ) ) }</p>
+                                        {/*<p className="text-red w-full mt-2">* { lockPeriod.hint.replace( '{multiplier}', String( lockPeriod.multiplier + "x" ) ) }</p>*/ }
                                     </div>
 
 
 
                                     <div className="flex items-center mb-5">
                                         {
-                                            token.balance <= 0 ? (
+                                            !balance?.greaterThan( ZERO ) ? (
                                                 <Button color="red" className="truncate" disabled>
                                                     { i18n._( t`Insufficient Balance` ) }
                                                 </Button>
                                             ) : !account ? (
                                                 <Web3Connect color="blue" className="truncate" />
-                                            ) : <Button color="blue" className="bg-blue truncate" variant="filled">
-                                                { i18n._( t`Lock` ) }
+                                            ) : <Button onClick={ handleLock } disabled={ lockTimeBtnDisabled } color="blue" className="bg-blue truncate disabled:bg-grey" variant="filled">
+                                                { pendingLock ? <Dots>{ i18n._( t`Locking` ) } </Dots> : i18n._( t`Lock` ) }
                                             </Button>
                                         }
                                     </div>
@@ -394,28 +552,36 @@ export default function Boostv3 () {
                                     <tr>
                                         <th className="text-center p-4 rounded-tl">{ i18n._( t`Expiry Time` ) }</th>
                                         <th className="text-center p-4">{ i18n._( t`Amount` ) }</th>
-                                        <th className="text-center p-4 rounded-tr">{ i18n._( t`Action` ) }</th>
+                                        <th className="text-center p-4 rounded-tr" colSpan={ 2 }>{ i18n._( t`Action` ) }</th>
                                     </tr>
                                 </thead>
                                 <tbody className="bg-dark-800">
 
                                     {
-                                        [ 1, 2 ].map( ( index ) => (
+                                        showVesting && vestingRows.length ? vestingRows.map( ( row: VestingRow, index ) => (
                                             <tr key={ index }>
-                                                <td className="text-center p-4 pr-8 border-b border-dark-900">18th January 199</td>
-                                                <td className="text-center p-4 pr-8 border-b border-dark-900">200 { token.symbol }</td>
-                                                <td className="text-center p-4 pr-8 border-b border-dark-900">
-                                                    <Button variant="outlined" color="blue">{ i18n._( t`Claim` ) }</Button>
+                                                <td className="text-center p-4 pr-8 border-b border-dark-900">{ row.unlockTime }</td>
+                                                <td className="text-center p-4 pr-8 border-b border-dark-900">{ row.amount.toExact() } { token.symbol }</td>
+                                                <td className="text-center p-4 pr-8 border-b border-dark-900" colSpan={ 2 }>
+                                                    {
+                                                        index === 0 && row.expired && showVesting && <div className='h-full w-full flex flex-col space-y-8 items-center'>
+                                                            <Button variant="outlined" color="red" onClick={ handleWithdrawWithPenalty } disabled={ withdrawing }> { withdrawing ? <Dots>{ i18n._( t`Withdrawing` ) } </Dots> : i18n._( t`Claim all with penalty` ) }</Button>
+                                                            {/*<Button variant="outlined" color="blue" >{ i18n._( t`Claim all and lock` ) }</Button>*/ }
+                                                        </div>
+                                                    }
                                                 </td>
                                             </tr>
-                                        ) )
+                                        ) ) :
+                                            <tr>
+                                                <td colSpan={ 3 } className="text-center p-4 pr-8 border-b border-dark-900">{ i18n._( t`Empty data set` ) }</td>
+                                            </tr>
                                     }
                                 </tbody>
                             </table>
                         </div>
                     </div>
 
-                    {/** Staked table */ }
+                    {/** Staked table 
                     <div className="w-full mt-12">
                         <RowBetween className="md:items-center flex-col md:flex-row">
                             <h2 className="font-bold text-lg">{ i18n._( t`Staked EVMOS` ) }</h2>
@@ -454,7 +620,7 @@ export default function Boostv3 () {
                                 </tbody>
                             </table>
                         </div>
-                    </div>
+                    </div>*/ }
                 </div>
             </div>
         </Container >
