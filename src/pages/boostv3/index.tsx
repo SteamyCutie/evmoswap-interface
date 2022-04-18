@@ -15,54 +15,35 @@ import Web3Connect from 'app/components/Web3Connect'
 import Button from 'app/components/Button'
 import Input from 'app/components/Input'
 import { classNames, formatBalance, formatNumber, formatNumberScale, formatPercent, tryParseAmount } from 'app/functions'
-import { Currency, CurrencyAmount, Token, ZERO } from '@evmoswap/core-sdk'
+import { Currency, CurrencyAmount, ZERO } from '@evmoswap/core-sdk'
 import { RowBetween } from 'app/components/Row'
 import { getAPY } from 'app/features/staking/useStaking'
-import { useLockedBalance, useRewardsBalance } from 'app/features/boostv3/hooks/balance'
-import { getBalanceAmount } from 'app/functions/formatBalance'
+import { useLockedBalance, useRewardsBalance, useStakingBalance } from 'app/features/boostv3/hooks/balances'
 import { useRewardPool } from 'app/features/boostv3/hooks/useRewardPool'
 import Dots from 'app/components/Dots'
-import { useStakingBalance } from 'app/features/boostv3/hooks/useStakingBalance'
 import { timestampToDate } from 'app/features/boostv3/functions/app'
 import { BigNumber } from '@ethersproject/bignumber'
 import { VOTING_ESCROW_ADDRESS } from 'app/constants/addresses'
 import { ApprovalState, useApproveCallback } from 'app/hooks'
 import useVotingEscrow from 'app/features/boost/useVotingEscrow'
-import { format, addDays, getUnixTime } from 'date-fns'
-
-const INPUT_CHAR_LIMIT = 18
-const MAX_WEEK = 52 * 4
-const SECONDS_PER_WEEK = 7 * 86400
-
-const emosIcon = "/icons/icon-72x72.png";
-
-const tabStyle = 'rounded-lg p-3'
-const activeTabStyle = `${tabStyle} flex justify-center items-center w-full h-8 rounded font-bold md:font-medium lg:text-lg text-sm bg-blue`
-const inactiveTabStyle = `${tabStyle} flex justify-center items-center w-full h-8 rounded font-bold md:font-medium lg:text-lg text-sm bg-transparent text-secondary`
+import { addDays, getUnixTime } from 'date-fns'
 
 interface StatButtonProps {
     title: string,
     value: string,
     icon: ReactNode
 }
-
 type VestingRow = {
     unlockTime: string, amount: CurrencyAmount<Currency>, expired: boolean;
 }
 
-const StatButton = ( props: StatButtonProps ) => {
-    const { icon, title, value } = props;
+const INPUT_CHAR_LIMIT = 18
+const MAX_WEEK = 52 * 4
 
-    return <ButtonNew
-        endIcon={ icon }
-        className="bg-dark-700 hover:bg-darker px-0 py-4 justify-evenly h-auto"
-    >
-        <div className="flex flex-col space-y-2 text-left">
-            <div className="px-1 text-primary text-xs md:truncate">{ title }</div>
-            <div className="px-1 text-primary text-xl md:text-lg xl:text-xl md:truncate">{ value }</div>
-        </div>
-    </ButtonNew>
-}
+const emosIcon = "/icons/icon-72x72.png";
+const tabStyle = 'rounded-lg p-3'
+const activeTabStyle = `${tabStyle} flex justify-center items-center w-full h-8 rounded font-bold md:font-medium lg:text-lg text-sm bg-blue`
+const inactiveTabStyle = `${tabStyle} flex justify-center items-center w-full h-8 rounded font-bold md:font-medium lg:text-lg text-sm bg-transparent text-secondary`
 
 //stake lock period
 const LOCK_PERIODS = [
@@ -75,40 +56,44 @@ const LOCK_PERIODS = [
     { multiplier: 2.5, week: 52 * 4, day: 360 * 4, title: '4 years', hint: 'Locked 4 years and enjoy {multiplier} rewards.' },
 ]
 
-const sendTx = async ( txFunc: () => Promise<any> ): Promise<boolean> => {
-    let success = true
-    try {
-        const ret = await txFunc()
-        if ( ret?.error ) {
-            success = false
-        }
-    } catch ( e ) {
-        console.error( e )
-        success = false
-    }
-    return success
-}
-
 export default function Boostv3 () {
+
     const { i18n } = useLingui()
     const { account, chainId } = useActiveWeb3React()
-    const {
-        claimRewards,
-        claimHarvestRewards,
-        createLockWithMc,
-        increaseAmountWithMc,
-        increaseUnlockTimeWithMc,
-        withdrawWithMc,
-    } = useVotingEscrow()
     const balance = useTokenBalance( account ?? undefined, EvmoSwap[ chainId ] )
     const token = balance?.currency || { symbol: '' };
 
+    const { createLockWithMc } = useVotingEscrow()
     const { harvestRewards, withdrawEarnings } = useRewardPool();
+    const { manualAPY: APR } = getAPY()
+
+    const [ pendingTx, setPendingTx ] = useState( false )
+    const [ pendingLock, setPendingLock ] = useState( false )
+    const [ withdrawing, setWithdrawing ] = useState( false )
+
     const emosInfo = useTokenInfo( useEmosContract() )
-    const { lockAmount, lockEnd, veEmos, emosSupply, veEmosSupply } = useLockedBalance()
-    const { earnedBalances, withdrawableBalance, totalBalance } = useStakingBalance();
+    const { lockEnd, emosSupply } = useLockedBalance()
+    const { earnedBalances, withdrawableBalance } = useStakingBalance();
     const rewards = useRewardsBalance();
     const showVesting = withdrawableBalance ? BigNumber.from( withdrawableBalance.penaltyAmount ).gt( 0 ) : false
+
+    const [ activeTab, setActiveTab ] = useState( 1 );
+
+    const [ input, setInput ] = useState( '' )
+    const [ usingBalance, setUsingBalance ] = useState( false )
+    const parsedAmount = usingBalance ? balance : tryParseAmount( input, balance?.currency )
+    const [ approvalState, approve ] = useApproveCallback( parsedAmount, VOTING_ESCROW_ADDRESS[ chainId ] )
+
+    const insufficientFunds = ( balance && balance?.equalTo( ZERO ) ) || parsedAmount?.greaterThan( balance )
+    const inputError = insufficientFunds
+
+    const [ week, setWeek ] = useState( '' )
+    const [ lockPeriod, setLockPeriod ] = useState( LOCK_PERIODS[ 0 ] );
+    const lockDays = Number( week ? week : lockPeriod.week ) * 7
+    const newLockTime = Math.floor( getUnixTime( addDays( Date.now(), lockDays ) ) );
+    const lockTimeBtnDisabled = pendingLock || newLockTime <= Number( lockEnd ) || !input
+
+
     const vestingRows = useMemo( () => {
         const rows = [];
 
@@ -121,7 +106,7 @@ export default function Boostv3 () {
         }
 
         if ( earnedBalances && earnedBalances?.earningsData?.length )
-            earnedBalances.earningsData.map( ( earning: { unlockTime: number; amount: number }, index: number ) => {
+            earnedBalances.earningsData.map( ( earning: { unlockTime: number; amount: number } ) => {
                 rows.push( {
                     unlockTime: timestampToDate( earning?.unlockTime?.toString() ),
                     amount: CurrencyAmount.fromRawAmount( balance?.currency, earning?.amount?.toString() || "0" ),
@@ -131,83 +116,40 @@ export default function Boostv3 () {
         return rows;
     }, [ earnedBalances, withdrawableBalance ] )
 
-    const [ activeTab, setActiveTab ] = useState( 1 );
 
-    const [ input, setInput ] = useState( '' )
-    const [ usingBalance, setUsingBalance ] = useState( false )
-    const parsedAmount = usingBalance ? balance : tryParseAmount( input, balance?.currency )
     const handleInput = ( v: string ) => {
+
         if ( v.length <= INPUT_CHAR_LIMIT ) {
             setUsingBalance( false )
             setInput( v )
         }
     }
 
-    const [ week, setWeek ] = useState( '' )
-    const [ lockPeriod, setLockPeriod ] = useState( LOCK_PERIODS[ 0 ] );
     const handleWeek = ( v: string ) => {
 
         const vN = parseInt( v );
         if ( vN === 0 || v === '' ) {
+
             setWeek( '' );
             return;
         }
+
         if ( vN > 0 && vN < MAX_WEEK )
             setWeek( String( vN ) )
     }
+
     const handleLockPeriod = ( period ) => {
+
         if ( week ) setWeek( '' );
         setLockPeriod( period )
     }
 
-    const insufficientFunds = ( balance && balance?.equalTo( ZERO ) ) || parsedAmount?.greaterThan( balance )
-    const inputError = insufficientFunds
-
-    const { manualAPY: APR } = getAPY()
-
-    const [ pendingTx, setPendingTx ] = useState( false )
-    const [ pendingLock, setPendingLock ] = useState( false )
-    const [ withdrawing, setWithdrawing ] = useState( false )
-    const buttonDisabled = !input || pendingTx || ( parsedAmount && parsedAmount.equalTo( ZERO ) )
-    const [ approvalState, approve ] = useApproveCallback( parsedAmount, VOTING_ESCROW_ADDRESS[ chainId ] )
-
-    const lockDays = Number( week ? week : lockPeriod.week ) * 7
-    const newLockTime = Math.floor( getUnixTime( addDays( Date.now(), lockDays ) ) );
-    const lockTimeBtnDisabled = pendingLock || newLockTime <= Number( lockEnd ) || !input
-    console.log( new Date( newLockTime * 1000 ), newLockTime, lockDays )
-    const handleClaimRewards = async () => {
-
-        setPendingTx( true )
-        const success = await sendTx( () => ( harvestRewards() ) )
-        console.log( success )
-        if ( !success ) {
-            setPendingTx( false )
-            return
-        }
-        setTimeout( () => {
-            setPendingTx( false )
-        }, 4000 )
-    }
-
-    const handleWithdrawWithPenalty = async () => {
-
-        if ( !withdrawableBalance ) return;
-        setWithdrawing( true )
-        const amount = BigNumber.from( withdrawableBalance.penaltyAmount );
-        const success = await sendTx( () => ( withdrawEarnings( amount ) ) )
-        console.log( success, amount.toFixed( 4 ) )
-        if ( !success ) {
-            setWithdrawing( false )
-            return
-        }
-        setTimeout( () => {
-            setWithdrawing( false )
-        }, 4000 )
-    }
 
     const handleLock = async () => {
 
+        //console.log( new Date( newLockTime * 1000 ), newLockTime, lockDays )
         if ( !input ) return;
+
         setPendingLock( true )
 
         if ( approvalState === ApprovalState.NOT_APPROVED ) {
@@ -229,6 +171,43 @@ export default function Boostv3 () {
             setPendingLock( false )
         }, 4000 )
     }
+
+    const handleClaimRewards = async () => {
+
+        setPendingTx( true )
+        const success = await sendTx( () => ( harvestRewards() ) )
+        console.log( success )
+        if ( !success ) {
+            setPendingTx( false )
+            return
+        }
+
+        setTimeout( () => {
+            setPendingTx( false )
+        }, 4000 )
+    }
+
+    const handleWithdrawWithPenalty = async () => {
+
+        if ( !withdrawableBalance ) return;
+
+        setWithdrawing( true )
+
+        const amount = BigNumber.from( withdrawableBalance.penaltyAmount );
+        const success = await sendTx( () => ( withdrawEarnings( amount ) ) )
+
+        console.log( success, amount.toFixed( 4 ) )
+
+        if ( !success ) {
+            setWithdrawing( false )
+            return
+        }
+        setTimeout( () => {
+            setWithdrawing( false )
+        }, 4000 )
+    }
+
+
 
     return (
         <Container id="boostv3-page" className="py-4 md:py-8 lg:py-12" maxWidth="full">
@@ -625,4 +604,32 @@ export default function Boostv3 () {
             </div>
         </Container >
     )
+}
+
+const StatButton = ( props: StatButtonProps ) => {
+    const { icon, title, value } = props;
+
+    return <ButtonNew
+        endIcon={ icon }
+        className="bg-dark-700 hover:bg-darker px-0 py-4 justify-evenly h-auto"
+    >
+        <div className="flex flex-col space-y-2 text-left">
+            <div className="px-1 text-primary text-xs md:truncate">{ title }</div>
+            <div className="px-1 text-primary text-xl md:text-lg xl:text-xl md:truncate">{ value }</div>
+        </div>
+    </ButtonNew>
+}
+
+const sendTx = async ( txFunc: () => Promise<any> ): Promise<boolean> => {
+    let success = true
+    try {
+        const ret = await txFunc()
+        if ( ret?.error ) {
+            success = false
+        }
+    } catch ( e ) {
+        console.error( e )
+        success = false
+    }
+    return success
 }

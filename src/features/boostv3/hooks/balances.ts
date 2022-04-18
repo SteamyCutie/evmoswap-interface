@@ -10,6 +10,7 @@ import {
 } from 'app/state/multicall/hooks'
 import { useMemo } from 'react'
 import BigNumber from 'bignumber.js'
+import { useMultistakingContract } from './useContract'
 
 export function useLockedBalance() {
   const { account } = useActiveWeb3React()
@@ -85,7 +86,6 @@ export function useRewardsBalance() {
 
   const symbols = symbolsResult[0]?.result
   const decimals = decimalsResult[0]?.result
-  console.log(amounts)
   if (
     tokens &&
     amounts &&
@@ -106,4 +106,41 @@ export function useRewardsBalance() {
   }
 
   return resp
+}
+
+//Get all balance relating to staking
+export function useStakingBalance() {
+  const { account } = useActiveWeb3React()
+  const defaultResp = {
+    earnedBalances: undefined, //vesting rewards
+    withdrawableBalance: undefined, //staked
+    totalBalance: undefined,
+  }
+
+  if (!account) {
+    return defaultResp
+  }
+
+  const contract = useMultistakingContract()
+  const callsData = useMemo(
+    () => [
+      { methodName: 'earnedBalances', callInputs: [account] },
+      { methodName: 'withdrawableBalance', callInputs: [account] },
+      { methodName: 'totalBalance', callInputs: [account] },
+    ],
+    []
+  )
+
+  const results = useSingleContractMultipleMethods(contract, callsData)
+
+  if (results && Array.isArray(results) && results.length === callsData.length) {
+    const [{ result: earnedBalances }, { result: withdrawableBalance }, { result: totalBalance }] = results
+    return {
+      earnedBalances: { earningsData: earnedBalances?.earningsData, total: earnedBalances?.total },
+      withdrawableBalance: withdrawableBalance,
+      totalBalance: totalBalance?.[0],
+    }
+  }
+
+  return defaultResp
 }
