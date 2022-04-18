@@ -53,9 +53,9 @@ const FarmListItem: FC<FarmListItem> = ({ farm, onClick }) => {
       <div className={classNames('flex gap-2', TABLE_TBODY_TD_CLASSNAME(0, 6))}>
         {token0 && token1 && <CurrencyLogoArray currencies={[token0, token1]} dense size={32} />}
         <div className="flex flex-col items-start">
-          <Typography weight={700} className="flex gap-1 text-high-emphesis">
+          <Typography weight={700} className="flex gap-1 text-high-emphasis">
             {farm?.token0?.id === WNATIVE[chainId].address ? 'WEVMOS' : farm?.token0?.symbol}
-            <span className="text-low-emphesis">/</span>
+            <span className="text-low-emphasis">/</span>
             {farm?.token1?.id === WNATIVE[chainId].address ? 'WEVMOS' : farm?.token1?.symbol}
           </Typography>
         </div>
@@ -67,23 +67,23 @@ const FarmListItem: FC<FarmListItem> = ({ farm, onClick }) => {
         </div>
       </div>
       <div className={TABLE_TBODY_TD_CLASSNAME(2, 6)}>
-        <Typography weight={700} className="text-high-emphesis">
+        <Typography weight={700} className="text-high-emphasis">
           {formatNumber(farm.tvl, true)}
         </Typography>
       </div>
       <div className={TABLE_TBODY_TD_CLASSNAME(3, 6)}>
-        <Typography weight={700} className="text-high-emphesis">
-          {balance?.toFixed(12)}
+        <Typography weight={700} className="text-high-emphasis">
+          ${(Number(balance?.toExact()) * farm.lpPrice).toFixed(4)}
         </Typography>
       </div>
       <div className={classNames('flex flex-col !items-end !justify-center', TABLE_TBODY_TD_CLASSNAME(4, 6))}>
         {/* @ts-ignore TYPE NEEDS FIXING */}
-        <Typography weight={700} className="text-high-emphesis">
+        <Typography weight={700} className="text-high-emphasis">
           {farm.multiplier / 100}x
         </Typography>
       </div>
       <div className={classNames('flex flex-col !items-end', TABLE_TBODY_TD_CLASSNAME(5, 6))}>
-        <Typography weight={700} className="text-high-emphesis">
+        <Typography weight={700} className="text-high-emphasis">
           <div className="flex items-center">
             <LockClosedIcon className="h-4 text-yellow" />
             <div className="text-xs font-bold md:text-base">
