@@ -93,7 +93,7 @@ const ManageBar = ({ farm, handleDismiss }) => {
         </div>
 
         <div className="flex items-center justify-between pl-2">
-          <div className="text-base text-white">Balance: {toggle ? balance?.toExact() : stakedAmount?.toExact()}</div>
+          <div className="text-base text-white">Balance: {toggle ? balance?.toFixed(4) : stakedAmount?.toFixed(4)}</div>
           <div className="flex justify-end gap-2">
             {['25', '50', '75', '100'].map((multiplier, i) => (
               <Button
