@@ -14,7 +14,8 @@ export enum Feature {
   ZAP = 'Zap',
   IFO = 'Ifo',
   GAMEFI = 'GameFi',
-  FAUCET = 'faucet'
+  FAUCET = 'faucet',
+  PRISALE = 'prisale',
 }
 
 const features = {
@@ -32,6 +33,7 @@ const features = {
     // Feature.BRIDGE,
     // Feature.BOOST,
     // Feature.GAMEFI,
+    Feature.PRISALE,
   ],
 
   [ChainId.EVMOS_TESTNET]: [
@@ -44,6 +46,7 @@ const features = {
     // Feature.STAKING,
     // Feature.BOOST,
     Feature.FAUCET,
+    Feature.PRISALE,
   ],
 
   [ChainId.BSC_TESTNET]: [
@@ -56,6 +59,7 @@ const features = {
     // Feature.STAKING,
     Feature.BOOST,
     // Feature.GAMEFI,
+    Feature.PRISALE,
   ],
 }
 

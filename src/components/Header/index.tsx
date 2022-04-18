@@ -69,6 +69,17 @@ function AppBar(): JSX.Element {
                           </a>
                         </NavLink>
                       )}
+                      {chainId && featureEnabled(Feature.PRISALE, chainId) && (
+                        <Link href={'/prisale'}>
+                          <a
+                            id={`prisale-nav-link`}
+                            className="p-2 text-baseline text-primary hover:text-high-emphesis focus:text-high-emphesis md:p-3 whitespace-nowrap"
+                          >
+                            {' '}
+                            {i18n._(t`Prisale`)}
+                          </a>
+                        </Link>
+                      )}
                       {chainId && featureEnabled(Feature.LENDING, chainId) && (
                         <>
                           <NavLink href={'/lending'}>
@@ -234,6 +245,18 @@ function AppBar(): JSX.Element {
                     >
                       {' '}
                       {i18n._(t`Yield`)}
+                    </a>
+                  </Link>
+                )}
+
+                {chainId && featureEnabled(Feature.PRISALE, chainId) && (
+                  <Link href={'/prisale'}>
+                    <a
+                      id={`prisale-nav-link`}
+                      className="p-2 text-baseline text-primary hover:text-high-emphesis focus:text-high-emphesis md:p-3 whitespace-nowrap"
+                    >
+                      {' '}
+                      {i18n._(t`Prisale`)}
                     </a>
                   </Link>
                 )}
