@@ -537,7 +537,7 @@ export default function Boostv3 () {
                                 <tbody className="bg-dark-800">
 
                                     {
-                                        showVesting && vestingRows.length ? vestingRows.map( ( row: VestingRow, index ) => (
+                                        vestingRows.length ? vestingRows.map( ( row: VestingRow, index ) => (
                                             <tr key={ index }>
                                                 <td className="text-center p-4 pr-8 border-b border-dark-900">{ row.unlockTime }</td>
                                                 <td className="text-center p-4 pr-8 border-b border-dark-900">{ row.amount.toExact() } { token.symbol }</td>
