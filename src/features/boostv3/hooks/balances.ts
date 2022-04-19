@@ -128,7 +128,7 @@ export function useStakingBalance() {
       { methodName: 'withdrawableBalance', callInputs: [account] },
       { methodName: 'totalBalance', callInputs: [account] },
     ],
-    []
+    [account]
   )
 
   const results = useSingleContractMultipleMethods(contract, callsData)

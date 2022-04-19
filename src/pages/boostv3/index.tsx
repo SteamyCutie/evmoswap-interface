@@ -114,7 +114,7 @@ export default function Boostv3 () {
                 } )
             } )
         return rows;
-    }, [ earnedBalances, withdrawableBalance ] )
+    }, [ earnedBalances, withdrawableBalance, balance?.currency ] )
 
 
     const handleInput = ( v: string ) => {
