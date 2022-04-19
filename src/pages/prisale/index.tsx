@@ -96,7 +96,7 @@ export default function Prisale() {
   }
 
   return (
-    <div className="w-5/6 md:w-7xl mt-20">
+    <div className="w-5/6 md:max-w-7xl mt-20">
       <div className="mb-5">
         <div className="flex justify-between h-24 gap-1 md:gap-4">
           <div className="w-1/2 px-4 py-4 my-auto text-left rounded-lg md:px-10 bg-black-russian">
