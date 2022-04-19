@@ -17,6 +17,8 @@ import useMasterChef from './useMasterChef'
 import { PositionCard, RewardCard } from 'app/components/PositionCard'
 import { useDerivedMintInfo } from 'app/state/mint/hooks'
 import Dots from 'app/components/Dots'
+import { EvmoSwap } from 'config/tokens'
+import { usePendingReward } from 'app/features/farm/hooks'
 
 // @ts-ignore TYPE NEEDS FIXING
 const InvestmentDetails = ({ farm, handleDismiss }) => {
@@ -32,6 +34,10 @@ const InvestmentDetails = ({ farm, handleDismiss }) => {
 
   const { pair } = useDerivedMintInfo(token0 ?? undefined, token1 ?? undefined)
 
+  const { chainId } = useActiveWeb3React()  
+  const pendingReward = usePendingReward(farm)
+  const canHarvest = Number(pendingReward?.amounts[0]) > 0
+  
   async function onHarvest() {
     setPendingTx(true)
     try {
@@ -50,13 +56,13 @@ const InvestmentDetails = ({ farm, handleDismiss }) => {
   return (
     <>
       <HeadlessUiModal.BorderedContent className="flex flex-col gap-2 bg-dark-1000/40">
-        <PositionCard showUnwrapped={true} pair={pair} price={farm.lpPrice} />
+        <PositionCard showUnwrapped={true} pair={pair} farm={farm} />
       </HeadlessUiModal.BorderedContent>
       <HeadlessUiModal.BorderedContent className="flex flex-col gap-2 bg-dark-1000/40">
-        <RewardCard farm={farm} />
+        <RewardCard reward={pendingReward} />
       </HeadlessUiModal.BorderedContent>
-      <Button color="blue" disabled={pendingTx} onClick={onHarvest}>
-        {pendingTx ? <Dots>{i18n._(t`Harvesting`)}</Dots> : i18n._(t`Harvest Rewards`)}
+      <Button color={canHarvest ? 'blue': 'gray'} disabled={pendingTx || !canHarvest} onClick={onHarvest}>
+        {canHarvest? pendingTx ? <Dots>{i18n._(t`Harvesting`)}</Dots> : i18n._(t`Harvest Rewards`) : i18n._(t`No rewards yet`)}
       </Button>
     </>
   )
