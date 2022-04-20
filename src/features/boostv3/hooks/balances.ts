@@ -1,5 +1,5 @@
 import { Interface } from '@ethersproject/abi'
-import { CurrencyAmount, Currency, Token } from '@evmoswap/core-sdk'
+import { CurrencyAmount, Currency, Token, ChainId } from '@evmoswap/core-sdk'
 import { ERC20_ABI } from 'app/constants/abis/erc20'
 import { useRewardPoolContract, useVotingEscrowContract } from 'app/hooks'
 import { useActiveWeb3React } from 'app/services/web3'
@@ -11,6 +11,9 @@ import {
 import { useMemo } from 'react'
 import BigNumber from 'bignumber.js'
 import { useMultistakingContract } from './useContract'
+import { formatNumber } from 'app/functions'
+
+const EMOSPlaceholder = new Token(ChainId.ETHEREUM, '0x0000000000000000000000000000000000000001', 18)
 
 export function useLockedBalance() {
   const { account } = useActiveWeb3React()
@@ -35,7 +38,7 @@ export function useLockedBalance() {
       { methodName: 'balanceOf', callInputs: [account ? account : undefined] },
       { methodName: 'locked', callInputs: [account ? account : undefined] }, // user locked info
     ],
-    []
+    [account]
   )
 
   const results = useSingleContractMultipleMethods(booster, callsData)
@@ -46,8 +49,8 @@ export function useLockedBalance() {
       emosSupply: emosSupply?.[0],
       veEmosSupply: veEmosSupply?.[0],
       veEmos: veEmos?.[0],
-      lockEnd: lockInfo?.end,
-      lockAmount: lockInfo?.amount,
+      lockEnd: Number(lockInfo?.end),
+      lockAmount: CurrencyAmount.fromRawAmount(EMOSPlaceholder, lockInfo?.amount || '0'),
     }
   }
 

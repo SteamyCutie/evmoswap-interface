@@ -39,20 +39,22 @@ type VestingRow = {
 
 const INPUT_CHAR_LIMIT = 18
 const MAX_WEEK = 52 * 4
+const SECS_IN_WEEK = 7 * 86400
 
 const emosIcon = "/icons/icon-72x72.png";
 const tabStyle = 'rounded-lg p-3'
 const activeTabStyle = `${tabStyle} flex justify-center items-center w-full h-8 rounded font-bold md:font-medium lg:text-lg text-sm bg-blue`
 const inactiveTabStyle = `${tabStyle} flex justify-center items-center w-full h-8 rounded font-bold md:font-medium lg:text-lg text-sm bg-transparent text-secondary`
+const actionBtnColor = "gradient";
 
 //stake lock period
 const LOCK_PERIODS = [
     { multiplier: 1.2, week: 1, day: 7, title: '7 days', hint: 'Locked 7 days and enjoy {multiplier} rewards.' },
-    { multiplier: 1.2, week: 2, day: 14, title: '2 weeks', hint: 'Locked 14 days and enjoy {multiplier} rewards.' },
+    //{ multiplier: 1.2, week: 2, day: 14, title: '2 weeks', hint: 'Locked 14 days and enjoy {multiplier} rewards.' },
     { multiplier: 1.2, week: 13, day: 90, title: '3 months', hint: 'Locked 3 months and enjoy {multiplier} rewards.' },
-    { multiplier: 1.5, week: 26, day: 180, title: '6 months', hint: 'Locked 180 days and enjoy {multiplier} rewards.' },
+    //{ multiplier: 1.5, week: 26, day: 180, title: '6 months', hint: 'Locked 180 days and enjoy {multiplier} rewards.' },
     { multiplier: 2.5, week: 52, day: 360, title: '1 year', hint: 'Locked 2 years and enjoy {multiplier} rewards.' },
-    { multiplier: 2.5, week: 52 * 2, day: 360 * 2, title: '2 year', hint: 'Locked 2 years and enjoy {multiplier} rewards.' },
+    //{ multiplier: 2.5, week: 52 * 2, day: 360 * 2, title: '2 year', hint: 'Locked 2 years and enjoy {multiplier} rewards.' },
     { multiplier: 2.5, week: 52 * 4, day: 360 * 4, title: '4 years', hint: 'Locked 4 years and enjoy {multiplier} rewards.' },
 ]
 
@@ -63,7 +65,7 @@ export default function Boostv3 () {
     const balance = useTokenBalance( account ?? undefined, EvmoSwap[ chainId ] )
     const token = balance?.currency || { symbol: '' };
 
-    const { createLockWithMc } = useVotingEscrow()
+    const { createLockWithMc, increaseAmountWithMc, increaseUnlockTimeWithMc, withdrawWithMc } = useVotingEscrow()
     const { harvestRewards, withdrawEarnings } = useRewardPool();
     const { manualAPY: APR } = getAPY()
 
@@ -72,27 +74,32 @@ export default function Boostv3 () {
     const [ withdrawing, setWithdrawing ] = useState( false )
 
     const emosInfo = useTokenInfo( useEmosContract() )
-    const { lockEnd, emosSupply } = useLockedBalance()
+    const { lockEnd, lockAmount, emosSupply } = useLockedBalance()
     const { earnedBalances, withdrawableBalance } = useStakingBalance();
     const rewards = useRewardsBalance();
     const showVesting = withdrawableBalance ? BigNumber.from( withdrawableBalance.penaltyAmount ).gt( 0 ) : false
 
-    const [ activeTab, setActiveTab ] = useState( 1 );
+    const [ activeTab, setActiveTab ] = useState( 0 );
 
     const [ input, setInput ] = useState( '' )
     const [ usingBalance, setUsingBalance ] = useState( false )
-    const parsedAmount = usingBalance ? balance : tryParseAmount( input, balance?.currency )
+    const parsedAmount = useMemo( () => {
+        return usingBalance ? balance : tryParseAmount( input, balance?.currency );
+    }, [ input, balance ] );
+
     const [ approvalState, approve ] = useApproveCallback( parsedAmount, VOTING_ESCROW_ADDRESS[ chainId ] )
 
-    const insufficientFunds = ( balance && balance?.equalTo( ZERO ) ) || parsedAmount?.greaterThan( balance )
+    const insufficientFunds = !balance?.greaterThan( ZERO ) || ( parsedAmount?.greaterThan( ZERO ) && parsedAmount?.greaterThan( balance ) )
     const inputError = insufficientFunds
 
     const [ week, setWeek ] = useState( '' )
     const [ lockPeriod, setLockPeriod ] = useState( LOCK_PERIODS[ 0 ] );
     const lockDays = Number( week ? week : lockPeriod.week ) * 7
-    const newLockTime = Math.floor( getUnixTime( addDays( Date.now(), lockDays ) ) );
-    const lockTimeBtnDisabled = pendingLock || newLockTime <= Number( lockEnd ) || !input
-
+    const newLockTime = Math.floor( getUnixTime( addDays( Date.now(), lockDays ) ) / SECS_IN_WEEK ) * SECS_IN_WEEK;
+    const lockTimeBtnDisabled = pendingLock || newLockTime <= lockEnd;
+    const lockExpired = lockEnd && getUnixTime( Date.now() ) >= lockEnd;
+    const amountBtnDisabled = pendingLock || !input || insufficientFunds;
+    const lockBtnDisabled = pendingLock || !input;
 
     const vestingRows = useMemo( () => {
         const rows = [];
@@ -167,9 +174,40 @@ export default function Boostv3 () {
         }
 
         handleInput( '' )
-        setTimeout( () => {
+        setPendingLock( false )
+    }
+
+    const handleIncreaseAmount = async () => {
+
+        //console.log( new Date( newLockTime * 1000 ), newLockTime, lockDays )
+        if ( !input ) return;
+
+        setPendingLock( true )
+
+        const success = await sendTx( () => increaseAmountWithMc( parsedAmount ) )
+        if ( !success ) {
             setPendingLock( false )
-        }, 4000 )
+            return
+        }
+
+        handleInput( '' )
+        setPendingLock( false )
+    }
+
+    const handleIncreaseLock = async () => {
+
+        if ( lockTimeBtnDisabled ) return
+
+        setPendingLock( true )
+
+        const success = await sendTx( () => increaseUnlockTimeWithMc( newLockTime ) )
+        if ( !success ) {
+            setPendingLock( false )
+            return
+        }
+
+        handleInput( '' )
+        setPendingLock( false )
     }
 
     const handleClaimRewards = async () => {
@@ -182,9 +220,7 @@ export default function Boostv3 () {
             return
         }
 
-        setTimeout( () => {
-            setPendingTx( false )
-        }, 4000 )
+        setPendingTx( false )
     }
 
     const handleWithdrawWithPenalty = async () => {
@@ -202,12 +238,26 @@ export default function Boostv3 () {
             setWithdrawing( false )
             return
         }
-        setTimeout( () => {
-            setWithdrawing( false )
-        }, 4000 )
+
+        setWithdrawing( false )
     }
 
+    const handleWithdrawWith = async () => {
 
+        if ( !lockExpired ) return
+
+        setPendingLock( true )
+
+        const success = await sendTx( () => withdrawWithMc() )
+
+        if ( !success ) {
+            setPendingLock( false )
+            return
+        }
+
+        handleInput( '' )
+        setPendingLock( false )
+    }
 
     return (
         <Container id="boostv3-page" className="py-4 md:py-8 lg:py-12" maxWidth="full">
@@ -354,164 +404,156 @@ export default function Boostv3 () {
 
                             <div className="flex flex-row items-center justify-between w-full">
                                 <div className="text-lg text-high-emphesis">{ i18n._( t`Lock ${token.symbol}` ) }</div>
-                                <div className="grid grid-cols-1 gap-0 p-1 rounded border-[0.5px]">
-                                    <button
-                                        className={ activeTab === 1 ? activeTabStyle : inactiveTabStyle }
-                                        onClick={ () => {
-                                            setActiveTab( 1 )
-                                        } }
-                                    >
-                                        { i18n._( t`Lock` ) }
-                                    </button>
-
-                                    {/*<button
-                                        className={ activeTab === 0 ? activeTabStyle : inactiveTabStyle }
-                                        onClick={ () => {
-                                            setActiveTab( 0 )
-                                        } }
-                                    >
-                                        { i18n._( t`Stake` ) }
-                                    </button>*/}
-                                </div>
                             </div>
-
-                            { /** Stake tab content 
-                                activeTab === 0 &&
-                                <div className="mt-8">
-                                    <ul className="text-yellow text-sm text-high-emphesis list-[circle] ml-4">
-                                        <li>
-                                            { i18n._( t`Stake ${token.symbol} and earn platform fees in USDC without lock-up.` ) }
-                                        </li>
-                                    </ul>
-
-                                    <RowBetween className="mt-6">
-                                        <div>{ i18n._( t`Balance` ) }: { balance?.toSignificant( 4 ) } { balance?.currency?.symbol }</div>
-                                        <div>{ i18n._( t`APR` ) }: { formatPercent( APR ) }</div>
-                                    </RowBetween>
-                                    <div>
-                                        <Input.Numeric
-                                            value={ input }
-                                            onUserInput={ handleInput }
-                                            className={ classNames(
-                                                'w-full h-14 px-3 md:px-5 my-2 mb-6  rounded bg-dark-700 text-sm md:text-xl font-bold text-dark-900 whitespace-nowrap caret-high-emphesis',
-                                                inputError ? ' pl-9 md:pl-12' : ''
-                                            ) }
-                                            placeholder="0.0"
-                                        />
-                                        <button
-                                            className="absolute rounded p-2 -ml-16 mt-[0.9rem] border border-blue hover:bg-blue hover:bg-opacity-20"
-                                            onClick={ () => {
-                                                if ( !balance?.equalTo( ZERO ) ) {
-                                                    setInput( balance?.toSignificant( balance?.currency.decimals ) )
-                                                }
-                                            } }>
-                                            { i18n._( t`MAX` ) }
-                                        </button>
-                                    </div>
-
-                                    <div className="flex items-center">
-                                        {
-                                            !balance?.greaterThan( ZERO ) ? (
-                                                <Button color="red" className="truncate" disabled>
-                                                    { i18n._( t`Insufficient Balance` ) }
-                                                </Button>
-                                            ) : !account ? (
-                                                <Web3Connect color="blue" className="truncate" />
-                                            ) : <Button color="blue" className="bg-blue truncate" variant="filled">
-                                                { i18n._( t`Stake` ) }
-                                            </Button>
-                                        }
-                                    </div>
-                                </div>
-                            Stake tab content */ }
-
 
 
                             {/** Lock tab content */
-                                activeTab === 1 &&
+
                                 <div className="mt-8">
                                     <ul className="text-yellow text-sm text-high-emphesis list-[circle] ml-4 flex flex-col space-y-3">
-                                        <li>
-                                            { i18n._( t`Lock ${token.symbol} and earn platform fees in USDC and penalty fees in unlocked PBR.` ) }
-                                        </li>
                                         <li>
                                             { i18n._( t`Locked ${token.symbol} will continue to earn fees after the locks expire if you do not withdraw.` ) }
                                         </li>
                                     </ul>
 
-                                    <RowBetween className="mt-8">
-                                        <div>{ i18n._( t`Balance` ) }: { balance?.toSignificant( 4 ) } { balance?.currency?.symbol }</div>
-                                        <div>{ i18n._( t`APR` ) }: { formatPercent( APR ) }</div>
+                                    { lockAmount.greaterThan( ZERO ) && <RowBetween className="mt-8">
+                                        <div>{ i18n._( t`Locked` ) }: { lockAmount?.toSignificant( 4 ) } { balance?.currency?.symbol }</div>
+                                        <div>{ lockExpired ? <span>{ i18n._( t`Expired` ) }!</span> : <span>{ i18n._( t`Ends` ) }: { timestampToDate( lockEnd ) }</span> }</div>
                                     </RowBetween>
-                                    <div>
-                                        <Input.Numeric
-                                            value={ input }
-                                            onUserInput={ handleInput }
-                                            className={ classNames(
-                                                'w-full h-14 px-3 md:px-5 my-2 mb-6  rounded bg-dark-700 text-sm md:text-xl font-bold whitespace-nowrap caret-high-emphesis',
-                                                inputError ? ' pl-9 md:pl-12' : ''
-                                            ) }
-                                            placeholder="0.0"
-                                        />
-                                        <button className="absolute rounded p-2 -ml-16 mt-[0.9rem] border border-blue hover:bg-blue hover:bg-opacity-20"
-                                            onClick={ () => {
-                                                if ( !balance?.equalTo( ZERO ) ) {
-                                                    setInput( balance?.toSignificant( balance?.currency.decimals ) )
-                                                }
-                                            } }>
-                                            { i18n._( t`MAX` ) }
-                                        </button>
-                                    </div>
+                                    }
 
-                                    {/** lock actions */ }
-                                    <div className="my-4">
-                                        <div className="grid grid-cols-2 gap-2 mt-4 md:grid-cols-3">
-                                            {
-                                                LOCK_PERIODS.map( ( period, index ) => (
-                                                    <Button
-                                                        key={ index }
-                                                        variant={ lockPeriod.day === period.day && !week ? "filled" : "outlined" }
-                                                        color={ "blue" }
-                                                        size={ "sm" }
-                                                        className={ "w-auto ml-2 mb-2" }
-                                                        onClick={ () => handleLockPeriod( period ) }
-                                                    >
-                                                        { period.title }
-                                                    </Button>
-                                                ) )
-                                            }
-                                            <Input.Numeric
-                                                value={ week }
-                                                onUserInput={ handleWeek }
-                                                className={ classNames(
-                                                    'w-48 h-auto min-h-[3rem] flex-none h-auto px-3 md:px-5 ml-2 mb-2 rounded  text-sm md:text-xl font-bold caret-high-emphesis',
-                                                    inputError ? ' pl-9 md:pl-12' : '',
-                                                    week ? 'bg-blue text-white bg-opacity-50' : 'bg-dark-700 text-dark-900'
-                                                ) }
-                                                placeholder={ i18n._( t`Custom week` ) }
-                                                max={ MAX_WEEK }
-                                                min={ 1 }
-                                                step={ 1 }
-                                            />
+                                    { !lockExpired && <React.Fragment>
+
+                                        {/** Lock update tab toggle */ }
+                                        { lockAmount.greaterThan( ZERO ) && <div className="grid grid-cols-2 gap-0 p-1 rounded border-[0.5px] mt-4 mb-8">
+                                            <button
+                                                className={ activeTab === 0 ? activeTabStyle : inactiveTabStyle }
+                                                onClick={ () => {
+                                                    setActiveTab( 0 )
+                                                } }
+                                            >
+                                                { i18n._( t`Update Amount` ) }
+                                            </button>
+
+                                            { <button
+                                                className={ activeTab === 1 ? activeTabStyle : inactiveTabStyle }
+                                                onClick={ () => {
+                                                    setActiveTab( 1 )
+                                                } }
+                                            >
+                                                { i18n._( t`Update Period` ) }
+                                            </button> }
                                         </div>
-                                        {/*<p className="text-red w-full mt-2">* { lockPeriod.hint.replace( '{multiplier}', String( lockPeriod.multiplier + "x" ) ) }</p>*/ }
-                                    </div>
+                                        }
 
+                                        {/** input */ }
+                                        { ( activeTab === 0 || !lockAmount.greaterThan( ZERO ) ) &&
+                                            <RowBetween className="mt-8">
+                                                <div>{ i18n._( t`Balance` ) }: { balance?.toSignificant( 4 ) } { balance?.currency?.symbol }</div>
+                                                <div>{ i18n._( t`APR` ) }: { formatPercent( APR ) }</div>
+                                            </RowBetween>
+                                        }
+                                        { ( activeTab === 0 || !lockAmount.greaterThan( ZERO ) ) &&
+                                            <div>
+                                                <Input.Numeric
+                                                    value={ input }
+                                                    onUserInput={ handleInput }
+                                                    className={ classNames(
+                                                        'w-full h-14 px-3 md:px-5 my-2 mb-6  rounded bg-dark-700 text-sm md:text-xl font-bold whitespace-nowrap caret-high-emphesis',
+                                                        inputError ? 'text-red' : ''
+                                                    ) }
+                                                    placeholder="0.0"
+                                                />
+                                                <button className="absolute rounded p-2 -ml-16 mt-[0.9rem] border border-blue hover:bg-blue hover:bg-opacity-20"
+                                                    onClick={ () => {
+                                                        if ( !balance?.equalTo( ZERO ) ) {
+                                                            setInput( balance?.toSignificant( balance?.currency.decimals ) )
+                                                        }
+                                                    } }>
+                                                    { i18n._( t`MAX` ) }
+                                                </button>
+                                            </div>
+                                        }
 
+                                        {/** lock actions */ }
+                                        { ( activeTab === 1 || !lockAmount.greaterThan( ZERO ) ) &&
+                                            <div className="my-4">
+                                                <div className="grid grid-cols-2 gap-2 mt-4 md:grid-cols-3">
+                                                    {
+                                                        LOCK_PERIODS.map( ( period, index ) => (
+                                                            <Button
+                                                                key={ index }
+                                                                variant={ lockPeriod.day === period.day && !week ? "filled" : "outlined" }
+                                                                color={ "blue" }
+                                                                size={ "sm" }
+                                                                className={ "w-auto ml-2 mb-2" }
+                                                                onClick={ () => handleLockPeriod( period ) }
+                                                            >
+                                                                { period.title }
+                                                            </Button>
+                                                        ) )
+                                                    }
+                                                    <Input.Numeric
+                                                        value={ week }
+                                                        onUserInput={ handleWeek }
+                                                        className={ classNames(
+                                                            'w-48 h-auto min-h-[3rem] flex-none h-auto px-3 md:px-5 ml-2 mb-2 rounded  text-sm md:text-xl font-bold caret-high-emphesis',
+                                                            inputError ? ' pl-9 md:pl-12' : '',
+                                                            week ? 'bg-blue text-white bg-opacity-50' : 'bg-dark-700 text-dark-900'
+                                                        ) }
+                                                        placeholder={ i18n._( t`Custom week` ) }
+                                                        max={ MAX_WEEK }
+                                                        min={ 1 }
+                                                        step={ 1 }
+                                                    />
+                                                </div>
+                                            </div>
+                                        }
+                                    </React.Fragment> }
 
-                                    <div className="flex items-center mb-5">
+                                    {/** action buttons */ }
+                                    <div className="flex-col space-y-4 items-center mb-5">
                                         {
-                                            !balance?.greaterThan( ZERO ) ? (
-                                                <Button color="red" className="truncate" disabled>
-                                                    { i18n._( t`Insufficient Balance` ) }
-                                                </Button>
-                                            ) : !account ? (
-                                                <Web3Connect color="blue" className="truncate" />
-                                            ) : <Button onClick={ handleLock } disabled={ lockTimeBtnDisabled } color="blue" className="bg-blue truncate disabled:bg-grey" variant="filled">
-                                                { pendingLock ? <Dots>{ i18n._( t`Locking` ) } </Dots> : i18n._( t`Lock` ) }
+                                            !account && <Web3Connect color="blue" className="truncate" />
+                                        }
+                                        {
+                                            account && !lockExpired && <>
+                                                {
+                                                    !lockAmount.greaterThan( ZERO ) ? (
+                                                        insufficientFunds ? (
+                                                            <Button color="red" className="truncate" disabled>
+                                                                { i18n._( t`Insufficient Balance` ) }
+                                                            </Button>
+                                                        ) : ( <Button onClick={ handleLock } disabled={ lockBtnDisabled } color={ lockBtnDisabled ? "gray" : actionBtnColor } className="bg-blue truncate disabled:bg-grey" variant="filled">
+                                                            { pendingLock ? <Dots>{ i18n._( t`Locking` ) } </Dots> : i18n._( t`${!input ? 'Enter amount' : 'Lock'}` ) }
+                                                        </Button>
+                                                        )
+                                                    ) : (
+                                                        <React.Fragment>
+                                                            { activeTab === 0 && <Button onClick={ handleIncreaseAmount } disabled={ amountBtnDisabled } color={ amountBtnDisabled ? "gray" : actionBtnColor } className="bg-blue truncate disabled:bg-grey w-full" variant="filled">
+                                                                { pendingLock ? <Dots>{ i18n._( t`Increasing amount` ) } </Dots> : i18n._( t`${!input ? 'Enter amount' : ( insufficientFunds ? 'Insufficient Balance' : 'Increase Amount' )}` ) }
+                                                            </Button> }
+
+                                                            { activeTab === 1 && <Button onClick={ handleIncreaseLock } disabled={ lockTimeBtnDisabled } color={ lockTimeBtnDisabled ? "blue" : actionBtnColor } className="bg-blue truncate disabled:bg-grey w-full" variant="filled">
+                                                                { pendingLock ? <Dots>{ i18n._( t`Increasing lock period` ) } </Dots> : i18n._( t`${!week && !lockPeriod ? 'Select period' : ( lockTimeBtnDisabled ? 'Higher period required' : 'Increase Lock Period' )}` ) }
+                                                            </Button> }
+                                                        </React.Fragment>
+                                                    )
+                                                }
+                                            </>
+                                        }
+                                        {
+                                            ( !!account && !!lockExpired ) && <Button
+                                                color="gradient"
+                                                className="mt-4"
+                                                onClick={ handleWithdrawWith }
+                                                disabled={ !lockExpired }
+                                            >
+                                                { pendingLock ? <Dots>{ i18n._( t`Withdrawing` ) } </Dots> : <span>{ i18n._( t`Withdraw` ) } { token?.symbol } !</span> }
                                             </Button>
                                         }
                                     </div>
+
                                 </div>
                             /** End Lock tab content */ }
 
@@ -559,47 +601,6 @@ export default function Boostv3 () {
                             </table>
                         </div>
                     </div>
-
-                    {/** Staked table 
-                    <div className="w-full mt-12">
-                        <RowBetween className="md:items-center flex-col md:flex-row">
-                            <h2 className="font-bold text-lg">{ i18n._( t`Staked EVMOS` ) }</h2>
-                            <div className="flex space-x-2">
-                                <Button variant="outlined" color="green" className="border-0" disabled>{ i18n._( t`Withdraw all staked` ) }</Button>
-                                <Button variant="outlined" color="red">{ i18n._( t`Withdraw all unlocked` ) }</Button>
-                            </div>
-                        </RowBetween>
-                        <div className="relative overflow-auto">
-                            <table className="border-collapse table-auto w-full text-sm mt-3">
-                                <thead className="bg-dark-900 bg-opacity-80">
-                                    <tr>
-                                        <th className="text-center p-4 rounded-tl">{ i18n._( t`Staked Time` ) }</th>
-                                        <th className="text-center p-4">{ i18n._( t`Lock State` ) }</th>
-                                        <th className="text-center p-4">{ i18n._( t`Amount` ) }</th>
-                                        <th className="text-center p-4">{ i18n._( t`Multiplier` ) }</th>
-                                        <th className="text-center p-4 rounded-tr">{ i18n._( t`APR` ) }</th>
-
-                                    </tr>
-                                </thead>
-                                <tbody className="bg-dark-800">
-
-                                    {
-                                        [ 1, 2 ].map( ( index ) => (
-                                            <tr key={ index }>
-                                                <td className="text-center p-4 pr-8 border-b border-dark-900">18th January 199</td>
-                                                <td className="text-center p-4 pr-8 border-b border-dark-900">Locked</td>
-                                                <td className="text-center p-4 pr-8 border-b border-dark-900">200 { token.symbol }</td>
-                                                <td className="text-center p-4 pr-8 border-b border-dark-900">1.2x</td>
-                                                <td className="text-center p-4 pr-8 border-b border-dark-900">
-                                                    23.00%
-                                                </td>
-                                            </tr>
-                                        ) )
-                                    }
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>*/ }
                 </div>
             </div>
         </Container >
