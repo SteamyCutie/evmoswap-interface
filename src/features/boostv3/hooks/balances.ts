@@ -101,7 +101,7 @@ export function useRewardsBalance() {
 
       resp.tokens[index] = token
       resp.amounts[index] = amount
-      resp.total.plus(amount.toExact())
+      resp.total = resp.total.plus(amount.toExact())
     })
   }
 

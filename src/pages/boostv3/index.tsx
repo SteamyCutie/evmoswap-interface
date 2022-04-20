@@ -317,7 +317,7 @@ export default function Boostv3 () {
                         {/** Claim reward */ }
                         <div className="p-4 space-y-4 rounded bg-dark-900 bg-opacity-80">
                             <div className="flex flex-col divide-y divide-dark-700 w-full">
-                                <div className="mb-4 text-lg text-high-emphesis">{ i18n._( t`${token.symbol} Staking and Lock Rewards` ) }</div>
+                                <div className="mb-4 text-lg text-high-emphesis">{ i18n._( t`${token.symbol} Lock Rewards` ) }</div>
                                 <span></span>
                             </div>
                             <div className="grid grid-cols-1 lg:grid-cols-3 gap-2 lg:gap-0 w-full justify-between p-2 py-4">
