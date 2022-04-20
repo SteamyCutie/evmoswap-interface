@@ -374,7 +374,7 @@ export function RewardCard({ reward }) {
           </div>
           <div className="flex items-center gap-2">
             <CurrencyLogo currency={NATIVE} size={20} />
-            <div>{`${Number(rewardAmounts).toFixed(2)} ${rewardToken?.symbol}`}</div>
+            <div>{`${Number(rewardAmounts).toString()} ${rewardToken?.symbol}`}</div>
           </div>
         </AutoColumn>
       </div>

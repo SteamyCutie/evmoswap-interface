@@ -77,7 +77,7 @@ const FarmList = ({ farms }) => {
             // onClick={() => requestSort('tvl')}
           >
             <Typography variant="sm" weight={700}>
-              {i18n._(t`MyLPs`)}
+              {i18n._(t`Deposits`)}
             </Typography>
             {/* <SortIcon id={sortConfig.key} direction={sortConfig.direction} active={sortConfig.key === 'tvl'} /> */}
           </div>
