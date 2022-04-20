@@ -260,12 +260,12 @@ export default function Boostv3 () {
     }
 
     return (
-        <Container id="boostv3-page" className="py-4 md:py-8 lg:py-12" maxWidth="full">
+        <Container id="boostv3-page" className="py-4 md:py-8 lg:py-12" maxWidth="7xl">
             <Head>
                 <title key="title">Boostv3 | EvmoSwap</title>
                 <meta key="description" name="description" content="Boost EvmoSwap" />
             </Head>
-            <div className="flex flex-col justify-start flex-grow w-full h-full px-4 md:px-16 py-4">
+            <div className="flex flex-col justify-start flex-grow w-full h-full px-4 md:px-6 py-4">
                 <div className="flex flex-col md:flex-row w-full gap-8">
 
                     {/** col 1 */ }
