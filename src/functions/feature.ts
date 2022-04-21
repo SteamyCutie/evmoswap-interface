@@ -46,7 +46,7 @@ const features = {
     // Feature.STAKING,
     // Feature.BOOST,
     Feature.FAUCET,
-    // Feature.PRISALE,
+    Feature.PRISALE,
   ],
 
   [ChainId.BSC_TESTNET]: [

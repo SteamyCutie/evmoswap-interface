@@ -13,6 +13,8 @@ import { useActiveWeb3React } from '../../services/web3'
 import { EvmoSwap } from 'config/tokens'
 import { usePendingReward } from 'app/features/farm/hooks'
 import { useTokenBalance } from 'app/state/wallet/hooks'
+import { useUserInfo } from 'features/farm/hooks'
+import { useDerivedMintInfo } from 'app/state/mint/hooks'
 
 interface FarmListItem {
   farm: any
@@ -45,9 +47,9 @@ const FarmListItem: FC<FarmListItem> = ({ farm, onClick }) => {
     farm.token1 ? 18 : farm.token0 ? farm.token0.decimals : 18,
     'SLP'
   )
-  const balance = useTokenBalance(account, liquidityToken)
+  const { stakedAmount: userPoolBalance } = useUserInfo(farm, liquidityToken)
 
-  console.log('farm: ', farm)
+  // console.log('farm: ', farm)
   return (
     <div className={classNames(TABLE_TBODY_TR_CLASSNAME, 'grid grid-cols-6')} onClick={onClick}>
       <div className={classNames('flex gap-2', TABLE_TBODY_TD_CLASSNAME(0, 6))}>
@@ -73,7 +75,7 @@ const FarmListItem: FC<FarmListItem> = ({ farm, onClick }) => {
       </div>
       <div className={TABLE_TBODY_TD_CLASSNAME(3, 6)}>
         <Typography weight={700} className="text-high-emphasis">
-          ${(Number(balance?.toExact()) * farm.lpPrice).toFixed(4)}
+          ${(Number(userPoolBalance?.toExact()) * farm?.lpPrice).toFixed(2)}
         </Typography>
       </div>
       <div className={classNames('flex flex-col !items-end !justify-center', TABLE_TBODY_TD_CLASSNAME(4, 6))}>
