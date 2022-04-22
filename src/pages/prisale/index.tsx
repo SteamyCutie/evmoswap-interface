@@ -5,21 +5,21 @@ import { t } from '@lingui/macro'
 import { useLingui } from '@lingui/react'
 import NetworkGuard from '../../guards/Network'
 import { ChainId } from '@evmoswap/core-sdk'
-import { Currency, CurrencyAmount, Token } from '@evmoswap/core-sdk'
+import { NATIVE } from '@evmoswap/core-sdk'
 import Button from 'components/Button'
 import Dots from 'components/Dots'
 import Loader from 'components/Loader'
 import { useActiveWeb3React } from 'services/web3'
-import {
-  useClaimCallback as useProtocolClaimCallback,
-  useUserUnclaimedAmount as useUserUnclaimedProtocolAmount,
-} from 'state/claim/protocol/hooks'
-import { useModalOpen, useToggleSelfClaimModal } from 'state/application/hooks'
-import { useUserHasSubmittedClaim } from 'state/transactions/hooks'
-import { ApplicationModal } from 'state/application/actions'
-import { getBalanceNumber } from 'functions/formatBalance'
+// import {
+//   useClaimCallback as useProtocolClaimCallback,
+//   useUserUnclaimedAmount as useUserUnclaimedProtocolAmount,
+// } from 'state/claim/protocol/hooks'
+// import { useModalOpen, useToggleSelfClaimModal } from 'state/application/hooks'
+// import { useUserHasSubmittedClaim } from 'state/transactions/hooks'
+// import { ApplicationModal } from 'state/application/actions'
+// import { getBalanceNumber } from 'functions/formatBalance'
 import { usePrivateSaleContract } from 'hooks/useContract'
-import { usePurchased, useClaimable, useClaimed } from 'hooks/useVestingInfo'
+// import { usePurchased, useClaimable, useClaimed } from 'hooks/useVestingInfo'
 import { useTransactionAdder } from '../../state/transactions/hooks'
 import { CheckIcon } from '@heroicons/react/solid'
 import ProgressBar from 'app/components/ProgressBar'
@@ -30,34 +30,42 @@ import { prisaleToken } from 'app/constants/prisale'
 import { tryParseAmount } from 'app/functions'
 import { useApproveCallback, ApprovalState } from 'app/hooks'
 import { PRIVATE_SALE_ADDRESS } from 'app/constants/addresses'
+import { useETHBalances } from 'app/state/wallet/hooks'
 
 export default function Prisale() {
   const { i18n } = useLingui()
   const { account, chainId } = useActiveWeb3React()
   const addTransaction = useTransactionAdder()
 
+  const [toggle, setToggle] = useState(false)
   const [investValue, setInvestValue] = useState('')
+  const userEthBalanceBignumber = useETHBalances(account ? [account] : [])?.[account ?? '']
+  const nativeNBalance = Number(userEthBalanceBignumber?.toExact())
   const usdcBalance = Number(useTokenBalance(account ?? undefined, USDC[chainId])?.toSignificant(8))
   const usdcBalanceBignumber = useTokenBalance(account ?? undefined, USDC[chainId])
   const tokenBalance = Number(useTokenBalance(account ?? undefined, prisaleToken[chainId])?.toSignificant(8))
 
   const prisaleContract = usePrivateSaleContract()
 
-  const parsedStakeAmount = tryParseAmount(investValue, usdcBalanceBignumber?.currency)
+  const parsedStakeAmount = tryParseAmount(Number(investValue).toFixed(6), usdcBalanceBignumber?.currency)
   const [approvalState, approve] = useApproveCallback(parsedStakeAmount, PRIVATE_SALE_ADDRESS[chainId])
 
   const isWhitelisted = useRef(false)
   const purchasedToken = useRef(0)
   const claimableToken = useRef(0)
-  const minTokensAmount = useRef(0)
-  const maxTokensAmount = useRef(0)
+  const minTokensAmount = useRef([0,0])
+  const maxTokensAmount = useRef([0,0])
   const privateSaleStart = useRef(0)
   const privateSaleEnd = useRef(0)
+  const basePrice = useRef(0)
   const getData = async () => {
     if (!account) return
     const tokenPrice = await prisaleContract.tokenPrice()
-    minTokensAmount.current = ((Number(await prisaleContract.minTokensAmount()) / 1e18) * tokenPrice) / 10 ** 6
-    maxTokensAmount.current = ((Number(await prisaleContract.maxTokensAmount()) / 1e18) * tokenPrice) / 10 ** 6
+    basePrice.current = await prisaleContract.basePrice()
+    console.log("baseprice: ", Number(basePrice.current), "decimal: ", Number(tokenPrice))
+
+    minTokensAmount.current = [((Number(await prisaleContract.minTokensAmount()) / 1e18) * Number(tokenPrice) / Number(basePrice.current)), ((Number(await prisaleContract.minTokensAmount()) / 1e18) * tokenPrice) / 10 ** 6]
+    maxTokensAmount.current = [((Number(await prisaleContract.maxTokensAmount()) / 1e18) * Number(tokenPrice) / Number(basePrice.current)), ((Number(await prisaleContract.maxTokensAmount()) / 1e18) * tokenPrice) / 10 ** 6]
     privateSaleStart.current = Number(await prisaleContract.privateSaleStart())
     privateSaleEnd.current = Number(await prisaleContract.privateSaleEnd())
     isWhitelisted.current = await prisaleContract.whitelisted(account)
@@ -68,11 +76,25 @@ export default function Prisale() {
 
   const [pendingTx, setPendingTx] = useState(false)
 
-  const handleBuyToken = async () => {
+  const handleBuyTokenWithUSDC = async () => {
     setPendingTx(true)
     try {
       const args = [USDC[chainId].address, Number(investValue) * 10 ** 6]
       const tx = await prisaleContract.purchaseTokenWithCoin(...args)
+      addTransaction(tx, {
+        summary: `${i18n._(t`Buy`)} ${prisaleToken[chainId].symbol}`,
+      })
+    } catch (error) {
+      console.error(error)
+    }
+    setPendingTx(false)
+  }
+
+  const handleBuyTokenWithNATIVE = async () => {
+    setPendingTx(true)
+    try {
+      const args = []
+      const tx = await prisaleContract.purchaseTokenWithETH(...args)
       addTransaction(tx, {
         summary: `${i18n._(t`Buy`)} ${prisaleToken[chainId].symbol}`,
       })
@@ -96,12 +118,20 @@ export default function Prisale() {
   }
 
   return (
-    <div className="w-5/6 md:max-w-7xl mt-20">
+    <div className="w-5/6 mt-20 md:max-w-7xl">
+      <div className='grid w-1/2 grid-cols-2 mx-auto mb-4 text-2xl font-bold text-gray-700 bg-dark-600 rounded-3xl'>
+        <div className={`text-center my-auto py-2 rounded-l-3xl hover:cursor-pointer hover:text-white ${toggle? '': 'text-yellow bg-blue'}`} onClick={() => setToggle(false)}>
+          Buy with USDC
+        </div>
+        <div className={`text-center my-auto py-2 rounded-r-3xl hover:cursor-pointer hover:text-white ${toggle? 'text-yellow bg-blue': ''}`} onClick={() => setToggle(true)}>
+          Buy with EVMOS
+        </div>
+      </div>
       <div className="mb-5">
         <div className="flex justify-between h-24 gap-1 md:gap-4">
           <div className="w-1/2 px-4 py-4 my-auto text-left rounded-lg md:px-10 bg-black-russian">
-            <div className="text-1x1l">USDC Balance</div>
-            <div className="text-2xl font-bold text-white">{usdcBalance ? usdcBalance : 0}</div>
+            <div className="text-1x1l">{toggle? 'EVMOS': 'USDC'} Balance</div>
+            <div className="text-2xl font-bold text-white">{toggle? nativeNBalance.toFixed(3): usdcBalance ? usdcBalance : 0}</div>
           </div>
           <div className="w-1/2 px-4 py-4 my-auto text-left rounded-lg md:px-10 bg-black-russian">
             <div className="text-1xl">Token Balance</div>
@@ -155,20 +185,23 @@ export default function Prisale() {
           <svg width="8" height="8" viewBox="0 0 8 8" fill="none" xmlns="http://www.w3.org/2000/svg">
             <circle cx="4" cy="4" r="4" fill="#F5841F" />
           </svg>
-          {i18n._(
-            t`The investment limit is set at Min ${minTokensAmount.current.toFixed()} USDC To Max ${maxTokensAmount.current.toFixed()} USDC per wallet.`
+          {toggle?
+            i18n._(
+              t`The investment limit is set at Min ${minTokensAmount.current[0].toFixed()} EVMOS To Max ${maxTokensAmount.current[0].toFixed()} EVMOS per wallet.`
+            ): i18n._(
+              t`The investment limit is set at Min ${minTokensAmount.current[1].toFixed()} USDC To Max ${maxTokensAmount.current[1].toFixed()} USDC per wallet.`
           )}
         </div>
 
         <div className="justify-center md:flex md:gap-5">
           <div className="px-5 py-9 border-[1px] border-gray-700 rounded-xl space-y-4 md:w-1/2">
             <div className="flex justify-between gap-1 px-1">
-              {i18n._(t`Your investment (USDC)`)}
+              {i18n._(t`Your investment (${toggle? 'EVMOS': 'USDC'})`)}
               <button
                 className="text-light-blue"
                 onClick={() => {
-                  if (usdcBalance > 0) {
-                    setInvestValue(usdcBalance?.toFixed(18))
+                  if (toggle? nativeNBalance > 0: usdcBalance > 0) {
+                    setInvestValue(toggle? nativeNBalance.toString(): usdcBalance?.toFixed(6))
                   }
                 }}
               >
@@ -180,17 +213,20 @@ export default function Prisale() {
               value={investValue}
               onUserInput={setInvestValue}
             />
-            <div className="justify-center gap-4 space-y-2 lg:space-y-0 lg:flex ">
+            <div className="justify-center gap-4 space-y-2 xl:space-y-0 xl:flex ">
+              {toggle ? <></>:
               <Button
-                color="green"
+                color={approvalState === ApprovalState.APPROVED? "gray": "green"}
                 size="sm"
                 className="h-12 opacity-90"
-                disabled={approvalState === ApprovalState.PENDING}
+                disabled={approvalState === ApprovalState.PENDING || approvalState === ApprovalState.APPROVED}
                 onClick={approve}
               >
                 {approvalState === ApprovalState.PENDING ? <Dots>{i18n._(t`Approving`)}</Dots> : i18n._(t`Approve`)}
-              </Button>
-              {Number(investValue) < 10000 || Number(investValue) > 50000 ? (
+              </Button>}
+              {Number(investValue) < (toggle? minTokensAmount.current[0]: minTokensAmount.current[0])  
+                || Number(investValue) > (toggle? maxTokensAmount.current[0]: maxTokensAmount.current[0]) 
+                ? (
                 <Button color="gray" size="sm" className="h-12" disabled={true}>
                   Please notice the limit
                 </Button>
@@ -199,7 +235,11 @@ export default function Prisale() {
                   Buy ${prisaleToken[chainId].symbol} Now
                 </Button>
               ) : (
-                <Button color="blue" size="sm" className="h-12" onClick={handleBuyToken}>
+                toggle ?
+                <Button color="blue" size="sm" className="h-12" onClick={handleBuyTokenWithNATIVE}>
+                  Buy ${prisaleToken[chainId].symbol} Now
+                </Button> :
+                <Button color="blue" size="sm" className="h-12" onClick={handleBuyTokenWithUSDC}>
                   Buy ${prisaleToken[chainId].symbol} Now
                 </Button>
               )}
@@ -228,7 +268,7 @@ export default function Prisale() {
           </div>
         </div>
 
-        <div className="mt-11">
+        {/* <div className="mt-11">
           <div className="mb-5 text-base text-white">* Private Sale description</div>
           <div className="pl-2 space-y-3 text-sm text-gray-500">
             <div>1, The Private Sale price: 0.12 USDC/{prisaleToken[chainId].symbol}</div>
@@ -241,7 +281,7 @@ export default function Prisale() {
             <div>5, Participation method: whitelist allowed, the first come, first served purchase method.</div>
             <div className="overflow-x-auto">6, Private Sale contract: 0xD5bDcd9477ac5F8Bd79833f79F64AcAdA709117f</div>
           </div>
-        </div>
+        </div> */}
       </div>
     </div>
   )
