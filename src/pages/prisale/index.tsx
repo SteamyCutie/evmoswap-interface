@@ -32,12 +32,16 @@ import { useApproveCallback, ApprovalState } from 'app/hooks'
 import { PRIVATE_SALE_ADDRESS } from 'app/constants/addresses'
 import { useETHBalances } from 'app/state/wallet/hooks'
 
+const tabStyle = 'flex justify-center items-center h-full w-full rounded-lg cursor-pointer text-sm md:text-base'
+const activeTabStyle = `${tabStyle} text-high-emphaise font-bold bg-dark-900`
+const inactiveTabStyle = `${tabStyle} text-secondary`
+
 export default function Prisale() {
   const { i18n } = useLingui()
   const { account, chainId } = useActiveWeb3React()
   const addTransaction = useTransactionAdder()
 
-  const [toggle, setToggle] = useState(false)
+  const [toggle, setToggle] = useState(true)
   const [investValue, setInvestValue] = useState('')
   const userEthBalanceBignumber = useETHBalances(account ? [account] : [])?.[account ?? '']
   const nativeNBalance = Number(userEthBalanceBignumber?.toExact())
@@ -62,8 +66,6 @@ export default function Prisale() {
     if (!account) return
     const tokenPrice = await prisaleContract.tokenPrice()
     basePrice.current = await prisaleContract.basePrice()
-    console.log("baseprice: ", Number(basePrice.current), "decimal: ", Number(tokenPrice))
-
     minTokensAmount.current = [((Number(await prisaleContract.minTokensAmount()) / 1e18) * Number(tokenPrice) / Number(basePrice.current)), ((Number(await prisaleContract.minTokensAmount()) / 1e18) * tokenPrice) / 10 ** 6]
     maxTokensAmount.current = [((Number(await prisaleContract.maxTokensAmount()) / 1e18) * Number(tokenPrice) / Number(basePrice.current)), ((Number(await prisaleContract.maxTokensAmount()) / 1e18) * tokenPrice) / 10 ** 6]
     privateSaleStart.current = Number(await prisaleContract.privateSaleStart())
@@ -74,6 +76,10 @@ export default function Prisale() {
   }
   getData()
 
+  const currentTime = Number((new Date().getTime() / 1e3).toFixed(0))
+  const remainingDay = Math.floor((privateSaleEnd.current - currentTime) / 86400)
+  const remainingHour =  Math.floor((privateSaleEnd.current - currentTime - remainingDay * 86400) / 3600)
+  const remainingMin =  Math.floor((privateSaleEnd.current - currentTime - remainingDay * 86400 - remainingHour * 3600) / 60)
   const [pendingTx, setPendingTx] = useState(false)
 
   const handleBuyTokenWithUSDC = async () => {
@@ -119,19 +125,11 @@ export default function Prisale() {
 
   return (
     <div className="w-5/6 mt-20 md:max-w-7xl">
-      <div className='grid w-1/2 grid-cols-2 mx-auto mb-4 text-2xl font-bold text-gray-700 bg-dark-600 rounded-3xl'>
-        <div className={`text-center my-auto py-2 rounded-l-3xl hover:cursor-pointer hover:text-white ${toggle? '': 'text-yellow bg-blue'}`} onClick={() => setToggle(false)}>
-          Buy with USDC
-        </div>
-        <div className={`text-center my-auto py-2 rounded-r-3xl hover:cursor-pointer hover:text-white ${toggle? 'text-yellow bg-blue': ''}`} onClick={() => setToggle(true)}>
-          Buy with EVMOS
-        </div>
-      </div>
       <div className="mb-5">
         <div className="flex justify-between h-24 gap-1 md:gap-4">
           <div className="w-1/2 px-4 py-4 my-auto text-left rounded-lg md:px-10 bg-black-russian">
-            <div className="text-1x1l">{toggle? 'EVMOS': 'USDC'} Balance</div>
-            <div className="text-2xl font-bold text-white">{toggle? nativeNBalance.toFixed(3): usdcBalance ? usdcBalance : 0}</div>
+            <div className="text-1x1l">Remaining time</div>
+            <div className="text-2xl font-bold text-white">{`${remainingDay} Day ${remainingHour} Hour ${remainingMin} Mins`}</div>
           </div>
           <div className="w-1/2 px-4 py-4 my-auto text-left rounded-lg md:px-10 bg-black-russian">
             <div className="text-1xl">Token Balance</div>
@@ -195,12 +193,20 @@ export default function Prisale() {
 
         <div className="justify-center md:flex md:gap-5">
           <div className="px-5 py-9 border-[1px] border-gray-700 rounded-xl space-y-4 md:w-1/2">
+            <div className='grid grid-cols-2 px-1 py-[3px] rounded-xl bg-dark-700'>
+              <div className={`text-center my-auto py-4 rounded-xl hover:cursor-pointer hover:text-white ${toggle? 'text-white font-bold bg-dark-850': ''}`} onClick={() => setToggle(true)}>
+                Use EVMOS
+              </div>
+              <div className={`text-center my-auto py-4 rounded-xl hover:cursor-pointer hover:text-white ${toggle? '': 'text-white font-bold bg-dark-850'}`} onClick={() => setToggle(false)}>
+                Use USDC
+              </div>
+            </div>
             <div className="flex justify-between gap-1 px-1">
               {i18n._(t`Your investment (${toggle? 'EVMOS': 'USDC'})`)}
               <button
                 className="text-light-blue"
                 onClick={() => {
-                  if (toggle? nativeNBalance > 0: usdcBalance > 0) {
+                  if ((toggle? nativeNBalance: usdcBalance) > 0) {
                     setInvestValue(toggle? nativeNBalance.toString(): usdcBalance?.toFixed(6))
                   }
                 }}
@@ -245,16 +251,14 @@ export default function Prisale() {
               )}
             </div>
           </div>
-          <div className="px-5 py-9 border-[1px] border-gray-700 rounded-xl space-y-4 md:w-1/2">
-            <div className="flex justify-between gap-3">
-              <div className="rounded-lg border-[1px] border-gray-700 space-y-1 py-5 px-4 w-1/2">
-                <div className="text-base text-white">{i18n._(t`Purchased ${prisaleToken[chainId].symbol}`)}</div>
-                <div className="text-base">{(purchasedToken.current / 1e18).toFixed()}</div>
-              </div>
-              <div className="rounded-lg border-[1px] border-gray-700 py-5 space-y-1 px-4 w-1/2">
-                <div className="text-base text-white">{i18n._(t`Claimable ${prisaleToken[chainId].symbol}`)}</div>
-                <div className="text-base">{claimableToken.current / 1e18}</div>
-              </div>
+          <div className="px-5 py-9 border-[1px] border-gray-700 rounded-xl space-y-6 md:w-1/2">
+            <div className="rounded-lg border-[1px] border-gray-700 space-y-1 py-2 px-4">
+              <div className="text-base text-white">{i18n._(t`Purchased ${prisaleToken[chainId].symbol}`)}</div>
+              <div className="text-base">{(purchasedToken.current / 1e18).toFixed()}</div>
+            </div>
+            <div className="rounded-lg border-[1px] border-gray-700 py-2 space-y-1 px-4">
+              <div className="text-base text-white">{i18n._(t`Claimable ${prisaleToken[chainId].symbol}`)}</div>
+              <div className="text-base">{claimableToken.current / 1e18}</div>
             </div>
             {new Date().getTime() / 1e3 <= privateSaleEnd.current ? (
               <Button color="gray" size="sm" className="h-12 opacity-90" disabled={true}>
