@@ -18,7 +18,7 @@ export const IfoPastCard = ({ inactiveIfo }: { inactiveIfo: Ifo[] }) => {
   return (
     <div className="flex flex-row justify-between gap-4">
       <div className="w-full rounded">
-        <div className="max-w-[800px] m-auto w-full">
+        <div className="m-auto w-full">
           {inactiveIfo.map((ifo) => (
             <IfoCardData key={ifo.id} ifo={ifo} />
           ))}
