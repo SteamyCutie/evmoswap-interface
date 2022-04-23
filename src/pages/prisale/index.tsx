@@ -124,17 +124,15 @@ export default function Prisale() {
   }
 
   return (
-    <div className="w-5/6 mt-20 md:max-w-7xl">
-      <div className="mb-5">
-        <div className="flex justify-between h-24 gap-1 md:gap-4">
-          <div className="w-1/2 px-4 py-4 my-auto text-left rounded-lg md:px-10 bg-black-russian">
-            <div className="text-1x1l">Remaining time</div>
-            <div className="text-2xl font-bold text-white">{`${remainingDay} Day ${remainingHour} Hour ${remainingMin} Mins`}</div>
-          </div>
-          <div className="w-1/2 px-4 py-4 my-auto text-left rounded-lg md:px-10 bg-black-russian">
-            <div className="text-1xl">Token Balance</div>
-            <div className="text-2xl font-bold">{tokenBalance ? tokenBalance : 0}</div>
-          </div>
+    <div className="w-5/6 mt-20 md:max-w-5xl">
+      <div className="flex justify-between h-20 gap-1 mb-5 md:h-24 md:gap-4">
+        <div className="w-1/2 h-full px-4 py-2 my-auto space-y-1 text-left rounded-lg md:py-4 sm:space-y-2 md:px-10 bg-black-russian">
+          <div className="text-base md:text-lg">Remaining time</div>
+          <div className="text-sm font-bold text-white md:text-xl lg:text-2xl">{`${remainingDay} Day ${remainingHour} Hour ${remainingMin} Mins`}</div>
+        </div>
+        <div className="w-1/2 h-full px-4 py-2 my-auto space-y-1 text-left rounded-lg md:py-4 md:px-10 bg-black-russian">
+          <div className="text-base md:text-lg">Token Balance</div>
+          <div className="text-xl font-bold md:text-2xl">{tokenBalance ? tokenBalance : 0}</div>
         </div>
       </div>
       <div className="py-5 rounded-lg px-7 bg-black-russian">
