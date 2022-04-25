@@ -42,7 +42,7 @@ export default function ManualPoolCard() {
   const harvestAmount = useRef(0)
   const getHarvestAmount = async () => {
     if (account) {
-      harvestAmount.current = await masterChefContract.pendingEmo(0, account)
+      harvestAmount.current = await masterChefContract.pendingCrona(0, account)
     }
   }
   getHarvestAmount()

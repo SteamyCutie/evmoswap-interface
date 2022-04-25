@@ -16,6 +16,14 @@ import { formatNumberScale } from 'app/functions'
 import Button from 'app/components/Button'
 import IncentivePool from 'app/features/staking/IncentivePool/IncentivePool'
 import QuestionHelper from 'app/components/QuestionHelper'
+import NavLink from 'app/components/NavLink'
+import { useRouter } from 'next/router'
+import usePools from 'features/staking/IncentivePool/usePools'
+import useFuse from '../../hooks/useFuse'
+import useSortableData from '../../hooks/useSortableData'
+import InfiniteScroll from 'react-infinite-scroll-component'
+import IncentivePoolItem from 'features/staking/IncentivePool/IncentivePoolItem'
+import { useInfiniteScroll } from 'app/features/farm/hooks'
 
 const buttonStyle =
   'flex justify-center items-center w-full h-14 rounded font-bold md:font-medium md:text-lg mt-5 text-sm focus:outline-none focus:ring'
@@ -28,11 +36,45 @@ export default function Stake() {
 
   const autoemoBountyValue = useRef(0)
 
-  const getEmoVault = async () => {
-    const autoemoBounty = await emovaultContract.calculateHarvestEmoRewards()
-    autoemoBountyValue.current = getBalanceAmount(autoemoBounty._hex, 18).toNumber()
+  const tabStyle = 'flex justify-center items-center h-full w-full rounded-lg cursor-pointer text-sm md:text-base'
+  const activeTabStyle = `${tabStyle} text-high-emphesis font-bold bg-dark-900`
+  const inactiveTabStyle = `${tabStyle} text-secondary`
+
+  const router = useRouter()
+  const type = router.query.filter == null ? 'all' : (router.query.filter as string)
+
+  const query = usePools()
+
+  const FILTER = {
+    all: (pool) => !pool.isFinished,
+    inactive: (pool) => pool.isFinished,
   }
-  getEmoVault()
+
+  const datas = query?.pools.filter((pool) => {
+    return type in FILTER ? FILTER[type](pool) : true
+  })
+
+  // Search Setup
+  const options = { keys: ['symbol', 'name'], threshold: 0.4 }
+  const { result, search, term } = useFuse({
+    data: datas && datas.length > 0 ? datas : [],
+    options,
+  })
+
+  const flattenSearchResults = result.map((a: { item: any }) => (a.item ? a.item : a))
+
+  // Sorting Setup
+  const { items, requestSort, sortConfig } = useSortableData(flattenSearchResults)
+  const [numDisplayed, setNumDisplayed] = useInfiniteScroll(items)
+
+  const [activeTab, setActiveTab] = useState(0)
+
+
+  // const getEmoVault = async () => {
+  //   const autoemoBounty = await emovaultContract.calculateHarvestEmoRewards()
+  //   autoemoBountyValue.current = getBalanceAmount(autoemoBounty._hex, 18).toNumber()
+  // }
+  // getEmoVault()
 
   const emoPrice = getEMOPrice()
   const [pendingBountyTx, setPendingBountyTx] = useState(false)
@@ -52,14 +94,39 @@ export default function Stake() {
   }
 
   return (
-    <Container id="bar-page" className="py-4 md:py-8 lg:py-12" maxWidth="7xl">
+    <Container id="bar-page" className="py-4 md:py-8 lg:py-12" maxWidth="6xl">
       <Head>
         <title key="title">Stake | EvmoSwap</title>
         <meta key="description" name="description" content="Stake EvmoSwap" />
       </Head>
       <div className="w-11/12 m-auto">
+        <div className='flex justify-between items-center'>
+          <div className='text-white'>
+            <div className='text-2xl'>Staking Pool</div>
+            <div className='text-base'>{i18n._(t`Just stake some tokens to earn. High APR, low risk.`)}</div>
+          </div>
+          
+          {/* select tab */}
+          <div className="flex m-auto mb-2 rounded md:m-0 md:w-3/12 h-14 bg-dark-800">
+            <div className="w-6/12 h-full p-1" onClick={() => setActiveTab(0)}>
+              <NavLink href="/stake?filter=all">
+                <div className={activeTab === 0 ? activeTabStyle : inactiveTabStyle}>
+                  <p>All Pools</p>
+                </div>
+              </NavLink>
+            </div>
+            <div className="w-6/12 h-full p-1" onClick={() => setActiveTab(1)}>
+              <NavLink href="/stake?filter=inactive">
+                <div className={activeTab === 1 ? activeTabStyle : inactiveTabStyle}>
+                  <p>Inactive Pools</p>
+                </div>
+              </NavLink>
+            </div>
+          </div>
+        </div>
+
         {/* Hero */}
-        <div className="flex-row items-center justify-between w-full px-8 py-6 space-y-2 rounded md:flex bg-cyan-blue bg-opacity-20">
+        {/* <div className="flex-row items-center justify-between w-full px-8 py-6 space-y-2 rounded md:flex bg-cyan-blue bg-opacity-20">
           <div className="w-8/12 mb-5 space-y-2 gap-y-10 md:mb-0">
             <Typography variant="h2" className="mb-2 text-high-emphesis" weight={700}>
               {i18n._(t`Emo Stake`)}
@@ -105,20 +172,33 @@ export default function Stake() {
               </div>
             </div>
           </div>
-        </div>
+        </div> */}
 
-        <div className="mt-5 text-2xl font-bold text-high-emphesis">Staking Pools</div>
+        {/* <div className="mt-5 text-2xl font-bold text-high-emphesis">Staking Pools</div> */}
         <div className="w-full mt-6 space-y-4">
           <AutoPoolCard />
           <ManualPoolCard />
         </div>
 
         {/* Incentive pool */}
-
-        <div className="w-full mt-6 md:flex">
-          {/* <div>Incentive pool</div> */}
-          {/* <IncentivePool /> */}
-        </div>
+        {/* <div className="w-full mt-6 md:flex">
+          {items && items.length > 0 ? (
+            <InfiniteScroll
+              dataLength={numDisplayed}
+              next={() => setNumDisplayed(numDisplayed + 5)}
+              hasMore={true}
+              loader={null}
+            >
+              <div className="space-y-2">
+                {items.slice(0, numDisplayed).map((pool, index) => (
+                  <IncentivePoolItem key={index} pool={pool} />
+                ))}
+              </div>
+            </InfiniteScroll>
+          ) : (
+            <div className="w-full py-6 text-center">{term ? <span>No Results.</span> : <Dots>Loading</Dots>}</div>
+          )}
+        </div> */}
       </div>
     </Container>
   )
