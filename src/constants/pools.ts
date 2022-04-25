@@ -43,7 +43,7 @@ export const POOLS: AddressMap = {
       tokenPerBlock: '0.17',
       isFinished: false,
       category: PoolCategory.COMMUNITY,
-      projectLink: 'https://www.evmoswap.org',
+      projectLink: 'https://evmoswap.org',
       stakingToken: {
         id: '0xd41223b4Ed7e68275D3C567c237217Fbb2575568',
         name: 'EvmoSwap Token',
@@ -63,7 +63,7 @@ export const POOLS: AddressMap = {
       tokenPerBlock: '0.07',
       isFinished: false,
       category: PoolCategory.COMMUNITY,
-      projectLink: 'https://www.evmoswap.org',
+      projectLink: 'https://evmoswap.org',
       stakingToken: {
         id: '0xd41223b4Ed7e68275D3C567c237217Fbb2575568',
         name: 'EvmoSwap Token',
