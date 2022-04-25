@@ -9,7 +9,7 @@ import { useTokenBalance } from '../../../state/wallet/hooks'
 import { classNames, formatNumber, formatPercent } from '../../../functions'
 import { useEmosVaultContract } from 'hooks/useContract'
 import { getBalanceNumber, getBalanceAmount } from 'functions/formatBalance'
-import { getAPY, convertSharesToEmo, useWithdrawalFeeTimer, getEMOPrice } from 'features/staking/useStaking'
+import { GetAPY, convertSharesToEmo, useWithdrawalFeeTimer, GetEMOPrice } from 'features/staking/useStaking'
 import { BIG_ZERO } from 'app/functions/bigNumber'
 import { CalculatorIcon, ChevronDownIcon } from '@heroicons/react/solid'
 import ROICalculatorModal from 'app/components/ROICalculatorModal'
@@ -20,7 +20,7 @@ import { CurrencyLogoArray } from 'app/components/CurrencyLogo'
 export default function AutoPoolCard() {
   const { i18n } = useLingui()
   const { account, chainId } = useActiveWeb3React()
-  const emoPrice = getEMOPrice()
+  const emoPrice = GetEMOPrice()
   const emoBalance = useTokenBalance(account ?? undefined, EvmoSwap[chainId])
   const [xBalanceAuto, setXBalanceAuto] = useState(0)
 
@@ -61,7 +61,7 @@ export default function AutoPoolCard() {
   const h = ((withdrawalFeeTimer % 86400) / 3600) | 0
   const m = ((withdrawalFeeTimer - 86400 * d - h * 3600) / 60) | 0
 
-  const { manualAPY, autoAPY } = getAPY()
+  const { manualAPY, autoAPY } = GetAPY()
   const [showCalc, setShowCalc] = useState(false)
   const myBalance = Number(emoBalance?.toSignificant(8)) + xBalanceAuto
 

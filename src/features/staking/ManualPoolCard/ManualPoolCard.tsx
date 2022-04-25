@@ -9,7 +9,7 @@ import { useTokenBalance } from '../../../state/wallet/hooks'
 import { classNames, formatNumber, formatPercent } from '../../../functions'
 import { useEmosVaultContract, useDashboardContract, useMasterChefContract } from 'hooks/useContract'
 import { getBalanceAmount } from 'functions/formatBalance'
-import { getAPY, getEMOPrice } from 'features/staking/useStaking'
+import { GetAPY, GetEMOPrice } from 'features/staking/useStaking'
 import { CalculatorIcon, ChevronDownIcon } from '@heroicons/react/solid'
 import ROICalculatorModal from 'app/components/ROICalculatorModal'
 import ManualPoolCardDetails from './ManualPoolCardDetails'
@@ -19,7 +19,7 @@ import { CurrencyLogoArray } from 'app/components/CurrencyLogo'
 export default function ManualPoolCard() {
   const { i18n } = useLingui()
   const { account, chainId } = useActiveWeb3React()
-  const emoPrice = getEMOPrice()
+  const emoPrice = GetEMOPrice()
   const emoBalance = useTokenBalance(account ?? undefined, EvmoSwap[chainId])
   const XEMOBalance = useTokenBalance(account ?? undefined, XEMO[chainId])
 
@@ -36,7 +36,7 @@ export default function ManualPoolCard() {
   }
   getEmoVault()
 
-  const { manualAPY } = getAPY()
+  const { manualAPY } = GetAPY()
 
   const masterChefContract = useMasterChefContract()
   const harvestAmount = useRef(0)
