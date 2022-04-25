@@ -114,7 +114,7 @@ export const IfoCurrentCard = ({
             {/* ifo info */}
 
             <div
-              className="flex hidden flex-col px-4 space-y-8 rounded-r pt-14 bg-dark-800"
+              className="hidden flex-col px-4 space-y-8 rounded-r pt-14 bg-dark-800"
               {...{
                 style: {
                   backgroundImage: `url("/images/ifo/${ifo.id}-bg.png")`,
