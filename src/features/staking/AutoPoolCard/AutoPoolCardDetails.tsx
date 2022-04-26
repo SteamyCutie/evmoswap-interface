@@ -20,11 +20,11 @@ import DoubleLogo from '../../../components/DoubleLogo'
 import { useTransactionAdder } from '../../../state/transactions/hooks'
 import { getDecimalAmount, getBalanceNumber, getBalanceAmount } from 'functions/formatBalance'
 import {
-  getAPY,
+  GetAPY,
   convertSharesToEmo,
   convertEmoToShares,
   useWithdrawalFeeTimer,
-  getEMOPrice,
+  GetEMOPrice,
 } from 'features/staking/useStaking'
 import { EMOSVAULT_ADDRESS } from 'constants/addresses'
 import { BIG_ZERO } from 'app/functions/bigNumber'
@@ -49,7 +49,7 @@ const buttonStyleConnectWallet = `${buttonStyle} text-high-emphesis bg-cyan-blue
 export default function AutoPoolCardDetails() {
   const { i18n } = useLingui()
   const { account, chainId } = useActiveWeb3React()
-  const emoPrice = getEMOPrice()
+  const emoPrice = GetEMOPrice()
   const emoBalance = useTokenBalance(account ?? undefined, EvmoSwap[chainId])
   const [xBalanceAuto, setXBalanceAuto] = useState(0)
   const walletConnected = !!account
@@ -177,8 +177,8 @@ export default function AutoPoolCardDetails() {
               {i18n._(t`Balance`)}: {formatNumberScale(emoBalance?.toSignificant(6, undefined, 2) ?? 0, false, 4)}
               {emoPrice && emoBalance
                 ? ` (` +
-                  formatNumberScale(Number(emoBalance.toFixed(18)) * Number(emoBalance?.toFixed(18) ?? 0), true) +
-                  `)`
+                formatNumberScale(Number(emoBalance.toFixed(18)) * Number(emoBalance?.toFixed(18) ?? 0), true) +
+                `)`
                 : ``}
             </div>
           </div>
