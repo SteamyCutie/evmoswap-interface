@@ -21,7 +21,7 @@ export const aprToApy = (apr: number, compoundFrequency = 1, days = 365, perform
   return apyAsDecimal * 100
 }
 
-export function getAPY() {
+export function GetAPY() {
   const [apr, setAPR] = useState(0)
   const dashboardContract = useDashboardContract()
   const getManualAPR = async () => {
@@ -34,7 +34,7 @@ export function getAPY() {
   return { manualAPY: apr, autoAPY: apy }
 }
 
-export function getEMOPrice() {
+export function GetEMOPrice() {
   const emoPriceInBigNumber = useEmoUsdcPrice()
   const emoPrice = formatBalance(emoPriceInBigNumber ? emoPriceInBigNumber : 0)
   return Number(emoPrice)

@@ -8,7 +8,7 @@ import { useEmosVaultContract } from 'hooks/useContract'
 import { ArrowRightIcon } from '@heroicons/react/outline'
 import { useTransactionAdder } from '../../state/transactions/hooks'
 import { formatNumber, getBalanceAmount } from 'functions/formatBalance'
-import { getEMOPrice } from 'features/staking/useStaking'
+import { GetEMOPrice } from 'features/staking/useStaking'
 import AutoPoolCard from 'app/features/staking/AutoPoolCard/AutoPoolCard'
 import ManualPoolCard from 'app/features/staking/ManualPoolCard/ManualPoolCard'
 import Typography from 'app/components/Typography'
@@ -76,7 +76,7 @@ export default function Stake() {
   // }
   // getEmoVault()
 
-  const emoPrice = getEMOPrice()
+  const emoPrice = GetEMOPrice()
   const [pendingBountyTx, setPendingBountyTx] = useState(false)
   const handleBountyClaim = async () => {
     setPendingBountyTx(true)
@@ -105,7 +105,7 @@ export default function Stake() {
             <div className='text-2xl'>Staking Pool</div>
             <div className='text-base'>{i18n._(t`Just stake some tokens to earn. High APR, low risk.`)}</div>
           </div>
-          
+
           {/* select tab */}
           <div className="flex m-auto mb-2 rounded md:m-0 md:w-3/12 h-14 bg-dark-800">
             <div className="w-6/12 h-full p-1" onClick={() => setActiveTab(0)}>
