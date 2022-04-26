@@ -8,7 +8,7 @@ import { useMemo } from 'react'
 import { getStatus } from './helpers'
 import { useWeb3React } from '@web3-react/core'
 import { ChainId } from '@evmoswap/core-sdk'
-import { getEMOPrice } from 'app/features/staking/useStaking'
+import { GetEMOPrice } from 'app/features/staking/useStaking'
 
 const TAX_PRECISION = FixedNumber.from(10000000000)
 
@@ -25,7 +25,7 @@ const formatPool = (pool) => ({
 export function useGetPublicIfoData(ifo: Ifo) {
   const { chainId } = useWeb3React()
   const { address, releaseTimestamp } = ifo
-  const emoPrice = new BigNumber(getEMOPrice())
+  const emoPrice = new BigNumber(GetEMOPrice())
   const usdcPrice = BIG_ONE
   const currentTime = Date.parse(new Date().toString()) / 1000
 

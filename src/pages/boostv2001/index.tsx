@@ -22,7 +22,7 @@ import { useLockedBalance } from 'app/features/boost/hook'
 import QuestionHelper from 'app/components/QuestionHelper'
 import { useTokenInfo } from 'app/features/farm/hooks'
 import { useEmosContract, useEmosVaultContract } from 'app/hooks/useContract'
-import { getAPY } from 'app/features/staking/useStaking'
+import { GetAPY } from 'app/features/staking/useStaking'
 import { CalculatorIcon } from '@heroicons/react/solid'
 import ROICalculatorModal from 'app/components/ROICalculatorModal'
 import { CurrencyLogoArray } from 'app/components/CurrencyLogo'
@@ -35,7 +35,7 @@ import { VotingChart } from 'app/features/boost/VotingChart'
 import { useVotingContract } from 'app/hooks'
 import { useTransactionAdder } from 'app/state/transactions/hooks'
 import { getBalanceAmount } from 'functions/formatBalance'
-import { getEMOPrice } from 'features/staking/useStaking'
+import { GetEMOPrice } from 'features/staking/useStaking'
 import NavLink from 'app/components/NavLink'
 import { useSingleCallResult, useSingleContractMultipleData } from 'app/state/multicall/hooks'
 import { ChartIconButton, VoteChartModal } from 'app/features/boost/ChartModal'
@@ -71,7 +71,7 @@ export default function Boostv2() {
 
   const { rewards, harvestRewards, lockAmount, lockEnd, veEmo, emoSupply, veEmoSupply } = useLockedBalance()
 
-  const { manualAPY, autoAPY } = getAPY()
+  const { manualAPY, autoAPY } = GetAPY()
 
   const {
     claimRewards,
@@ -95,7 +95,7 @@ export default function Boostv2() {
   }
   getEmoVault()
 
-  const emoPrice = getEMOPrice()
+  const emoPrice = GetEMOPrice()
   const [pendingBountyTx, setPendingBountyTx] = useState(false)
   const handleBountyClaim = async () => {
     setPendingBountyTx(true)

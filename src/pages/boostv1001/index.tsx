@@ -22,7 +22,7 @@ import { useLockedBalance } from 'app/features/boost/hook'
 import QuestionHelper from 'app/components/QuestionHelper'
 import { useTokenInfo } from 'app/features/farm/hooks'
 import { useEmosContract } from 'app/hooks/useContract'
-import { getAPY } from 'app/features/staking/useStaking'
+import { GetAPY } from 'app/features/staking/useStaking'
 import { CalculatorIcon } from '@heroicons/react/solid'
 import ROICalculatorModal from 'app/components/ROICalculatorModal'
 
@@ -58,7 +58,7 @@ export default function Boost() {
 
   const { rewards, harvestRewards, lockAmount, lockEnd, veEmo, emoSupply, veEmoSupply } = useLockedBalance()
 
-  const { manualAPY, autoAPY } = getAPY()
+  const { manualAPY, autoAPY } = GetAPY()
 
   const {
     claimRewards,
