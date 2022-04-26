@@ -65,6 +65,7 @@ export default function Prisale() {
   const privateSaleStart = useRef(0)
   const privateSaleEnd = useRef(0)
   const basePrice = useRef(0)
+  const vestingStart = useRef(0)
   const getData = async () => {
     if (!account) return
     const tokenPrice = await prisaleContract.tokenPrice()
@@ -82,6 +83,7 @@ export default function Prisale() {
     isWhitelisted.current = await prisaleContract.whitelisted(account)
     purchasedToken.current = Number(await prisaleContract.purchased(account))
     claimableToken.current = Number(await prisaleContract.claimable(account))
+    vestingStart.current = Number(await prisaleContract.vestingStart())
   }
   getData()
 
@@ -312,6 +314,10 @@ export default function Prisale() {
             ) : claimableToken.current ? (
               <Button color="blue" size="sm" className="h-12 opacity-90" onClick={handleClaim}>
                 Claim Your {prisaleToken[chainId].symbol}
+              </Button>
+            ) : vestingStart.current == 0 ? (
+              <Button color="gray" size="sm" className="h-12 opacity-90" disabled={true}>
+                Vesting is not set
               </Button>
             ) : (
               <Button color="gray" size="sm" className="h-12 opacity-90" disabled={true}>
