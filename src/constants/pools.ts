@@ -34,7 +34,48 @@ type AddressMap = {
 export const POOLS: AddressMap = {
   [ChainId.EVMOS]: {},
 
-  [ChainId.EVMOS_TESTNET]: {},
+  [ChainId.EVMOS_TESTNET]: {
+    '0xf1E2E2E706266f5BD68f802377A2C901DF444E23': {
+      pid: 0,
+      name: 'EMO-USDC',
+      tokenPerBlock: '0.17',
+      isFinished: false,
+      category: PoolCategory.COMMUNITY,
+      projectLink: 'https://evmoswap.org',
+      stakingToken: {
+        id: '0x7cBa32163a8f4c56C846f5C3685E3b7a450c9002',
+        name: 'EvmoSwap Token',
+        symbol: 'EMO',
+        decimals: 18,
+      },
+      earningToken: {
+        id: '0xae95d4890bf4471501E0066b6c6244E1CAaEe791',
+        name: 'USDC Coin',
+        symbol: 'USDC',
+        decimals: 6,
+      },
+    },
+    '0x738fb57aBD5481d359e82bE338C774F1A21e5441': {
+      pid: 0,
+      name: 'EMO-USDT',
+      tokenPerBlock: '0.07',
+      isFinished: false,
+      category: PoolCategory.COMMUNITY,
+      projectLink: 'https://evmoswap.org',
+      stakingToken: {
+        id: '0x7cBa32163a8f4c56C846f5C3685E3b7a450c9002',
+        name: 'EvmoSwap Token',
+        symbol: 'EMO',
+        decimals: 18,
+      },
+      earningToken: {
+        id: '0x397F8aBd481B7c00883fb70da2ea5Ae70999c37c',
+        name: 'Tether USD',
+        symbol: 'USDT',
+        decimals: 6,
+      },
+    },
+  },
 
   [ChainId.BSC_TESTNET]: {
     '0x18E1C9aB5db2a8E6B5bf433551A290FCD092D715': {
@@ -51,8 +92,8 @@ export const POOLS: AddressMap = {
         decimals: 18,
       },
       earningToken: {
-        id: '0x63cE1066c7cA0a028Db94031794bFfe40ceE8b0A',
-        name: 'USDC Token',
+        id: '0xFCBdf3F929e049F2F062cd7e4084fd6f2E5b9c73',
+        name: 'USDC Coin',
         symbol: 'USDC',
         decimals: 6,
       },
@@ -71,8 +112,8 @@ export const POOLS: AddressMap = {
         decimals: 18,
       },
       earningToken: {
-        id: '0x7c945caa889fe8b0F2F53f29876596A1b0f7a4d9',
-        name: 'USDT Token',
+        id: '0xb75fdC39459DAfA30Bc4ec9ca15B40C14084FB4e',
+        name: 'Tether USD',
         symbol: 'USDT',
         decimals: 6,
       },

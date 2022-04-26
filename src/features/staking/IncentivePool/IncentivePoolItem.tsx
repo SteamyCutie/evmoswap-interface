@@ -94,7 +94,7 @@ const IncentivePoolItem = ({ pool, ...rest }) => {
                   apr={apr}
                   Lpbalance={balance}
                   earningTokenPrice={Number(earningTokenPrice?.toFixed(18))}
-                  earningTokenName={earningToken.symbol}
+                  earningTokenName={earningToken?.symbol}
                 />
               </div>
 

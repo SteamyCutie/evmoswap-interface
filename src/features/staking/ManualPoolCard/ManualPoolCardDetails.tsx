@@ -17,7 +17,7 @@ import { useEmosVaultContract, useDashboardContract, useMasterChefContract } fro
 import { useGasPrice } from 'state/user/hooks'
 import { useTransactionAdder } from '../../../state/transactions/hooks'
 import { getBalanceAmount } from 'functions/formatBalance'
-import { getEMOPrice } from 'features/staking/useStaking'
+import { GetEMOPrice } from 'features/staking/useStaking'
 import NumericalInput from 'app/components/NumericalInput'
 import ExternalLink from 'app/components/ExternalLink'
 import Typography from 'app/components/Typography'
@@ -42,7 +42,7 @@ const sendTx = async (txFunc: () => Promise<any>): Promise<boolean> => {
 export default function ManualPoolCardDetails() {
   const { i18n } = useLingui()
   const { account, chainId } = useActiveWeb3React()
-  const emoPrice = getEMOPrice()
+  const emoPrice = GetEMOPrice()
   const emoBalance = useTokenBalance(account ?? undefined, EvmoSwap[chainId])
   const XEMOBalance = useTokenBalance(account ?? undefined, XEMO[chainId])
   const walletConnected = !!account
@@ -185,8 +185,8 @@ export default function ManualPoolCardDetails() {
               {i18n._(t`Balance`)}: {formatNumberScale(emoBalance?.toSignificant(6, undefined, 2) ?? 0, false, 4)}
               {emoPrice && emoBalance
                 ? ` (` +
-                  formatNumberScale(Number(emoPrice.toFixed(18)) * Number(emoBalance?.toFixed(18) ?? 0), true) +
-                  `)`
+                formatNumberScale(Number(emoPrice.toFixed(18)) * Number(emoBalance?.toFixed(18) ?? 0), true) +
+                `)`
                 : ``}
             </div>
           </div>

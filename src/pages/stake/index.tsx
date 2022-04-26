@@ -100,14 +100,14 @@ export default function Stake() {
         <meta key="description" name="description" content="Stake EvmoSwap" />
       </Head>
       <div className="w-11/12 m-auto">
-        <div className='flex justify-between items-center'>
-          <div className='text-white'>
+        <div className='grid w-full space-y-2 md:flex justify-center m-auto md:justify-between items-center'>
+          <div className='text-white flex flex-wrap md:grid m-auto md:ml-0'>
             <div className='text-2xl'>Staking Pool</div>
-            <div className='text-base'>{i18n._(t`Just stake some tokens to earn. High APR, low risk.`)}</div>
+            <div className='text-sm md:text-base'>{i18n._(t`Just stake some tokens to earn. High APR, low risk.`)}</div>
           </div>
 
           {/* select tab */}
-          <div className="flex m-auto mb-2 rounded md:m-0 md:w-3/12 h-14 bg-dark-800">
+          <div className="flex m-auto mb-2 rounded md:m-0 w-full md:w-4/12 h-14 bg-dark-800">
             <div className="w-6/12 h-full p-1" onClick={() => setActiveTab(0)}>
               <NavLink href="/stake?filter=all">
                 <div className={activeTab === 0 ? activeTabStyle : inactiveTabStyle}>
@@ -175,13 +175,13 @@ export default function Stake() {
         </div> */}
 
         {/* <div className="mt-5 text-2xl font-bold text-high-emphesis">Staking Pools</div> */}
-        <div className="w-full mt-6 space-y-4">
+        <div className="w-full mt-3 md:mt-6 space-y-4">
           <AutoPoolCard />
           <ManualPoolCard />
         </div>
 
         {/* Incentive pool */}
-        {/* <div className="w-full mt-6 md:flex">
+        <div className="w-full mt-6 md:flex">
           {items && items.length > 0 ? (
             <InfiniteScroll
               dataLength={numDisplayed}
@@ -198,7 +198,7 @@ export default function Stake() {
           ) : (
             <div className="w-full py-6 text-center">{term ? <span>No Results.</span> : <Dots>Loading</Dots>}</div>
           )}
-        </div> */}
+        </div>
       </div>
     </Container>
   )
