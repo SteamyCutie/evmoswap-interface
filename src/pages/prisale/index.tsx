@@ -95,8 +95,8 @@ export default function Prisale() {
   )
   const [pendingTx, setPendingTx] = useState(false)
   const limitValid =
-    Number(investValue) < (toggle ? minTokensAmount.current[0] : minTokensAmount.current[0]) ||
-    Number(investValue) > (toggle ? maxTokensAmount.current[0] : maxTokensAmount.current[0])
+    Number(investValue) < (toggle ? minTokensAmount.current[0] : minTokensAmount.current[1]) ||
+    Number(investValue) > (toggle ? maxTokensAmount.current[0] : maxTokensAmount.current[1])
   const handleBuyTokenWithUSDC = async () => {
     setPendingTx(true)
     try {
@@ -159,7 +159,7 @@ export default function Prisale() {
         </div>
         <div className="w-1/2 h-full px-4 py-2 my-auto space-y-1 text-left rounded-lg md:py-4 md:px-10 bg-black-russian">
           <div className="text-base md:text-lg">Token Balance</div>
-          <div className="text-xl font-bold md:text-2xl">{tokenBalance ? tokenBalance : 0}</div>
+          <div className="text-xl font-bold text-white md:text-2xl">{tokenBalance ? tokenBalance : 0}</div>
         </div>
       </div>
       <div className="py-5 rounded-lg px-7 bg-black-russian">
@@ -245,7 +245,7 @@ export default function Prisale() {
                 className="text-light-blue"
                 onClick={() => {
                   if ((toggle ? nativeBalance : usdcBalance) > 0) {
-                    setInvestValue(toggle ? nativeBalance.toString() : usdcBalance?.toFixed(6))
+                    setInvestValue(toggle ? nativeBalance.toString() : usdcBalance?.toString())
                   }
                 }}
               >
@@ -258,7 +258,7 @@ export default function Prisale() {
               onUserInput={setInvestValue}
             />
             <div className="justify-center gap-2 space-y-2 xl:space-y-0 xl:flex ">
-              {toggle || approvalState === ApprovalState.APPROVED ? (
+              {toggle || approvalState === ApprovalState.APPROVED || privateSaleEnd.current - currentTime < 0 ? (
                 <></>
               ) : (
                 <Button
@@ -273,22 +273,26 @@ export default function Prisale() {
               )}
               {currentTime - privateSaleStart.current < 0 ? (
                 <Button color="gray" size="sm" className="h-12" disabled={true}>
-                  PPrivate Sale not started
+                  Private Sale not started
                 </Button>
               ) : privateSaleEnd.current - currentTime < 0 ? (
                 <Button color="gray" size="sm" className="h-12" disabled={true}>
                   Private Sale ended
                 </Button>
+              ) : Number(investValue) > (toggle ? nativeBalance : usdcBalance) ? (
+                <Button color="gray" size="sm" className="h-12" disabled={true}>
+                  Exceeds Balance
+                </Button>
               ) : limitValid ? (
                 <Button color="gray" size="sm" className="h-12" disabled={true}>
                   Please notice the limit
                 </Button>
-              ) : approvalState === ApprovalState.NOT_APPROVED || approvalState === ApprovalState.PENDING ? (
-                <Button color="gray" size="sm" className="h-12" disabled={true}>
-                  Buy ${prisaleToken[chainId].symbol} Now
-                </Button>
               ) : toggle ? (
                 <Button color="blue" size="sm" className="h-12" onClick={handleBuyTokenWithNATIVE}>
+                  Buy ${prisaleToken[chainId].symbol} Now
+                </Button>
+              ) : approvalState === ApprovalState.NOT_APPROVED || approvalState === ApprovalState.PENDING ? (
+                <Button color="gray" size="sm" className="h-12" disabled={true}>
                   Buy ${prisaleToken[chainId].symbol} Now
                 </Button>
               ) : (
