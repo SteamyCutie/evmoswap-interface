@@ -30,6 +30,7 @@ import useSmartChef from './useSmartChef'
 import Typography from 'app/components/Typography'
 import { ExternalLink as LinkIcon } from 'react-feather'
 import ExternalLink from 'app/components/ExternalLink'
+import QuestionHelper from 'app/components/QuestionHelper'
 
 const IncentivePoolCardItem = ({ pool, ...rest }) => {
   const { i18n } = useLingui()
@@ -49,6 +50,12 @@ const IncentivePoolCardItem = ({ pool, ...rest }) => {
 
   const [pendingTx, setPendingTx] = useState(false)
   const [depositValue, setDepositValue] = useState('')
+  const [activeTab, setActiveTab] = useState(0)
+
+  const tabStyle =
+    'flex justify-center items-center text-center h-full w-full rounded-lg px-2 py-1 cursor-pointer text-sm text-sm'
+  const activeTabStyle = `${tabStyle} text-high-emphesis font-bold bg-blue/80`
+  const inactiveTabStyle = `${tabStyle} text-secondary`
 
   const typedDepositValue = tryParseAmount(depositValue, stakingToken)
   const typedWithdrawValue = tryParseAmount(withdrawValue, stakingToken)
@@ -162,7 +169,7 @@ const IncentivePoolCardItem = ({ pool, ...rest }) => {
             {i18n._(t`Pool`)} #<b>{stakingToken?.symbol}</b>-<b>{earningToken?.symbol}</b>
           </p>
           <p className="flex gap-2">
-            APR <b className="text-white font-bold">{formatPercent(apr)}</b>%
+            APR <b className="text-white">{formatPercent(apr)}</b>
           </p>
         </div>
         <div className="flex gap-2 items-center text-base">
@@ -217,10 +224,22 @@ const IncentivePoolCardItem = ({ pool, ...rest }) => {
       </div>
       <hr className="w-full border-[#303336]" />
       <div className="grid p-6 py-3 gap-y-2 mb-1">
-        <div className="text-center">
+        <div className="flex m-auto mb-2 rounded md:m-0 w-full h-12 bg-dark-800">
+          <div className="w-6/12 h-full p-1" onClick={() => setActiveTab(0)}>
+            <div className={activeTab === 0 ? activeTabStyle : inactiveTabStyle}>
+              <p>Staking</p>
+            </div>
+          </div>
+          <div className="w-6/12 h-full p-1" onClick={() => setActiveTab(1)}>
+            <div className={activeTab === 1 ? activeTabStyle : inactiveTabStyle}>
+              <p>Withdraw</p>
+            </div>
+          </div>
+        </div>
+        <div className={`text-center ${activeTab === 0 ? 'grid' : 'hidden'}`}>
           {account && (
-            <div className="flex flex-row justify-between">
-              <div className="pr-4 mb-2 text-left cursor-pointer text-secondary">
+            <div className="flex flex-row justify-start items-center mb-2 text-secondary">
+              <div className="pr-2 text-left cursor-pointer">
                 {i18n._(t`Balance`)}: {formatNumberScale(balance?.toSignificant(6, undefined, 2) ?? 0, false, 4)}
                 {stakingTokenPrice && balance
                   ? ` (` +
@@ -228,6 +247,9 @@ const IncentivePoolCardItem = ({ pool, ...rest }) => {
                     `)`
                   : ``}
               </div>
+              {pool.pid === 0 && (
+                <QuestionHelper text={`Max stake per user: ${userMaxStake?.toFixed(2)} ${stakingToken.symbol}s`} />
+              )}
             </div>
           )}
           <div className="relative flex items-center mb-2 w-full">
@@ -297,13 +319,8 @@ const IncentivePoolCardItem = ({ pool, ...rest }) => {
               {i18n._(t`Stake`)}
             </Button>
           )}
-          {pool.pid === 0 && (
-            <div className="pl-1 pt-2 text-xs text-left text-red/80">
-              Max stake per user: {userMaxStake?.toFixed(2)} {stakingToken.symbol}s
-            </div>
-          )}
         </div>
-        <div className="text-center">
+        <div className={`text-center ${activeTab === 1 ? 'grid' : 'hidden'}`}>
           {account && (
             <div className="pr-4 mb-2 text-left cursor-pointer text-secondary">
               {i18n._(t`Your Staked`)}: {formatNumberScale(amount?.toSignificant(6) ?? 0, false, 4)}
@@ -330,7 +347,7 @@ const IncentivePoolCardItem = ({ pool, ...rest }) => {
                     setWithdrawValue(amount?.toFixed(stakingToken?.decimals))
                   }
                 }}
-                className="absolute border-0 right-4 focus:ring focus:ring-light-purple"
+                className="absolute border-0 right-2 focus:ring focus:ring-light-purple"
               >
                 {i18n._(t`MAX`)}
               </Button>
