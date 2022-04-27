@@ -66,12 +66,13 @@ export default function Prisale() {
   const privateSaleEnd = useRef(0)
   const basePrice = useRef(0)
   const vestingStart = useRef(0)
+  const decimals = NATIVE[chainId].decimals
   const getData = async () => {
     if (!account) return
     const tokenPrice = await prisaleContract.tokenPrice()
     basePrice.current = await prisaleContract.basePrice()
     minTokensAmount.current = [
-      ((Number(await prisaleContract.minTokensAmount()) / 1e18) * Number(tokenPrice)) / Number(basePrice.current),
+      ((Number(await prisaleContract.minTokensAmount()) / 1e18) * Number(tokenPrice) / 10 ** 6) / (Number(basePrice.current) / 10 ** decimals),
       ((Number(await prisaleContract.minTokensAmount()) / 1e18) * tokenPrice) / 10 ** 6,
     ]
     maxTokensAmount.current = [
