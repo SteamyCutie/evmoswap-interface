@@ -175,10 +175,10 @@ export default function Stake() {
         </div> */}
 
         {/* <div className="mt-5 text-2xl font-bold text-high-emphesis">Staking Pools</div> */}
-        <div className="w-full mt-3 md:mt-6 space-y-4">
+        {/* <div className="w-full mt-3 md:mt-6 space-y-4">
           <AutoPoolCard />
           <ManualPoolCard />
-        </div>
+        </div> */}
 
         {/* Incentive pool */}
         <div className="w-full mt-6 md:flex">
