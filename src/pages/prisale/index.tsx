@@ -72,7 +72,7 @@ export default function Prisale() {
     const tokenPrice = await prisaleContract.tokenPrice()
     basePrice.current = await prisaleContract.basePrice()
     minTokensAmount.current = [
-      ((Number(await prisaleContract.minTokensAmount()) / 1e18) * Number(tokenPrice) / 10 ** 6) / (Number(basePrice.current) / 10 ** decimals),
+      ((Number(await prisaleContract.minTokensAmount()) / 1e18) * Number(tokenPrice)) / Number(basePrice.current),
       ((Number(await prisaleContract.minTokensAmount()) / 1e18) * tokenPrice) / 10 ** 6,
     ]
     maxTokensAmount.current = [
