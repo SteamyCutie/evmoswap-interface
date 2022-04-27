@@ -39,7 +39,7 @@ const FarmListItem: FC<FarmListItem> = ({ farm, onClick }) => {
   const pendingReward = usePendingReward(farm)
   const rewardToken = useCurrency(pendingReward?.tokens[0])
   const rewardAmounts = formatBalance(pendingReward?.amounts[0] ? pendingReward?.amounts[0] : 0)
-  const NATIVE = useCurrency(EvmoSwap[chainId].address)
+  const nativeToken = useCurrency(EvmoSwap[chainId].address)
   const liquidityToken = new Token(
     // @ts-ignore TYPE NEEDS FIXING
     chainId,
@@ -64,7 +64,7 @@ const FarmListItem: FC<FarmListItem> = ({ farm, onClick }) => {
       </div>
       <div className={TABLE_TBODY_TD_CLASSNAME(1, 6)}>
         <div className="flex items-center gap-2">
-          <CurrencyLogo currency={NATIVE} size={20} />
+          <CurrencyLogo currency={nativeToken} size={20} />
           <div>{`${Number(rewardAmounts).toFixed(2)} ${rewardToken?.symbol}`}</div>
         </div>
       </div>
@@ -78,7 +78,7 @@ const FarmListItem: FC<FarmListItem> = ({ farm, onClick }) => {
           ${(Number(userPoolBalance?.toExact()) * farm?.lpPrice).toFixed(2)}
         </Typography>
       </div>
-      <div className={classNames('flex flex-col !items-end !justify-center', TABLE_TBODY_TD_CLASSNAME(4, 6))}>
+      <div className={classNames('flex flex-col !items-end !justify-center mr-2', TABLE_TBODY_TD_CLASSNAME(4, 6))}>
         {/* @ts-ignore TYPE NEEDS FIXING */}
         <Typography weight={700} className="text-high-emphasis">
           {farm.multiplier / 100}x

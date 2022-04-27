@@ -21,6 +21,7 @@ import { useCurrency } from 'app/hooks/Tokens'
 import { usePendingReward } from 'app/features/farm/hooks'
 import { EvmoSwap } from 'config/tokens'
 import { useUserInfo } from '../../features/farm/hooks'
+import { getAddress } from '@ethersproject/address'
 
 interface PositionCardProps {
   pair: Pair
@@ -266,12 +267,16 @@ export default function FullPositionCard({ pair, border, stakedBalance }: Positi
 
 export function PositionCard({ pair, farm, showUnwrapped = false, border }: PositionCardProps) {
   const { i18n } = useLingui()
-  const { account } = useActiveWeb3React()
+  const { account, chainId } = useActiveWeb3React()
 
-  const [showMore, setShowMore] = useState(false)
-
-  const { stakedAmount: userPoolBalance } = useUserInfo(farm, pair?.liquidityToken)
-  // const userPoolBalance = useTokenBalance(account ?? undefined, pair?.liquidityToken)
+  const liquidityToken = new Token(
+    // @ts-ignore TYPE NEEDS FIXING
+    chainId,
+    getAddress(farm.lpToken),
+    farm.token1 ? 18 : farm.token0 ? farm.token0.decimals : 18,
+    'SLP'
+  )
+  const { stakedAmount: userPoolBalance } = useUserInfo(farm, liquidityToken)
   const totalPoolTokens = useTotalSupply(pair?.liquidityToken)
 
   if (!pair) return <></>

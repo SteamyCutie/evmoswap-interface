@@ -2,31 +2,27 @@ import { t } from '@lingui/macro'
 import { useLingui } from '@lingui/react'
 import Button from 'app/components/Button'
 import Typography from 'app/components/Typography'
-// import { Chef, PairType } from 'app/features/farms/enum'
 import FarmList from 'app/features/farm/FarmList'
 
-// import OnsenFilter from 'app/features/farmv3/FarmMenu'
 import useFuse from 'app/hooks/useFuse'
 import { TridentBody, TridentHeader } from 'app/layouts/Trident'
-// import { useActiveWeb3React } from 'app/services/web3'
 import { useRouter } from 'next/router'
 import React, { useState } from 'react'
-import { useTransactionAdder } from 'app/state/transactions/hooks'
 import useFarms from 'app/features/farm/useFarms'
-// import useMasterChef from 'app/features/farms/useMasterChef'
-
+import NavLink from 'app/components/NavLink'
 import SearchPools from 'app/components/SearchPools'
+
+const tabStyle = 'flex justify-center items-center h-full w-full rounded-lg cursor-pointer text-sm md:text-base'
+const activeTabStyle = `${tabStyle} text-high-emphasis font-bold bg-dark-900`
+const inactiveTabStyle = `${tabStyle} text-white`
 
 export default function Farms(): JSX.Element {
   const { i18n } = useLingui()
-  // const [pendingTx, setPendingTx] = useState(false)
-  // const addTransaction = useTransactionAdder()
-
+  const [selected, setSelected] = useState(0)
   const router = useRouter()
   const type = router.query.filter == null ? 'all' : (router.query.filter as string)
 
   const query = useFarms()
-  // const { harvestAll } = useMasterChef(Chef.MASTERCHEF_V2)
 
   let tokenPrice = 0
   let totalTvlInUSD = 0
@@ -38,6 +34,8 @@ export default function Farms(): JSX.Element {
 
   const FILTER = {
     all: (farm) => farm.multiplier !== 0,
+    stable: (farm) => farm.farmType == 'stable',
+    double: (farm) => farm.farmType == 'double',
     inactive: (farm) => farm.multiplier == 0,
   }
 
@@ -74,8 +72,38 @@ export default function Farms(): JSX.Element {
       <TridentBody>
         <div className="flex flex-col w-full gap-6">
           <div className="flex flex-col items-center justify-between gap-4 sm:flex-row">
+            {/* Select Tab */}
+            <div className="flex m-auto mb-2 rounded h-11 md:m-0 md:w-8/12 bg-dark-800">
+              <div className="w-3/12 h-full p-1" onClick={() => setSelected(0)}>
+                <NavLink href="/yield?filter=all">
+                  <div className={selected === 0 ? activeTabStyle : inactiveTabStyle}>
+                    <p>All Farms</p>
+                  </div>
+                </NavLink>
+              </div>
+              <div className="w-3/12 h-full p-1" onClick={() => setSelected(1)}>
+                <NavLink href="/yield?filter=stable">
+                  <div className={selected === 1 ? activeTabStyle : inactiveTabStyle}>
+                    <p>Stable Farms</p>
+                  </div>
+                </NavLink>
+              </div>
+              <div className="w-3/12 h-full p-1" onClick={() => setSelected(2)}>
+                <NavLink href="/yield?filter=double">
+                  <div className={selected === 2 ? activeTabStyle : inactiveTabStyle}>
+                    <p>Double Rewards</p>
+                  </div>
+                </NavLink>
+              </div>
+              <div className="w-3/12 h-full p-1" onClick={() => setSelected(3)}>
+                <NavLink href="/yield?filter=inactive">
+                  <div className={selected === 3 ? activeTabStyle : inactiveTabStyle}>
+                    <p>Inactive Farms</p>
+                  </div>
+                </NavLink>
+              </div>
+            </div>
             <SearchPools search={search} term={term} />
-            {/* <OnsenFilter /> */}
           </div>
           <FarmList farms={result} />
         </div>
