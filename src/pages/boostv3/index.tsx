@@ -14,7 +14,7 @@ import Web3Connect from 'app/components/Web3Connect'
 import Button from 'app/components/Button'
 import Input from 'app/components/Input'
 import { classNames, formatBalance, formatNumber, formatNumberScale, formatPercent, tryParseAmount } from 'app/functions'
-import { Currency, CurrencyAmount, ZERO } from '@evmoswap/core-sdk'
+import { Currency, CurrencyAmount, Token, ZERO } from '@evmoswap/core-sdk'
 import { RowBetween } from 'app/components/Row'
 import { getAPY } from 'app/features/staking/useStaking'
 import { useLockedBalance, useRewardsBalance, useStakingBalance } from 'app/features/boostv3/hooks/balances'
@@ -28,6 +28,7 @@ import useVotingEscrow from 'app/features/boost/useVotingEscrow'
 import { addDays, getUnixTime, format } from 'date-fns'
 import { InformationCircleIcon } from '@heroicons/react/outline'
 import DoubleCheckIcon from 'app/features/boostv3/assets/images/Done_all_round_light.svg';
+import { AddressZero } from '@ethersproject/constants'
 
 type VestingRow = {
     unlockTime: string, amount: CurrencyAmount<Currency>, expired: boolean;
@@ -40,8 +41,8 @@ const SECS_IN_WEEK = DAYS_IN_WEEK * 86400
 
 const emosIcon = "/icons/icon-72x72.png";
 const tabStyle = 'rounded-lg p-6'
-const activeTabStyle = `${tabStyle} flex justify-center items-center w-full h-8 rounded font-bold md:font-medium lg:text-lg text-sm bg-dark-900`
-const inactiveTabStyle = `${tabStyle} flex justify-center items-center w-full h-8 rounded font-bold md:font-medium lg:text-lg text-sm bg-transparent text-secondary`
+const activeTabStyle = `${tabStyle} flex justify-center items-center w-full h-8 rounded font-bold md:font-medium lg:text-lg text-sm bg-dark-900 text-secondary`
+const inactiveTabStyle = `${tabStyle} flex justify-center items-center w-full h-8 rounded font-bold md:font-medium lg:text-lg text-sm bg-transparent text-white`
 const actionBtnColor = "blue";
 
 //stake lock period
@@ -61,7 +62,7 @@ export default function Boostv3 () {
     const { i18n } = useLingui()
     const { account, chainId } = useActiveWeb3React()
     const balance = useTokenBalance( account ?? undefined, EvmoSwap[ chainId ] )
-    const token = balance?.currency || { symbol: 'EMO' };
+    const token = balance?.currency || new Token( chainId, AddressZero, 18, "EMO" );
 
     const { createLockWithMc, increaseAmountWithMc, increaseUnlockTimeWithMc, withdrawWithMc } = useVotingEscrow()
     const { harvestRewards, withdrawEarnings } = useRewardPool();
@@ -74,15 +75,17 @@ export default function Boostv3 () {
     const emosInfo = useTokenInfo( useEmosContract() )
     const { lockEnd, lockAmount, emosSupply } = useLockedBalance()
     const { earnedBalances, withdrawableBalance } = useStakingBalance();
+    const totalActiveVesting = CurrencyAmount.fromRawAmount( token, earnedBalances?.total?.toString() || "0" )
+    const totalCompletedVesting = CurrencyAmount.fromRawAmount( token, withdrawableBalance?.penaltyAmount?.toString() || "0" )
     const rewards = useRewardsBalance();
-    const showVesting = withdrawableBalance ? BigNumber.from( withdrawableBalance.penaltyAmount ).gt( 0 ) : false
+    const hasCompletedVesting = withdrawableBalance ? BigNumber.from( withdrawableBalance.penaltyAmount ).gt( 0 ) : false
 
     const [ activeTab, setActiveTab ] = useState( 0 );
 
     const [ input, setInput ] = useState( '' )
     const [ usingBalance, setUsingBalance ] = useState( false )
     const parsedAmount = useMemo( () => {
-        return usingBalance ? balance : tryParseAmount( input, balance?.currency );
+        return usingBalance ? balance : tryParseAmount( input, token );
     }, [ input, balance ] );
 
     const [ approvalState, approve ] = useApproveCallback( parsedAmount, VOTING_ESCROW_ADDRESS[ chainId ] )
@@ -101,14 +104,6 @@ export default function Boostv3 () {
 
     const vestingRows = useMemo( () => {
         const rows = [];
-
-        if ( withdrawableBalance ) {
-            rows.push( {
-                unlockTime: "-",
-                amount: CurrencyAmount.fromRawAmount( balance?.currency, withdrawableBalance?.amount?.toString() || "0" ),
-                expired: true,
-            } )
-        }
 
         if ( earnedBalances && earnedBalances?.earningsData?.length )
             earnedBalances.earningsData.map( ( earning: { unlockTime: number; amount: number } ) => {
@@ -263,58 +258,58 @@ export default function Boostv3 () {
                 <title key="title">Boostv3 | EvmoSwap</title>
                 <meta key="description" name="description" content="Boost EvmoSwap" />
             </Head>
-            <div className="flex flex-col justify-start flex-grow w-full h-full px-4 md:px-6 py-4 space-y-8">
-                <div className="grid grid-cols-2 gap-2 md:gap-4 lg:gap-6 mt-4 md:grid-cols-3">
+            <div className="flex flex-col justify-start flex-grow w-full h-full px-4 md:px-6 py-4 space-y-6">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 md:gap-4 lg:gap-6 mt-4 md:grid-cols-3">
 
                     <RewardCards
                         title={ i18n._( t`Vesting` ) }
                         icon={ <InformationCircleIcon className='ml-1 w-4 h-4' /> }
-                        value={ `${formatNumberScale( emosInfo.circulatingSupply )} ${token.symbol}` }
+                        value={ `${totalActiveVesting?.toFixed( 2 )} ${token.symbol}` }
                     >
                         <div>
                             <p className='my-2'><small>+{ 0.00 } { token.symbol } { i18n._( t`waiting to be vested` ) }</small></p>
                             {
-                                rewards && rewards.total.lte( 0 ) ? (
-                                    <Button color="red" className="truncate opacity-80" disabled>
+                                !account ? (
+                                    <Web3Connect color="blue" className="truncate" />
+                                ) : !totalActiveVesting?.greaterThan( 0 ) ? (
+                                    <Button color="red" className="truncate bg-[#EA5858] text-white" disabled>
                                         { i18n._( t`No rewards` ) }
                                     </Button>
-                                ) : !account ? (
-                                    <Web3Connect color="blue" className="truncate" />
-                                ) : <Button onClick={ handleClaimRewards } disabled={ pendingTx } color="blue" className="disabled:bg-opacity-40 lg:truncate lg:hover:whitespace-normal" variant="filled">
-                                    { pendingTx ? <Dots>{ i18n._( t`Claiming` ) } </Dots> : i18n._( t`Claim Rewards` ) }
+                                ) : <Button onClick={ handleClaimRewards } disabled={ pendingTx } color="red" className="disabled:bg-opacity-40 lg:truncate lg:hover:whitespace-normal bg-[#EA5858]" variant="filled">
+                                    { pendingTx ? <Dots>{ i18n._( t`Claiming` ) } </Dots> : i18n._( t`Withdraw early - 50% penalty` ) }
                                 </Button>
                             }
                         </div>
                     </RewardCards>
                     <RewardCards
                         title={ i18n._( t`Vest Complete` ) }
-                        value={ `${formatNumberScale( emosInfo.circulatingSupply )} ${token.symbol}` }
+                        value={ `${totalCompletedVesting?.toFixed( 2 )} ${token.symbol}` }
                     >
                         {
-                            rewards && rewards.total.lte( 0 ) ? (
-                                <Button color="red" className="truncate opacity-80" disabled>
+                            !account ? (
+                                <Web3Connect color="blue" className="truncate" />
+                            ) : !totalCompletedVesting?.greaterThan( 0 ) ? (
+                                <Button color="red" className="truncate bg-[#EA5858] text-white" disabled>
                                     { i18n._( t`No rewards` ) }
                                 </Button>
-                            ) : !account ? (
-                                <Web3Connect color="blue" className="truncate" />
-                            ) : <Button onClick={ handleClaimRewards } disabled={ pendingTx } color="blue" className="disabled:bg-opacity-40 lg:truncate lg:hover:whitespace-normal" variant="filled">
+                            ) : <Button onClick={ handleWithdrawWithPenalty } disabled={ withdrawing } color="blue" className="disabled:bg-opacity-40 lg:truncate lg:hover:whitespace-normal" variant="filled">
                                 { pendingTx ? <Dots>{ i18n._( t`Claiming` ) } </Dots> : i18n._( t`Claim Rewards` ) }
                             </Button>
                         }
                     </RewardCards>
                     <RewardCards
                         title={ i18n._( t`Locker Extra Rewards` ) }
-                        value={ `${formatNumberScale( emosInfo.circulatingSupply )} ${token.symbol}` }
+                        value={ `${rewards?.total?.toFixed( 2 )} ${token.symbol}` }
                     >
                         {
-                            rewards && rewards.total.lte( 0 ) ? (
-                                <Button color="red" className="truncate opacity-80" disabled>
+                            !account ? (
+                                <Web3Connect color="blue" className="truncate" />
+                            ) : rewards?.total?.lte( 0 ) ? (
+                                <Button color="red" className="truncate bg-[#EA5858] text-white" disabled>
                                     { i18n._( t`No rewards` ) }
                                 </Button>
-                            ) : !account ? (
-                                <Web3Connect color="blue" className="truncate" />
                             ) : <Button onClick={ handleClaimRewards } disabled={ pendingTx } color="blue" className="disabled:bg-opacity-40 lg:truncate lg:hover:whitespace-normal" variant="filled">
-                                { pendingTx ? <Dots>{ i18n._( t`Harvesting` ) } </Dots> : i18n._( t`Claim Rewards` ) }
+                                { pendingTx ? <Dots>{ i18n._( t`Claiming` ) } </Dots> : i18n._( t`Claim Rewards` ) }
                             </Button>
                         }
                     </RewardCards>
@@ -340,7 +335,7 @@ export default function Boostv3 () {
                                     <tr>
                                         <th className="text-center p-4 border-b border-dark-800">{ i18n._( t`Expiry Time` ) }</th>
                                         <th className="text-center p-4 border-b border-dark-800">{ i18n._( t`Amount` ) }</th>
-                                        <th className="text-center p-4 border-b border-dark-800" colSpan={ 2 }>{ i18n._( t`Action` ) }</th>
+                                        <th className="text-center p-4 border-b border-dark-800">{ i18n._( t`Action` ) }</th>
                                     </tr>
                                 </thead>
                                 <tbody className="bg-dark-900">
@@ -349,14 +344,14 @@ export default function Boostv3 () {
                                         vestingRows.length ? vestingRows.map( ( row: VestingRow, index ) => (
                                             <tr key={ index }>
                                                 <td className="text-center p-4 pr-8 border-b border-dark-800">{ row.unlockTime }</td>
-                                                <td className="text-center p-4 pr-8 border-b border-dark-800">{ row.amount.toExact() } { token.symbol }</td>
-                                                <td className="text-center p-4 pr-8 border-b border-dark-800" colSpan={ 2 }>
-                                                    {
-                                                        index === 0 && row.expired && showVesting && <div className='h-full w-full flex flex-col space-y-8 items-center'>
-                                                            <Button variant="outlined" color="red" onClick={ handleWithdrawWithPenalty } disabled={ withdrawing }> { withdrawing ? <Dots>{ i18n._( t`Withdrawing` ) } </Dots> : i18n._( t`Claim all with penalty` ) }</Button>
-                                                            {/*<Button variant="outlined" color="blue" >{ i18n._( t`Claim all and lock` ) }</Button>*/ }
-                                                        </div>
-                                                    }
+                                                <td className="text-center p-4 pr-8 border-b border-dark-800">{ row.amount.toFixed( 6 ) } { token.symbol }</td>
+                                                <td className="text-center p-4 pr-8 border-b border-dark-800">
+
+                                                    <div className='h-full w-full flex space-x-8 items-center justify-center'>
+                                                        <Button variant="outlined" color="red" onClick={ handleWithdrawWithPenalty } disabled={ withdrawing }> { withdrawing ? <Dots>{ i18n._( t`Withdrawing` ) } </Dots> : i18n._( t`Claim all with penalty` ) }</Button>
+                                                        <Button variant="outlined" color="blue" onClick={ handleWithdrawWithPenalty } disabled={ withdrawing }> { withdrawing ? <Dots>{ i18n._( t`Withdrawing` ) } </Dots> : i18n._( t`Claim all with penalty` ) }</Button>
+                                                    </div>
+
                                                 </td>
                                             </tr>
                                         ) ) :
@@ -399,7 +394,7 @@ export default function Boostv3 () {
                                         </ul>
                                     </div>
 
-                                    { lockAmount?.greaterThan( ZERO ) && <RowBetween className="mt-8">
+                                    { lockAmount?.greaterThan( ZERO ) && <RowBetween className="mt-8 text-white">
                                         <div>{ i18n._( t`Locked` ) }: { lockAmount?.toSignificant( 4 ) } { balance?.currency?.symbol }</div>
                                         <div>{ lockExpired ? <span>{ i18n._( t`Expired` ) }!</span> : <span>{ i18n._( t`Ends` ) }: { timestampToDate( lockEnd ) }</span> }</div>
                                     </RowBetween>
@@ -408,7 +403,7 @@ export default function Boostv3 () {
                                     { !lockExpired && <React.Fragment>
 
                                         {/** Lock update tab toggle */ }
-                                        { lockAmount?.greaterThan( ZERO ) && <div className="grid grid-cols-2 gap-0 p-1 rounded border-[0.5px] mt-4 mb-8">
+                                        { lockAmount?.greaterThan( ZERO ) && <div className="grid grid-cols-2 gap-0 p-1 rounded mt-4 mb-8 bg-dark-800">
                                             <button
                                                 className={ activeTab === 0 ? activeTabStyle : inactiveTabStyle }
                                                 onClick={ () => {
@@ -461,15 +456,15 @@ export default function Boostv3 () {
                                         {/** lock actions */ }
                                         { ( activeTab === 1 || !lockAmount?.greaterThan( ZERO ) ) &&
                                             <div className="my-4">
-                                                <div className="grid grid-cols-2 gap-2 mt-4 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5">
+                                                <div className="grid grid-cols-2 gap-2 mt-4 md:grid-cols-2 lg:grid-cols-4 xl:grid-cols-5">
                                                     {
                                                         LOCK_PERIODS.map( ( period, index ) => (
                                                             <Button
                                                                 key={ index }
-                                                                variant={ lockPeriod.day === period.day && !week ? "filled" : "outlined" }
+                                                                variant={ "filled" }
                                                                 color={ lockPeriod.day === period.day && !week ? "blue" : "gray" }
                                                                 size={ "sm" }
-                                                                className={ "w-auto ml-2 mb-2" }
+                                                                className={ classNames( "w-auto ml-2 mb-2", lockPeriod.day === period.day && !week ? '' : 'bg-dark-800 text-secondary capitalize' ) }
                                                                 onClick={ () => handleLockPeriod( period ) }
                                                             >
                                                                 { period.title }
@@ -482,7 +477,7 @@ export default function Boostv3 () {
                                                         className={ classNames(
                                                             'w-48 flex-none h-auto min-h-[2.5rem] h-auto px-3 md:px-5 ml-2 mb-2 rounded  text-sm md:text-xl font-bold caret-high-emphesis',
                                                             inputError ? ' pl-9 md:pl-12' : '',
-                                                            week ? 'bg-blue text-white bg-opacity-50' : 'bg-dark-800 text-dark-800'
+                                                            week ? 'bg-blue text-white bg-opacity-50' : 'bg-dark-800 text-secondary'
                                                         ) }
                                                         placeholder={ i18n._( t`Custom week` ) }
                                                         max={ MAX_WEEK }
@@ -507,17 +502,17 @@ export default function Boostv3 () {
                                                             <Button color="red" className="truncate w-full" disabled>
                                                                 { i18n._( t`Insufficient Balance` ) }
                                                             </Button>
-                                                        ) : ( <Button onClick={ handleLock } disabled={ lockBtnDisabled } color={ lockBtnDisabled ? "gray" : actionBtnColor } className="bg-blue truncate disabled:bg-grey w-full" variant="filled">
+                                                        ) : ( <Button onClick={ handleLock } disabled={ lockBtnDisabled } color={ lockBtnDisabled ? "gray" : actionBtnColor } className="bg-blue truncate disabled:bg-dark-800 disabled:bg-opacity-100 w-full" variant="filled">
                                                             { pendingLock ? <Dots>{ i18n._( t`Locking` ) } </Dots> : i18n._( t`${!input ? 'Enter amount' : 'Lock'}` ) }
                                                         </Button>
                                                         )
                                                     ) : (
                                                         <React.Fragment>
-                                                            { activeTab === 0 && <Button onClick={ handleIncreaseAmount } disabled={ amountBtnDisabled } color={ amountBtnDisabled ? "gray" : actionBtnColor } className="bg-blue truncate disabled:bg-grey w-full" variant="filled">
+                                                            { activeTab === 0 && <Button onClick={ handleIncreaseAmount } disabled={ amountBtnDisabled } color={ amountBtnDisabled ? "red" : actionBtnColor } className="bg-blue truncate disabled:bg-dark-800 disabled:bg-opacity-100 w-full" variant="filled">
                                                                 { pendingLock ? <Dots>{ i18n._( t`Increasing amount` ) } </Dots> : i18n._( t`${!input ? 'Enter amount' : ( insufficientFunds ? 'Insufficient Balance' : 'Increase Amount' )}` ) }
                                                             </Button> }
 
-                                                            { activeTab === 1 && <Button onClick={ handleIncreaseLock } disabled={ lockTimeBtnDisabled } color={ lockTimeBtnDisabled ? "blue" : actionBtnColor } className="bg-blue truncate disabled:bg-grey w-full" variant="filled">
+                                                            { activeTab === 1 && <Button onClick={ handleIncreaseLock } disabled={ lockTimeBtnDisabled } color={ lockTimeBtnDisabled ? "blue" : actionBtnColor } className="bg-blue truncate disabled:bg-dark-800 disabled:bg-opacity-100 w-full" variant="filled">
                                                                 { pendingLock ? <Dots>{ i18n._( t`Increasing lock period` ) } </Dots> : i18n._( t`${!week && !lockPeriod ? 'Select period' : ( lockTimeBtnDisabled ? 'Higher period required' : 'Increase Lock Period' )}` ) }
                                                             </Button> }
                                                         </React.Fragment>
@@ -526,13 +521,13 @@ export default function Boostv3 () {
                                             </>
                                         }
                                         {
-                                            ( !!account && !!lockExpired ) && <Button
+                                            ( !!account ) && <Button
                                                 color="gradient"
-                                                className="mt-4"
+                                                className="mt-4 disabled:opacity-60"
                                                 onClick={ handleWithdrawWith }
                                                 disabled={ !lockExpired }
                                             >
-                                                { pendingLock ? <Dots>{ i18n._( t`Withdrawing` ) } </Dots> : <span>{ i18n._( t`Withdraw` ) } { token?.symbol } !</span> }
+                                                { pendingLock ? <Dots>{ i18n._( t`Harvesting` ) } </Dots> : <span>{ i18n._( t`Harvest Lock Rewards` ) } ({ rewards?.total?.toFixed( 2 ) })</span> }
                                             </Button>
                                         }
                                     </div>
@@ -606,7 +601,7 @@ const RewardCards = ( props: RewardCardProps ) => {
     return (
         <div className={ classNames( 'flex flex-col text-center w-full overflow-hidden space-y-2 px-14 pt-6 pb-4 rounded bg-dark-900 bg-opacity-80 font-semibold justify-between', className ) }>
             <div className='flex flex-col'>
-                <h2 className='flex items-center text-lg text-white place-self-center'>{ title }  { icon }</h2>
+                <h2 className='flex items-center text-normal text-white place-self-center'>{ title }  { icon }</h2>
                 <p className='font-black text-2xl text-white'>{ value }</p>
             </div>
             <div>{ children }</div>
