@@ -32,7 +32,7 @@ export const DAI: ChainTokenMap = {
   ),
   [ChainId.BSC_TESTNET]: new Token(
     ChainId.BSC_TESTNET,
-    '0x397F8aBd481B7c00883fb70da2ea5Ae70999c37c',
+    '0x6456d6f7B224283f8B22F03347B58D8B6d975677',
     18,
     'DAI',
     'Dai Stablecoin'
@@ -52,7 +52,7 @@ export const USDC: ChainTokenMap = {
   ),
   [ChainId.BSC_TESTNET]: new Token(
     ChainId.BSC_TESTNET,
-    '0xFCBdf3F929e049F2F062cd7e4084fd6f2E5b9c73',
+    '0x9b5bb7F5BE680843Bcd3B54D4E5C6eE889c124Df',
     6,
     'USDC',
     'USD Coin'
@@ -76,7 +76,7 @@ export const USDT: ChainTokenMap = {
   ),
   [ChainId.BSC_TESTNET]: new Token(
     ChainId.BSC_TESTNET,
-    '0xb75fdC39459DAfA30Bc4ec9ca15B40C14084FB4e',
+    '0x648D3d969760FDabc71ea9d59c020AD899237b32',
     6,
     'USDT',
     'Tether USD'
