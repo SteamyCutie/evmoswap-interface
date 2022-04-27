@@ -169,7 +169,7 @@ export default function AutoPoolCardDetails() {
   }
 
   return (
-    <div className="grid w-full grid-cols-1 gap-4 p-4 rounded-b-lg rounded-tr-lg sm:grid-cols-3 bg-dark-800">
+    <div className="grid w-full grid-cols-1 gap-4 p-4 rounded-b-lg rounded-t-none sm:grid-cols-3 bg-dark-800">
       <div className="col-span-2 text-center md:col-span-1">
         {account && (
           <div className="flex flex-row justify-between">
@@ -177,8 +177,8 @@ export default function AutoPoolCardDetails() {
               {i18n._(t`Balance`)}: {formatNumberScale(emoBalance?.toSignificant(6, undefined, 2) ?? 0, false, 4)}
               {emoPrice && emoBalance
                 ? ` (` +
-                formatNumberScale(Number(emoBalance.toFixed(18)) * Number(emoBalance?.toFixed(18) ?? 0), true) +
-                `)`
+                  formatNumberScale(Number(emoBalance.toFixed(18)) * Number(emoBalance?.toFixed(18) ?? 0), true) +
+                  `)`
                 : ``}
             </div>
           </div>
