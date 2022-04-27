@@ -79,7 +79,7 @@ export default function ManualPoolCard() {
               <div className="flex flex-col justify-center w-2/12 space-y-1">
                 <div className="text-xs md:text-[14px] text-secondary">{i18n._(t`EMO Earned`)}</div>
                 <div className="text-xs font-bold md:text-base">
-                  {formatNumber(harvestAmount.current?.toFixed(EvmoSwap[chainId]?.decimals))}
+                  {formatNumber(Number(harvestAmount.current).toFixed(EvmoSwap[chainId]?.decimals))}
                 </div>
               </div>
 

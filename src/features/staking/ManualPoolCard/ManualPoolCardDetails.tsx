@@ -136,7 +136,7 @@ export default function ManualPoolCardDetails() {
   const harvestAmount = useRef(0)
   const getHarvestAmount = async () => {
     if (account) {
-      harvestAmount.current = await masterChefContract.pendingEmo(0, account)
+      harvestAmount.current = await masterChefContract.pendingTokens(0, account)
     }
   }
   getHarvestAmount()
@@ -177,7 +177,7 @@ export default function ManualPoolCardDetails() {
   }
 
   return (
-    <div className="grid grid-cols-1 gap-4 p-4 rounded-b-lg rounded-tr-lg sm:grid-cols-2 lg:grid-cols-3 bg-dark-800">
+    <div className="grid grid-cols-1 gap-4 p-4 rounded-b-lg rounded-t-none sm:grid-cols-2 lg:grid-cols-3 bg-dark-800">
       <div className="col-span-2 text-center md:col-span-1">
         {account && (
           <div className="flex flex-row justify-between">
@@ -185,8 +185,11 @@ export default function ManualPoolCardDetails() {
               {i18n._(t`Balance`)}: {formatNumberScale(emoBalance?.toSignificant(6, undefined, 2) ?? 0, false, 4)}
               {emoPrice && emoBalance
                 ? ` (` +
-                formatNumberScale(Number(emoPrice.toFixed(18)) * Number(emoBalance?.toFixed(18) ?? 0), true) +
-                `)`
+                  formatNumberScale(
+                    Number(Number(emoPrice).toFixed(18)) * Number(Number(emoBalance)?.toFixed(18) ?? 0),
+                    true
+                  ) +
+                  `)`
                 : ``}
             </div>
           </div>
@@ -205,7 +208,7 @@ export default function ManualPoolCardDetails() {
               size="xs"
               onClick={() => {
                 if (!emoBalance?.equalTo(ZERO)) {
-                  setStakeValue(emoBalance?.toFixed(18))
+                  setStakeValue(Number(emoBalance)?.toFixed(18))
                 }
               }}
               className="absolute border-0 right-4 focus:ring focus:ring-light-purple"
@@ -254,7 +257,7 @@ export default function ManualPoolCardDetails() {
               size="xs"
               onClick={() => {
                 if (!XEMOBalance?.equalTo(ZERO)) {
-                  setUnstakeValue(XEMOBalance?.toFixed(18))
+                  setUnstakeValue(Number(XEMOBalance)?.toFixed(18))
                 }
               }}
               className="absolute border-0 right-4 focus:ring focus:ring-light-purple"
@@ -280,9 +283,12 @@ export default function ManualPoolCardDetails() {
         <div className="flex justify-between w-full gap-2 text-sm rounded-lg md:gap-4 bg-dark-700">
           <div className="flex flex-col justify-between w-1/2 px-4 mt-4">
             <div className="flex flex-col">
-              <div className="text-xl font-bold"> {formatNumber(harvestAmount.current?.toFixed(18))}</div>
+              <div className="text-xl font-bold"> {formatNumber(Number(harvestAmount.current)?.toFixed(18))}</div>
               <div className="text-sm">
-                ~${(Number(harvestAmount.current?.toFixed(18)) * Number(emoPrice?.toFixed(18))).toFixed(10)}
+                ~$
+                {(Number(Number(harvestAmount.current)?.toFixed(18)) * Number(Number(emoPrice)?.toFixed(18))).toFixed(
+                  10
+                )}
               </div>
             </div>
             <div className="mb-3">
@@ -297,21 +303,21 @@ export default function ManualPoolCardDetails() {
           </div>
           <div className="flex flex-col w-1/2 p-3 align-middle gap-y-4">
             <Button
-              color={Number(formatNumber(harvestAmount.current?.toFixed(18))) <= 0 ? 'blue' : 'gradient'}
+              color={Number(formatNumber(Number(harvestAmount.current).toFixed(18))) <= 0 ? 'blue' : 'gradient'}
               size="sm"
               className="w-full"
-              variant={Number(formatNumber(harvestAmount.current?.toFixed(18))) <= 0 ? 'outlined' : 'filled'}
-              disabled={Number(formatNumber(harvestAmount.current?.toFixed(18))) <= 0}
+              variant={Number(formatNumber(Number(harvestAmount.current).toFixed(18))) <= 0 ? 'outlined' : 'filled'}
+              disabled={Number(formatNumber(Number(harvestAmount.current).toFixed(18))) <= 0}
               onClick={handleCompoundFarm}
             >
               {i18n._(t`Compound`)}
             </Button>
             <Button
-              color={Number(formatNumber(harvestAmount.current?.toFixed(18))) <= 0 ? 'blue' : 'gradient'}
+              color={Number(formatNumber(Number(harvestAmount.current).toFixed(18))) <= 0 ? 'blue' : 'gradient'}
               size="sm"
               className="w-full"
-              variant={Number(formatNumber(harvestAmount.current?.toFixed(18))) <= 0 ? 'outlined' : 'filled'}
-              disabled={Number(formatNumber(harvestAmount.current?.toFixed(18))) <= 0}
+              variant={Number(formatNumber(Number(harvestAmount.current).toFixed(18))) <= 0 ? 'outlined' : 'filled'}
+              disabled={Number(formatNumber(Number(harvestAmount.current).toFixed(18))) <= 0}
               onClick={handleHarvestFarm}
             >
               {i18n._(t`Harvest`)}

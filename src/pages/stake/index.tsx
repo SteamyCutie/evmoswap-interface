@@ -22,7 +22,7 @@ import usePools from 'features/staking/IncentivePool/usePools'
 import useFuse from '../../hooks/useFuse'
 import useSortableData from '../../hooks/useSortableData'
 import InfiniteScroll from 'react-infinite-scroll-component'
-import IncentivePoolItem from 'features/staking/IncentivePool/IncentivePoolItem'
+import IncentivePoolCardItem from 'features/staking/IncentivePool/IncentivePoolCardItem'
 import { useInfiniteScroll } from 'app/features/farm/hooks'
 
 const buttonStyle =
@@ -36,7 +36,8 @@ export default function Stake() {
 
   const autoemoBountyValue = useRef(0)
 
-  const tabStyle = 'flex justify-center items-center h-full w-full rounded-lg cursor-pointer text-sm md:text-base'
+  const tabStyle =
+    'flex justify-center items-center text-center h-full w-full rounded-lg cursor-pointer text-sm md:text-sm lg:text-base'
   const activeTabStyle = `${tabStyle} text-high-emphesis font-bold bg-dark-900`
   const inactiveTabStyle = `${tabStyle} text-secondary`
 
@@ -69,7 +70,6 @@ export default function Stake() {
 
   const [activeTab, setActiveTab] = useState(0)
 
-
   // const getEmoVault = async () => {
   //   const autoemoBounty = await emovaultContract.calculateHarvestEmoRewards()
   //   autoemoBountyValue.current = getBalanceAmount(autoemoBounty._hex, 18).toNumber()
@@ -100,10 +100,10 @@ export default function Stake() {
         <meta key="description" name="description" content="Stake EvmoSwap" />
       </Head>
       <div className="w-11/12 m-auto">
-        <div className='grid w-full space-y-2 md:flex justify-center m-auto md:justify-between items-center'>
-          <div className='text-white flex flex-wrap md:grid m-auto md:ml-0'>
-            <div className='text-2xl'>Staking Pool</div>
-            <div className='text-sm md:text-base'>{i18n._(t`Just stake some tokens to earn. High APR, low risk.`)}</div>
+        <div className="grid w-full space-y-2 md:flex justify-center m-auto md:justify-between items-center">
+          <div className="text-white flex flex-wrap md:grid m-auto md:ml-0">
+            <div className="text-2xl">Staking Pool</div>
+            <div className="text-sm md:text-base">{i18n._(t`Just stake some tokens to earn. High APR, low risk.`)}</div>
           </div>
 
           {/* select tab */}
@@ -175,29 +175,31 @@ export default function Stake() {
         </div> */}
 
         {/* <div className="mt-5 text-2xl font-bold text-high-emphesis">Staking Pools</div> */}
-        <div className="w-full mt-3 md:mt-6 space-y-4">
+        {/* <div className="w-full mt-3 md:mt-6 space-y-4">
           <AutoPoolCard />
           <ManualPoolCard />
-        </div>
+        </div> */}
 
         {/* Incentive pool */}
         <div className="w-full mt-6 md:flex">
-          {items && items.length > 0 ? (
-            <InfiniteScroll
-              dataLength={numDisplayed}
-              next={() => setNumDisplayed(numDisplayed + 5)}
-              hasMore={true}
-              loader={null}
-            >
-              <div className="space-y-2">
-                {items.slice(0, numDisplayed).map((pool, index) => (
-                  <IncentivePoolItem key={index} pool={pool} />
-                ))}
-              </div>
-            </InfiniteScroll>
-          ) : (
-            <div className="w-full py-6 text-center">{term ? <span>No Results.</span> : <Dots>Loading</Dots>}</div>
-          )}
+          <div className="w-full col-span-4 space-y-6 lg:col-span-3">
+            {items && items.length > 0 ? (
+              <InfiniteScroll
+                dataLength={numDisplayed}
+                next={() => setNumDisplayed(numDisplayed + 5)}
+                hasMore={true}
+                loader={null}
+              >
+                <div className="gap-2 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3">
+                  {items.slice(0, numDisplayed).map((pool, index) => (
+                    <IncentivePoolCardItem key={index} pool={pool} />
+                  ))}
+                </div>
+              </InfiniteScroll>
+            ) : (
+              <div className="w-full py-6 text-center">{term ? <span>No Results.</span> : <Dots>Loading</Dots>}</div>
+            )}
+          </div>
         </div>
       </div>
     </Container>

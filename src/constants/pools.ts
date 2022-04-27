@@ -92,7 +92,7 @@ export const POOLS: AddressMap = {
         decimals: 18,
       },
       earningToken: {
-        id: '0xFCBdf3F929e049F2F062cd7e4084fd6f2E5b9c73',
+        id: '0x9b5bb7F5BE680843Bcd3B54D4E5C6eE889c124Df',
         name: 'USDC Coin',
         symbol: 'USDC',
         decimals: 6,
@@ -112,7 +112,7 @@ export const POOLS: AddressMap = {
         decimals: 18,
       },
       earningToken: {
-        id: '0xb75fdC39459DAfA30Bc4ec9ca15B40C14084FB4e',
+        id: '0x648D3d969760FDabc71ea9d59c020AD899237b32',
         name: 'Tether USD',
         symbol: 'USDT',
         decimals: 6,

@@ -17,7 +17,7 @@ export function useUserInfo(pool, token) {
       return
     }
     return [String(account)]
-  }, [pool, account])
+  }, [account])
 
   const result = useSingleCallResult(args ? contract : null, 'userInfo', args)?.result
 
@@ -39,7 +39,7 @@ export function usePendingReward(pool, token) {
       return
     }
     return [String(account)]
-  }, [pool, account])
+  }, [account])
 
   const result = useSingleCallResult(args ? contract : null, 'pendingReward', args)?.result
 
