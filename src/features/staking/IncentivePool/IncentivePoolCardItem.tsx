@@ -299,7 +299,7 @@ const IncentivePoolCardItem = ({ pool, ...rest }) => {
           )}
           {pool.pid === 0 && (
             <div className="pl-1 pt-2 text-xs text-left text-red/80">
-              Max stake per user: {userMaxStake?.toFixed(2)} SUSHIs
+              Max stake per user: {userMaxStake?.toFixed(2)} {stakingToken.symbol}s
             </div>
           )}
         </div>
