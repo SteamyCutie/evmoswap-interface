@@ -303,21 +303,21 @@ export default function ManualPoolCardDetails() {
           </div>
           <div className="flex flex-col w-1/2 p-3 align-middle gap-y-4">
             <Button
-              color={Number(formatNumber(harvestAmount.current?.toFixed(18))) <= 0 ? 'blue' : 'gradient'}
+              color={Number(formatNumber(Number(harvestAmount.current).toFixed(18))) <= 0 ? 'blue' : 'gradient'}
               size="sm"
               className="w-full"
-              variant={Number(formatNumber(harvestAmount.current?.toFixed(18))) <= 0 ? 'outlined' : 'filled'}
-              disabled={Number(formatNumber(harvestAmount.current?.toFixed(18))) <= 0}
+              variant={Number(formatNumber(Number(harvestAmount.current).toFixed(18))) <= 0 ? 'outlined' : 'filled'}
+              disabled={Number(formatNumber(Number(harvestAmount.current).toFixed(18))) <= 0}
               onClick={handleCompoundFarm}
             >
               {i18n._(t`Compound`)}
             </Button>
             <Button
-              color={Number(formatNumber(harvestAmount.current?.toFixed(18))) <= 0 ? 'blue' : 'gradient'}
+              color={Number(formatNumber(Number(harvestAmount.current).toFixed(18))) <= 0 ? 'blue' : 'gradient'}
               size="sm"
               className="w-full"
-              variant={Number(formatNumber(harvestAmount.current?.toFixed(18))) <= 0 ? 'outlined' : 'filled'}
-              disabled={Number(formatNumber(harvestAmount.current?.toFixed(18))) <= 0}
+              variant={Number(formatNumber(Number(harvestAmount.current).toFixed(18))) <= 0 ? 'outlined' : 'filled'}
+              disabled={Number(formatNumber(Number(harvestAmount.current).toFixed(18))) <= 0}
               onClick={handleHarvestFarm}
             >
               {i18n._(t`Harvest`)}
