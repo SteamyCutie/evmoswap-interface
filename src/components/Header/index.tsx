@@ -153,7 +153,7 @@ function AppBar(): JSX.Element {
                             id={`bridge-nav-link`}
                             className="p-2 text-baseline text-primary hover:text-high-emphesis focus:text-high-emphesis md:p-3 whitespace-nowrap"
                           >
-                            {i18n._(t`Bridge`)}
+                            {i18n._(t`Bridges`)}
                           </a>
                         </NavLink>
                       )}
@@ -307,12 +307,12 @@ function AppBar(): JSX.Element {
                 )}
 
                 {chainId && featureEnabled(Feature.BRIDGE, chainId) && (
-                  <Link href={'/birdge'}>
+                  <Link href={'/bridge'}>
                     <a
                       id={`gamefi-nav-link`}
                       className="p-2 text-baseline text-primary hover:text-high-emphesis focus:text-high-emphesis md:p-3 whitespace-nowrap"
                     >
-                      {i18n._(t`Birdge`)}
+                      {i18n._(t`Bridges`)}
                     </a>
                   </Link>
                 )}
