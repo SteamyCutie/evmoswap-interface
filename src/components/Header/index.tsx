@@ -146,6 +146,17 @@ function AppBar(): JSX.Element {
                           </a>
                         </NavLink>
                       )}
+
+                      {chainId && featureEnabled(Feature.BRIDGE, chainId) && (
+                        <NavLink href={'/bridge'}>
+                          <a
+                            id={`bridge-nav-link`}
+                            className="p-2 text-baseline text-primary hover:text-high-emphesis focus:text-high-emphesis md:p-3 whitespace-nowrap"
+                          >
+                            {i18n._(t`Bridge`)}
+                          </a>
+                        </NavLink>
+                      )}
                     </div>
                   </div>
                 </div>
@@ -295,13 +306,13 @@ function AppBar(): JSX.Element {
                   </Link>
                 )}
 
-                {chainId && featureEnabled(Feature.GAMEFI, chainId) && (
-                  <Link href={'/gamefi'}>
+                {chainId && featureEnabled(Feature.BRIDGE, chainId) && (
+                  <Link href={'/birdge'}>
                     <a
                       id={`gamefi-nav-link`}
                       className="p-2 text-baseline text-primary hover:text-high-emphesis focus:text-high-emphesis md:p-3 whitespace-nowrap"
                     >
-                      {i18n._(t`GameFi`)}
+                      {i18n._(t`Birdge`)}
                     </a>
                   </Link>
                 )}

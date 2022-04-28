@@ -17,7 +17,7 @@ export const EVMOS: { [key: string]: Token } = {
 
 export const DAI: ChainTokenMap = {
   [ChainId.ETHEREUM]: new Token(ChainId.ETHEREUM, '0x6B175474E89094C44Da98b954EedeAC495271d0F', 18, 'DAI', 'Dai Stablecoin'),
-  [ChainId.EVMOS]: new Token(ChainId.EVMOS_TESTNET, '0x63743ACF2c7cfee65A5E356A4C4A005b586fC7AA', 18, 'DAI', 'Dai Stablecoin'),
+  [ChainId.EVMOS]: new Token(ChainId.EVMOS, '0x63743ACF2c7cfee65A5E356A4C4A005b586fC7AA', 18, 'DAI', 'Dai Stablecoin'),
   [ChainId.EVMOS_TESTNET]: new Token(ChainId.EVMOS_TESTNET, '0x7c4a1D38A755a7Ce5521260e874C009ad9e4Bf9c', 18, 'DAI', 'Dai Stablecoin'),
   [ChainId.BSC_TESTNET]: new Token(ChainId.BSC_TESTNET, '0x6456d6f7B224283f8B22F03347B58D8B6d975677', 18, 'DAI', 'Dai Stablecoin'),
 }
@@ -32,7 +32,7 @@ export const USDC: ChainTokenMap = {
 export const USDT: ChainTokenMap = {
   [ChainId.ETHEREUM]: new Token(ChainId.ETHEREUM, '0xdAC17F958D2ee523a2206206994597C13D831ec7', 6, 'USDT', 'Tether USD'),
 
-  [ChainId.EVMOS]: new Token(ChainId.EVMOS_TESTNET, '0x7FF4a56B32ee13D7D4D405887E0eA37d61Ed919e', 6, 'USDT', 'Tether USD'),
+  [ChainId.EVMOS]: new Token(ChainId.EVMOS, '0x7FF4a56B32ee13D7D4D405887E0eA37d61Ed919e', 6, 'USDT', 'Tether USD'),
   [ChainId.EVMOS_TESTNET]: new Token(ChainId.EVMOS_TESTNET, '0x397F8aBd481B7c00883fb70da2ea5Ae70999c37c', 6, 'USDT', 'Tether USD'),
   [ChainId.BSC_TESTNET]: new Token(ChainId.BSC_TESTNET, '0x648D3d969760FDabc71ea9d59c020AD899237b32', 6, 'USDT', 'Tether USD'),
 }

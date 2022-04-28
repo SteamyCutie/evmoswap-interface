@@ -30,7 +30,7 @@ const features = {
     // // Feature.ANALYTICS,
     // Feature.IFO,
     // Feature.STAKING,
-    // Feature.BRIDGE,
+    Feature.BRIDGE,
     // Feature.BOOST,
     // Feature.GAMEFI,
     // Feature.PRISALE,
@@ -43,10 +43,10 @@ const features = {
     // Feature.ZAP,
     // Feature.LENDING,
     // Feature.IFO,
-    Feature.STAKING,
+    // Feature.STAKING,
     // Feature.BOOST,
-    Feature.FAUCET,
-    Feature.PRISALE,
+    // Feature.FAUCET,
+    // Feature.PRISALE,
   ],
 
   [ChainId.BSC_TESTNET]: [
@@ -56,10 +56,10 @@ const features = {
     // Feature.ZAP,
     // // Feature.LENDING,
     // Feature.IFO,
-    Feature.STAKING,
-    Feature.BOOST,
+    // Feature.STAKING,
+    // Feature.BOOST,
     // Feature.GAMEFI,
-    Feature.PRISALE,
+    // Feature.PRISALE,
   ],
 }
 
