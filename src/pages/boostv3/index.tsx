@@ -601,7 +601,7 @@ export default function Boostv3 () {
 
                             <StatButton
                                 title={ i18n._( t`Average lock time` ) }
-                                value={ `${( ( Number( veEmosSupply ) / Number( emosSupply ) ) * 4 ).toFixed( 3 )} ${i18n._( t`Years` )}` }
+                                value={ `${!veEmosSupply || !emosSupply ? '-' : ( ( Number( veEmosSupply ) / Number( emosSupply ) ) * 4 ).toFixed( 3 )} ${i18n._( t`Years` )}` }
                             />
                         </div>
 
