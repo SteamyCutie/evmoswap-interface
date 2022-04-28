@@ -71,7 +71,6 @@ export default function Boostv3 () {
     const [ withdrawing, setWithdrawing ] = useState( false )
     const [ withdrawingMC, setWithdrawingMC ] = useState( false )
 
-    const emosInfo = useTokenInfo( useEmosContract() )
     const { lockEnd, lockAmount, emosSupply, veEmosSupply } = useLockedBalance()
     const { earnedBalances, withdrawableBalance } = useStakingBalance();
     const totalActiveVesting = CurrencyAmount.fromRawAmount( token, earnedBalances?.total?.toString() || "0" )
@@ -151,7 +150,6 @@ export default function Boostv3 () {
 
     const handleLock = async () => {
 
-        //console.log( new Date( newLockTime * 1000 ), newLockTime, lockDays )
         if ( !input || waitingApproval ) return;
 
         setPendingLock( true )
@@ -208,7 +206,6 @@ export default function Boostv3 () {
 
         setPendingTx( true )
         const success = await sendTx( () => ( harvestRewards() ) )
-        console.log( success )
         if ( !success ) {
             setPendingTx( false )
             return
@@ -227,8 +224,6 @@ export default function Boostv3 () {
         setWithdrawing( true )
 
         const success = await sendTx( () => ( withdrawEarnings( amount, withPenalty ) ) )
-
-        console.log( success, amount.toFixed( 4 ) )
 
         if ( !success ) {
             setWithdrawing( false )
@@ -595,10 +590,7 @@ export default function Boostv3 () {
                                 value={
                                     `
                                     ${formatNumberScale(
-                                        formatNumber(
-                                            Number( formatBalance( emosSupply ? emosSupply : 1 ) ) /
-                                            Number( emosInfo.circulatingSupply ? emosInfo.circulatingSupply : 1 )
-                                        )
+                                        Number( formatBalance( emosSupply ? emosSupply : 0 ) )
                                     )}
                                     ${token.symbol}
                                     `
