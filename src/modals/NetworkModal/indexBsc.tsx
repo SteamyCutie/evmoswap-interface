@@ -54,7 +54,7 @@ export const SUPPORTED_NETWORKS: {
       symbol: 'EVMOS',
       decimals: 18,
     },
-    rpcUrls: ['https://evmos-archive-testnet.api.bdnodes.net:8545'],
+    rpcUrls: ['https://eth.bd.evmos.dev:8545'],
     blockExplorerUrls: ['https://evm.evmos.dev/'],
   },
   [ChainId.BSC_TESTNET]: {
@@ -81,7 +81,7 @@ export function BscNetworkModal(): JSX.Element | null {
     <Modal isOpen={networkModalOpen} onDismiss={toggleNetworkModal} maxWidth={672}>
       <ModalHeader onClose={toggleNetworkModal} title="Select a Network" />
       <div className="mb-6 text-lg text-primary">
-        You are currently browsing <span className="font-bold text-pink">EMOS</span> on the{' '}
+        You are currently browsing <span className="font-bold text-pink">EMO</span> on the{' '}
         <span className="font-bold text-blue">{NETWORK_LABEL[chainId]}</span> network
       </div>
 

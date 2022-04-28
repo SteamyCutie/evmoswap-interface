@@ -5,14 +5,14 @@ import { NetworkConnector } from '../entities/connectors/NetworkConnector'
 
 export const RPC = {
   [ChainId.EVMOS]: 'https://eth.bd.evmos.org:8545',
-  [ChainId.EVMOS_TESTNET]: 'https://evmos-archive-testnet.api.bdnodes.net:8545',
+  [ChainId.EVMOS_TESTNET]: 'https://eth.bd.evmos.dev:8545',
   [ChainId.ETHEREUM]: 'https://mainnet.infura.io/v3/6120c21d46cb482d9cdabe463da74dd5',
   [ChainId.BSC]: 'https://bsc-dataseed.binance.org/',
   [ChainId.BSC_TESTNET]: 'https://data-seed-prebsc-1-s1.binance.org:8545',
 }
 
 export const network = new NetworkConnector({
-  defaultChainId: 9000,
+  defaultChainId: 9001,
   urls: RPC,
 })
 
@@ -23,8 +23,8 @@ export const injected = new InjectedConnector({
     // 1, // mainnet
     // 3, // ropsten
     97, // bsc testnet
-    9000, // cronos
-    9001, // cronos testnet
+    9000, // evmos
+    9001, // evmos testnet
   ],
 })
 
@@ -32,7 +32,6 @@ export const bridgeInjected = new InjectedConnector({
   supportedChainIds: [
     1, // mainnet
     56, // binance smart chain
-    25, // cronos
   ],
 })
 
@@ -67,26 +66,6 @@ export const SUPPORTED_WALLETS: { [key: string]: WalletInfo } = {
     href: null,
     color: '#E8831D',
   },
-
-  // CRYPTO_WALLET: {
-  //   connector: async () => {
-  //     const DefiConnectConnector = (await import('deficonnect')).DeFiWeb3Connector
-  //     return new DefiConnectConnector({
-  //       supportedChainIds: [25, 338],
-  //       rpc: {
-  //         25: 'https://evm-cronos.crypto.org/', // cronos mainet
-  //         338: 'https://cronos-testnet-3.crypto.org:8545', // cronos testnet
-  //       },
-  //       pollingInterval: 15000,
-  //     })
-  //   },
-  //   name: 'Crypto DeFi Wallet',
-  //   iconName: 'cryptodefi.svg',
-  //   description: 'Connect to Crypto DeFi Wallet',
-  //   href: null,
-  //   color: '#4196FC',
-  //   mobile: true,
-  // },
 
   // WALLET_CONNECT: {
   //   connector: async () => {

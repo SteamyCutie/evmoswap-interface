@@ -2,8 +2,8 @@
   {
     "inputs": [
       {
-        "internalType": "contract CronaToken",
-        "name": "_crona",
+        "internalType": "contract EmoToken",
+        "name": "_emo",
         "type": "address"
       }
     ],
@@ -271,10 +271,10 @@
   },
   {
     "inputs": [],
-    "name": "crona",
+    "name": "emo",
     "outputs": [
       {
-        "internalType": "contract CronaToken",
+        "internalType": "contract EmoToken",
         "name": "",
         "type": "address"
       }
@@ -558,7 +558,7 @@
         "type": "uint256"
       }
     ],
-    "name": "safeCronaTransfer",
+    "name": "safeEmoTransfer",
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"

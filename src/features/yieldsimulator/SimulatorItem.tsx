@@ -17,7 +17,7 @@ import { Token } from '@evmoswap/core-sdk'
 import { getAddress } from '@ethersproject/address'
 import { formatBalance } from '../../functions'
 
-const SimulatorItem = ({ farm, veEmos, handleBoost }) => {
+const SimulatorItem = ({ farm, veEmo, handleBoost }) => {
   const { i18n } = useLingui()
   const { account, chainId } = useActiveWeb3React()
 
@@ -25,7 +25,7 @@ const SimulatorItem = ({ farm, veEmos, handleBoost }) => {
   let token1 = useCurrency(farm.token1?.id)
 
   const pendingReward = usePendingReward(farm)
-  const pendingEmos = formatBalance(pendingReward?.amounts[0] ? pendingReward?.amounts[0] : 0)
+  const pendingEmo = formatBalance(pendingReward?.amounts[0] ? pendingReward?.amounts[0] : 0)
 
   const [showCalc, setShowCalc] = useState(false)
   const MyLpBalance = (farm) => {
@@ -64,7 +64,7 @@ const SimulatorItem = ({ farm, veEmos, handleBoost }) => {
                   <CurrencyLogoArray currencies={[token0, token1]} dense size={window.innerWidth > 968 ? 40 : 28} />
                 )}
                 <div className="flex flex-col justify-center">
-                  <div className="text-xs md:text-[12px] text-blue">{pendingEmos}</div>
+                  <div className="text-xs md:text-[12px] text-blue">{pendingEmo}</div>
                   <div className="text-xs font-bold md:text-base">{farm?.name}</div>
                   {farm?.migrate ? <div className="text-xs text-pink">{i18n._(t`Migrating`)}</div> : <></>}
                   {farm?.isCommunity && (
@@ -81,7 +81,7 @@ const SimulatorItem = ({ farm, veEmos, handleBoost }) => {
               {/* Earned */}
               <div className="flex flex-col justify-center w-2/12 space-y-1">
                 <div className="text-xs md:text-[14px] text-secondary">{i18n._(t`Earned`)}</div>
-                <div className="text-xs font-bold md:text-base">{pendingEmos}</div>
+                <div className="text-xs font-bold md:text-base">{pendingEmo}</div>
               </div>
 
               {/* Liquidity */}
@@ -94,7 +94,7 @@ const SimulatorItem = ({ farm, veEmos, handleBoost }) => {
               <div className="flex-col justify-center hidden space-y-1 lg:w-2/12 lg:block">
                 <div className="flex items-center text-xs md:text-[14px] text-secondary">
                   {i18n._(t`Multiplier`)}
-                  <QuestionHelper text="The Multiplier represents the proportion of EMOS rewards each farm receives, as a proportion of the EMOS produced each block. For example, if a 1x farm received 1 EMOS per block, a 40x farm would receive 40 EMOS per block. This amount is already included in all APR calculations for the farm." />
+                  <QuestionHelper text="The Multiplier represents the proportion of EMO rewards each farm receives, as a proportion of the EMO produced each block. For example, if a 1x farm received 1 EMO per block, a 40x farm would receive 40 EMO per block. This amount is already included in all APR calculations for the farm." />
                 </div>
                 <div className="text-xs font-bold md:text-base">{farm.multiplier / 100}x</div>
               </div>
@@ -167,7 +167,7 @@ const SimulatorItem = ({ farm, veEmos, handleBoost }) => {
             </div>
           </Disclosure.Button>
 
-          {open && <SimulatorItemDetails farm={farm} veEmos={veEmos} handleBoost={handleBF} />}
+          {open && <SimulatorItemDetails farm={farm} veEmo={veEmo} handleBoost={handleBF} />}
         </div>
       )}
     </Disclosure>

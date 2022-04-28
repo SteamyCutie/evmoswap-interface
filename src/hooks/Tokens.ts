@@ -192,7 +192,7 @@ export function useToken(tokenAddress?: string): Token | undefined | null {
 export function useCurrency(currencyId: string | undefined): Currency | null | undefined {
   const { chainId } = useActiveWeb3React()
 
-  const isETH = currencyId?.toUpperCase() === 'CRO'
+  const isETH = currencyId?.toUpperCase() === 'EVMOS'
 
   const isDual = [ChainId.ETHEREUM].includes(chainId)
 

@@ -29,14 +29,14 @@ import { RowBetween } from 'app/components/Row'
 import Dots from 'app/components/Dots'
 import { ButtonError } from 'app/components/Button'
 import { useUserSlippageToleranceWithDefault } from 'app/state/user/hooks'
-import { Percent } from '@evmoswap/core-sdk'
+import { Percent, NATIVE } from '@evmoswap/core-sdk'
 import { ConfirmationModalContent } from 'app/modals/TransactionConfirmationModal'
 import ConfirmAddModalBottom from '../liquidity/ConfirmAddModalBottom'
 
 const DEFAULT_ADD_V2_SLIPPAGE_TOLERANCE = new Percent(50, 10_000)
 
 // @ts-ignore TYPE NEEDS FIXING
-const PoolDeposit = ({ currencyA, currencyB, header }) => {
+const PoolDeposit = ({ currencyA, currencyB, header, handleDismiss }) => {
   const { i18n } = useLingui()
   const { setContent } = useFarmListItemDetailsModal()
   const { account, chainId, library } = useActiveWeb3React()
@@ -217,6 +217,9 @@ const PoolDeposit = ({ currencyA, currencyB, header }) => {
           console.error(error)
         }
       })
+    setTimeout(() => {
+      handleDismiss()
+    }, 4000)
   }
 
   return (
@@ -265,14 +268,14 @@ const PoolDeposit = ({ currencyA, currencyB, header }) => {
           <AutoColumn gap={'md'}>
             {
               <RowBetween>
-                {approvalA !== ApprovalState.APPROVED && (
+                {approvalA !== ApprovalState.APPROVED && currencyA !== NATIVE[chainId] && (
                   <Button
                     color="blue"
                     size="lg"
                     onClick={approveACallback}
                     disabled={approvalA === ApprovalState.PENDING}
                     style={{
-                      width: approvalB !== ApprovalState.APPROVED ? '48%' : '100%',
+                      width: approvalB !== ApprovalState.APPROVED && currencyB !== NATIVE[chainId] ? '48%' : '100%',
                     }}
                   >
                     {approvalA === ApprovalState.PENDING ? (
@@ -282,14 +285,14 @@ const PoolDeposit = ({ currencyA, currencyB, header }) => {
                     )}
                   </Button>
                 )}
-                {approvalB !== ApprovalState.APPROVED && (
+                {approvalB !== ApprovalState.APPROVED && currencyB !== NATIVE[chainId] && (
                   <Button
                     color="blue"
                     size="lg"
                     onClick={approveBCallback}
                     disabled={approvalB === ApprovalState.PENDING}
                     style={{
-                      width: approvalA !== ApprovalState.APPROVED ? '48%' : '100%',
+                      width: approvalA !== ApprovalState.APPROVED && currencyA !== NATIVE[chainId] ? '48%' : '100%',
                     }}
                   >
                     {approvalB === ApprovalState.PENDING ? (
@@ -301,28 +304,28 @@ const PoolDeposit = ({ currencyA, currencyB, header }) => {
                 )}
               </RowBetween>
             }
-
-            {approvalA === ApprovalState.APPROVED && approvalB === ApprovalState.APPROVED && (
-              <ButtonError
-                onClick={() => {
-                  isExpertMode
-                    ? onAdd()
-                    : setContent(
-                        <ConfirmationModalContent
-                          title={noLiquidity ? i18n._(t`You are creating a pool`) : i18n._(t`Confirm add liquidity`)}
-                          onDismiss={handleDismissConfirmation}
-                          topContent={modalHeader}
-                          bottomContent={modalBottom}
-                        />
-                      )
-                }}
-                disabled={!isValid || approvalA !== ApprovalState.APPROVED || approvalB !== ApprovalState.APPROVED}
-                error={!isValid && !!parsedAmounts[Field.CURRENCY_A] && !!parsedAmounts[Field.CURRENCY_B]}
-              >
-                {error ?? i18n._(t`Confirm Adding Liquidity`)}
-              </ButtonError>
-            )}
           </AutoColumn>
+        )}
+        {approvalA === ApprovalState.APPROVED && approvalB === ApprovalState.APPROVED && (
+          <ButtonError
+            onClick={() => {
+              isExpertMode
+                ? onAdd()
+                : setContent(
+                    <ConfirmationModalContent
+                      title={noLiquidity ? i18n._(t`You are creating a pool`) : i18n._(t`Confirm add liquidity`)}
+                      onDismiss={handleDismissConfirmation}
+                      topContent={modalHeader}
+                      bottomContent={modalBottom}
+                    />
+                  )
+            }}
+            color={error ? 'gray' : 'blue'}
+            disabled={approvalA !== ApprovalState.APPROVED || approvalB !== ApprovalState.APPROVED}
+            error={!isValid && !!parsedAmounts[Field.CURRENCY_A] && !!parsedAmounts[Field.CURRENCY_B]}
+          >
+            {error ? error : i18n._(t`Confirm Adding Liquidity`)}
+          </ButtonError>
         )}
       </HeadlessUiModal.BorderedContent>
     </>

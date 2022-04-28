@@ -12,7 +12,7 @@ import ModalHeader from '../ModalHeader/index'
 import Typography from 'app/components/Typography'
 import Input from 'components/Input'
 import Checkbox from 'app/components/Checkbox'
-import { getEMOSPrice, aprToApy } from 'features/staking/useStaking'
+import { GetEMOPrice, aprToApy } from 'features/staking/useStaking'
 
 interface RoiCalculatorModalProps {
   isfarm: boolean
@@ -65,15 +65,15 @@ const ROICalculatorModal: React.FC<RoiCalculatorModalProps> = ({
   const [isBoost, setIsBoost] = useState(false)
 
   if (isfarm === false) {
-    lpPrice = getEMOSPrice()
+    lpPrice = GetEMOPrice()
   }
   const ROIcalculator = (principal: number, apr: number) => {
     const aprAsDecimal = isBoost ? apr / 40 : apr / 100
     const daysAsDecimalOfYear = stakedPeriod / 365
     const timesCompounded = isCompounding ? 365 / compoundingPeriod : 365
     const ROI = principal * (1 + aprAsDecimal / timesCompounded) ** (timesCompounded * daysAsDecimalOfYear) - principal
-    const emosPriceInUSD = getEMOSPrice()
-    const ROIInTokens = earningTokenPrice ? (ROI / earningTokenPrice).toFixed(3) : (ROI / emosPriceInUSD).toFixed(3)
+    const emoPriceInUSD = GetEMOPrice()
+    const ROIInTokens = earningTokenPrice ? (ROI / earningTokenPrice).toFixed(3) : (ROI / emoPriceInUSD).toFixed(3)
     const ROIPercentage = Number(usdValue) === 0 ? '0' : ((ROI / Number(usdValue)) * 100).toFixed(2)
     return { ROI, ROIInTokens, ROIPercentage }
   }
@@ -197,52 +197,48 @@ const ROICalculatorModal: React.FC<RoiCalculatorModalProps> = ({
                   />
                 </div>
                 <button
-                  className={`${
-                    isCompounding
+                  className={`${isCompounding
                       ? compoundingPeriod === 1
                         ? buttonStyleEnabled
                         : buttonUnselected
                       : buttonStyleDisabled
-                  } px-2 mx-auto md:px-4`}
+                    } px-2 mx-auto md:px-4`}
                   disabled={!isCompounding}
                   onClick={() => setCompoundingPeriod(1)}
                 >
                   1D
                 </button>
                 <button
-                  className={`${
-                    isCompounding
+                  className={`${isCompounding
                       ? compoundingPeriod === 7
                         ? buttonStyleEnabled
                         : buttonUnselected
                       : buttonStyleDisabled
-                  } px-2 mx-auto md:px-4`}
+                    } px-2 mx-auto md:px-4`}
                   disabled={!isCompounding}
                   onClick={() => setCompoundingPeriod(7)}
                 >
                   7D
                 </button>
                 <button
-                  className={`${
-                    isCompounding
+                  className={`${isCompounding
                       ? compoundingPeriod === 14
                         ? buttonStyleEnabled
                         : buttonUnselected
                       : buttonStyleDisabled
-                  } px-2 mx-auto md:px-4`}
+                    } px-2 mx-auto md:px-4`}
                   disabled={!isCompounding}
                   onClick={() => setCompoundingPeriod(14)}
                 >
                   14D
                 </button>
                 <button
-                  className={`${
-                    isCompounding
+                  className={`${isCompounding
                       ? compoundingPeriod === 30
                         ? buttonStyleEnabled
                         : buttonUnselected
                       : buttonStyleDisabled
-                  } px-2 mx-auto md:px-4`}
+                    } px-2 mx-auto md:px-4`}
                   disabled={!isCompounding}
                   onClick={() => setCompoundingPeriod(30)}
                 >
@@ -289,7 +285,7 @@ const ROICalculatorModal: React.FC<RoiCalculatorModalProps> = ({
                 </div>
               )}
               <div className="flex justify-between gap-2">
-                <Typography>{i18n._(t`Base APR (EMOS yield only)`)}</Typography>
+                <Typography>{i18n._(t`Base APR (EMO yield only)`)}</Typography>
                 <p className="text-cyan-blue">{Number(apr).toFixed(2)}%</p>
               </div>
               <div className="flex justify-between gap-2">
@@ -318,9 +314,8 @@ const ROICalculatorModal: React.FC<RoiCalculatorModalProps> = ({
               {isfarm ? (
                 <ExternalLink
                   startIcon={<LinkIcon size={16} className="text-cyan-blue" />}
-                  href={`https://app.evmoswap.org/add/${token0?.symbol == 'CRO' ? 'CRO' : token0?.id}/${
-                    token1?.symbol == 'CRO' ? 'CRO' : token1?.id
-                  }`}
+                  href={`https://app.evmoswap.org/add/${token0?.symbol == 'EVMOS' ? 'EVMOS' : token0?.id}/${token1?.symbol == 'EVMOS' ? 'EVMOS' : token1?.id
+                    }`}
                 >
                   <Typography variant="sm" className="text-cyan-blue">
                     Get {token0?.symbol}-{token1?.symbol} LP
@@ -329,10 +324,10 @@ const ROICalculatorModal: React.FC<RoiCalculatorModalProps> = ({
               ) : (
                 <ExternalLink
                   startIcon={<LinkIcon size={16} className="text-cyan-blue" />}
-                  href={`https://app.evmoswap.org/swap/EVMOS/EMOS`}
+                  href={`https://app.evmoswap.org/swap/EVMOS/EMO`}
                 >
                   <Typography variant="sm" className="text-cyan-blue">
-                    Get EMOS
+                    Get EMO
                   </Typography>
                 </ExternalLink>
               )}

@@ -22,7 +22,7 @@ export default function useVotingEscrow() {
             gasLimit: gasLimit.mul(120).div(100),
           })
 
-          return addTransaction(tx, { summary: 'Create EMOS lock' })
+          return addTransaction(tx, { summary: 'Create EMO lock' })
         } catch (e) {
           return e
         }
@@ -42,7 +42,7 @@ export default function useVotingEscrow() {
         gasLimit: gasLimit.mul(120).div(100),
       })
 
-      return addTransaction(tx, { summary: 'Withdraw EMOS' })
+      return addTransaction(tx, { summary: 'Withdraw EMO' })
     } catch (e) {
       return e
     }
@@ -96,7 +96,7 @@ export default function useVotingEscrow() {
   const claimRewards = useCallback(async () => {
     try {
       const tx = await reward?.getReward()
-      return addTransaction(tx, { summary: 'Claim EMOS Rewards' })
+      return addTransaction(tx, { summary: 'Claim EMO Rewards' })
     } catch (e) {
       return e
     }

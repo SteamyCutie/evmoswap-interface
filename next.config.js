@@ -55,14 +55,6 @@ const nextConfig = {
         destination: '/boost',
       },
       {
-        source: '/boostv2',
-        destination: '/boostv2',
-      },
-      {
-        source: '/zap',
-        destination: '/exchange/zap',
-      },
-      {
         source: '/add/:token*',
         destination: '/exchange/add/:token*',
       },
@@ -95,16 +87,8 @@ const nextConfig = {
         destination: '/exchange/find',
       },
       {
-        source: '/simulator',
-        destination: '/yieldsimulator',
-      },
-      {
         source: '/prisale',
         destination: '/prisale',
-      },
-      {
-        source: '/lottery',
-        destination: '/lottery',
       },
     ]
   },

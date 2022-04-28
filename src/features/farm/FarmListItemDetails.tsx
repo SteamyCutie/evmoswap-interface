@@ -63,7 +63,7 @@ const FarmListItemDetails = ({ farm, onDismiss, handleDismiss }) => {
             <InvestmentDetails farm={farm} handleDismiss={handleDismiss} />
           </div>
           <div className={classNames(COLUMN_CONTAINER, view === OnsenModalView.Liquidity ? 'block' : 'hidden')}>
-            <ManageSwapPair farm={farm} />
+            <ManageSwapPair farm={farm} handleDismiss={handleDismiss} />
           </div>
           <div className={classNames(COLUMN_CONTAINER, view === OnsenModalView.Staking ? 'block' : 'hidden')}>
             <ManageBar farm={farm} handleDismiss={handleDismiss} />

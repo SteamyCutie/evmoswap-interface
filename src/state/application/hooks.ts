@@ -71,7 +71,7 @@ export function useToggleVoteModal(): () => void {
 
 // Add for EvmoSwapV2
 export function useTokenStatsModalToggle(): () => void {
-  return useToggleModal(ApplicationModal.EMOS)
+  return useToggleModal(ApplicationModal.EMO)
 }
 
 // returns a function that allows adding a popup

@@ -28,14 +28,14 @@ const IfoCardDetails: React.FC<IfoCardDetailsProps> = ({ poolId, ifo, publicIfoD
   const totalLPCommitted = getBalanceNumber(poolCharacteristic.totalAmountPool, raiseToken.decimals)
   const totalLPCommittedInUSD = raiseTokenPriceInUSD.times(totalLPCommitted)
   const totalCommitted = `~$${formatNumber(totalLPCommittedInUSD.toNumber())} ${
-    poolId == 'poolBasic' ? `(${totalLPCommitted} EMOS)` : ''
+    poolId == 'poolBasic' ? `(${totalLPCommitted} EMO)` : ''
   } (${totalCommittedPercent}%)`
 
   // yourCommited
   const yourLPCommitted = getBalanceNumber(walletCharacteristic.amountTokenCommittedInLP, raiseToken.decimals)
   const yourLPCommittedInUSD = raiseTokenPriceInUSD.times(yourLPCommitted)
   const yourCommitted = `~$${formatNumber(yourLPCommittedInUSD.toNumber())} ${
-    poolId == 'poolBasic' ? `(${yourLPCommitted} EMOS)` : ''
+    poolId == 'poolBasic' ? `(${yourLPCommitted} EMO)` : ''
   }`
 
   // pricePerTokenWithFee
@@ -58,8 +58,8 @@ const IfoCardDetails: React.FC<IfoCardDetailsProps> = ({ poolId, ifo, publicIfoD
             <div className="text-xs text-high-emphesis">{ifo[poolId].raiseAmount}</div>
           </div>
           <div className="flex justify-between gap-0.5">
-            <div className="text-xs text-pink-red">EMOS to burn:</div>
-            <div className="text-xs text-pink-red">{ifo[poolId].emosToBurn}</div>
+            <div className="text-xs text-pink-red">EMO to burn:</div>
+            <div className="text-xs text-pink-red">{ifo[poolId].emoToBurn}</div>
           </div>
         </>
       )
@@ -73,10 +73,10 @@ const IfoCardDetails: React.FC<IfoCardDetailsProps> = ({ poolId, ifo, publicIfoD
             <div className="text-xs text-high-emphesis">{ifo[poolId].raiseAmount}</div>
           </div>
 
-          {ifo[poolId].emosToBurn !== '$0' && (
+          {ifo[poolId].emoToBurn !== '$0' && (
             <div className="flex justify-between gap-0.5">
-              <div className="text-xs text-pink-red">EMOS to burn:</div>
-              <div className="text-xs text-pink-red">{ifo[poolId].emosToBurn}</div>
+              <div className="text-xs text-pink-red">EMO to burn:</div>
+              <div className="text-xs text-pink-red">{ifo[poolId].emoToBurn}</div>
             </div>
           )}
           <div className="flex justify-between gap-0.5">
@@ -95,10 +95,10 @@ const IfoCardDetails: React.FC<IfoCardDetailsProps> = ({ poolId, ifo, publicIfoD
             <div className="text-xs text-high-emphesis">{ifo[poolId].raiseAmount}</div>
           </div>
 
-          {ifo[poolId].emosToBurn !== '$0' && (
+          {ifo[poolId].emoToBurn !== '$0' && (
             <div className="flex justify-between gap-0.5">
-              <div className="text-xs text-pink-red">EMOS to burn:</div>
-              <div className="text-xs text-pink-red">{ifo[poolId].emosToBurn}</div>
+              <div className="text-xs text-pink-red">EMO to burn:</div>
+              <div className="text-xs text-pink-red">{ifo[poolId].emoToBurn}</div>
             </div>
           )}
 
@@ -143,10 +143,10 @@ const IfoCardDetails: React.FC<IfoCardDetailsProps> = ({ poolId, ifo, publicIfoD
             <div className="text-xs text-high-emphesis">{ifo[poolId].raiseAmount}</div>
           </div>
 
-          {ifo[poolId].emosToBurn !== '$0' && (
+          {ifo[poolId].emoToBurn !== '$0' && (
             <div className="flex justify-between gap-0.5">
-              <div className="text-xs text-pink-red">EMOS to burn:</div>
-              <div className="text-xs text-pink-red">{ifo[poolId].emosToBurn}</div>
+              <div className="text-xs text-pink-red">EMO to burn:</div>
+              <div className="text-xs text-pink-red">{ifo[poolId].emoToBurn}</div>
             </div>
           )}
 

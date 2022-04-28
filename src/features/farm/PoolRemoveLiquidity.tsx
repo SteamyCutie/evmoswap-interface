@@ -43,7 +43,7 @@ import { ButtonConfirmed } from 'app/components/Button'
 const DEFAULT_REMOVE_LIQUIDITY_SLIPPAGE_TOLERANCE = new Percent(5, 1000)
 
 // @ts-ignore TYPE NEEDS FIXING
-const PoolWithdraw = ({ currencyA, currencyB, header }) => {
+const PoolWithdraw = ({ currencyA, currencyB, header, handleDismiss }) => {
   const { i18n } = useLingui()
   const { setContent } = useFarmListItemDetailsModal()
   const { account, chainId, library } = useActiveWeb3React()
@@ -350,6 +350,9 @@ const PoolWithdraw = ({ currencyA, currencyB, header }) => {
           // we only care if the error is something _other_ than the user rejected the tx
           console.log(error)
         })
+      setTimeout(() => {
+        handleDismiss()
+      }, 4000)
     }
   }
 
@@ -396,8 +399,8 @@ const PoolWithdraw = ({ currencyA, currencyB, header }) => {
                           </Link>
                         ) : oneCurrencyIsWETH ? (
                           <Link
-                            href={`/remove/${currencyA?.equals(WNATIVE[chainId]) ? 'CRO' : currencyIdA}/${
-                              currencyB?.equals(WNATIVE[chainId]) ? 'CRO' : currencyIdB
+                            href={`/remove/${currencyA?.equals(WNATIVE[chainId]) ? 'EVMOS' : currencyIdA}/${
+                              currencyB?.equals(WNATIVE[chainId]) ? 'EVMOS' : currencyIdB
                             }`}
                           >
                             <a className="text-baseline text-blue opacity-80 hover:opacity-100 whitespace-nowrap">
@@ -439,7 +442,7 @@ const PoolWithdraw = ({ currencyA, currencyB, header }) => {
                 onClick={onAttemptToApprove}
                 disabled={approval !== ApprovalState.NOT_APPROVED || signatureData !== null}
               >
-                {i18n._(t`Approve`)}
+                {approval === ApprovalState.PENDING ? <Dots>{i18n._(t`Approving`)}</Dots> : i18n._(t`Approve`)}
               </Button>
             ) : (
               <Button

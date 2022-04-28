@@ -20,7 +20,7 @@ import { useActiveWeb3React } from '../../services/web3'
 import { useCurrency, useIsUserAddedToken } from '../../hooks/Tokens'
 import { useLingui } from '@lingui/react'
 import { classNames, formatNumber } from '../../functions'
-// import { usePendingEmos } from 'app/features/farms/hooks'
+// import { usePendingEmo } from 'app/features/farms/hooks'
 import { getAddress } from '@ethersproject/address'
 import { useUserInfo } from 'app/features/staking/IncentivePool/hooks'
 import { FarmPairInfo } from 'app/constants/farms'
@@ -118,9 +118,9 @@ function LPTokenRow({
   let token0 = useCurrency(lpToken?.token0?.id)
   let token1 = useCurrency(lpToken?.token1?.id)
 
-  // let pendingEmos: CurrencyAmount<Token> = null
+  // let pendingEmo: CurrencyAmount<Token> = null
   if (hideBalance === false) {
-    // pendingEmos = usePendingEmos(lpToken)
+    // pendingEmo = usePendingEmo(lpToken)
 
     const MyLpBalance = (lpToken) => {
       const liquidityToken = new Token(
@@ -162,7 +162,7 @@ function LPTokenRow({
       {/* {!hideBalance && (
         <div className="flex items-center justify-end">
           <div className="flex flex-col justify-center w-2/12 space-y-1">
-            <div className="text-xs font-bold md:text-base">{formatNumber(pendingEmos?.toFixed(18))}</div>
+            <div className="text-xs font-bold md:text-base">{formatNumber(pendingEmo?.toFixed(18))}</div>
           </div>
         </div>
       )} */}

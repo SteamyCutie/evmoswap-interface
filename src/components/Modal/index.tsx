@@ -22,7 +22,7 @@ export default function Modal({
   initialFocusRef,
   children,
   padding = 5,
-  maxWidth = 420,
+  maxWidth = 500,
 }: ModalProps) {
   return (
     <>
@@ -46,7 +46,8 @@ export default function Modal({
                   maxWidth: `${maxWidth}px`,
                 }}
               >
-                <div className="w-full p-px rounded bg-gradient-to-r from-blue to-red">
+                {/* <div className="w-full p-px rounded bg-gradient-to-r from-blue to-red"> */}
+                <div className="w-full p-px rounded bg-dark-gray">
                   <div className="flex flex-col w-full h-full p-6 overflow-y-hidden rounded bg-dark-900">
                     <div style={{ minHeight: `${minHeight}vh`, maxHeight: `${maxHeight}vh` }}>{children}</div>
                   </div>

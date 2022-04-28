@@ -85,7 +85,7 @@ function combineMaps(map1: TokenAddressMap, map2: TokenAddressMap): TokenAddress
 
     97: { ...map1[97], ...map2[97] }, // bsc mainnet
     9000: { ...map1[9000], ...map2[9000] }, // evmos testnet
-    9001: { ...map1[9001], ...map2[9001] }, // evmos testnet
+    9001: { ...map1[9001], ...map2[9001] }, // evmos
   }
 }
 

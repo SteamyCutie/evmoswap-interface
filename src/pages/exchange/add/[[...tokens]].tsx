@@ -1,7 +1,7 @@
 import { ApprovalState, useApproveCallback } from '../../../hooks/useApproveCallback'
 import { AutoRow, RowBetween } from '../../../components/Row'
 import Button, { ButtonError } from '../../../components/Button'
-import { Currency, CurrencyAmount, Percent, WNATIVE, currencyEquals } from '@evmoswap/core-sdk'
+import { Currency, CurrencyAmount, Percent, WNATIVE, currencyEquals, NATIVE } from '@evmoswap/core-sdk'
 import { ONE_BIPS, ZERO_PERCENT } from '../../../constants'
 import React, { useCallback, useState } from 'react'
 import TransactionConfirmationModal, { ConfirmationModalContent } from '../../../modals/TransactionConfirmationModal'
@@ -288,7 +288,7 @@ export default function Add() {
           router.push(`/add/${newCurrencyIdB}`)
         }
       } else {
-        router.push(`/add/${currencyIdA ? currencyIdA : 'CRO'}/${newCurrencyIdB}`)
+        router.push(`/add/${currencyIdA ? currencyIdA : 'EVMOS'}/${newCurrencyIdB}`)
       }
     },
     [currencyIdA, router, currencyIdB]
@@ -462,14 +462,15 @@ export default function Add() {
                   <AutoColumn gap={'md'}>
                     {
                       <RowBetween>
-                        {approvalA !== ApprovalState.APPROVED && (
+                        {approvalA !== ApprovalState.APPROVED && currencyA !== NATIVE[chainId] && (
                           <Button
                             color="blue"
                             size="lg"
                             onClick={approveACallback}
                             disabled={approvalA === ApprovalState.PENDING}
                             style={{
-                              width: approvalB !== ApprovalState.APPROVED ? '48%' : '100%',
+                              width:
+                                approvalB !== ApprovalState.APPROVED && currencyB !== NATIVE[chainId] ? '48%' : '100%',
                             }}
                           >
                             {approvalA === ApprovalState.PENDING ? (
@@ -479,14 +480,15 @@ export default function Add() {
                             )}
                           </Button>
                         )}
-                        {approvalB !== ApprovalState.APPROVED && (
+                        {approvalB !== ApprovalState.APPROVED && currencyB !== NATIVE[chainId] && (
                           <Button
                             color="blue"
                             size="lg"
                             onClick={approveBCallback}
                             disabled={approvalB === ApprovalState.PENDING}
                             style={{
-                              width: approvalA !== ApprovalState.APPROVED ? '48%' : '100%',
+                              width:
+                                approvalA !== ApprovalState.APPROVED && currencyA !== NATIVE[chainId] ? '48%' : '100%',
                             }}
                           >
                             {approvalB === ApprovalState.PENDING ? (

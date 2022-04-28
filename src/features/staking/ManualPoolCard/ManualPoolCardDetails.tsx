@@ -1,14 +1,14 @@
 import { ApprovalState, useApproveCallback } from '../../../hooks/useApproveCallback'
 import { ZERO } from '@evmoswap/core-sdk'
 import React, { useState, useRef } from 'react'
-import { EvmoSwap, XEMOS } from '../../../config/tokens'
+import { EvmoSwap, XEMO } from '../../../config/tokens'
 import Button from '../../../components/Button'
 import Dots from '../../../components/Dots'
 import { ExternalLink as LinkIcon } from 'react-feather'
 import { t } from '@lingui/macro'
 import { tryParseAmount } from '../../../functions/parse'
 import { useActiveWeb3React } from '../../../services/web3'
-import useEmosBar from '../../../hooks/useEmosBar'
+import useEmoBar from '../../../hooks/useEmoBar'
 import { useWalletModalToggle } from '../../../state/application/hooks'
 import { useLingui } from '@lingui/react'
 import { useTokenBalance } from '../../../state/wallet/hooks'
@@ -17,7 +17,7 @@ import { useEmosVaultContract, useDashboardContract, useMasterChefContract } fro
 import { useGasPrice } from 'state/user/hooks'
 import { useTransactionAdder } from '../../../state/transactions/hooks'
 import { getBalanceAmount } from 'functions/formatBalance'
-import { getEMOSPrice } from 'features/staking/useStaking'
+import { GetEMOPrice } from 'features/staking/useStaking'
 import NumericalInput from 'app/components/NumericalInput'
 import ExternalLink from 'app/components/ExternalLink'
 import Typography from 'app/components/Typography'
@@ -42,34 +42,34 @@ const sendTx = async (txFunc: () => Promise<any>): Promise<boolean> => {
 export default function ManualPoolCardDetails() {
   const { i18n } = useLingui()
   const { account, chainId } = useActiveWeb3React()
-  const emosPrice = getEMOSPrice()
-  const emosBalance = useTokenBalance(account ?? undefined, EvmoSwap[chainId])
-  const XEMOSBalance = useTokenBalance(account ?? undefined, XEMOS[chainId])
+  const emoPrice = GetEMOPrice()
+  const emoBalance = useTokenBalance(account ?? undefined, EvmoSwap[chainId])
+  const XEMOBalance = useTokenBalance(account ?? undefined, XEMO[chainId])
   const walletConnected = !!account
   const toggleWalletModal = useWalletModalToggle()
   const addTransaction = useTransactionAdder()
   const DEFAULT_GAS_LIMIT = 250000
 
   const dashboardContract = useDashboardContract()
-  const emosvaultContract = useEmosVaultContract()
-  const { enterStaking, leaveStaking } = useEmosBar()
+  const emovaultContract = useEmosVaultContract()
+  const { enterStaking, leaveStaking } = useEmoBar()
 
   const [stakeValue, setStakeValue] = useState<string>('')
   const [unstakeValue, setUnstakeValue] = useState<string>('')
 
-  const parsedStakeAmount = tryParseAmount(stakeValue, emosBalance?.currency)
-  const parsedUnstakeAmount = tryParseAmount(unstakeValue, XEMOSBalance?.currency)
+  const parsedStakeAmount = tryParseAmount(stakeValue, emoBalance?.currency)
+  const parsedUnstakeAmount = tryParseAmount(unstakeValue, XEMOBalance?.currency)
   const [approvalState, approve] = useApproveCallback(parsedStakeAmount, MASTERCHEF_ADDRESS[chainId])
 
   const results = useRef(0)
-  const getEmosVault = async () => {
-    const totalstaked = await emosvaultContract.balanceOf()
+  const getEmoVault = async () => {
+    const totalstaked = await emovaultContract.balanceOf()
     const tvlOfManual = await dashboardContract.tvlOfPool(0)
     const totalStakedValue = getBalanceAmount(totalstaked._hex, 18).toNumber()
     const tvlOfManualValue = getBalanceAmount(tvlOfManual.tvl._hex, 18).toNumber() - totalStakedValue
     results.current = tvlOfManualValue
   }
-  getEmosVault()
+  getEmoVault()
 
   const handleInput = (v: string) => {
     if (v.length <= INPUT_CHAR_LIMIT) {
@@ -78,9 +78,8 @@ export default function ManualPoolCardDetails() {
     }
   }
 
-  const inputStakeError = (emosBalance && emosBalance.equalTo(ZERO)) || parsedStakeAmount?.greaterThan(emosBalance)
-  const inputUnstakeError =
-    (XEMOSBalance && XEMOSBalance.equalTo(ZERO)) || parsedUnstakeAmount?.greaterThan(XEMOSBalance)
+  const inputStakeError = (emoBalance && emoBalance.equalTo(ZERO)) || parsedStakeAmount?.greaterThan(emoBalance)
+  const inputUnstakeError = (XEMOBalance && XEMOBalance.equalTo(ZERO)) || parsedUnstakeAmount?.greaterThan(XEMOBalance)
 
   const [pendingTx, setPendingTx] = useState(false)
   const stakeButtonDisabled = !stakeValue || pendingTx || (parsedStakeAmount && parsedStakeAmount.equalTo(ZERO))
@@ -137,7 +136,7 @@ export default function ManualPoolCardDetails() {
   const harvestAmount = useRef(0)
   const getHarvestAmount = async () => {
     if (account) {
-      harvestAmount.current = await masterChefContract.pendingEmos(0, account)
+      harvestAmount.current = await masterChefContract.pendingTokens(0, account)
     }
   }
   getHarvestAmount()
@@ -150,7 +149,7 @@ export default function ManualPoolCardDetails() {
       try {
         const tx = await masterChefContract.leaveStaking('0', { ...options, gasPrice })
         addTransaction(tx, {
-          summary: `${i18n._(t`Harvest`)} EMOS`,
+          summary: `${i18n._(t`Harvest`)} EMO`,
         })
       } catch (e) {
         console.error(e)
@@ -168,7 +167,7 @@ export default function ManualPoolCardDetails() {
       try {
         const tx = await masterChefContract.enterStaking(harvestAmount.current, { ...options, gasPrice })
         addTransaction(tx, {
-          summary: `${i18n._(t`Compound`)} EMOS`,
+          summary: `${i18n._(t`Compound`)} EMO`,
         })
       } catch (e) {
         console.error(e)
@@ -178,15 +177,18 @@ export default function ManualPoolCardDetails() {
   }
 
   return (
-    <div className="grid grid-cols-1 gap-4 p-4 rounded-b-lg rounded-tr-lg sm:grid-cols-2 lg:grid-cols-3 bg-dark-800">
+    <div className="grid grid-cols-1 gap-4 p-4 rounded-b-lg rounded-t-none sm:grid-cols-2 lg:grid-cols-3 bg-dark-800">
       <div className="col-span-2 text-center md:col-span-1">
         {account && (
           <div className="flex flex-row justify-between">
             <div className="pr-4 mb-2 text-left cursor-pointer text-secondary">
-              {i18n._(t`Balance`)}: {formatNumberScale(emosBalance?.toSignificant(6, undefined, 2) ?? 0, false, 4)}
-              {emosPrice && emosBalance
+              {i18n._(t`Balance`)}: {formatNumberScale(emoBalance?.toSignificant(6, undefined, 2) ?? 0, false, 4)}
+              {emoPrice && emoBalance
                 ? ` (` +
-                  formatNumberScale(Number(emosPrice.toFixed(18)) * Number(emosBalance?.toFixed(18) ?? 0), true) +
+                  formatNumberScale(
+                    Number(Number(emoPrice).toFixed(18)) * Number(Number(emoBalance)?.toFixed(18) ?? 0),
+                    true
+                  ) +
                   `)`
                 : ``}
             </div>
@@ -205,8 +207,8 @@ export default function ManualPoolCardDetails() {
               color="blue"
               size="xs"
               onClick={() => {
-                if (!emosBalance?.equalTo(ZERO)) {
-                  setStakeValue(emosBalance?.toFixed(18))
+                if (!emoBalance?.equalTo(ZERO)) {
+                  setStakeValue(Number(emoBalance)?.toFixed(18))
                 }
               }}
               className="absolute border-0 right-4 focus:ring focus:ring-light-purple"
@@ -239,7 +241,7 @@ export default function ManualPoolCardDetails() {
       <div className="col-span-2 text-center md:col-span-1">
         {account && (
           <div className="pr-4 mb-2 text-left cursor-pointer text-secondary">
-            {i18n._(t`Your Staked`)}: {formatNumberScale(XEMOSBalance?.toSignificant(6) ?? 0, false, 4)}
+            {i18n._(t`Your Staked`)}: {formatNumberScale(XEMOBalance?.toSignificant(6) ?? 0, false, 4)}
           </div>
         )}
         <div className="relative flex items-center w-full mb-4">
@@ -254,8 +256,8 @@ export default function ManualPoolCardDetails() {
               color="blue"
               size="xs"
               onClick={() => {
-                if (!XEMOSBalance?.equalTo(ZERO)) {
-                  setUnstakeValue(XEMOSBalance?.toFixed(18))
+                if (!XEMOBalance?.equalTo(ZERO)) {
+                  setUnstakeValue(Number(XEMOBalance)?.toFixed(18))
                 }
               }}
               className="absolute border-0 right-4 focus:ring focus:ring-light-purple"
@@ -276,14 +278,17 @@ export default function ManualPoolCardDetails() {
       </div>
       <div className="col-span-2 md:col-span-1">
         <div className="flex justify-between">
-          <div className="mb-2 text-xs md:text-base text-secondary">EMOS Earned</div>
+          <div className="mb-2 text-xs md:text-base text-secondary">EMO Earned</div>
         </div>
         <div className="flex justify-between w-full gap-2 text-sm rounded-lg md:gap-4 bg-dark-700">
           <div className="flex flex-col justify-between w-1/2 px-4 mt-4">
             <div className="flex flex-col">
-              <div className="text-xl font-bold"> {formatNumber(harvestAmount.current?.toFixed(18))}</div>
+              <div className="text-xl font-bold"> {formatNumber(Number(harvestAmount.current)?.toFixed(18))}</div>
               <div className="text-sm">
-                ~${(Number(harvestAmount.current?.toFixed(18)) * Number(emosPrice?.toFixed(18))).toFixed(10)}
+                ~$
+                {(Number(Number(harvestAmount.current)?.toFixed(18)) * Number(Number(emoPrice)?.toFixed(18))).toFixed(
+                  10
+                )}
               </div>
             </div>
             <div className="mb-3">
@@ -298,21 +303,21 @@ export default function ManualPoolCardDetails() {
           </div>
           <div className="flex flex-col w-1/2 p-3 align-middle gap-y-4">
             <Button
-              color={Number(formatNumber(harvestAmount.current?.toFixed(18))) <= 0 ? 'blue' : 'gradient'}
+              color={Number(formatNumber(Number(harvestAmount.current).toFixed(18))) <= 0 ? 'blue' : 'gradient'}
               size="sm"
               className="w-full"
-              variant={Number(formatNumber(harvestAmount.current?.toFixed(18))) <= 0 ? 'outlined' : 'filled'}
-              disabled={Number(formatNumber(harvestAmount.current?.toFixed(18))) <= 0}
+              variant={Number(formatNumber(Number(harvestAmount.current).toFixed(18))) <= 0 ? 'outlined' : 'filled'}
+              disabled={Number(formatNumber(Number(harvestAmount.current).toFixed(18))) <= 0}
               onClick={handleCompoundFarm}
             >
               {i18n._(t`Compound`)}
             </Button>
             <Button
-              color={Number(formatNumber(harvestAmount.current?.toFixed(18))) <= 0 ? 'blue' : 'gradient'}
+              color={Number(formatNumber(Number(harvestAmount.current).toFixed(18))) <= 0 ? 'blue' : 'gradient'}
               size="sm"
               className="w-full"
-              variant={Number(formatNumber(harvestAmount.current?.toFixed(18))) <= 0 ? 'outlined' : 'filled'}
-              disabled={Number(formatNumber(harvestAmount.current?.toFixed(18))) <= 0}
+              variant={Number(formatNumber(Number(harvestAmount.current).toFixed(18))) <= 0 ? 'outlined' : 'filled'}
+              disabled={Number(formatNumber(Number(harvestAmount.current).toFixed(18))) <= 0}
               onClick={handleHarvestFarm}
             >
               {i18n._(t`Harvest`)}

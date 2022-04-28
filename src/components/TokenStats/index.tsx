@@ -7,13 +7,13 @@ import { ChainId } from '@evmoswap/core-sdk'
 import { useEmoUsdcPrice } from 'app/features/farm/hooks'
 
 const supportedTokens = {
-  EMOS: {
+  EMO: {
     name: 'EvmoSwap Token',
     symbol: 'EMO',
     icon: '/icons/icon-72x72.png',
     address: {
-      [ChainId.EVMOS]: '0xadbd1231fb360047525BEdF962581F3eee7b49fe',
-      [ChainId.EVMOS_TESTNET]: '0x7Ac4564724c99e129F79dC000CA594B4631acA81',
+      [ChainId.EVMOS]: '0x181C262b973B22C307C646a67f64B76410D19b6B',
+      [ChainId.EVMOS_TESTNET]: '0x7cBa32163a8f4c56C846f5C3685E3b7a450c9002',
     },
   },
 }

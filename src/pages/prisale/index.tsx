@@ -5,21 +5,21 @@ import { t } from '@lingui/macro'
 import { useLingui } from '@lingui/react'
 import NetworkGuard from '../../guards/Network'
 import { ChainId } from '@evmoswap/core-sdk'
-import { Currency, CurrencyAmount, Token } from '@evmoswap/core-sdk'
+import { NATIVE } from '@evmoswap/core-sdk'
 import Button from 'components/Button'
 import Dots from 'components/Dots'
 import Loader from 'components/Loader'
 import { useActiveWeb3React } from 'services/web3'
-import {
-  useClaimCallback as useProtocolClaimCallback,
-  useUserUnclaimedAmount as useUserUnclaimedProtocolAmount,
-} from 'state/claim/protocol/hooks'
-import { useModalOpen, useToggleSelfClaimModal } from 'state/application/hooks'
-import { useUserHasSubmittedClaim } from 'state/transactions/hooks'
-import { ApplicationModal } from 'state/application/actions'
-import { getBalanceNumber } from 'functions/formatBalance'
+// import {
+//   useClaimCallback as useProtocolClaimCallback,
+//   useUserUnclaimedAmount as useUserUnclaimedProtocolAmount,
+// } from 'state/claim/protocol/hooks'
+// import { useModalOpen, useToggleSelfClaimModal } from 'state/application/hooks'
+// import { useUserHasSubmittedClaim } from 'state/transactions/hooks'
+// import { ApplicationModal } from 'state/application/actions'
+// import { getBalanceNumber } from 'functions/formatBalance'
 import { usePrivateSaleContract } from 'hooks/useContract'
-import { usePurchased, useClaimable, useClaimed } from 'hooks/useVestingInfo'
+// import { usePurchased, useClaimable, useClaimed } from 'hooks/useVestingInfo'
 import { useTransactionAdder } from '../../state/transactions/hooks'
 import { CheckIcon } from '@heroicons/react/solid'
 import ProgressBar from 'app/components/ProgressBar'
@@ -29,50 +29,94 @@ import { USDC } from 'app/config/tokens'
 import { prisaleToken } from 'app/constants/prisale'
 import { tryParseAmount } from 'app/functions'
 import { useApproveCallback, ApprovalState } from 'app/hooks'
-import { PRIVATESALE_ADDRESS } from 'app/constants/addresses'
+import { PRIVATE_SALE_ADDRESS } from 'app/constants/addresses'
+import { useETHBalances } from 'app/state/wallet/hooks'
+
+const tabStyle = 'flex justify-center items-center h-full w-full rounded-lg cursor-pointer text-sm md:text-base'
+const activeTabStyle = `${tabStyle} text-high-emphaise font-bold bg-dark-900`
+const inactiveTabStyle = `${tabStyle} text-secondary`
 
 export default function Prisale() {
   const { i18n } = useLingui()
   const { account, chainId } = useActiveWeb3React()
   const addTransaction = useTransactionAdder()
 
+  const [toggle, setToggle] = useState(true)
   const [investValue, setInvestValue] = useState('')
+  const userEthBalanceBignumber = useETHBalances(account ? [account] : [])?.[account ?? '']
+  const nativeBalance = Number(userEthBalanceBignumber?.toExact())
   const usdcBalance = Number(useTokenBalance(account ?? undefined, USDC[chainId])?.toSignificant(8))
   const usdcBalanceBignumber = useTokenBalance(account ?? undefined, USDC[chainId])
   const tokenBalance = Number(useTokenBalance(account ?? undefined, prisaleToken[chainId])?.toSignificant(8))
 
   const prisaleContract = usePrivateSaleContract()
 
-  const parsedStakeAmount = tryParseAmount(investValue, usdcBalanceBignumber?.currency)
-  const [approvalState, approve] = useApproveCallback(parsedStakeAmount, PRIVATESALE_ADDRESS[chainId])
+  const parsedStakeAmount = tryParseAmount(
+    investValue ? Number(investValue).toFixed(6) : '0.01',
+    usdcBalanceBignumber?.currency
+  )
+  const [approvalState, approve] = useApproveCallback(parsedStakeAmount, PRIVATE_SALE_ADDRESS[chainId])
 
   const isWhitelisted = useRef(false)
   const purchasedToken = useRef(0)
   const claimableToken = useRef(0)
-  const minTokensAmount = useRef(0)
-  const maxTokensAmount = useRef(0)
+  const minTokensAmount = useRef([0, 0])
+  const maxTokensAmount = useRef([0, 0])
   const privateSaleStart = useRef(0)
   const privateSaleEnd = useRef(0)
+  const basePrice = useRef(0)
+  const vestingStart = useRef(0)
+  const decimals = NATIVE[chainId].decimals
   const getData = async () => {
     if (!account) return
     const tokenPrice = await prisaleContract.tokenPrice()
-    minTokensAmount.current = ((Number(await prisaleContract.minTokensAmount()) / 1e18) * tokenPrice) / 10 ** 6
-    maxTokensAmount.current = ((Number(await prisaleContract.maxTokensAmount()) / 1e18) * tokenPrice) / 10 ** 6
+    basePrice.current = await prisaleContract.basePrice()
+    minTokensAmount.current = [
+      ((Number(await prisaleContract.minTokensAmount()) / 1e18) * Number(tokenPrice)) / Number(basePrice.current),
+      ((Number(await prisaleContract.minTokensAmount()) / 1e18) * tokenPrice) / 10 ** 6,
+    ]
+    maxTokensAmount.current = [
+      ((Number(await prisaleContract.maxTokensAmount()) / 1e18) * Number(tokenPrice)) / Number(basePrice.current),
+      ((Number(await prisaleContract.maxTokensAmount()) / 1e18) * tokenPrice) / 10 ** 6,
+    ]
     privateSaleStart.current = Number(await prisaleContract.privateSaleStart())
     privateSaleEnd.current = Number(await prisaleContract.privateSaleEnd())
     isWhitelisted.current = await prisaleContract.whitelisted(account)
     purchasedToken.current = Number(await prisaleContract.purchased(account))
     claimableToken.current = Number(await prisaleContract.claimable(account))
+    vestingStart.current = Number(await prisaleContract.vestingStart())
   }
   getData()
 
+  const currentTime = Number((new Date().getTime() / 1e3).toFixed(0))
+  const remainingDay = Math.floor((privateSaleEnd.current - currentTime) / 86400)
+  const remainingHour = Math.floor((privateSaleEnd.current - currentTime - remainingDay * 86400) / 3600)
+  const remainingMin = Math.floor(
+    (privateSaleEnd.current - currentTime - remainingDay * 86400 - remainingHour * 3600) / 60
+  )
   const [pendingTx, setPendingTx] = useState(false)
-
-  const handleBuyToken = async () => {
+  const limitValid =
+    Number(investValue) < (toggle ? minTokensAmount.current[0] : minTokensAmount.current[1]) ||
+    Number(investValue) > (toggle ? maxTokensAmount.current[0] : maxTokensAmount.current[1])
+  const handleBuyTokenWithUSDC = async () => {
     setPendingTx(true)
     try {
       const args = [USDC[chainId].address, Number(investValue) * 10 ** 6]
       const tx = await prisaleContract.purchaseTokenWithCoin(...args)
+      addTransaction(tx, {
+        summary: `${i18n._(t`Buy`)} ${prisaleToken[chainId].symbol}`,
+      })
+    } catch (error) {
+      console.error(error)
+    }
+    setPendingTx(false)
+  }
+
+  const handleBuyTokenWithNATIVE = async () => {
+    setPendingTx(true)
+    try {
+      const args = []
+      const tx = await prisaleContract.purchaseTokenWithETH(...args)
       addTransaction(tx, {
         summary: `${i18n._(t`Buy`)} ${prisaleToken[chainId].symbol}`,
       })
@@ -96,17 +140,27 @@ export default function Prisale() {
   }
 
   return (
-    <div className="w-9/12 mt-20">
-      <div className="mb-5">
-        <div className="flex justify-between h-24 gap-1 md:gap-4">
-          <div className="w-1/2 px-4 py-4 my-auto text-left rounded-lg md:px-10 bg-black-russian">
-            <div className="text-1x1l">USDC Balance</div>
-            <div className="text-2xl font-bold text-white">{usdcBalance ? usdcBalance : 0}</div>
-          </div>
-          <div className="w-1/2 px-4 py-4 my-auto text-left rounded-lg md:px-10 bg-black-russian">
-            <div className="text-1xl">Token Balance</div>
-            <div className="text-2xl font-bold">{tokenBalance ? tokenBalance : 0}</div>
-          </div>
+    <div className="w-5/6 mt-20 md:max-w-5xl">
+      <div className="flex justify-between h-20 gap-1 mb-5 md:h-24 md:gap-4">
+        <div className="w-1/2 h-full px-4 py-2 my-auto space-y-1 text-left rounded-lg md:py-4 sm:space-y-2 md:px-10 bg-black-russian">
+          {currentTime - privateSaleStart.current < 0 ? (
+            <div className="inline-block text-2xl font-bold text-white align-middle lg:text-3xl">
+              Private Sale not started
+            </div>
+          ) : privateSaleEnd.current - currentTime > 0 ? (
+            <>
+              <div className="text-base md:text-lg">Remaining time</div>
+              <div className="text-sm font-bold text-white md:text-xl lg:text-2xl">{`${remainingDay} Day ${remainingHour} Hour ${remainingMin} Mins`}</div>
+            </>
+          ) : (
+            <div className="inline-block text-2xl font-bold text-white align-middle lg:text-3xl">
+              Private Sale ended
+            </div>
+          )}
+        </div>
+        <div className="w-1/2 h-full px-4 py-2 my-auto space-y-1 text-left rounded-lg md:py-4 md:px-10 bg-black-russian">
+          <div className="text-base md:text-lg">Token Balance</div>
+          <div className="text-xl font-bold text-white md:text-2xl">{tokenBalance ? tokenBalance : 0}</div>
         </div>
       </div>
       <div className="py-5 rounded-lg px-7 bg-black-russian">
@@ -137,9 +191,11 @@ export default function Prisale() {
 
         <div className="my-7">
           {new Date().getTime() / 1e3 < privateSaleStart.current ? (
-            <div>Private Sale not started</div>
+            // <div>Private Sale not started</div>
+            <></>
           ) : new Date().getTime() / 1e3 > privateSaleEnd.current ? (
-            <div>Private Sale ended</div>
+            // <div>Private Sale ended</div>
+            <></>
           ) : (
             <ProgressBar
               progress={
@@ -155,20 +211,42 @@ export default function Prisale() {
           <svg width="8" height="8" viewBox="0 0 8 8" fill="none" xmlns="http://www.w3.org/2000/svg">
             <circle cx="4" cy="4" r="4" fill="#F5841F" />
           </svg>
-          {i18n._(
-            t`The investment limit is set at Min ${minTokensAmount.current.toFixed()} USDC To Max ${maxTokensAmount.current.toFixed()} USDC per wallet.`
-          )}
+          {toggle
+            ? i18n._(
+                t`The investment limit is set at Min ${minTokensAmount.current[0].toFixed()} EVMOS To Max ${maxTokensAmount.current[0].toFixed()} EVMOS per wallet.`
+              )
+            : i18n._(
+                t`The investment limit is set at Min ${minTokensAmount.current[1].toFixed()} USDC To Max ${maxTokensAmount.current[1].toFixed()} USDC per wallet.`
+              )}
         </div>
 
         <div className="justify-center md:flex md:gap-5">
           <div className="px-5 py-9 border-[1px] border-gray-700 rounded-xl space-y-4 md:w-1/2">
+            <div className="grid grid-cols-2 px-1 py-[3px] rounded-xl bg-dark-700">
+              <div
+                className={`text-center my-auto py-4 rounded-xl hover:cursor-pointer hover:text-white ${
+                  toggle ? 'text-white font-bold bg-dark-850' : ''
+                }`}
+                onClick={() => setToggle(true)}
+              >
+                Use EVMOS
+              </div>
+              <div
+                className={`text-center my-auto py-4 rounded-xl hover:cursor-pointer hover:text-white ${
+                  toggle ? '' : 'text-white font-bold bg-dark-850'
+                }`}
+                onClick={() => setToggle(false)}
+              >
+                Use USDC
+              </div>
+            </div>
             <div className="flex justify-between gap-1 px-1">
-              {i18n._(t`Your investment (USDC)`)}
+              {i18n._(t`Your investment (${toggle ? 'EVMOS' : 'USDC'})`)}
               <button
                 className="text-light-blue"
                 onClick={() => {
-                  if (usdcBalance > 0) {
-                    setInvestValue(usdcBalance?.toFixed(18))
+                  if ((toggle ? nativeBalance : usdcBalance) > 0) {
+                    setInvestValue(toggle ? nativeBalance.toString() : usdcBalance?.toString())
                   }
                 }}
               >
@@ -180,55 +258,81 @@ export default function Prisale() {
               value={investValue}
               onUserInput={setInvestValue}
             />
-            <div className="justify-center gap-4 space-y-2 lg:space-y-0 lg:flex ">
-              <Button
-                color="green"
-                size="sm"
-                className="h-12 opacity-90"
-                disabled={approvalState === ApprovalState.PENDING}
-                onClick={approve}
-              >
-                {approvalState === ApprovalState.PENDING ? <Dots>{i18n._(t`Approving`)}</Dots> : i18n._(t`Approve`)}
-              </Button>
-              {Number(investValue) < 10000 || Number(investValue) > 50000 ? (
+            <div className="justify-center gap-2 space-y-2 xl:space-y-0 xl:flex ">
+              {toggle || approvalState === ApprovalState.APPROVED || privateSaleEnd.current - currentTime < 0 ? (
+                <></>
+              ) : (
+                <Button
+                  color="green"
+                  size="sm"
+                  className="h-12 opacity-90"
+                  disabled={approvalState === ApprovalState.PENDING}
+                  onClick={approve}
+                >
+                  {approvalState === ApprovalState.PENDING ? <Dots>{i18n._(t`Approving`)}</Dots> : i18n._(t`Approve`)}
+                </Button>
+              )}
+              {currentTime - privateSaleStart.current < 0 ? (
+                <Button color="gray" size="sm" className="h-12" disabled={true}>
+                  Private Sale not started
+                </Button>
+              ) : privateSaleEnd.current - currentTime < 0 ? (
+                <Button color="gray" size="sm" className="h-12" disabled={true}>
+                  Private Sale ended
+                </Button>
+              ) : Number(investValue) > (toggle ? nativeBalance : usdcBalance) ? (
+                <Button color="gray" size="sm" className="h-12" disabled={true}>
+                  Exceeds Balance
+                </Button>
+              ) : limitValid ? (
                 <Button color="gray" size="sm" className="h-12" disabled={true}>
                   Please notice the limit
+                </Button>
+              ) : toggle ? (
+                <Button color="blue" size="sm" className="h-12" onClick={handleBuyTokenWithNATIVE}>
+                  Buy ${prisaleToken[chainId].symbol} Now
                 </Button>
               ) : approvalState === ApprovalState.NOT_APPROVED || approvalState === ApprovalState.PENDING ? (
                 <Button color="gray" size="sm" className="h-12" disabled={true}>
                   Buy ${prisaleToken[chainId].symbol} Now
                 </Button>
               ) : (
-                <Button color="blue" size="sm" className="h-12" onClick={handleBuyToken}>
+                <Button color="blue" size="sm" className="h-12" onClick={handleBuyTokenWithUSDC}>
                   Buy ${prisaleToken[chainId].symbol} Now
                 </Button>
               )}
             </div>
           </div>
-          <div className="px-5 py-9 border-[1px] border-gray-700 rounded-xl space-y-4 md:w-1/2">
-            <div className="flex justify-between gap-3">
-              <div className="rounded-lg border-[1px] border-gray-700 space-y-1 py-5 px-4 w-1/2">
-                <div className="text-base text-white">{i18n._(t`Purchased ${prisaleToken[chainId].symbol}`)}</div>
-                <div className="text-base">{(purchasedToken.current / 1e18).toFixed()}</div>
-              </div>
-              <div className="rounded-lg border-[1px] border-gray-700 py-5 space-y-1 px-4 w-1/2">
-                <div className="text-base text-white">{i18n._(t`Claimable ${prisaleToken[chainId].symbol}`)}</div>
-                <div className="text-base">{claimableToken.current / 1e18}</div>
-              </div>
+          <div className="px-5 py-9 border-[1px] border-gray-700 rounded-xl space-y-6 md:w-1/2">
+            <div className="rounded-lg border-[1px] border-gray-700 space-y-1 py-2 px-4">
+              <div className="text-base text-white">{i18n._(t`Purchased ${prisaleToken[chainId].symbol}`)}</div>
+              <div className="text-base">{(purchasedToken.current / 1e18).toFixed()}</div>
+            </div>
+            <div className="rounded-lg border-[1px] border-gray-700 py-2 space-y-1 px-4">
+              <div className="text-base text-white">{i18n._(t`Claimable ${prisaleToken[chainId].symbol}`)}</div>
+              <div className="text-base">{claimableToken.current / 1e18}</div>
             </div>
             {new Date().getTime() / 1e3 <= privateSaleEnd.current ? (
               <Button color="gray" size="sm" className="h-12 opacity-90" disabled={true}>
                 Private Sale is not over
               </Button>
-            ) : (
+            ) : claimableToken.current ? (
               <Button color="blue" size="sm" className="h-12 opacity-90" onClick={handleClaim}>
                 Claim Your {prisaleToken[chainId].symbol}
+              </Button>
+            ) : vestingStart.current == 0 ? (
+              <Button color="gray" size="sm" className="h-12 opacity-90" disabled={true}>
+                Vesting is not set
+              </Button>
+            ) : (
+              <Button color="gray" size="sm" className="h-12 opacity-90" disabled={true}>
+                Nothing to claim
               </Button>
             )}
           </div>
         </div>
 
-        <div className="mt-11">
+        {/* <div className="mt-11">
           <div className="mb-5 text-base text-white">* Private Sale description</div>
           <div className="pl-2 space-y-3 text-sm text-gray-500">
             <div>1, The Private Sale price: 0.12 USDC/{prisaleToken[chainId].symbol}</div>
@@ -239,9 +343,9 @@ export default function Prisale() {
               after launched).
             </div>
             <div>5, Participation method: whitelist allowed, the first come, first served purchase method.</div>
-            <div className="overflow-x-auto">6, Private Sale contract: 0x309afba23f791B5c38Ab9057D11D6869755fAcaf</div>
+            <div className="overflow-x-auto">6, Private Sale contract: 0xD5bDcd9477ac5F8Bd79833f79F64AcAdA709117f</div>
           </div>
-        </div>
+        </div> */}
       </div>
     </div>
   )

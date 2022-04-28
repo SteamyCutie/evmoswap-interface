@@ -17,7 +17,7 @@ import { t } from '@lingui/macro'
 import { useActiveWeb3React } from '../../services/web3'
 import { useETHBalances } from '../../state/wallet/hooks'
 import { useLingui } from '@lingui/react'
-import TokenStats from '../TokenStats'
+// import TokenStats from '../TokenStats'
 import { ExternalLink as LinkIcon } from 'react-feather'
 import Typography from '../Typography'
 
@@ -68,6 +68,17 @@ function AppBar(): JSX.Element {
                             {i18n._(t`Yield`)}
                           </a>
                         </NavLink>
+                      )}
+                      {chainId && featureEnabled(Feature.PRISALE, chainId) && (
+                        <Link href={'/prisale'}>
+                          <a
+                            id={`prisale-nav-link`}
+                            className="p-2 text-baseline text-primary hover:text-high-emphesis focus:text-high-emphesis md:p-3 whitespace-nowrap"
+                          >
+                            {' '}
+                            {i18n._(t`Prisale`)}
+                          </a>
+                        </Link>
                       )}
                       {chainId && featureEnabled(Feature.LENDING, chainId) && (
                         <>
@@ -125,30 +136,41 @@ function AppBar(): JSX.Element {
                         </NavLink>
                       )}
 
-                      {/* {chainId && featureEnabled(Feature.BRIDGE, chainId) && (
+                      {chainId && featureEnabled(Feature.FAUCET, chainId) && (
+                        <NavLink href={'/tools'}>
+                          <a
+                            id={`bridge-nav-link`}
+                            className="p-2 text-baseline text-primary hover:text-high-emphesis focus:text-high-emphesis md:p-3 whitespace-nowrap"
+                          >
+                            {i18n._(t`Faucet`)}
+                          </a>
+                        </NavLink>
+                      )}
+
+                      {chainId && featureEnabled(Feature.BRIDGE, chainId) && (
                         <NavLink href={'/bridge'}>
                           <a
                             id={`bridge-nav-link`}
                             className="p-2 text-baseline text-primary hover:text-high-emphesis focus:text-high-emphesis md:p-3 whitespace-nowrap"
                           >
-                            {i18n._(t`Bridge`)}
+                            {i18n._(t`Bridges`)}
                           </a>
                         </NavLink>
-                      )} */}
+                      )}
                     </div>
                   </div>
                 </div>
 
                 <div className="fixed bottom-0 left-0 z-10 flex flex-row items-center justify-center w-full p-4 lg:w-auto bg-dark-1000 lg:relative lg:p-0 lg:bg-transparent">
                   <div className="flex items-center justify-between w-full space-x-2 sm:justify-end">
-                    <div className="flex items-center w-auto mr-1 text-xs font-bold rounded shadow-sm cursor-pointer pointer-events-auto select-none bg-dark-800 text-primary hover:bg-dark-700 whitespace-nowrap sm:block">
-                      <TokenStats token="EMOS" />
-                    </div>
-                    {library && library.provider.isMetaMask && (
+                    {/* <div className="flex items-center w-auto mr-1 text-xs font-bold rounded shadow-sm cursor-pointer pointer-events-auto select-none bg-dark-800 text-primary hover:bg-dark-700 whitespace-nowrap sm:block">
+                      <TokenStats token="EMO" />
+                    </div> */}
+                    {/* {library && library.provider.isMetaMask && (
                       <div className="hidden sm:inline-block">
                         <Web3Network />
                       </div>
-                    )}
+                    )} */}
 
                     <div className="w-auto flex items-center rounded bg-dark-900 hover:bg-dark-800 p-0.5 whitespace-nowrap text-sm font-bold cursor-pointer select-none pointer-events-auto">
                       {account && chainId && userEthBalance && (
@@ -238,6 +260,18 @@ function AppBar(): JSX.Element {
                   </Link>
                 )}
 
+                {chainId && featureEnabled(Feature.PRISALE, chainId) && (
+                  <Link href={'/prisale'}>
+                    <a
+                      id={`prisale-nav-link`}
+                      className="p-2 text-baseline text-primary hover:text-high-emphesis focus:text-high-emphesis md:p-3 whitespace-nowrap"
+                    >
+                      {' '}
+                      {i18n._(t`Prisale`)}
+                    </a>
+                  </Link>
+                )}
+
                 {chainId && featureEnabled(Feature.IFO, chainId) && (
                   <Link href={'/ifov2'}>
                     <a
@@ -272,13 +306,13 @@ function AppBar(): JSX.Element {
                   </Link>
                 )}
 
-                {chainId && featureEnabled(Feature.GAMEFI, chainId) && (
-                  <Link href={'/gamefi'}>
+                {chainId && featureEnabled(Feature.BRIDGE, chainId) && (
+                  <Link href={'/bridge'}>
                     <a
                       id={`gamefi-nav-link`}
                       className="p-2 text-baseline text-primary hover:text-high-emphesis focus:text-high-emphesis md:p-3 whitespace-nowrap"
                     >
-                      {i18n._(t`GameFi`)}
+                      {i18n._(t`Bridges`)}
                     </a>
                   </Link>
                 )}

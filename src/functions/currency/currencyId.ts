@@ -5,7 +5,7 @@ export function currencyId(currency: Currency): string {
   //   return currency.wrapped.address
   // }
 
-  if (currency.isNative) return 'CRO'
+  if (currency.isNative) return 'EVMOS'
 
   if (currency.isToken) return currency.address
 

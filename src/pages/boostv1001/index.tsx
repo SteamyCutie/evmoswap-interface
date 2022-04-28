@@ -5,7 +5,7 @@ import Head from 'next/head'
 import Image from 'next/image'
 import { t } from '@lingui/macro'
 import { ApprovalState, useApproveCallback } from '../../hooks/useApproveCallback'
-import { EvmoSwap, XEMOS } from '../../config/tokens'
+import { EvmoSwap, XEMO } from '../../config/tokens'
 import Button from '../../components/Button'
 import Container from '../../components/Container'
 import Dots from '../../components/Dots'
@@ -22,7 +22,7 @@ import { useLockedBalance } from 'app/features/boost/hook'
 import QuestionHelper from 'app/components/QuestionHelper'
 import { useTokenInfo } from 'app/features/farm/hooks'
 import { useEmosContract } from 'app/hooks/useContract'
-import { getAPY } from 'app/features/staking/useStaking'
+import { GetAPY } from 'app/features/staking/useStaking'
 import { CalculatorIcon } from '@heroicons/react/solid'
 import ROICalculatorModal from 'app/components/ROICalculatorModal'
 
@@ -54,11 +54,11 @@ export default function Boost() {
   const { account, chainId } = useActiveWeb3React()
   const balance = useTokenBalance(account ?? undefined, EvmoSwap[chainId])
 
-  const emosInfo = useTokenInfo(useEmosContract())
+  const emoInfo = useTokenInfo(useEmosContract())
 
-  const { rewards, harvestRewards, lockAmount, lockEnd, veEmos, emosSupply, veEmosSupply } = useLockedBalance()
+  const { rewards, harvestRewards, lockAmount, lockEnd, veEmo, emoSupply, veEmoSupply } = useLockedBalance()
 
-  const { manualAPY, autoAPY } = getAPY()
+  const { manualAPY, autoAPY } = GetAPY()
 
   const {
     claimRewards,
@@ -229,16 +229,15 @@ export default function Boost() {
         <div className="items-center w-full max-w-5xl px-4 py-4">
           <div className="flex flex-col space-y-4">
             <div className="p-8 pb-4 rounded-lg bg-dark-900">
-              <h1 className="mb-4 text-lg">What’s EMOS Boost?</h1>
+              <h1 className="mb-4 text-lg">What’s EMO Boost?</h1>
               <p className="mb-8 text-sm text-dm-text-secondary">
-                EMOS Boost is your opportunity to increase the power and rewards of your EMOS. The longer you lock your
-                EMOS the greater your voting power (EMOS Power) and weekly reward share will be. You can boost up to 4x
-                by locking EMOS for 4 years. Your boosts slowly reduces over your locking period, eventually unlocking
-                your EMOS, however you can always increase your boost to maintain your boosted level. Your boosted EMOS
-                is represented in eEMOS (escrowed EMOS) and will remain in escrow until your unlock date
-                (non-transferable).
+                EMO Boost is your opportunity to increase the power and rewards of your EMO. The longer you lock your
+                EMO the greater your voting power (EMO Power) and weekly reward share will be. You can boost up to 4x by
+                locking EMO for 4 years. Your boosts slowly reduces over your locking period, eventually unlocking your
+                EMO, however you can always increase your boost to maintain your boosted level. Your boosted EMO is
+                represented in eEMO (escrowed EMO) and will remain in escrow until your unlock date (non-transferable).
               </p>
-              The rewards include swap fee (buyback EMOS-EMOSS LP) and auto restaking rewards.
+              The rewards include swap fee and auto restaking rewards.
             </div>
 
             <div className="grid grid-cols-1 gap-4 md:grid-cols-3 auto-cols-max">
@@ -254,45 +253,45 @@ export default function Boost() {
                   showBoost={false}
                   showCompound={false}
                   Lpbalance={Number((lockAmount / 1e18).toFixed(2))}
-                  name={'EMOS'}
+                  name={'EMO'}
                   apr={manualAPY}
                 />
                 <h2 className="flex flex-row items-center text-sm">
-                  veEMOS APY <QuestionHelper text="The reward apy of lock EMOS." />
+                  veEMO APY <QuestionHelper text="The reward apy of lock EMO." />
                 </h2>
               </div>
               <div className="p-4 rounded-lg bg-dark-800">
                 <h1 className="text-lg">
                   {formatPercent(
                     formatNumber(
-                      Number(formatBalance(emosSupply ? emosSupply : 1)) /
-                        Number(emosInfo.circulatingSupply ? emosInfo.circulatingSupply : 1)
+                      Number(formatBalance(emoSupply ? emoSupply : 1)) /
+                        Number(emoInfo.circulatingSupply ? emoInfo.circulatingSupply : 1)
                     )
                   )}
                 </h1>
                 <h2 className="flex flex-row items-center text-sm">
-                  % of EMOS locked
-                  <QuestionHelper text="Percentage of circulating EMOS locked in veEMOS earning protocol revenue." />
+                  % of EMO locked
+                  <QuestionHelper text="Percentage of circulating EMO locked in veEMO earning protocol revenue." />
                 </h2>
               </div>
               <div className="p-4 rounded-lg bg-dark-800">
-                <h1 className="text-lg">{formatNumber((Number(veEmosSupply) / Number(emosSupply)) * 4)} years</h1>
+                <h1 className="text-lg">{formatNumber((Number(veEmoSupply) / Number(emoSupply)) * 4)} years</h1>
                 <h2 className="flex flex-row items-center text-sm">
-                  Average EMOS lock time <QuestionHelper text="Average EMOS lock time in veEMOS." />
+                  Average EMO lock time <QuestionHelper text="Average EMO lock time in veEMO." />
                 </h2>
               </div>
             </div>
 
-            {/* lock EMOS */}
+            {/* lock EMO */}
             <div className="rounded-lg bg-dark-900">
               <div className="p-8 rounded-t-lg bg-dark-800">
-                <h1 className="text-lg">EMOS Boost Lock</h1>
+                <h1 className="text-lg">EMO Boost Lock</h1>
               </div>
               <div className="p-8">
                 <div className="flex items-center justify-between w-full">
-                  <p className="font-bold text-large md:text-2xl text-high-emphesis">{i18n._(t`Lock EMOS`)}</p>
+                  <p className="font-bold text-large md:text-2xl text-high-emphesis">{i18n._(t`Lock EMO`)}</p>
                   <div className="text-xs font-medium text-high-emphesis md:text-base md:font-normal">
-                    Balance: {balance?.toSignificant(12)} EMOS
+                    Balance: {balance?.toSignificant(12)} EMO
                   </div>
                 </div>
 
@@ -328,7 +327,7 @@ export default function Boost() {
                           input ? 'text-high-emphesis' : 'text-secondary'
                         }`}
                       >
-                        {`${input ? input : '0'} EMOS`}
+                        {`${input ? input : '0'} EMO`}
                       </p>
                     </div>
                     <div className="flex items-center text-sm text-secondary md:text-base">
@@ -431,12 +430,12 @@ export default function Boost() {
 
                 <div className="flex flex-col pb-4 mt-6 space-y-2">
                   <div className="flex flex-row items-center justify-between text-base">
-                    <div className="text-sm">My EMOS Locked</div>
+                    <div className="text-sm">My EMO Locked</div>
                     <div className="text-sm">{formatNumber(lockAmount?.toFixed(18))}</div>
                   </div>
                   <div className="flex flex-row items-center justify-between text-base">
-                    <div className="text-sm">My veEMOS balance</div>
-                    <div className="text-sm">{formatNumber(veEmos?.toFixed(18))}</div>
+                    <div className="text-sm">My veEMO balance</div>
+                    <div className="text-sm">{formatNumber(veEmo?.toFixed(18))}</div>
                   </div>
                   <div className="flex flex-row items-center justify-between text-base">
                     <div className="text-sm">Unlock Time</div>
@@ -512,7 +511,7 @@ export default function Boost() {
                   >
                     {!walletConnected
                       ? i18n._(t`Connect Wallet`)
-                      : i18n._(t`Your lock ended, you can withdraw your EMOS`)}
+                      : i18n._(t`Your lock ended, you can withdraw your EMO`)}
                   </Button>
                 ) : (
                   <></>

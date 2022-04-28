@@ -38,7 +38,7 @@ export default function Lottery() {
           <div className="mt-32 text-white mb-80">
             <div className="font-bold leading-[90px] text-7xl font-Kumbh">Catch the great winning spirit!</div>
             <div className="w-7/12 mt-4 text-lg text-gray-400">
-              Join million others in playing in the emos lottery and winning while doing it.
+              Join million others in playing in the emo lottery and winning while doing it.
             </div>
             <button className="px-10 py-4 mt-10 text-base rounded bg-blue">Buy tickets</button>
           </div>
@@ -84,7 +84,7 @@ export default function Lottery() {
       {/* How to Play Lottery */}
       <div className="flex gap-16 mb-52">
         <div className="w-2/5">
-          <div className="text-5xl leading-[60px] mb-4 text-white font-bold">How to Play Emos Lottery</div>
+          <div className="text-5xl leading-[60px] mb-4 text-white font-bold">How to Play Emo Lottery</div>
           <div className="text-lg leading-6">
             If the digits on your tickets match the winning numbers in the correct order, you win a portion of the prize
             pool. <span className="font-bold text-blue">Simple!</span>
@@ -95,7 +95,7 @@ export default function Lottery() {
           <StageBox
             count="01"
             title="Buy Tickets"
-            content="Prices are set when the round starts, equal to 5 USD in EMOS per ticket."
+            content="Prices are set when the round starts, equal to 5 USD in EMO per ticket."
             classNames="z-10 absolute"
           />
           <StageBox
@@ -151,11 +151,11 @@ export default function Lottery() {
           </div>
           <div className="text-2xl font-bold leading-[30px] text-white mb-4">Ticket Purchases</div>
           <div className="mb-6 text-base font-normal leading-6 text-grey">
-            80% of the EMOS paid by people buying tickets that round goes back into the prize pools.
+            80% of the EMO paid by people buying tickets that round goes back into the prize pools.
           </div>
           <div className="text-2xl font-bold leading-[30px] text-white mb-4">Rollover Prizes</div>
           <div className="mb-10 text-base font-normal leading-6 md:mb-6 text-grey">
-            After every round, if nobody wins in one of the prize brackets, the unclaimed EMOS tokens for that bracket
+            After every round, if nobody wins in one of the prize brackets, the unclaimed EMO tokens for that bracket
             will roll over into the next round and will be redistributed among the prize pools.
           </div>
         </div>

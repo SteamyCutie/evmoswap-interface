@@ -20,10 +20,12 @@ import { useTotalSupply } from '../../hooks/useTotalSupply'
 import { useCurrency } from 'app/hooks/Tokens'
 import { usePendingReward } from 'app/features/farm/hooks'
 import { EvmoSwap } from 'config/tokens'
+import { useUserInfo } from '../../features/farm/hooks'
+import { getAddress } from '@ethersproject/address'
 
 interface PositionCardProps {
   pair: Pair
-  price?: number
+  farm?: any
   showUnwrapped?: boolean
   border?: string
   stakedBalance?: CurrencyAmount<Token> // optional balance to indicate that liquidity is deposited in mining pool
@@ -263,13 +265,18 @@ export default function FullPositionCard({ pair, border, stakedBalance }: Positi
   )
 }
 
-export function PositionCard({ pair, price, showUnwrapped = false, border }: PositionCardProps) {
+export function PositionCard({ pair, farm, showUnwrapped = false, border }: PositionCardProps) {
   const { i18n } = useLingui()
-  const { account } = useActiveWeb3React()
+  const { account, chainId } = useActiveWeb3React()
 
-  const [showMore, setShowMore] = useState(false)
-
-  const userPoolBalance = useTokenBalance(account ?? undefined, pair?.liquidityToken)
+  const liquidityToken = new Token(
+    // @ts-ignore TYPE NEEDS FIXING
+    chainId,
+    getAddress(farm.lpToken),
+    farm.token1 ? 18 : farm.token0 ? farm.token0.decimals : 18,
+    'SLP'
+  )
+  const { stakedAmount: userPoolBalance } = useUserInfo(farm, liquidityToken)
   const totalPoolTokens = useTotalSupply(pair?.liquidityToken)
 
   if (!pair) return <></>
@@ -308,7 +315,7 @@ export function PositionCard({ pair, price, showUnwrapped = false, border }: Pos
                 <div>
                   {currency0.symbol}/{currency1.symbol}
                 </div>
-                <div className="text-white">${(Number(userPoolBalance.toExact()) * price).toFixed(2)}</div>
+                <div className="text-white">${(Number(userPoolBalance.toExact()) * farm?.lpPrice).toFixed(2)}</div>
               </div>
             </div>
             <div className="flex flex-col space-y-2">
@@ -357,12 +364,11 @@ export function PositionCard({ pair, price, showUnwrapped = false, border }: Pos
   )
 }
 
-export function RewardCard({ farm }) {
+export function RewardCard({ reward }) {
   const { chainId } = useActiveWeb3React()
   const NATIVE = useCurrency(EvmoSwap[chainId].address)
-  const pendingReward = usePendingReward(farm)
-  const rewardToken = useCurrency(pendingReward?.tokens[0])
-  const rewardAmounts = formatBalance(pendingReward?.amounts[0] ? pendingReward?.amounts[0] : 0)
+  const rewardToken = useCurrency(reward?.tokens[0])
+  const rewardAmounts = formatBalance(reward?.amounts[0] ? reward?.amounts[0] : 0)
 
   return (
     <>
@@ -373,7 +379,7 @@ export function RewardCard({ farm }) {
           </div>
           <div className="flex items-center gap-2">
             <CurrencyLogo currency={NATIVE} size={20} />
-            <div>{`${Number(rewardAmounts).toFixed(2)} ${rewardToken?.symbol}`}</div>
+            <div>{`${Number(rewardAmounts).toString()} ${rewardToken?.symbol}`}</div>
           </div>
         </AutoColumn>
       </div>

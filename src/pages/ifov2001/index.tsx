@@ -21,11 +21,11 @@ export default function Ifo(): JSX.Element {
   const publicIfoData = useGetPublicIfoData(activeIfo)
   const walletIfoData = useGetWalletIfoData(activeIfo)
 
-  // const tabStyle = 'flex justify-center items-center h-full w-full rounded-lg cursor-pointer text-sm md:text-base'
-  // const activeTabStyle = `${tabStyle} text-high-emphesis font-bold bg-dark-900`
-  // const inactiveTabStyle = `${tabStyle} text-secondary`
+  const tabStyle = 'flex justify-center items-center h-full w-full rounded-lg cursor-pointer text-sm md:text-base'
+  const activeTabStyle = `${tabStyle} text-high-emphesis font-bold bg-dark-900`
+  const inactiveTabStyle = `${tabStyle} text-secondary`
 
-  // const [activeTab, setActiveTab] = useState(0)
+  const [activeTab, setActiveTab] = useState(0)
 
   return (
     <Container id="farm-page" className="grid h-full px-2 py-4 mx-auto md:py-8 lg:py-12 gap-9" maxWidth="7xl">
@@ -44,39 +44,39 @@ export default function Ifo(): JSX.Element {
             <Typography variant="sm" weight={400}>
               {i18n._(t`Buy new tokens launching on Evmos Chain.`)}
             </Typography>
-            {/* <a href="https://forms.gle/4MTpS6NquqWUVSZw8" target="_blank" rel="noreferrer">
+            <a href="https://forms.gle/4MTpS6NquqWUVSZw8" target="_blank" rel="noreferrer">
               <div className="flex items-center gap-2 mt-2 text-sm font-bold font-Poppins">
                 <div className="text-light-blue">{i18n._(t`Apply for IFO`)}</div>
                 <ArrowRightIcon height={14} className="" />
               </div>
-            </a> */}
+            </a>
           </div>
 
-          <div className="flex gap-3">
+          {/* <div className="flex gap-3">
             <Button id="btn-create-new-pool" color="blue" variant="outlined" size="sm">
               <a href="https://forms.gle/4MTpS6NquqWUVSZw8" target="_blank" rel="noreferrer">
                 {i18n._(t`Apply for IFO`)}
               </a>
             </Button>
-          </div>
+          </div> */}
 
           {/* tab */}
-          {/* <div className="flex m-auto item-center mb-2 rounded md:m-0 md:w-3/12 h-14 bg-dark-800">
+          <div className="flex m-auto mb-2 rounded item-center md:m-0 md:w-3/12 h-14 bg-dark-800">
             <div className="w-6/12 h-full p-1">
-              <NavLink href="/farmv2?filter=all">
+              <NavLink href="/ifov2001">
                 <div className={activeTab === 0 ? activeTabStyle : inactiveTabStyle}>
                   <p>Current</p>
                 </div>
               </NavLink>
             </div>
             <div className="w-6/12 h-full p-1">
-              <NavLink href="/farmv2?filter=inactive">
+              <NavLink href="/ifov2001/history">
                 <div className={activeTab === 1 ? activeTabStyle : inactiveTabStyle}>
                   <p>Past</p>
                 </div>
               </NavLink>
             </div>
-          </div> */}
+          </div>
         </div>
 
         {/* ifo body */}

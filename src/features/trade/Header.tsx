@@ -14,7 +14,7 @@ const getQuery = (input, output) => {
   if (!input && !output) return
 
   if (input && !output) {
-    return { inputCurrency: input.address || 'CRO' }
+    return { inputCurrency: input.address || 'EVMOS' }
   } else if (input && output) {
     return { inputCurrency: input.address, outputCurrency: output.address }
   }

@@ -1,8 +1,8 @@
 [
   {
     "inputs": [
-      { "internalType": "address", "name": "_crona", "type": "address" },
-      { "internalType": "address", "name": "_veCrona", "type": "address" }
+      { "internalType": "address", "name": "_emo", "type": "address" },
+      { "internalType": "address", "name": "_veemo", "type": "address" }
     ],
     "stateMutability": "nonpayable",
     "type": "constructor"
@@ -18,7 +18,7 @@
   },
   {
     "inputs": [],
-    "name": "CRONA",
+    "name": "EMO",
     "outputs": [{ "internalType": "contract IERC20", "name": "", "type": "address" }],
     "stateMutability": "view",
     "type": "function"
@@ -100,7 +100,7 @@
   },
   {
     "inputs": [],
-    "name": "veCRONA",
+    "name": "veEMO",
     "outputs": [{ "internalType": "contract IVotingEscrow", "name": "", "type": "address" }],
     "stateMutability": "view",
     "type": "function"

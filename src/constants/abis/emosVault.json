@@ -256,7 +256,7 @@
   },
   {
     "inputs": [],
-    "name": "calculateHarvestCronaRewards",
+    "name": "calculateHarvestEmoRewards",
     "outputs": [
       {
         "internalType": "uint256",
@@ -269,7 +269,7 @@
   },
   {
     "inputs": [],
-    "name": "calculateTotalPendingCronaRewards",
+    "name": "calculateTotalPendingEmoRewards",
     "outputs": [
       {
         "internalType": "uint256",
@@ -584,7 +584,7 @@
       },
       {
         "internalType": "uint256",
-        "name": "cronaAtLastUserAction",
+        "name": "emoAtLastUserAction",
         "type": "uint256"
       },
       {

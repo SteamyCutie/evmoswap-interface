@@ -60,7 +60,7 @@ export function useSwapActionHandlers(): {
             ? currency.address
             : // : currency.isNative && currency.chainId !== ChainId.CELO
             currency.isNative
-            ? 'CRO'
+            ? 'EVMOS'
             : '',
         })
       )
@@ -225,7 +225,7 @@ function parseCurrencyFromURLParameter(urlParam: any): string {
   if (typeof urlParam === 'string') {
     const valid = isAddress(urlParam)
     if (valid) return valid
-    if (urlParam.toUpperCase() === 'CRO') return 'CRO'
+    if (urlParam.toUpperCase() === 'EVMOS') return 'EVMOS'
   }
   return ''
 }
@@ -251,8 +251,8 @@ function validatedRecipient(recipient: any): string | null {
 export function queryParametersToSwapState(parsedQs: ParsedQs, chainId: ChainId = ChainId.ETHEREUM): SwapState {
   let inputCurrency = parseCurrencyFromURLParameter(parsedQs.inputCurrency)
   let outputCurrency = parseCurrencyFromURLParameter(parsedQs.outputCurrency)
-  // const eth = chainId === ChainId.CELO ? WNATIVE_ADDRESS[chainId] : 'CRO'
-  const eth = 'CRO'
+  // const eth = chainId === ChainId.CELO ? WNATIVE_ADDRESS[chainId] : 'EVMOS'
+  const eth = 'EVMOS'
   const sushi = SUSHI_ADDRESS[chainId]
   if (inputCurrency === '' && outputCurrency === '') {
     inputCurrency = eth

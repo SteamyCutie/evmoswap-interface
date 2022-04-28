@@ -28,7 +28,8 @@
   },
   "resolutions": {
     "@walletconnect/web3-provider": "1.6.0",
-    "cli-table": "0.3.6"
+    "cli-table": "0.3.6",
+    "@types/react": "^17.0.11"
   },
   "devDependencies": {
     "@binance-chain/bsc-connector": "^1.0.0",
@@ -49,8 +50,8 @@
     "@ethersproject/providers": "^5.4.0",
     "@ethersproject/strings": "^5.4.0",
     "@ethersproject/units": "^5.5.0",
-    "@evmoswap/core-sdk": "1.0.18",
-    "@evmoswap/default-token-list": "1.0.9",
+    "@evmoswap/core-sdk": "1.0.23",
+    "@evmoswap/default-token-list": "1.0.12",
     "@gnosis.pm/safe-apps-web3-react": "^0.6.0",
     "@headlessui/react": "^1.4.0",
     "@heroicons/react": "^1.0.4",
@@ -80,7 +81,6 @@
     "@types/jest": "^27.0.2",
     "@types/node": "^15.12.2",
     "@types/qs": "^6.9.7",
-    "@types/react": "^17.0.11",
     "@uniswap/token-lists": "1.0.0-beta.24",
     "@visx/axis": "^1.17.1",
     "@visx/brush": "^1.18.1",

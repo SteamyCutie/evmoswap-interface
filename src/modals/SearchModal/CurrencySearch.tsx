@@ -120,7 +120,7 @@ export function CurrencySearch({
 
   const filteredSortedTokensWithETH: Currency[] = useMemo(() => {
     const s = debouncedQuery.toLowerCase().trim()
-    if (s === '' || s === 'c' || s === 'cr' || s === 'cro') {
+    if (s === '' || s === 'e' || s === 'ev' || s === 'evmos') {
       return ether && !isAllTokenContainEther ? [ether, ...filteredSortedTokens] : filteredSortedTokens
     }
     return filteredSortedTokens
@@ -152,7 +152,7 @@ export function CurrencySearch({
     (e: KeyboardEvent<HTMLInputElement>) => {
       if (e.key === 'Enter') {
         const s = debouncedQuery.toLowerCase().trim()
-        if (s === 'cro' && ether) {
+        if (s === 'evmos' && ether) {
           handleCurrencySelect(ether)
         } else if (filteredSortedTokensWithETH.length > 0) {
           if (
