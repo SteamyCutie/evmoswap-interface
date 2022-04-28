@@ -12,7 +12,7 @@ const supportedTokens = {
     symbol: 'EMO',
     icon: '/icons/icon-72x72.png',
     address: {
-      [ChainId.EVMOS]: '0x7cBa32163a8f4c56C846f5C3685E3b7a450c9002',
+      [ChainId.EVMOS]: '0x181C262b973B22C307C646a67f64B76410D19b6B',
       [ChainId.EVMOS_TESTNET]: '0x7cBa32163a8f4c56C846f5C3685E3b7a450c9002',
     },
   },
