@@ -16,7 +16,7 @@ import Input from 'app/components/Input'
 import { classNames, formatBalance, formatNumber, formatNumberScale, formatPercent, tryParseAmount } from 'app/functions'
 import { Currency, CurrencyAmount, Token, ZERO } from '@evmoswap/core-sdk'
 import { RowBetween } from 'app/components/Row'
-import { getAPY } from 'app/features/staking/useStaking'
+import { GetAPY } from 'app/features/staking/useStaking'
 import { EMOSPlaceholder, useFarmsReward, useLockedBalance, useRewardsBalance, useStakingBalance } from 'app/features/boostv3/hooks/balances'
 import { useRewardPool } from 'app/features/boostv3/hooks/useRewardPool'
 import Dots from 'app/components/Dots'
@@ -64,7 +64,7 @@ export default function Boostv3 () {
 
     const { createLockWithMc, increaseAmountWithMc, increaseUnlockTimeWithMc, withdrawWithMc } = useVotingEscrow()
     const { harvestRewards, withdrawEarnings } = useRewardPool();
-    const { manualAPY: APR } = getAPY()
+    const { manualAPY: APR } = GetAPY()
 
     const [ pendingTx, setPendingTx ] = useState( false )
     const [ pendingLock, setPendingLock ] = useState( false )
