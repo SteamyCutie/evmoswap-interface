@@ -15,7 +15,7 @@ import { useMultistakingContract } from './useContract'
 import { FARMS } from 'app/constants/farms'
 import _ from 'lodash'
 
-export const EMOSPlaceholder = new Token(ChainId.ETHEREUM, '0x0000000000000000000000000000000000000001', 18)
+export const EMOSPlaceholder = new Token(ChainId.ETHEREUM, '0x0000000000000000000000000000000000000001', 18, 'EMO')
 const ZERO_BN = '0'.toBigNumber(EMOSPlaceholder.decimals)
 
 export function useLockedBalance() {
