@@ -69,6 +69,7 @@ export default function Boostv3 () {
     const [ pendingTx, setPendingTx ] = useState( false )
     const [ pendingLock, setPendingLock ] = useState( false )
     const [ withdrawing, setWithdrawing ] = useState( false )
+    const [ withdrawingMC, setWithdrawingMC ] = useState( false )
 
     const emosInfo = useTokenInfo( useEmosContract() )
     const { lockEnd, lockAmount, emosSupply, veEmosSupply } = useLockedBalance()
@@ -87,6 +88,8 @@ export default function Boostv3 () {
     }, [ input, balance, usingBalance, token ] );
 
     const [ approvalState, approve ] = useApproveCallback( parsedAmount, VOTING_ESCROW_ADDRESS[ chainId ] )
+    const requireApproval = approvalState === ApprovalState.NOT_APPROVED;
+    const waitingApproval = approvalState === ApprovalState.UNKNOWN;
 
     const insufficientFunds = !balance?.greaterThan( ZERO ) || ( parsedAmount?.greaterThan( ZERO ) && parsedAmount?.greaterThan( balance ) )
     const inputError = insufficientFunds
@@ -97,8 +100,8 @@ export default function Boostv3 () {
     const newLockTime = Math.floor( getUnixTime( addDays( Date.now(), lockDays ) ) / SECS_IN_WEEK ) * SECS_IN_WEEK;
     const lockTimeBtnDisabled = pendingLock || newLockTime <= lockEnd;
     const lockExpired = lockEnd && getUnixTime( Date.now() ) >= lockEnd;
-    const amountBtnDisabled = pendingLock || !input || insufficientFunds;
-    const lockBtnDisabled = pendingLock || !input;
+    const amountBtnDisabled = pendingLock || !input || insufficientFunds || waitingApproval;
+    const lockBtnDisabled = pendingLock || !input || waitingApproval;
     const [ activeVestingRow, setActiveVestingRow ] = useState( 0 );
 
     const vestingRows = useMemo( () => {
@@ -149,16 +152,14 @@ export default function Boostv3 () {
     const handleLock = async () => {
 
         //console.log( new Date( newLockTime * 1000 ), newLockTime, lockDays )
-        if ( !input ) return;
+        if ( !input || waitingApproval ) return;
 
         setPendingLock( true )
 
-        if ( approvalState === ApprovalState.NOT_APPROVED ) {
+        if ( requireApproval ) {
             const success = await sendTx( () => approve() )
-            if ( !success ) {
-                setPendingLock( false )
-                return
-            }
+            setPendingLock( false )
+            return
         }
 
         const success = await sendTx( () => createLockWithMc( parsedAmount, newLockTime ) )
@@ -173,7 +174,6 @@ export default function Boostv3 () {
 
     const handleIncreaseAmount = async () => {
 
-        //console.log( new Date( newLockTime * 1000 ), newLockTime, lockDays )
         if ( !input ) return;
 
         setPendingLock( true )
@@ -251,17 +251,17 @@ export default function Boostv3 () {
 
         if ( !lockExpired ) return
 
-        setPendingLock( true )
+        setWithdrawingMC( true )
 
         const success = await sendTx( () => withdrawWithMc() )
 
         if ( !success ) {
-            setPendingLock( false )
+            setWithdrawingMC( false )
             return
         }
 
         handleInput( '' )
-        setPendingLock( false )
+        setWithdrawingMC( false )
     }
 
     return (
@@ -523,17 +523,23 @@ export default function Boostv3 () {
                                         {
                                             !account && <Web3Connect color="blue" className="truncate w-full" size='lg' />
                                         }
+
                                         {
                                             account && !lockExpired && <>
                                                 {
                                                     !lockAmount.greaterThan( ZERO ) ? (
                                                         insufficientFunds ? (
-                                                            <Button color="red" className="truncate w-full" disabled>
+                                                            <Button color="red" className="truncate w-full" size='lg' disabled>
                                                                 { i18n._( t`Insufficient Balance` ) }
                                                             </Button>
-                                                        ) : ( <Button size='lg' onClick={ handleLock } disabled={ lockBtnDisabled } color={ lockBtnDisabled ? "gray" : actionBtnColor } className="bg-blue truncate disabled:bg-dark-800 disabled:bg-opacity-100 w-full" variant="filled">
-                                                            { pendingLock ? <Dots>{ i18n._( t`Locking` ) } </Dots> : i18n._( t`${!input ? 'Enter amount' : 'Lock'}` ) }
-                                                        </Button>
+                                                        ) : (
+                                                            ( requireApproval || approvalState === ApprovalState.PENDING ) ?
+                                                                <Button size='lg' onClick={ handleLock } disabled={ lockBtnDisabled || approvalState === ApprovalState.PENDING } color="blue" className="bg-blue-600 truncate disabled:bg-dark-800 disabled:bg-opacity-100 w-full" variant="filled">
+                                                                    { pendingLock || approvalState === ApprovalState.PENDING ? <Dots>{ i18n._( t`Approving` ) } </Dots> : i18n._( t`Approve` ) }
+                                                                </Button> :
+                                                                <Button size='lg' onClick={ handleLock } disabled={ lockBtnDisabled } color={ lockBtnDisabled ? "gray" : actionBtnColor } className="bg-blue truncate disabled:bg-dark-800 disabled:bg-opacity-100 w-full" variant="filled">
+                                                                    { pendingLock ? <Dots>{ i18n._( t`Locking` ) } </Dots> : i18n._( t`${!input ? 'Enter amount' : 'Lock'}` ) }
+                                                                </Button>
                                                         )
                                                     ) : (
                                                         <React.Fragment>
@@ -554,10 +560,10 @@ export default function Boostv3 () {
                                                 color="gradient"
                                                 className="mt-4 disabled:opacity-60"
                                                 onClick={ handleWithdrawWithMc }
-                                                disabled={ !lockExpired }
+                                                disabled={ !lockExpired || withdrawingMC }
                                                 size="lg"
                                             >
-                                                { pendingLock ? <Dots>{ i18n._( t`Harvesting` ) } </Dots> : <span>{ i18n._( t`Harvest Lock Rewards` ) } ({ rewards?.total?.toFixed( 2 ) })</span> }
+                                                { withdrawingMC ? <Dots>{ i18n._( t`Harvesting` ) } </Dots> : <span>{ i18n._( t`Harvest Lock Rewards` ) } ({ rewards?.total?.toFixed( 2 ) })</span> }
                                             </Button>
                                         }
                                     </div>
