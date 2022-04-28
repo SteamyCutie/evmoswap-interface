@@ -26,11 +26,12 @@ export function useRewardPool() {
   }, [addTransaction, contract, account])
 
   const withdrawEarnings = useCallback(
-    async (amount: CurrencyAmount<Token | Currency>) => {
+    async (amount: CurrencyAmount<Token | Currency>, withPenalty?: boolean) => {
       try {
-        const amountBN = amount.divide(2).toExact().toBigNumber(amount.currency.decimals)
+        const denom = withPenalty ? 2 : 0
+        const amountBN = amount.divide(denom).toExact().toBigNumber(amount.currency.decimals)
         const tx = await multistaking?.withdraw(amountBN)
-        return addTransaction(tx, { summary: i18n._(t`Withdraw earnings ${amount.divide(2).toFixed(4)}`) })
+        return addTransaction(tx, { summary: i18n._(t`Withdraw earnings ${amount.divide(denom).toFixed(4)}`) })
       } catch (e) {
         console.log(e.message, amount.toString())
         return e

@@ -1,19 +1,22 @@
 import { Interface } from '@ethersproject/abi'
 import { CurrencyAmount, Currency, Token, ChainId } from '@evmoswap/core-sdk'
 import { ERC20_ABI } from 'app/constants/abis/erc20'
-import { useRewardPoolContract, useVotingEscrowContract } from 'app/hooks'
+import { useMasterChefContract, useRewardPoolContract, useVotingEscrowContract } from 'app/hooks'
 import { useActiveWeb3React } from 'app/services/web3'
 import {
   useMultipleContractSingleData,
   useSingleCallResult,
+  useSingleContractMultipleData,
   useSingleContractMultipleMethods,
 } from 'app/state/multicall/hooks'
-import { useMemo } from 'react'
+import { useCallback, useEffect, useMemo, useState } from 'react'
 import BigNumber from 'bignumber.js'
 import { useMultistakingContract } from './useContract'
-import { formatNumber } from 'app/functions'
+import { FARMS } from 'app/constants/farms'
+import _ from 'lodash'
 
 const EMOSPlaceholder = new Token(ChainId.ETHEREUM, '0x0000000000000000000000000000000000000001', 18)
+const ZERO_BN = '0'.toBigNumber(EMOSPlaceholder.decimals)
 
 export function useLockedBalance() {
   const { account } = useActiveWeb3React()
@@ -146,4 +149,42 @@ export function useStakingBalance() {
   }
 
   return defaultResp
+}
+
+//get all farm pool yield yet to be harvested.
+export const useFarmsReward = () => {
+  const { chainId, account } = useActiveWeb3React()
+  const masterChef = useMasterChefContract()
+
+  const [totalRewards, setTotalRewards] = useState(ZERO_BN)
+  const farmingPools = Object.keys(FARMS[chainId]).map((key) => {
+    return { ...FARMS[chainId][key], lpToken: key }
+  })
+
+  // Array Pids and user
+  const poolPidsUser = useMemo(() => {
+    return farmingPools.map((pool: any) => {
+      return [pool.pid, account]
+    })
+  }, [account])
+
+  const rewards = useSingleContractMultipleData(masterChef, 'pendingTokens', poolPidsUser)
+  const fetchAllFarms = useCallback(async () => {
+    // Reset pools list
+    let total = ZERO_BN
+
+    rewards.map((reward: any) => {
+      if (reward.result) {
+        total = total.add(reward.result.amounts[0])
+      }
+    })
+
+    setTotalRewards(total)
+  }, [rewards])
+
+  useEffect(() => {
+    fetchAllFarms()
+  }, [fetchAllFarms])
+
+  return totalRewards
 }
