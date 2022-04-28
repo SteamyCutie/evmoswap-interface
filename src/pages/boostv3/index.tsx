@@ -21,17 +21,17 @@ import { useLockedBalance, useRewardsBalance, useStakingBalance } from 'app/feat
 import { useRewardPool } from 'app/features/boostv3/hooks/useRewardPool'
 import Dots from 'app/components/Dots'
 import { timestampToDate } from 'app/features/boostv3/functions/app'
-import { BigNumber } from '@ethersproject/bignumber'
 import { VOTING_ESCROW_ADDRESS } from 'app/constants/addresses'
 import { ApprovalState, useApproveCallback } from 'app/hooks'
 import useVotingEscrow from 'app/features/boost/useVotingEscrow'
-import { addDays, getUnixTime, format } from 'date-fns'
+import { addDays, getUnixTime, format, isFuture } from 'date-fns'
 import { InformationCircleIcon } from '@heroicons/react/outline'
 import DoubleCheckIcon from 'app/features/boostv3/assets/images/Done_all_round_light.svg';
 import { AddressZero } from '@ethersproject/constants'
+import { BigNumber } from '@ethersproject/bignumber'
 
 type VestingRow = {
-    unlockTime: string, amount: CurrencyAmount<Currency>, expired: boolean;
+    unlockTime: string, amount: CurrencyAmount<Currency>, expired: boolean, penaltyAmount: BigNumber;
 }
 
 const INPUT_CHAR_LIMIT = 18
@@ -39,7 +39,6 @@ const MAX_WEEK = 52 * 4
 const DAYS_IN_WEEK = 7
 const SECS_IN_WEEK = DAYS_IN_WEEK * 86400
 
-const emosIcon = "/icons/icon-72x72.png";
 const tabStyle = 'rounded-lg p-6'
 const activeTabStyle = `${tabStyle} flex justify-center items-center w-full h-8 rounded font-bold md:font-medium lg:text-lg text-sm bg-dark-900 text-secondary`
 const inactiveTabStyle = `${tabStyle} flex justify-center items-center w-full h-8 rounded font-bold md:font-medium lg:text-lg text-sm bg-transparent text-white`
@@ -78,7 +77,6 @@ export default function Boostv3 () {
     const totalActiveVesting = CurrencyAmount.fromRawAmount( token, earnedBalances?.total?.toString() || "0" )
     const totalCompletedVesting = CurrencyAmount.fromRawAmount( token, withdrawableBalance?.penaltyAmount?.toString() || "0" )
     const rewards = useRewardsBalance();
-    const hasCompletedVesting = withdrawableBalance ? BigNumber.from( withdrawableBalance.penaltyAmount ).gt( 0 ) : false
 
     const [ activeTab, setActiveTab ] = useState( 0 );
 
@@ -101,16 +99,19 @@ export default function Boostv3 () {
     const lockExpired = lockEnd && getUnixTime( Date.now() ) >= lockEnd;
     const amountBtnDisabled = pendingLock || !input || insufficientFunds;
     const lockBtnDisabled = pendingLock || !input;
+    const [ activeVestingRow, setActiveVestingRow ] = useState( 0 );
 
     const vestingRows = useMemo( () => {
         const rows = [];
 
         if ( earnedBalances && earnedBalances?.earningsData?.length )
             earnedBalances.earningsData.map( ( earning: { unlockTime: number; amount: number } ) => {
+                const amount = CurrencyAmount.fromRawAmount( balance?.currency, earning?.amount?.toString() || "0" )
                 rows.push( {
                     unlockTime: timestampToDate( earning?.unlockTime?.toString() ),
-                    amount: CurrencyAmount.fromRawAmount( balance?.currency, earning?.amount?.toString() || "0" ),
-                    expired: false,
+                    amount: amount,
+                    expired: isFuture( getUnixTime( earning?.unlockTime ) ),
+                    penaltyAmount: amount.divide( 2 ).toExact().toBigNumber( 18 )
                 } )
             } )
         return rows;
@@ -216,13 +217,16 @@ export default function Boostv3 () {
         setPendingTx( false )
     }
 
-    const handleWithdrawWithPenalty = async ( amount: CurrencyAmount<Token | Currency> ) => {
+    const handleWithdrawWithPenalty = async ( amount: CurrencyAmount<Token | Currency>, index?: number ) => {
 
-        if ( !amount ) return;
+        if ( !amount.greaterThan( ZERO ) ) return;
+
+        if ( index )
+            setActiveVestingRow( index )
 
         setWithdrawing( true )
 
-        const success = await sendTx( () => ( withdrawEarnings( BigNumber.from( amount.toExact() ) ) ) )
+        const success = await sendTx( () => ( withdrawEarnings( amount ) ) )
 
         console.log( success, amount.toFixed( 4 ) )
 
@@ -234,7 +238,7 @@ export default function Boostv3 () {
         setWithdrawing( false )
     }
 
-    const handleWithdrawWith = async () => {
+    const handleWithdrawWithMc = async () => {
 
         if ( !lockExpired ) return
 
@@ -258,6 +262,8 @@ export default function Boostv3 () {
                 <meta key="description" name="description" content="Boost EvmoSwap" />
             </Head>
             <div className="flex flex-col justify-start flex-grow w-full h-full px-4 md:px-6 py-4 space-y-6">
+
+                {/** Top action cards */ }
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 md:gap-4 lg:gap-6 mt-4 md:grid-cols-3">
 
                     <RewardCards
@@ -274,8 +280,8 @@ export default function Boostv3 () {
                                     <Button color="red" className="truncate bg-[#EA5858] text-white" disabled>
                                         { i18n._( t`No rewards` ) }
                                     </Button>
-                                ) : <Button onClick={ handleClaimRewards } disabled={ pendingTx } color="red" className="disabled:bg-opacity-40 lg:truncate lg:hover:whitespace-normal bg-[#EA5858]" variant="filled">
-                                    { pendingTx ? <Dots>{ i18n._( t`Claiming` ) } </Dots> : i18n._( t`Withdraw early - 50% penalty` ) }
+                                ) : <Button onClick={ () => handleWithdrawWithPenalty( totalActiveVesting ) } disabled={ withdrawing } color="red" className="disabled:bg-opacity-40 lg:truncate lg:hover:whitespace-normal bg-[#EA5858]" variant="filled">
+                                    { withdrawing ? <Dots>{ i18n._( t`Withdrawing` ) } </Dots> : i18n._( t`Withdraw early - 50% penalty` ) }
                                 </Button>
                             }
                         </div>
@@ -291,7 +297,7 @@ export default function Boostv3 () {
                                 <Button color="red" className="truncate bg-[#EA5858] text-white" disabled>
                                     { i18n._( t`No rewards` ) }
                                 </Button>
-                            ) : <Button onClick={ () => handleWithdrawWithPenalty( totalCompletedVesting ) } disabled={ withdrawing } color="blue" className="disabled:bg-opacity-40 lg:truncate lg:hover:whitespace-normal bg-[#418AE8]" variant="filled">
+                            ) : <Button onClick={ () => handleWithdrawWithPenalty( totalCompletedVesting, 0 ) } disabled={ withdrawing } color="blue" className="disabled:bg-opacity-40 lg:truncate lg:hover:whitespace-normal bg-[#418AE8]" variant="filled">
                                 { pendingTx ? <Dots>{ i18n._( t`Claiming` ) } </Dots> : i18n._( t`Claim Rewards` ) }
                             </Button>
                         }
@@ -315,6 +321,7 @@ export default function Boostv3 () {
 
                 </div>
 
+                {/** Vesting */ }
                 <div className='flex flex-col space-y-2 bg-dark-900 rounded text-center'>
                     <div className={ classNames( 'bg-dark-800 rounded-t p-4', vestingRows.length ? '' : 'rounded-b' ) }>
                         <p className='text-white'>{ i18n._( `Vests are grouped by week` ) }</p>
@@ -330,19 +337,19 @@ export default function Boostv3 () {
                     { !!vestingRows.length && <div className="w-full mt-4 pb-2">
                         <div className="relative overflow-auto">
                             <table className="w-full border-collapse table-auto text-sm">
-                                <thead className="bg-dark-900">
+                                <thead className="bg-dark-900 text-secondary">
                                     <tr>
                                         <th className="text-center p-4 border-b border-dark-800">{ i18n._( t`Expiry Time` ) }</th>
                                         <th className="text-center p-4 border-b border-dark-800">{ i18n._( t`Amount` ) }</th>
                                         <th className="text-center p-4 border-b border-dark-800">{ i18n._( t`Action` ) }</th>
                                     </tr>
                                 </thead>
-                                <tbody className="bg-dark-900">
+                                <tbody className="bg-dark-900 text-white">
 
                                     {
                                         vestingRows.length ? vestingRows.map( ( row: VestingRow, index ) => (
                                             <tr key={ index }>
-                                                <td className={ classNames( "text-center p-4 border-b border-dark-800", index == vestingRows.length - 1 ? 'border-none' : '' ) }>{ row.unlockTime }</td>
+                                                <td className={ classNames( "text-center p-4 border-b border-dark-800", index == vestingRows.length - 1 ? 'border-none' : '' ) }>{ row.expired ? i18n._( t`Vest Complete` ) : row.unlockTime }</td>
                                                 <td className={ classNames( "text-center p-4 border-b border-dark-800", index == vestingRows.length - 1 ? 'border-none' : '' ) }>{ row.amount.toFixed( 6 ) } { token.symbol }</td>
                                                 <td className={ classNames( "text-center p-4 border-b border-dark-800", index == vestingRows.length - 1 ? 'border-none' : '' ) }>
 
@@ -352,17 +359,17 @@ export default function Boostv3 () {
                                                             variant="outlined"
                                                             color={ row.expired ? "gray" : "red" }
                                                             className='disabled:bg-dark-800 disabled:text-secondary disabled:bg-opacity-100'
-                                                            onClick={ () => handleWithdrawWithPenalty( row.amount ) } disabled={ row.expired || withdrawing }
-                                                        > { withdrawing ? <Dots>{ i18n._( t`Withdrawing` ) } </Dots> : i18n._( t`Withdraw early - 50% penalty` ) }
+                                                            onClick={ () => handleWithdrawWithPenalty( row.amount, index ) } disabled={ row.expired || withdrawing || row.penaltyAmount.lte( 0 ) }
+                                                        > { withdrawing && activeVestingRow == index ? <Dots>{ i18n._( t`Withdrawing` ) } </Dots> : i18n._( t`Withdraw early - 50% penalty` ) }
                                                         </Button>
                                                         <Button
                                                             size="sm"
-                                                            variant="outlined"
+                                                            variant="filled"
                                                             color={ !row.expired ? "gray" : "blue" }
-                                                            className='disabled:bg-dark-800 disabled:text-secondary disabled:bg-opacity-100'
-                                                            onClick={ () => handleWithdrawWithPenalty( row.amount ) }
-                                                            disabled={ !row.expired || withdrawing }
-                                                        > { withdrawing ? <Dots>{ i18n._( t`Claiming` ) } </Dots> : i18n._( t`Claim all rewards` ) }
+                                                            className='disabled:bg-dark-800 disabled:text-secondary disabled:bg-opacity-100 w-auto bg-[#418AE8]'
+                                                            onClick={ () => handleWithdrawWithPenalty( row.amount, index ) }
+                                                            disabled={ !row.expired || withdrawing || !row.amount.greaterThan( ZERO ) }
+                                                        > { withdrawing && activeVestingRow == index && row.expired ? <Dots>{ i18n._( t`Claiming` ) } </Dots> : i18n._( t`Claim all rewards` ) }
                                                         </Button>
                                                     </div>
 
@@ -538,7 +545,7 @@ export default function Boostv3 () {
                                             ( !!account ) && <Button
                                                 color="gradient"
                                                 className="mt-4 disabled:opacity-60"
-                                                onClick={ handleWithdrawWith }
+                                                onClick={ handleWithdrawWithMc }
                                                 disabled={ !lockExpired }
                                                 size="lg"
                                             >

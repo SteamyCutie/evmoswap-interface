@@ -1,4 +1,5 @@
 import { BigNumber } from '@ethersproject/bignumber'
+import { CurrencyAmount, Token, Currency } from '@evmoswap/core-sdk'
 import { i18n } from '@lingui/core'
 import { t } from '@lingui/macro'
 import { useRewardPoolContract } from 'app/hooks'
@@ -25,10 +26,11 @@ export function useRewardPool() {
   }, [addTransaction, contract, account])
 
   const withdrawEarnings = useCallback(
-    async (amount: BigNumber) => {
+    async (amount: CurrencyAmount<Token | Currency>) => {
       try {
-        const tx = await multistaking?.withdraw(amount)
-        return addTransaction(tx, { summary: i18n._(t`Withdraw earnings ${amount.toFixed(4)}`) })
+        const amountBN = amount.divide(2).toExact().toBigNumber(amount.currency.decimals)
+        const tx = await multistaking?.withdraw(amountBN)
+        return addTransaction(tx, { summary: i18n._(t`Withdraw earnings ${amount.divide(2).toFixed(4)}`) })
       } catch (e) {
         console.log(e.message, amount.toString())
         return e
