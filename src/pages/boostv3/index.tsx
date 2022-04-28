@@ -17,7 +17,7 @@ import { classNames, formatBalance, formatNumber, formatNumberScale, formatPerce
 import { Currency, CurrencyAmount, Token, ZERO } from '@evmoswap/core-sdk'
 import { RowBetween } from 'app/components/Row'
 import { getAPY } from 'app/features/staking/useStaking'
-import { useFarmsReward, useLockedBalance, useRewardsBalance, useStakingBalance } from 'app/features/boostv3/hooks/balances'
+import { EMOSPlaceholder, useFarmsReward, useLockedBalance, useRewardsBalance, useStakingBalance } from 'app/features/boostv3/hooks/balances'
 import { useRewardPool } from 'app/features/boostv3/hooks/useRewardPool'
 import Dots from 'app/components/Dots'
 import { timestampToDate } from 'app/features/boostv3/functions/app'
@@ -27,7 +27,6 @@ import useVotingEscrow from 'app/features/boost/useVotingEscrow'
 import { addDays, getUnixTime, format, isFuture } from 'date-fns'
 import { InformationCircleIcon } from '@heroicons/react/outline'
 import DoubleCheckIcon from 'app/features/boostv3/assets/images/Done_all_round_light.svg';
-import { AddressZero } from '@ethersproject/constants'
 import { BigNumber } from '@ethersproject/bignumber'
 
 type VestingRow = {
@@ -61,7 +60,7 @@ export default function Boostv3 () {
     const { i18n } = useLingui()
     const { account, chainId } = useActiveWeb3React()
     const balance = useTokenBalance( account ?? undefined, EvmoSwap[ chainId ] )
-    const token = balance?.currency || new Token( chainId, AddressZero, 18, "EMO" );
+    const token = balance?.currency || EMOSPlaceholder;
 
     const { createLockWithMc, increaseAmountWithMc, increaseUnlockTimeWithMc, withdrawWithMc } = useVotingEscrow()
     const { harvestRewards, withdrawEarnings } = useRewardPool();
@@ -85,7 +84,7 @@ export default function Boostv3 () {
     const [ usingBalance, setUsingBalance ] = useState( false )
     const parsedAmount = useMemo( () => {
         return usingBalance ? balance : tryParseAmount( input, token );
-    }, [ input, balance ] );
+    }, [ input, balance, usingBalance, token ] );
 
     const [ approvalState, approve ] = useApproveCallback( parsedAmount, VOTING_ESCROW_ADDRESS[ chainId ] )
 
@@ -116,7 +115,7 @@ export default function Boostv3 () {
                 } )
             } )
         return rows;
-    }, [ earnedBalances, withdrawableBalance, balance?.currency ] )
+    }, [ earnedBalances, balance?.currency ] )
 
 
     const handleInput = ( v: string ) => {

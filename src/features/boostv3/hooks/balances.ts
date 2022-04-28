@@ -15,7 +15,7 @@ import { useMultistakingContract } from './useContract'
 import { FARMS } from 'app/constants/farms'
 import _ from 'lodash'
 
-const EMOSPlaceholder = new Token(ChainId.ETHEREUM, '0x0000000000000000000000000000000000000001', 18)
+export const EMOSPlaceholder = new Token(ChainId.ETHEREUM, '0x0000000000000000000000000000000000000001', 18)
 const ZERO_BN = '0'.toBigNumber(EMOSPlaceholder.decimals)
 
 export function useLockedBalance() {
@@ -169,7 +169,7 @@ export const useFarmsReward = () => {
   }, [account])
 
   const rewards = useSingleContractMultipleData(masterChef, 'pendingTokens', poolPidsUser)
-  const fetchAllFarms = useCallback(async () => {
+  const fetchAllFarmsReward = useCallback(async () => {
     // Reset pools list
     let total = ZERO_BN
 
@@ -183,8 +183,8 @@ export const useFarmsReward = () => {
   }, [rewards])
 
   useEffect(() => {
-    fetchAllFarms()
-  }, [fetchAllFarms])
+    fetchAllFarmsReward()
+  }, [fetchAllFarmsReward])
 
   return totalRewards
 }
