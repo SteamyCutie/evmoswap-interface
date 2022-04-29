@@ -1,10 +1,6 @@
 import React, { useEffect, useState, useRef } from 'react'
-import Container from '../../components/Container'
-import Head from 'next/head'
 import { t } from '@lingui/macro'
 import { useLingui } from '@lingui/react'
-import NetworkGuard from '../../guards/Network'
-import { ChainId } from '@evmoswap/core-sdk'
 import { NATIVE } from '@evmoswap/core-sdk'
 import Button from 'components/Button'
 import Dots from 'components/Dots'
@@ -66,7 +62,7 @@ export default function Prisale() {
   const privateSaleEnd = useRef(0)
   const basePrice = useRef(0)
   const vestingStart = useRef(0)
-  const decimals = NATIVE[chainId].decimals
+  const total_purchased = useRef([0,0])
   const getData = async () => {
     if (!account) return
     const tokenPrice = await prisaleContract.tokenPrice()
@@ -85,6 +81,7 @@ export default function Prisale() {
     purchasedToken.current = Number(await prisaleContract.purchased(account))
     claimableToken.current = Number(await prisaleContract.claimable(account))
     vestingStart.current = Number(await prisaleContract.vestingStart())
+    total_purchased.current = [Number(await prisaleContract.privateSaleTokenPool()), Number(await prisaleContract.purchasedPrivateSale())]
   }
   getData()
 
@@ -159,8 +156,8 @@ export default function Prisale() {
           )}
         </div>
         <div className="w-1/2 h-full px-4 py-2 my-auto space-y-1 text-left rounded-lg md:py-4 md:px-10 bg-black-russian">
-          <div className="text-base md:text-lg">Token Balance</div>
-          <div className="text-xl font-bold text-white md:text-2xl">{tokenBalance ? tokenBalance : 0}</div>
+          <div className="text-base md:text-lg">Remaining Tokens</div>
+          <div className="text-xl font-bold text-white md:text-2xl">{((total_purchased.current[0] - total_purchased.current[1])/1e18).toFixed()}</div>
         </div>
       </div>
       <div className="py-5 rounded-lg px-7 bg-black-russian">
@@ -199,8 +196,7 @@ export default function Prisale() {
           ) : (
             <ProgressBar
               progress={
-                (new Date().getTime() / 1e3 - privateSaleStart.current) /
-                (privateSaleEnd.current - privateSaleStart.current)
+                (total_purchased.current[1]) / (total_purchased.current[0])
               }
               className="from-green to-carribean-green"
             />
@@ -241,13 +237,11 @@ export default function Prisale() {
               </div>
             </div>
             <div className="flex justify-between gap-1 px-1">
-              {i18n._(t`Your investment (${toggle ? 'EVMOS' : 'USDC'})`)}
+              {i18n._(t`Balance: `)} {toggle? nativeBalance.toFixed(6): usdcBalance.toFixed(6)} 
               <button
                 className="text-light-blue"
                 onClick={() => {
-                  if ((toggle ? nativeBalance : usdcBalance) > 0) {
-                    setInvestValue(toggle ? nativeBalance.toString() : usdcBalance?.toString())
-                  }
+                  setInvestValue(toggle ? nativeBalance.toString() : usdcBalance?.toString())
                 }}
               >
                 Max
