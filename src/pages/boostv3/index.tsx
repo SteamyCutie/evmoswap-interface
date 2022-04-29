@@ -5,15 +5,13 @@ import { EvmoSwap } from '../../config/tokens'
 import Container from '../../components/Container'
 import { useActiveWeb3React } from '../../services/web3'
 import { useTokenBalance } from '../../state/wallet/hooks'
-import { useTokenInfo } from 'app/features/farm/hooks'
-import { useEmosContract } from 'app/hooks/useContract'
 import { t } from '@lingui/macro'
 import Image from 'next/image'
 import ButtonNew from 'app/components/Button/index.new'
 import Web3Connect from 'app/components/Web3Connect'
 import Button from 'app/components/Button'
 import Input from 'app/components/Input'
-import { classNames, formatBalance, formatNumber, formatNumberScale, formatPercent, tryParseAmount } from 'app/functions'
+import { classNames, formatBalance, formatNumberScale, formatPercent, tryParseAmount } from 'app/functions'
 import { Currency, CurrencyAmount, Token, ZERO } from '@evmoswap/core-sdk'
 import { RowBetween } from 'app/components/Row'
 import { GetAPY } from 'app/features/staking/useStaking'
@@ -76,9 +74,10 @@ export default function Boostv3 () {
     const { lockEnd, lockAmount, emosSupply, veEmosSupply } = useLockedBalance()
     const { earnedBalances, withdrawableBalance } = useStakingBalance();
     const totalActiveVesting = CurrencyAmount.fromRawAmount( token, earnedBalances?.total?.toString() || "0" )
-    const totalCompletedVesting = CurrencyAmount.fromRawAmount( token, withdrawableBalance?.penaltyAmount?.toString() || "0" )
+    const totalCompletedVesting = CurrencyAmount.fromRawAmount( token, withdrawableBalance?.amountWithoutPenalty?.toString() || "0" )
     const rewards = useRewardsBalance();
     const pendingFarmsRewards = useFarmsReward();
+
     const { claimLockerExtraRewards } = useFeeDistributor();
     const lockerExtraRewards = useLockerExtraRewards();
 
@@ -105,7 +104,7 @@ export default function Boostv3 () {
     const lockExpired = lockEnd && getUnixTime( Date.now() ) >= lockEnd;
     const amountBtnDisabled = pendingLock || !input || insufficientFunds || waitingApproval;
     const lockBtnDisabled = pendingLock || !input || waitingApproval;
-    const [ activeVestingRow, setActiveVestingRow ] = useState( 0 );
+    const [ activeVestingRow, setActiveVestingRow ] = useState<number | undefined>( 0 );
 
     const vestingRows = useMemo( () => {
         const rows = [];
@@ -218,32 +217,28 @@ export default function Boostv3 () {
         setPendingTx( false )
     }
 
-    const handleWithdraw = async ( amount: CurrencyAmount<Token | Currency>, index?: number, withPenalty?: boolean ) => {
+    const handleWithdrawVesting = async ( amount: CurrencyAmount<Token | Currency>, index?: number, withPenalty?: boolean ) => {
 
         if ( !amount.greaterThan( ZERO ) ) return;
 
-        if ( index )
-            setActiveVestingRow( index )
+        setActiveVestingRow( index )
 
         setWithdrawing( true )
 
-        const success = await sendTx( () => ( withdrawEarnings( amount, withPenalty ) ) )
+        let cIndex = index;
+        if ( index >= 0 && Array.isArray( earnedBalances?.indexes ) && earnedBalances.indexes.length )
+            cIndex = earnedBalances.indexes[ index ];
+
+        const success = await sendTx( () => ( withdrawEarnings( amount, withPenalty, cIndex >= 0 ? cIndex : undefined ) ) )
 
         if ( !success ) {
             setWithdrawing( false )
             return
         }
 
+        setActiveVestingRow( undefined )
+
         setWithdrawing( false )
-    }
-
-    const handleWithdrawWithPenalty = async ( amount: CurrencyAmount<Token | Currency>, index?: number ) => {
-
-        handleWithdraw( amount, index, true )
-    }
-
-    const handleWithdrawWithoutPenalty = async ( amount: CurrencyAmount<Token | Currency>, index?: number ) => {
-        handleWithdraw( amount, undefined, false )
     }
 
     const handleLockRewardHarvest = async () => {
@@ -303,8 +298,8 @@ export default function Boostv3 () {
                                     <Button color="red" className="truncate bg-red-600 text-white" disabled>
                                         { i18n._( t`No rewards` ) }
                                     </Button>
-                                ) : <Button onClick={ () => handleWithdrawWithPenalty( totalActiveVesting ) } disabled={ withdrawing } color="red" className="disabled:bg-opacity-40 lg:truncate lg:hover:whitespace-normal bg-red-600" variant="filled">
-                                    { withdrawing ? <Dots>{ i18n._( t`Withdrawing` ) } </Dots> : i18n._( t`Withdraw early - 50% penalty` ) }
+                                ) : <Button onClick={ () => handleWithdrawVesting( totalActiveVesting, -1, true ) } disabled={ withdrawing } color="red" className="disabled:bg-opacity-40 lg:truncate lg:hover:whitespace-normal bg-red-600" variant="filled">
+                                    { withdrawing && activeVestingRow === -1 ? <Dots>{ i18n._( t`Withdrawing` ) } </Dots> : i18n._( t`Withdraw early - 50% penalty` ) }
                                 </Button>
                             }
                         </div>
@@ -317,11 +312,11 @@ export default function Boostv3 () {
                             !account ? (
                                 <Web3Connect color="blue" className="truncate" />
                             ) : !totalCompletedVesting?.greaterThan( 0 ) ? (
-                                <Button color="red" className="truncate bg-red-600 text-white" disabled>
+                                <Button color="red" className="truncate bg-red-600 text-white disabled:bg-opacity-60" disabled>
                                     { i18n._( t`No rewards` ) }
                                 </Button>
-                            ) : <Button onClick={ () => handleWithdrawWithoutPenalty( totalCompletedVesting ) } disabled={ withdrawing } color="blue" className="disabled:bg-opacity-40 lg:truncate lg:hover:whitespace-normal bg-blue-600" variant="filled">
-                                { withdrawing ? <Dots>{ i18n._( t`Claiming` ) } </Dots> : i18n._( t`Claim Rewards` ) }
+                            ) : <Button onClick={ () => handleWithdrawVesting( totalCompletedVesting, -2 ) } disabled={ withdrawing } color="blue" className="disabled:bg-opacity-40 lg:truncate lg:hover:whitespace-normal bg-blue-600" variant="filled">
+                                { withdrawing && activeVestingRow === -2 ? <Dots>{ i18n._( t`Claiming` ) } </Dots> : i18n._( t`Claim Rewards` ) }
                             </Button>
                         }
                     </RewardCards>
@@ -333,7 +328,7 @@ export default function Boostv3 () {
                             !account ? (
                                 <Web3Connect color="blue" className="truncate" />
                             ) : !lockerExtraRewards.greaterThan( ZERO ) ? (
-                                <Button color="red" className="truncate bg-red-600 text-white" disabled>
+                                <Button color="red" className="truncate bg-red-600 text-white  disabled:bg-opacity-60" disabled>
                                     { i18n._( t`No rewards` ) }
                                 </Button>
                             ) : <Button onClick={ handleClaimLockerExtraRewards } disabled={ pendingTx } color="blue" className="disabled:bg-opacity-40 lg:truncate lg:hover:whitespace-normal bg-blue-600" variant="filled">
@@ -381,7 +376,7 @@ export default function Boostv3 () {
                                                             variant="outlined"
                                                             color={ row.expired ? "gray" : "red" }
                                                             className='disabled:bg-dark-800 disabled:text-secondary disabled:bg-opacity-100'
-                                                            onClick={ () => handleWithdrawWithPenalty( row.amount, index ) } disabled={ row.expired || withdrawing || row.penaltyAmount.lte( 0 ) }
+                                                            onClick={ () => handleWithdrawVesting( row.amount, index, true ) } disabled={ row.expired || withdrawing || row.penaltyAmount.lte( 0 ) }
                                                         > { withdrawing && activeVestingRow == index ? <Dots>{ i18n._( t`Withdrawing` ) } </Dots> : i18n._( t`Withdraw early - 50% penalty` ) }
                                                         </Button>
                                                         <Button
@@ -389,7 +384,7 @@ export default function Boostv3 () {
                                                             variant="filled"
                                                             color={ !row.expired ? "gray" : "blue" }
                                                             className='disabled:bg-dark-800 disabled:text-secondary disabled:bg-opacity-100 w-auto bg-blue-600'
-                                                            onClick={ () => handleWithdrawWithoutPenalty( row.amount, index ) }
+                                                            onClick={ () => handleWithdrawVesting( row.amount, index, false ) }
                                                             disabled={ !row.expired || withdrawing || !row.amount.greaterThan( ZERO ) }
                                                         > { withdrawing && activeVestingRow == index && row.expired ? <Dots>{ i18n._( t`Claiming` ) } </Dots> : i18n._( t`Claim all rewards` ) }
                                                         </Button>
