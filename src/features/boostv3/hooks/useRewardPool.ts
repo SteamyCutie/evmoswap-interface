@@ -6,13 +6,13 @@ import { useRewardPoolContract } from 'app/hooks'
 import { useActiveWeb3React } from 'app/services/web3'
 import { useTransactionAdder } from 'app/state/transactions/hooks'
 import { useCallback } from 'react'
-import { useMultistakingContract } from './useContract'
+import { useMultiFeeDistributionContract } from './useContract'
 
 export function useRewardPool() {
   const { account, chainId } = useActiveWeb3React()
   const addTransaction = useTransactionAdder()
   const contract = useRewardPoolContract()
-  const multistaking = useMultistakingContract()
+  const multistaking = useMultiFeeDistributionContract()
 
   // harvest
   const harvestRewards = useCallback(async () => {

@@ -11,7 +11,7 @@ import {
 } from 'app/state/multicall/hooks'
 import { useCallback, useEffect, useMemo, useState } from 'react'
 import BigNumber from 'bignumber.js'
-import { useMultistakingContract } from './useContract'
+import { useMultiFeeDistributionContract } from './useContract'
 import { FARMS } from 'app/constants/farms'
 import _ from 'lodash'
 
@@ -127,7 +127,7 @@ export function useStakingBalance() {
     return defaultResp
   }
 
-  const contract = useMultistakingContract()
+  const contract = useMultiFeeDistributionContract()
   const callsData = useMemo(
     () => [
       { methodName: 'earnedBalances', callInputs: [account] },
