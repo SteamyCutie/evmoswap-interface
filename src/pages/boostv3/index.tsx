@@ -571,8 +571,8 @@ export default function Boostv3 () {
                                         }
                                         {
                                             ( !!account && !!lockExpired ) && <Button
-                                                color="gradient"
-                                                className="mt-4 disabled:opacity-60"
+                                                color="blue"
+                                                className="mt-4 disabled:opacity-60 blue-600"
                                                 onClick={ handleWithdrawWithMc }
                                                 disabled={ !lockExpired || withdrawingMC || !lockAmount?.greaterThan( 0 ) }
                                                 size="lg"
