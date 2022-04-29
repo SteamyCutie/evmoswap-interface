@@ -17,7 +17,7 @@ import { classNames, formatBalance, formatNumber, formatNumberScale, formatPerce
 import { Currency, CurrencyAmount, Token, ZERO } from '@evmoswap/core-sdk'
 import { RowBetween } from 'app/components/Row'
 import { GetAPY } from 'app/features/staking/useStaking'
-import { EMOSPlaceholder, useFarmsReward, useLockedBalance, useRewardsBalance, useStakingBalance } from 'app/features/boostv3/hooks/balances'
+import { EMOSPlaceholder, useFarmsReward, useLockedBalance, useLockerExtraRewards, useRewardsBalance, useStakingBalance } from 'app/features/boostv3/hooks/balances'
 import { useRewardPool } from 'app/features/boostv3/hooks/useRewardPool'
 import Dots from 'app/components/Dots'
 import { timestampToDate } from 'app/features/boostv3/functions/app'
@@ -28,6 +28,7 @@ import { addDays, getUnixTime, format, isFuture } from 'date-fns'
 import { InformationCircleIcon } from '@heroicons/react/outline'
 import DoubleCheckIcon from 'app/features/boostv3/assets/images/Done_all_round_light.svg';
 import { BigNumber } from '@ethersproject/bignumber'
+import { useFeeDistributor } from 'app/features/boostv3/hooks/useFeeDistributor'
 
 type VestingRow = {
     unlockTime: string, amount: CurrencyAmount<Currency>, expired: boolean, penaltyAmount: BigNumber;
@@ -77,6 +78,8 @@ export default function Boostv3 () {
     const totalCompletedVesting = CurrencyAmount.fromRawAmount( token, withdrawableBalance?.penaltyAmount?.toString() || "0" )
     const rewards = useRewardsBalance();
     const pendingFarmsRewards = useFarmsReward();
+    const { claimLockerExtraRewards } = useFeeDistributor();
+    const lockerExtraRewards = useLockerExtraRewards();
 
     const [ activeTab, setActiveTab ] = useState( 0 );
 
@@ -202,10 +205,10 @@ export default function Boostv3 () {
         setPendingLock( false )
     }
 
-    const handleClaimRewards = async () => {
+    const handleClaimLockerExtraRewards = async () => {
 
         setPendingTx( true )
-        const success = await sendTx( () => ( harvestRewards() ) )
+        const success = await sendTx( () => ( claimLockerExtraRewards( `Claim Lock Extra Rewards ${lockerExtraRewards.toFixed( 4 )} ${token.symbol}` ) ) )
         if ( !success ) {
             setPendingTx( false )
             return
@@ -308,16 +311,16 @@ export default function Boostv3 () {
                     </RewardCards>
                     <RewardCards
                         title={ i18n._( t`Locker Extra Rewards` ) }
-                        value={ `${rewards?.total?.toFixed( 2 )} ${'EVMOS'}` }
+                        value={ `${lockerExtraRewards.toFixed( 2 )} ${'EVMOS'}` }
                     >
                         {
                             !account ? (
                                 <Web3Connect color="blue" className="truncate" />
-                            ) : rewards?.total?.lte( 0 ) ? (
+                            ) : lockerExtraRewards.greaterThan( ZERO ) ? (
                                 <Button color="red" className="truncate bg-red-600 text-white" disabled>
                                     { i18n._( t`No rewards` ) }
                                 </Button>
-                            ) : <Button onClick={ handleClaimRewards } disabled={ pendingTx } color="blue" className="disabled:bg-opacity-40 lg:truncate lg:hover:whitespace-normal bg-blue-600" variant="filled">
+                            ) : <Button onClick={ handleClaimLockerExtraRewards } disabled={ pendingTx } color="blue" className="disabled:bg-opacity-40 lg:truncate lg:hover:whitespace-normal bg-blue-600" variant="filled">
                                 { pendingTx ? <Dots>{ i18n._( t`Claiming` ) } </Dots> : i18n._( t`Claim Rewards` ) }
                             </Button>
                         }
