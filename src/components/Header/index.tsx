@@ -76,7 +76,7 @@ function AppBar(): JSX.Element {
                             className="p-2 text-baseline text-primary hover:text-high-emphesis focus:text-high-emphesis md:p-3 whitespace-nowrap"
                           >
                             {' '}
-                            {i18n._(t`Prisale`)}
+                            {i18n._(t`Private sale`)}
                           </a>
                         </Link>
                       )}
@@ -267,7 +267,7 @@ function AppBar(): JSX.Element {
                       className="p-2 text-baseline text-primary hover:text-high-emphesis focus:text-high-emphesis md:p-3 whitespace-nowrap"
                     >
                       {' '}
-                      {i18n._(t`Prisale`)}
+                      {i18n._(t`Private sale`)}
                     </a>
                   </Link>
                 )}

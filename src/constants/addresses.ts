@@ -36,7 +36,7 @@ export const PRIVATE_SALE_ADDRESS: AddressMap = {
   [ChainId.EVMOS]: '',
   [ChainId.EVMOS_TESTNET]: '0x1E57258B6F4Bd22D40BA8d7B4A257025Fa95C0eb',
 
-  [ChainId.BSC_TESTNET]: '0xD5bDcd9477ac5F8Bd79833f79F64AcAdA709117f',
+  [ChainId.BSC_TESTNET]: '0x0480722F85473c494D219A1f09Cd321eAd3bc5F7',
 }
 
 export const FAUCET_ADDRESS: AddressMap = {
@@ -57,16 +57,6 @@ export const EMOSVAULT_ADDRESS: AddressMap = {
 // Seed / Private / Public Sale
 export const SEED_SALE_ADDRESS: AddressMap = {
   [ChainId.EVMOS]: '0x94f3Dfc9E8AE00892984d8fA003BF09a46987DFd',
-  [ChainId.EVMOS_TESTNET]: '',
-}
-
-export const PRIVATE_SALEA_ADDRESS: AddressMap = {
-  [ChainId.EVMOS]: '0xD5bDcd9477ac5F8Bd79833f79F64AcAdA709117f',
-  [ChainId.EVMOS_TESTNET]: '',
-}
-
-export const PRIVATE_SALEB_ADDRESS: AddressMap = {
-  [ChainId.EVMOS]: '0x309afba23f791B5c38Ab9057D11D6869755fAcaf',
   [ChainId.EVMOS_TESTNET]: '',
 }
 

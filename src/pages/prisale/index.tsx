@@ -263,7 +263,7 @@ export default function Prisale() {
                 <></>
               ) : (
                 <Button
-                  color="green"
+                  color="blue"
                   size="sm"
                   className="h-12 opacity-90"
                   disabled={approvalState === ApprovalState.PENDING}
