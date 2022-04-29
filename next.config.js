@@ -90,6 +90,10 @@ const nextConfig = {
         source: '/prisale',
         destination: '/prisale',
       },
+      {
+        source: '/migrate',
+        destination: '/migrate',
+      },
     ]
   },
   i18n: {
