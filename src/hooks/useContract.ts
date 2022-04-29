@@ -70,9 +70,6 @@ import { useMemo } from 'react'
 import {
   DASHBOARD_ADDRESS,
   MASTERCHEF_ADDRESS,
-  PRIVATE_SALEA_ADDRESS,
-  PRIVATE_SALEB_ADDRESS,
-  PUBLIC_SALE_ADDRESS,
   SEED_SALE_ADDRESS,
   VOTING_ESCROW_ADDRESS,
   EMOSVAULT_ADDRESS,
@@ -80,8 +77,8 @@ import {
   VOTE_ADDRESS,
   ZAP_ADDRESS,
   FAUCET_ADDRESS,
-  PRIVATESALE_ADDRESS,
   PRIVATE_SALE_ADDRESS,
+  PUBLIC_SALE_ADDRESS,
 } from '../constants/addresses'
 
 const UNI_FACTORY_ADDRESS = '0x5C69bEe701ef814a2B6a3EDD4B1652CB9cc5aA6f'
@@ -232,16 +229,6 @@ export function useZenkoContract(withSignerIfPossible?: boolean): Contract | nul
 export function useSeedSaleContract(withSignerIfPossible?: boolean): Contract | null {
   const { chainId } = useActiveWeb3React()
   return useContract(SEED_SALE_ADDRESS[chainId], SEEDSALE_ABI, withSignerIfPossible)
-}
-
-export function usePrivateSaleAContract(withSignerIfPossible?: boolean): Contract | null {
-  const { chainId } = useActiveWeb3React()
-  return useContract(PRIVATE_SALEA_ADDRESS[chainId], PRIVATESALEA_ABI, withSignerIfPossible)
-}
-
-export function usePrivateSaleBContract(withSignerIfPossible?: boolean): Contract | null {
-  const { chainId } = useActiveWeb3React()
-  return useContract(PRIVATE_SALEB_ADDRESS[chainId], PRIVATESALEB_ABI, withSignerIfPossible)
 }
 
 export function usePublicSaleContract(withSignerIfPossible?: boolean): Contract | null {
