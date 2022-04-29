@@ -12,14 +12,8 @@ export function useFeeDistributor () {
     const claimLockerExtraRewards = useCallback(
         async ( summary: string ) => {
             try {
-                console.log( contract )
-                contract.on( 'Claimed', ( addr, toDistribute, userEpoch, maxUserEpoch ) => {
-                    console.log( { addr, toDistribute, userEpoch, maxUserEpoch } )
-                    console.log( "aramics" )
-                } )
+
                 const tx = await contract[ 'claim()' ]()
-                const rc = await tx.wait();
-                console.log( tx, rc )
                 return addTransaction( tx, { summary } )
             } catch ( e ) {
                 console.log( e.message )
@@ -29,21 +23,7 @@ export function useFeeDistributor () {
         [ addTransaction, contract, account ]
     )
 
-    const lockerExtraRewards = useCallback( async (): Promise<string> => {
-
-        let resp = "0"
-        if ( !contract?.callStatic ) return resp;
-        try {
-            const result = await contract.callStatic[ 'claim()' ]();
-            resp = String( result )
-        } catch ( e ) {
-            console.log( e.message )
-        }
-        return resp;
-    }, [ contract, account ] )
-
     return {
-        claimLockerExtraRewards,
-        lockerExtraRewards
+        claimLockerExtraRewards
     }
 }

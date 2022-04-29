@@ -13,8 +13,6 @@ import { useCallback, useEffect, useMemo, useState } from 'react'
 import BigNumber from 'bignumber.js'
 import { useFeeDistributorContract, useMultiFeeDistributionContract } from './useContract'
 import { FARMS } from 'app/constants/farms'
-import _ from 'lodash'
-import { useFeeDistributor } from './useFeeDistributor'
 
 export const EMOSPlaceholder = new Token( ChainId.ETHEREUM, '0x0000000000000000000000000000000000000001', 18, 'EMO' )
 const ZERO_BN = '0'.toBigNumber( EMOSPlaceholder.decimals )
@@ -116,7 +114,11 @@ export function useRewardsBalance () {
 }
 
 //Get all balance relating to staking
-export function useStakingBalance () {
+export function useStakingBalance (): {
+    earnedBalances: { earningsData?: any[], total?: any, indexes?: number[] } //vesting rewards
+    withdrawableBalance: { amount?: any, penaltyAmount?: any, amountWithoutPenalty?: any } //staked
+    totalBalance: any
+} {
     const { account } = useActiveWeb3React()
     const defaultResp = {
         earnedBalances: undefined, //vesting rewards
@@ -143,9 +145,13 @@ export function useStakingBalance () {
     if ( results && Array.isArray( results ) && results.length === callsData.length ) {
         const [ { result: earnedBalances }, { result: withdrawableBalance }, { result: totalBalance } ] = results
         return {
-            earnedBalances: { earningsData: earnedBalances?.earningsData, total: earnedBalances?.total },
-            withdrawableBalance: withdrawableBalance,
-            totalBalance: totalBalance?.[ 0 ],
+            earnedBalances: { earningsData: earnedBalances?.earningsData, total: earnedBalances?.total, indexes: earnedBalances?.index },
+            withdrawableBalance: {
+                amount: withdrawableBalance?.amount,
+                penaltyAmount: withdrawableBalance?.penaltyAmount,
+                amountWithoutPenalty: withdrawableBalance?.amountWithoutPenalty
+            },
+            totalBalance: totalBalance?.[ 0 ]
         }
     }
 
@@ -193,18 +199,18 @@ export const useFarmsReward = () => {
 
 //get locker reward balance
 export const useLockerExtraRewards = (): CurrencyAmount<Token | Currency> => {
-    const { chainId, account } = useActiveWeb3React()
-    const contract = useFeeDistributorContract();
-    const { lockerExtraRewards } = useFeeDistributor()
-    const [ rewards, setRewards ] = useState( "0" )
 
-    useEffect( () => {
-        const fetchRewards = async () => {
-            const resp = await lockerExtraRewards();
-            if ( resp )
-                setRewards( String( resp ) )
+    const contract = useFeeDistributorContract();
+
+    let rewards = "0";
+
+    try {
+        const resp = useSingleCallResult( contract, "claim()" )
+        if ( resp && Array.isArray( resp.result ) ) {
+            rewards = String( resp.result[ 0 ] );
         }
-        fetchRewards()
-    }, [ contract, account ] )
+    } catch ( error ) {
+        console.log( error )
+    }
     return CurrencyAmount.fromRawAmount( EMOSPlaceholder, rewards )
 }
