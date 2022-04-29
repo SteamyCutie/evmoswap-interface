@@ -71,6 +71,7 @@ export default function Boostv3 () {
     const [ pendingLock, setPendingLock ] = useState( false )
     const [ withdrawing, setWithdrawing ] = useState( false )
     const [ withdrawingMC, setWithdrawingMC ] = useState( false )
+    const [ harvesting, setHarvesting ] = useState( false )
 
     const { lockEnd, lockAmount, emosSupply, veEmosSupply } = useLockedBalance()
     const { earnedBalances, withdrawableBalance } = useStakingBalance();
@@ -245,6 +246,21 @@ export default function Boostv3 () {
         handleWithdraw( amount, undefined, false )
     }
 
+    const handleLockRewardHarvest = async () => {
+
+        setHarvesting( true )
+
+        const success = await sendTx( () => harvestRewards() )
+        console.log( success )
+        if ( !success ) {
+            setHarvesting( false )
+            return
+        }
+
+        handleInput( '' )
+        setHarvesting( false )
+    }
+
     const handleWithdrawWithMc = async () => {
 
         if ( !lockExpired ) return
@@ -316,7 +332,7 @@ export default function Boostv3 () {
                         {
                             !account ? (
                                 <Web3Connect color="blue" className="truncate" />
-                            ) : lockerExtraRewards.greaterThan( ZERO ) ? (
+                            ) : !lockerExtraRewards.greaterThan( ZERO ) ? (
                                 <Button color="red" className="truncate bg-red-600 text-white" disabled>
                                     { i18n._( t`No rewards` ) }
                                 </Button>
@@ -554,14 +570,25 @@ export default function Boostv3 () {
                                             </>
                                         }
                                         {
-                                            ( !!account ) && <Button
+                                            ( !!account && !!lockExpired ) && <Button
                                                 color="gradient"
                                                 className="mt-4 disabled:opacity-60"
                                                 onClick={ handleWithdrawWithMc }
-                                                disabled={ !lockExpired || withdrawingMC }
+                                                disabled={ !lockExpired || withdrawingMC || !lockAmount?.greaterThan( 0 ) }
                                                 size="lg"
                                             >
-                                                { withdrawingMC ? <Dots>{ i18n._( t`Harvesting` ) } </Dots> : <span>{ i18n._( t`Harvest Lock Rewards` ) } ({ rewards?.total?.toFixed( 2 ) })</span> }
+                                                { withdrawingMC ? <Dots>{ i18n._( t`Withdrawing` ) } </Dots> : <span>{ i18n._( t`Withdraw` ) } ({ lockAmount?.toFixed( 2 ) })</span> }
+                                            </Button>
+                                        }
+                                        {
+                                            ( !!account ) && <Button
+                                                color="gradient"
+                                                className="mt-4 disabled:opacity-60"
+                                                onClick={ handleLockRewardHarvest }
+                                                disabled={ harvesting || rewards?.total?.lte( 0 ) }
+                                                size="lg"
+                                            >
+                                                { harvesting ? <Dots>{ i18n._( t`Harvesting` ) } </Dots> : <span>{ i18n._( t`Harvest Lock Rewards` ) } ({ rewards?.total?.toFixed( 2 ) })</span> }
                                             </Button>
                                         }
                                     </div>
