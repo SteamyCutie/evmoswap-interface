@@ -45,14 +45,14 @@ const actionBtnColor = "blue";
 
 //stake lock period
 const LOCK_PERIODS = [
-    { multiplier: 1.2, week: WEEKS_PER_MONTH, day: 30, title: '1 month' },
-    { multiplier: 1.2, week: WEEKS_PER_MONTH * 3, day: 90, title: '3 months' },
-    { multiplier: 1.5, week: WEEKS_PER_MONTH * 6, day: 180, title: '6 months' },
-    { multiplier: 1.2, week: WEEKS_PER_MONTH * 9, day: 270, title: '9 months' },
-    { multiplier: 2.5, week: WEEKS_PER_MONTH * 12, day: 365, title: '1 year' },
-    { multiplier: 2.5, week: WEEKS_PER_MONTH * 12 * 2, day: 365 * 2, title: '2 year' },
-    { multiplier: 2.5, week: WEEKS_PER_MONTH * 12 * 3, day: 365 * 3, title: '3 year' },
-    { multiplier: 2.5, week: WEEKS_PER_MONTH * 12 * 4, day: 365 * 4, title: '4 years' },
+    { week: WEEKS_PER_MONTH, title: '1 month' },
+    { week: WEEKS_PER_MONTH * 3, title: '3 months' },
+    { week: WEEKS_PER_MONTH * 6, title: '6 months' },
+    { week: WEEKS_PER_MONTH * 9, title: '9 months' },
+    { week: WEEKS_PER_MONTH * 12, title: '1 year' },
+    { week: WEEKS_PER_MONTH * 12 * 2, title: '2 year' },
+    { week: WEEKS_PER_MONTH * 12 * 3, title: '3 year' },
+    { week: WEEKS_PER_MONTH * 12 * 4, title: '4 years' },
 ]
 
 export default function Boostv3 () {
@@ -508,10 +508,10 @@ export default function Boostv3 () {
                                                             <Button
                                                                 key={ index }
                                                                 variant={ "filled" }
-                                                                color={ ( lockPeriod.day === period.day || ( maxedLockedPeriod && period.week === MAX_WEEK ) ) && !week ? "blue" : "gray" }
+                                                                color={ ( lockPeriod.week === period.week || ( maxedLockedPeriod && period.week === MAX_WEEK ) ) && !week ? "blue" : "gray" }
                                                                 size={ "sm" }
                                                                 disabled={ maxedLockedPeriod }
-                                                                className={ classNames( "w-auto ml-2 mb-2", lockPeriod.day === period.day && !week ? '' : 'bg-dark-800 text-secondary capitalize' ) }
+                                                                className={ classNames( "w-auto ml-2 mb-2", lockPeriod.week === period.week && !week ? '' : 'bg-dark-800 text-secondary capitalize' ) }
                                                                 onClick={ () => handleLockPeriod( period ) }
                                                             >
                                                                 { period.title }
