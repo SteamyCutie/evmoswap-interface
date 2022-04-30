@@ -539,7 +539,7 @@ export default function Boostv3 () {
                                                     !lockAmount.greaterThan( ZERO ) ? (
                                                         insufficientFunds ? (
                                                             <Button color="red" className="truncate w-full" size='lg' disabled>
-                                                                { i18n._( t`Insufficient Balance` ) }
+                                                                { i18n._( t`Insufficient balance` ) }
                                                             </Button>
                                                         ) : (
                                                             ( requireApproval || approvalState === ApprovalState.PENDING ) ?
@@ -553,11 +553,11 @@ export default function Boostv3 () {
                                                     ) : (
                                                         <React.Fragment>
                                                             { activeTab === 0 && <Button size='lg' onClick={ handleIncreaseAmount } disabled={ amountBtnDisabled } color={ amountBtnDisabled ? "red" : actionBtnColor } className="bg-blue truncate disabled:bg-dark-800 disabled:bg-opacity-100 w-full" variant="filled">
-                                                                { pendingLock ? <Dots>{ i18n._( t`Increasing amount` ) } </Dots> : i18n._( t`${!input ? 'Enter amount' : ( insufficientFunds ? 'Insufficient Balance' : 'Increase Amount' )}` ) }
+                                                                { pendingLock ? <Dots>{ i18n._( t`Increasing amount` ) } </Dots> : i18n._( t`${!input ? 'Enter amount' : ( insufficientFunds ? 'Insufficient balance' : 'Increase amount' )}` ) }
                                                             </Button> }
 
                                                             { activeTab === 1 && <Button size='lg' onClick={ handleIncreaseLock } disabled={ lockTimeBtnDisabled } color={ lockTimeBtnDisabled ? "blue" : actionBtnColor } className="bg-blue-600 truncate disabled:bg-dark-800 disabled:bg-opacity-100 w-full" variant="filled">
-                                                                { pendingLock ? <Dots>{ i18n._( t`Increasing lock period` ) } </Dots> : i18n._( t`${!week && !lockPeriod ? 'Select period' : ( lockTimeBtnDisabled ? 'Selet Higher period !' : 'Increase Lock Period' )}` ) }
+                                                                { pendingLock ? <Dots>{ i18n._( t`Increasing lock period` ) } </Dots> : i18n._( t`${!week && !lockPeriod ? 'Select period' : ( lockTimeBtnDisabled ? 'Select a higher period !' : 'Increase lock period' )}` ) }
                                                             </Button> }
                                                         </React.Fragment>
                                                     )
@@ -583,7 +583,7 @@ export default function Boostv3 () {
                                                 disabled={ harvesting || rewards?.total?.lte( 0 ) }
                                                 size="lg"
                                             >
-                                                { harvesting ? <Dots>{ i18n._( t`Harvesting` ) } </Dots> : <span>{ i18n._( t`Harvest Lock Rewards` ) } ({ rewards?.total?.toFixed( 2 ) })</span> }
+                                                { harvesting ? <Dots>{ i18n._( t`Harvesting` ) } </Dots> : <span>{ i18n._( t`Harvest lock rewards` ) } ({ rewards?.total?.toFixed( 2 ) })</span> }
                                             </Button>
                                         }
                                     </div>
