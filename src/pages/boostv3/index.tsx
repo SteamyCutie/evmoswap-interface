@@ -74,6 +74,7 @@ export default function Boostv3 () {
     const { lockEnd, lockAmount, emosSupply, veEmosSupply } = useLockedBalance()
     const { earnedBalances, withdrawableBalance } = useStakingBalance();
     const totalActiveVesting = CurrencyAmount.fromRawAmount( token, earnedBalances?.total?.toString() || "0" )
+    const totalActiveVestingPenalty = totalActiveVesting?.divide( 2 )?.toExact()?.toBigNumber( token.decimals );
     const totalCompletedVesting = CurrencyAmount.fromRawAmount( token, withdrawableBalance?.amountWithoutPenalty?.toString() || "0" )
     const rewards = useRewardsBalance();
     const pendingFarmsRewards = useFarmsReward();
@@ -111,13 +112,17 @@ export default function Boostv3 () {
 
         if ( earnedBalances && earnedBalances?.earningsData?.length )
             earnedBalances.earningsData.map( ( earning: { unlockTime: number; amount: number } ) => {
-                const amount = CurrencyAmount.fromRawAmount( balance?.currency, earning?.amount?.toString() || "0" )
-                rows.push( {
-                    unlockTime: timestampToDate( earning?.unlockTime?.toString() ),
-                    amount: amount,
-                    expired: isFuture( getUnixTime( earning?.unlockTime ) ),
-                    penaltyAmount: amount.divide( 2 ).toExact().toBigNumber( 18 )
-                } )
+                const amount = CurrencyAmount.fromRawAmount( balance?.currency, earning?.amount?.toString() || "0" );
+                const penaltyAmount = amount.divide( 2 ).toExact().toBigNumber( token.decimals );
+                const expired = isFuture( getUnixTime( earning?.unlockTime ) );
+
+                if ( ( amount.greaterThan( 0 ) && expired ) || penaltyAmount.gt( 0 ) )
+                    rows.push( {
+                        unlockTime: timestampToDate( earning?.unlockTime?.toString() ),
+                        amount: amount,
+                        expired: expired,
+                        penaltyAmount: penaltyAmount
+                    } )
             } )
         return rows;
     }, [ earnedBalances, balance?.currency ] )
@@ -294,8 +299,8 @@ export default function Boostv3 () {
                             {
                                 !account ? (
                                     <Web3Connect color="blue" className="truncate" />
-                                ) : !totalActiveVesting?.greaterThan( 0 ) ? (
-                                    <Button color="red" className="truncate bg-red-600 text-white" disabled>
+                                ) : totalActiveVestingPenalty.lte( 0 ) ? (
+                                    <Button color="red" className="truncate bg-red-600 text-white disabled:bg-opacity-60" disabled>
                                         { i18n._( t`No rewards` ) }
                                     </Button>
                                 ) : <Button onClick={ () => handleWithdrawVesting( totalActiveVesting, -1, true ) } disabled={ withdrawing } color="red" className="disabled:bg-opacity-40 lg:truncate lg:hover:whitespace-normal bg-red-600" variant="filled">
