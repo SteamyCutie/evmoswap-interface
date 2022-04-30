@@ -13,7 +13,7 @@
       },
       {
         "internalType": "uint256",
-        "name": "_devPercent",
+        "name": "_daoPercent",
         "type": "uint256"
       },
       {
@@ -28,17 +28,22 @@
       },
       {
         "internalType": "address",
-        "name": "_devaddr",
+        "name": "_daoAddr",
         "type": "address"
       },
       {
         "internalType": "address",
-        "name": "_safuaddr",
+        "name": "_safuAddr",
         "type": "address"
       },
       {
         "internalType": "address",
         "name": "_refAddr",
+        "type": "address"
+      },
+      {
+        "internalType": "address",
+        "name": "_feeAddr",
         "type": "address"
       },
       {
@@ -261,6 +266,11 @@
         "type": "address"
       },
       {
+        "internalType": "uint256",
+        "name": "_depositFeePercent",
+        "type": "uint256"
+      },
+      {
         "internalType": "contract IOnwardIncentivesController",
         "name": "_incentivesController",
         "type": "address"
@@ -279,6 +289,32 @@
     "name": "add",
     "outputs": [],
     "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "daoAddr",
+    "outputs": [
+      {
+        "internalType": "address",
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "daoPercent",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
     "type": "function"
   },
   {
@@ -320,32 +356,6 @@
     "name": "depositFor",
     "outputs": [],
     "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [],
-    "name": "devPercent",
-    "outputs": [
-      {
-        "internalType": "uint256",
-        "name": "",
-        "type": "uint256"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [],
-    "name": "devaddr",
-    "outputs": [
-      {
-        "internalType": "address",
-        "name": "",
-        "type": "address"
-      }
-    ],
-    "stateMutability": "view",
     "type": "function"
   },
   {
@@ -401,6 +411,19 @@
     "type": "function"
   },
   {
+    "inputs": [],
+    "name": "feeAddr",
+    "outputs": [
+      {
+        "internalType": "address",
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
     "inputs": [
       {
         "internalType": "uint256",
@@ -439,7 +462,7 @@
   },
   {
     "inputs": [],
-    "name": "lastTimeDevWithdraw",
+    "name": "lastTimeDaoWithdraw",
     "outputs": [
       {
         "internalType": "uint256",
@@ -585,6 +608,11 @@
         "type": "uint256"
       },
       {
+        "internalType": "uint256",
+        "name": "depositFeePercent",
+        "type": "uint256"
+      },
+      {
         "internalType": "contract IOnwardIncentivesController",
         "name": "incentivesController",
         "type": "address"
@@ -654,12 +682,12 @@
   },
   {
     "inputs": [],
-    "name": "safuPercent",
+    "name": "safuAddr",
     "outputs": [
       {
-        "internalType": "uint256",
+        "internalType": "address",
         "name": "",
-        "type": "uint256"
+        "type": "address"
       }
     ],
     "stateMutability": "view",
@@ -667,12 +695,12 @@
   },
   {
     "inputs": [],
-    "name": "safuaddr",
+    "name": "safuPercent",
     "outputs": [
       {
-        "internalType": "address",
+        "internalType": "uint256",
         "name": "",
-        "type": "address"
+        "type": "uint256"
       }
     ],
     "stateMutability": "view",
@@ -688,6 +716,11 @@
       {
         "internalType": "uint256",
         "name": "_allocPoint",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "_depositFeePercent",
         "type": "uint256"
       },
       {
@@ -710,11 +743,11 @@
     "inputs": [
       {
         "internalType": "address",
-        "name": "_devaddr",
+        "name": "_daoAddr",
         "type": "address"
       }
     ],
-    "name": "setDevAddress",
+    "name": "setDaoAddress",
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"
@@ -728,6 +761,19 @@
       }
     ],
     "name": "setEmoPerSecond",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "_feeAddr",
+        "type": "address"
+      }
+    ],
+    "name": "setFeeAddress",
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"
@@ -754,7 +800,7 @@
     "inputs": [
       {
         "internalType": "address",
-        "name": "_refaddr",
+        "name": "_refAddr",
         "type": "address"
       }
     ],
@@ -767,7 +813,7 @@
     "inputs": [
       {
         "internalType": "address",
-        "name": "_safuaddr",
+        "name": "_safuAddr",
         "type": "address"
       }
     ],
