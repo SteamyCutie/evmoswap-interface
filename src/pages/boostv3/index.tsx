@@ -33,7 +33,8 @@ type VestingRow = {
 }
 
 const INPUT_CHAR_LIMIT = 18
-const MAX_WEEK = 52 * 4
+const WEEKS_PER_MONTH = 4.34524;
+const MAX_WEEK = WEEKS_PER_MONTH * 12 * 4;
 const DAYS_IN_WEEK = 7
 const SECS_IN_WEEK = DAYS_IN_WEEK * 86400
 
@@ -44,14 +45,14 @@ const actionBtnColor = "blue";
 
 //stake lock period
 const LOCK_PERIODS = [
-    { multiplier: 1.2, week: 4, day: 30, title: '1 month', hint: 'Locked 1 month and enjoy {multiplier} rewards.' },
-    { multiplier: 1.2, week: 13, day: 90, title: '3 months', hint: 'Locked 3 months and enjoy {multiplier} rewards.' },
-    { multiplier: 1.5, week: 26, day: 180, title: '6 months', hint: 'Locked 6 months and enjoy {multiplier} rewards.' },
-    { multiplier: 1.2, week: 39, day: 270, title: '9 months', hint: 'Locked 9 months and enjoy {multiplier} rewards.' },
-    { multiplier: 2.5, week: 52, day: 360, title: '1 year', hint: 'Locked 2 years and enjoy {multiplier} rewards.' },
-    { multiplier: 2.5, week: 52 * 2, day: 360 * 2, title: '2 year', hint: 'Locked 2 years and enjoy {multiplier} rewards.' },
-    { multiplier: 2.5, week: 52 * 3, day: 360 * 3, title: '3 year', hint: 'Locked 3 years and enjoy {multiplier} rewards.' },
-    { multiplier: 2.5, week: 52 * 4, day: 360 * 4, title: '4 years', hint: 'Locked 4 years and enjoy {multiplier} rewards.' },
+    { multiplier: 1.2, week: WEEKS_PER_MONTH, day: 30, title: '1 month' },
+    { multiplier: 1.2, week: WEEKS_PER_MONTH * 3, day: 90, title: '3 months' },
+    { multiplier: 1.5, week: WEEKS_PER_MONTH * 6, day: 180, title: '6 months' },
+    { multiplier: 1.2, week: WEEKS_PER_MONTH * 9, day: 270, title: '9 months' },
+    { multiplier: 2.5, week: WEEKS_PER_MONTH * 12, day: 365, title: '1 year' },
+    { multiplier: 2.5, week: WEEKS_PER_MONTH * 12 * 2, day: 365 * 2, title: '2 year' },
+    { multiplier: 2.5, week: WEEKS_PER_MONTH * 12 * 3, day: 365 * 3, title: '3 year' },
+    { multiplier: 2.5, week: WEEKS_PER_MONTH * 12 * 4, day: 365 * 4, title: '4 years' },
 ]
 
 export default function Boostv3 () {
@@ -101,7 +102,9 @@ export default function Boostv3 () {
     const [ lockPeriod, setLockPeriod ] = useState( LOCK_PERIODS[ 0 ] );
     const lockDays = Number( week ? week : lockPeriod.week ) * 7
     const newLockTime = Math.floor( getUnixTime( addDays( Date.now(), lockDays ) ) / SECS_IN_WEEK ) * SECS_IN_WEEK;
-    const lockTimeBtnDisabled = pendingLock || newLockTime <= lockEnd;
+    const maxedLockedPeriod = ( Number( week ) === MAX_WEEK || lockPeriod.week === MAX_WEEK ) && newLockTime === lockEnd;
+
+    const lockTimeBtnDisabled = pendingLock || newLockTime <= lockEnd || maxedLockedPeriod;
     const lockExpired = lockEnd && getUnixTime( Date.now() ) >= lockEnd;
     const amountBtnDisabled = pendingLock || !input || insufficientFunds || waitingApproval;
     const lockBtnDisabled = pendingLock || !input || waitingApproval;
@@ -145,7 +148,7 @@ export default function Boostv3 () {
             return;
         }
 
-        if ( vN > 0 && vN < MAX_WEEK )
+        if ( vN > 0 && vN <= MAX_WEEK )
             setWeek( String( vN ) )
     }
 
@@ -505,8 +508,9 @@ export default function Boostv3 () {
                                                             <Button
                                                                 key={ index }
                                                                 variant={ "filled" }
-                                                                color={ lockPeriod.day === period.day && !week ? "blue" : "gray" }
+                                                                color={ ( lockPeriod.day === period.day || ( maxedLockedPeriod && period.week === MAX_WEEK ) ) && !week ? "blue" : "gray" }
                                                                 size={ "sm" }
+                                                                disabled={ maxedLockedPeriod }
                                                                 className={ classNames( "w-auto ml-2 mb-2", lockPeriod.day === period.day && !week ? '' : 'bg-dark-800 text-secondary capitalize' ) }
                                                                 onClick={ () => handleLockPeriod( period ) }
                                                             >
@@ -523,9 +527,11 @@ export default function Boostv3 () {
                                                             week ? 'bg-blue text-white bg-opacity-50' : 'bg-dark-800 text-secondary'
                                                         ) }
                                                         placeholder={ i18n._( t`Custom week` ) }
+                                                        title={ i18n._( t`Custom lock period in weeks` ) }
                                                         max={ MAX_WEEK }
                                                         min={ 1 }
                                                         step={ 1 }
+                                                        readOnly={ maxedLockedPeriod }
                                                     />
                                                 </div>
                                             </div>
@@ -562,7 +568,7 @@ export default function Boostv3 () {
                                                             </Button> }
 
                                                             { activeTab === 1 && <Button size='lg' onClick={ handleIncreaseLock } disabled={ lockTimeBtnDisabled } color={ lockTimeBtnDisabled ? "blue" : actionBtnColor } className="bg-blue-600 truncate disabled:bg-dark-800 disabled:bg-opacity-100 w-full" variant="filled">
-                                                                { pendingLock ? <Dots>{ i18n._( t`Increasing lock period` ) } </Dots> : i18n._( t`${!week && !lockPeriod ? 'Select period' : ( lockTimeBtnDisabled ? 'Select a higher period !' : 'Increase lock period' )}` ) }
+                                                                { pendingLock ? <Dots>{ i18n._( t`Increasing lock period` ) } </Dots> : i18n._( t`${!week && !lockPeriod ? 'Select period' : ( maxedLockedPeriod ? 'Locked on max period' : ( newLockTime <= lockEnd ? 'Select a higher period !' : 'Increase lock period' ) )}` ) }
                                                             </Button> }
                                                         </React.Fragment>
                                                     )
