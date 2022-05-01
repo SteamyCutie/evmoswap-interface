@@ -2,11 +2,10 @@ import { BigNumber } from '@ethersproject/bignumber'
 import { CurrencyAmount, Token, Currency } from '@evmoswap/core-sdk'
 import { i18n } from '@lingui/core'
 import { t } from '@lingui/macro'
-import { useRewardPoolContract } from 'app/hooks'
+import { useMultiFeeDistributionContract, useRewardPoolContract } from 'app/hooks'
 import { useActiveWeb3React } from 'app/services/web3'
 import { TransactionResponseLight, useTransactionAdder } from 'app/state/transactions/hooks'
 import { useCallback } from 'react'
-import { useMultiFeeDistributionContract } from './useContract'
 
 export function useRewardPool () {
     const { account, chainId } = useActiveWeb3React()

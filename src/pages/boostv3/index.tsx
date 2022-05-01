@@ -15,18 +15,18 @@ import { classNames, formatBalance, formatNumberScale, formatPercent, tryParseAm
 import { Currency, CurrencyAmount, Token, ZERO } from '@evmoswap/core-sdk'
 import { RowBetween } from 'app/components/Row'
 import { GetAPY } from 'app/features/staking/useStaking'
-import { EMOSPlaceholder, useFarmsReward, useLockedBalance, useLockerExtraRewards, useRewardsBalance, useStakingBalance } from 'app/features/boostv3/hooks/balances'
-import { useRewardPool } from 'app/features/boostv3/hooks/useRewardPool'
+import { EMOSPlaceholder, useFarmsReward, useLockedBalance, useLockerExtraRewards, useRewardsBalance, useStakingBalance } from 'app/features/boost/hooks/balances'
+import { useRewardPool } from 'app/features/boost/hooks/useRewardPool'
 import Dots from 'app/components/Dots'
-import { timestampToDate } from 'app/features/boostv3/functions/app'
+import { timestampToDate } from 'app/features/boost/functions/app'
 import { VOTING_ESCROW_ADDRESS } from 'app/constants/addresses'
 import { ApprovalState, useApproveCallback } from 'app/hooks'
-import useVotingEscrow from 'app/features/boost/useVotingEscrow'
+import useVotingEscrow from 'app/features/boost/hooks/useVotingEscrow'
 import { addDays, getUnixTime, format, isFuture } from 'date-fns'
 import { InformationCircleIcon } from '@heroicons/react/outline'
-import DoubleCheckIcon from 'app/features/boostv3/assets/images/Done_all_round_light.svg';
+import DoubleCheckIcon from 'app/features/boost/assets/images/Done_all_round_light.svg';
 import { BigNumber } from '@ethersproject/bignumber'
-import { useFeeDistributor } from 'app/features/boostv3/hooks/useFeeDistributor'
+import { useFeeDistributor } from 'app/features/boost/hooks/useFeeDistributor'
 
 type VestingRow = {
     unlockTime: string, amount: CurrencyAmount<Currency>, expired: boolean, penaltyAmount: BigNumber;

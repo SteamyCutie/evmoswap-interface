@@ -1,7 +1,7 @@
+import { useFeeDistributorContract } from 'app/hooks'
 import { useActiveWeb3React } from 'app/services/web3'
 import { useTransactionAdder } from 'app/state/transactions/hooks'
 import { useCallback } from 'react'
-import { useFeeDistributorContract } from './useContract'
 
 export function useFeeDistributor () {
     const { account } = useActiveWeb3React()

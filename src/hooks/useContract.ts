@@ -48,8 +48,8 @@ import UNI_FACTORY_ABI from '../constants/abis/uniswap-v2-factory.json'
 import WETH9_ABI from '../constants/abis/weth.json'
 import ZENKO_ABI from '../constants/abis/zenko.json'
 import SEEDSALE_ABI from '../constants/abis/seedSale.json'
-import PRIVATESALEA_ABI from '../constants/abis/privateSaleA.json'
-import PRIVATESALEB_ABI from '../constants/abis/privateSaleB.json'
+import FEE_DISTRIBUTOR_ABI from '../constants/abis/FeeDistributor.json'
+import MULTI_FEE_DISTRIBUTION_ABI from '../constants/abis/MultiFeeDistribution.json'
 import PUBLICSALE_ABI from '../constants/abis/publicSale.json'
 import DASHBOARD_ABI from '../constants/abis/dashboard.json'
 import REWARD_POOL_ABI from '../constants/abis/rewardpool.json'
@@ -79,6 +79,8 @@ import {
   FAUCET_ADDRESS,
   PRIVATE_SALE_ADDRESS,
   PUBLIC_SALE_ADDRESS,
+  MULTI_FEE_DISTRIBUTION_ADDRESSES,
+  FEE_DISTRIBUTOR_ADDRESSES,
 } from '../constants/addresses'
 
 const UNI_FACTORY_ADDRESS = '0x5C69bEe701ef814a2B6a3EDD4B1652CB9cc5aA6f'
@@ -241,16 +243,6 @@ export function useDashboardContract(withSignerIfPossible?: boolean): Contract |
   return useContract(DASHBOARD_ADDRESS[chainId], DASHBOARD_ABI, withSignerIfPossible)
 }
 
-export function useRewardPoolContract(withSignerIfPossible?: boolean): Contract | null {
-  const { chainId } = useActiveWeb3React()
-  return useContract(REWARD_POOL_ADDRESS[chainId], REWARD_POOL_ABI, withSignerIfPossible)
-}
-
-export function useVotingEscrowContract(withSignerIfPossible?: boolean): Contract | null {
-  const { chainId } = useActiveWeb3React()
-  return useContract(VOTING_ESCROW_ADDRESS[chainId], VOTING_ESCROW_ABI, withSignerIfPossible)
-}
-
 // This is a specifically function for balanceOf(address, timestamp) etc
 export function useVotingEscrowAtContract(withSignerIfPossible?: boolean): Contract | null {
   const { chainId } = useActiveWeb3React()
@@ -292,4 +284,25 @@ export function useFaucetContract(withSignerIfPossible?: boolean): Contract | nu
 export function usePrivateSaleContract(withSignerIfPossible?: boolean): Contract | null {
   const { chainId } = useActiveWeb3React()
   return useContract(PRIVATE_SALE_ADDRESS[chainId], PRIATESALE_ABI, withSignerIfPossible)
+}
+
+
+export function useFeeDistributorContract(withSignerIfPossible?: boolean): Contract | null {
+  const { chainId } = useActiveWeb3React()
+  return useContract(FEE_DISTRIBUTOR_ADDRESSES[chainId], FEE_DISTRIBUTOR_ABI, withSignerIfPossible)
+}
+
+export function useMultiFeeDistributionContract(withSignerIfPossible?: boolean): Contract | null {
+  const { chainId } = useActiveWeb3React()
+  return useContract(MULTI_FEE_DISTRIBUTION_ADDRESSES[chainId], MULTI_FEE_DISTRIBUTION_ABI, withSignerIfPossible)
+}
+
+export function useRewardPoolContract(withSignerIfPossible?: boolean): Contract | null {
+  const { chainId } = useActiveWeb3React()
+  return useContract(REWARD_POOL_ADDRESS[chainId], REWARD_POOL_ABI, withSignerIfPossible)
+}
+
+export function useVotingEscrowContract(withSignerIfPossible?: boolean): Contract | null {
+  const { chainId } = useActiveWeb3React()
+  return useContract(VOTING_ESCROW_ADDRESS[chainId], VOTING_ESCROW_ABI, withSignerIfPossible)
 }

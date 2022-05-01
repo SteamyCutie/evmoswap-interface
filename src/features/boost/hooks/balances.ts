@@ -1,7 +1,7 @@
 import { Interface } from '@ethersproject/abi'
 import { CurrencyAmount, Currency, Token, ChainId } from '@evmoswap/core-sdk'
 import { ERC20_ABI } from 'app/constants/abis/erc20'
-import { useMasterChefContract, useRewardPoolContract, useVotingEscrowContract } from 'app/hooks'
+import { useFeeDistributorContract, useMasterChefContract, useMultiFeeDistributionContract, useRewardPoolContract, useVotingEscrowContract } from 'app/hooks'
 import { useActiveWeb3React } from 'app/services/web3'
 import {
     useMultipleContractSingleData,
@@ -11,7 +11,6 @@ import {
 } from 'app/state/multicall/hooks'
 import { useCallback, useEffect, useMemo, useState } from 'react'
 import BigNumber from 'bignumber.js'
-import { useFeeDistributorContract, useMultiFeeDistributionContract } from './useContract'
 import { FARMS } from 'app/constants/farms'
 
 export const EMOSPlaceholder = new Token( ChainId.ETHEREUM, '0x0000000000000000000000000000000000000001', 18, 'EMO' )
