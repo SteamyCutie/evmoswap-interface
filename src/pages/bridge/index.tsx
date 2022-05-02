@@ -18,11 +18,17 @@ const BRIDGE_DATA = [
     active: true,
   },
   {
+    name: 'Celer Bridge',
+    description: 'cBridge introduces the best-in-class cross-chain token bridging experience with deep liquidity for users.',
+    link: 'https://cbridge.celer.network/#/transfer',
+    active: true,
+  },
+  {
     name: 'Multichain',
     description:
       'Multichain is the ultimate Router for web3. It is an infrastructure developed for arbitrary cross-chain interactions.',
-    link: '',
-    active: false,
+    link: 'https://app.multichain.org/#/router',
+    active: true,
   },
 ]
 

@@ -87,8 +87,8 @@ const nextConfig = {
         destination: '/exchange/find',
       },
       {
-        source: '/prisale',
-        destination: '/prisale',
+        source: '/privatesale',
+        destination: '/privatesale',
       },
       {
         source: '/migrate',

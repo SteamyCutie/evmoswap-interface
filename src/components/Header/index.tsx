@@ -70,7 +70,7 @@ function AppBar(): JSX.Element {
                         </NavLink>
                       )}
                       {chainId && featureEnabled(Feature.PRISALE, chainId) && (
-                        <Link href={'/prisale'}>
+                        <Link href={'/privatesale'}>
                           <a
                             id={`prisale-nav-link`}
                             className="p-2 text-baseline text-primary hover:text-high-emphesis focus:text-high-emphesis md:p-3 whitespace-nowrap"
@@ -261,7 +261,7 @@ function AppBar(): JSX.Element {
                 )}
 
                 {chainId && featureEnabled(Feature.PRISALE, chainId) && (
-                  <Link href={'/prisale'}>
+                  <Link href={'/privatesale'}>
                     <a
                       id={`prisale-nav-link`}
                       className="p-2 text-baseline text-primary hover:text-high-emphesis focus:text-high-emphesis md:p-3 whitespace-nowrap"
