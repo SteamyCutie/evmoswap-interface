@@ -12,11 +12,10 @@ const BRIDGE_DATA = [
     active: true,
   },
   {
-    name: 'Celer Bridge',
-    description:
-      'cBridge introduces the best-in-class cross-chain token bridging experience with deep liquidity for users.',
-    link: 'https://cbridge.celer.network/',
-    active: false,
+    name: 'Connext',
+    description: 'Connext powers fast, secure bridging between blockchains and rollups for composable, trust minimized value.',
+    link: 'https://bridge.connext.network/from-ethereum-to-evmos',
+    active: true,
   },
   {
     name: 'Multichain',
@@ -34,7 +33,7 @@ export default function Bridge() {
         <title key="title">Bridge | EvmoSwap</title>
         <meta key="description" name="description" content="Bridge EvmoSwap" />
       </Head>
-      <div className="w-full m-auto mt-8 space-y-8">
+      <div className="w-full m-auto mt-8 ">
         <div className="w-full">
           <div className="text-3xl text-center font-extrabold scale-125">Bridge your assets</div>
         </div>

@@ -17,6 +17,10 @@ const Footer = () => {
       { name: `${i18n._(t`Tokenomics`)}`, href: 'https://docs.evmoswap.org/tokenomics/token-and-supply' },
     ],
 
+    partner: [
+      { name: `${i18n._(t`Defi Llama`)}`, href: 'https://defillama.com/protocol/evmoswap' },
+    ],
+
     developers: [
       { name: `${i18n._(t`Github`)}`, href: 'https://github.com/evmoswap' },
       { name: `${i18n._(t`Documentation`)}`, href: 'https://docs.evmoswap.org/' },
@@ -120,9 +124,9 @@ const Footer = () => {
           <div className="grid grid-cols-2 gap-8 mt-12 xl:mt-0 xl:col-span-2">
             <div className="md:grid md:grid-cols-2 md:gap-8">
               <div>
-                <h3 className="text-sm font-semibold tracking-wider text-gray-400 uppercase">{i18n._(t`About Us`)}</h3>
+                <h3 className="text-sm font-semibold tracking-wider text-gray-400 uppercase">{i18n._(t`Partners`)}</h3>
                 <ul role="list" className="mt-4 space-y-1">
-                  {navigation.support.map((item) => (
+                  {navigation.partner.map((item) => (
                     <li key={item.name}>
                       <a
                         href={item.href}
