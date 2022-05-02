@@ -43,17 +43,17 @@
       },
       {
         "internalType": "uint256",
-        "name": "_priSaleTokenPool",
+        "name": "_privateSaleTokenPool",
         "type": "uint256"
       },
       {
         "internalType": "uint256",
-        "name": "_priSaleStart",
+        "name": "_privateSaleStart",
         "type": "uint256"
       },
       {
         "internalType": "uint256",
-        "name": "_priSaleEnd",
+        "name": "_privateSaleEnd",
         "type": "uint256"
       },
       {
@@ -547,51 +547,51 @@
   },
   {
     "inputs": [],
-    "name": "priSaleEnd",
-    "outputs": [
-      {
-        "internalType": "uint256",
-        "name": "",
-        "type": "uint256"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [],
-    "name": "priSaleStart",
-    "outputs": [
-      {
-        "internalType": "uint256",
-        "name": "",
-        "type": "uint256"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [],
-    "name": "priSaleTokenPool",
-    "outputs": [
-      {
-        "internalType": "uint256",
-        "name": "",
-        "type": "uint256"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [],
     "name": "priceFeed",
     "outputs": [
       {
         "internalType": "contract AggregatorV3Interface",
         "name": "",
         "type": "address"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "privateSaleEnd",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "privateSaleStart",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "privateSaleTokenPool",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
       }
     ],
     "stateMutability": "view",
@@ -643,7 +643,7 @@
   },
   {
     "inputs": [],
-    "name": "purchasedPriSale",
+    "name": "purchasedPrivateSale",
     "outputs": [
       {
         "internalType": "uint256",
