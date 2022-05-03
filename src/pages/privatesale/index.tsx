@@ -15,7 +15,7 @@ import { useActiveWeb3React } from 'services/web3'
 // import { ApplicationModal } from 'state/application/actions'
 // import { getBalanceNumber } from 'functions/formatBalance'
 import { usePrivateSaleContract } from 'hooks/useContract'
-// import { usePurchased, useClaimable, useClaimed } from 'hooks/useVestingInfo'
+import { GetEMOPrice } from 'app/features/staking/useStaking'
 import { useTransactionAdder } from '../../state/transactions/hooks'
 import { CheckIcon } from '@heroicons/react/solid'
 import ProgressBar from 'app/components/ProgressBar'
@@ -44,7 +44,7 @@ export default function Prisale() {
   const usdcBalance = Number(useTokenBalance(account ?? undefined, USDC[chainId])?.toSignificant(8))
   const usdcBalanceBignumber = useTokenBalance(account ?? undefined, USDC[chainId])
   const tokenBalance = Number(useTokenBalance(account ?? undefined, prisaleToken[chainId])?.toSignificant(8))
-
+  const emoPrice = GetEMOPrice()
   const prisaleContract = usePrivateSaleContract()
 
   const parsedStakeAmount = tryParseAmount(
@@ -61,19 +61,20 @@ export default function Prisale() {
   const privateSaleStart = useRef(0)
   const privateSaleEnd = useRef(0)
   const basePrice = useRef(0)
+  const tokenPrice = useRef(0)
   const vestingStart = useRef(0)
   const total_purchased = useRef([0,0])
   const getData = async () => {
     if (!account) return
-    const tokenPrice = await prisaleContract.tokenPrice()
+    tokenPrice.current = await prisaleContract.tokenPrice()
     basePrice.current = await prisaleContract.basePrice()
     minTokensAmount.current = [
-      ((Number(await prisaleContract.minTokensAmount()) / 1e18) * Number(tokenPrice)) / Number(basePrice.current),
-      ((Number(await prisaleContract.minTokensAmount()) / 1e18) * tokenPrice) / 10 ** 6,
+      ((Number(await prisaleContract.minTokensAmount()) / 1e18) * Number(tokenPrice.current)) / Number(basePrice.current),
+      ((Number(await prisaleContract.minTokensAmount()) / 1e18) * tokenPrice.current) / 10 ** 6,
     ]
     maxTokensAmount.current = [
       ((Number(await prisaleContract.maxTokensAmount()) / 1e18) * Number(tokenPrice)) / Number(basePrice.current),
-      ((Number(await prisaleContract.maxTokensAmount()) / 1e18) * tokenPrice) / 10 ** 6,
+      ((Number(await prisaleContract.maxTokensAmount()) / 1e18) * tokenPrice.current) / 10 ** 6,
     ]
     privateSaleStart.current = Number(await prisaleContract.privateSaleStart())
     privateSaleEnd.current = Number(await prisaleContract.privateSaleEnd())
@@ -93,7 +94,7 @@ export default function Prisale() {
   )
   const [pendingTx, setPendingTx] = useState(false)
   const lowerLimitError = Number(investValue) < (toggle ? minTokensAmount.current[0] : minTokensAmount.current[1])
-  const upperLimitError = Number(investValue) + purchasedToken.current > (toggle ? maxTokensAmount.current[0] : maxTokensAmount.current[1])
+  const upperLimitError = Number(investValue) + purchasedToken.current / 1e18 * (tokenPrice.current / 1e6) > (toggle ? maxTokensAmount.current[0] : maxTokensAmount.current[1])
   const [showLimitTips, setshowLimitTips] = useState(false)
   const handleBuyTokenWithUSDC = async () => {
     setPendingTx(true)
@@ -307,7 +308,7 @@ export default function Prisale() {
           <div className="px-5 py-9 border-[1px] border-gray-700 rounded-xl space-y-6 md:w-1/2">
             <div className="rounded-lg border-[1px] border-gray-700 space-y-1 py-2 px-4">
               <div className="text-base text-white">{i18n._(t`Purchased ${prisaleToken[chainId].symbol}`)}</div>
-              <div className="text-base">{(purchasedToken.current / 1e18).toFixed()}</div>
+              <div className="text-base">${(purchasedToken.current / 1e18 * (tokenPrice.current / 1e6)).toFixed()}</div>
             </div>
             <div className="rounded-lg border-[1px] border-gray-700 py-2 space-y-1 px-4">
               <div className="text-base text-white">{i18n._(t`Claimable ${prisaleToken[chainId].symbol}`)}</div>
