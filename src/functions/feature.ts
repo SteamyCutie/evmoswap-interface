@@ -42,11 +42,11 @@ const features = {
     // Feature.FARMV2,
     // Feature.ZAP,
     // Feature.LENDING,
-    Feature.IFO,
+    // Feature.IFO,
     // Feature.STAKING,
-    Feature.BOOST,
+    // Feature.BOOST,
     // Feature.FAUCET,
-    Feature.PRISALE,
+    // Feature.PRISALE,
   ],
 
   [ChainId.BSC_TESTNET]: [
@@ -55,11 +55,11 @@ const features = {
     // Feature.FARMV2,
     // Feature.ZAP,
     // // Feature.LENDING,
-    Feature.IFO,
+    // Feature.IFO,
     // Feature.STAKING,
-    Feature.BOOST,
+    // Feature.BOOST,
     // Feature.GAMEFI,
-    Feature.PRISALE,
+    // Feature.PRISALE,
   ],
 }
 
