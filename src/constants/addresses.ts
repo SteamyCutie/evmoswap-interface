@@ -94,3 +94,11 @@ export const ZAP_ADDRESS: AddressMap = {
 export const PRIVATESALE_ADDRESS: AddressMap = {
   [ChainId.BSC_TESTNET]: '0xf3CAb862A2f696fa493db85749736411635fA273',
 }
+
+export const EVMOROLL_ADDRESS: AddressMap = {
+  [ChainId.BSC_TESTNET]: '0x9A87b976Cc1b95465C1FB91D1Fc23ac342B2030E',
+}
+
+export const MIGRATE_DASHBOARD_ADDRESS: AddressMap = {
+  [ChainId.BSC_TESTNET]: '0xB8819bA56c81b81181e5F662309b7bf4a9bDCD12',
+}

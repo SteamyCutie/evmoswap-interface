@@ -1,160 +1,168 @@
-import { NETWORK_ICON, NETWORK_LABEL } from '../../config/networks'
-
-import Image from 'next/image'
-import React, { useEffect } from 'react'
+import React, { useEffect, useCallback } from 'react'
 import { useActiveWeb3React } from 'app/services/web3'
 import { useNetworkModalToggle } from 'app/state/application/hooks'
 import { ChainId } from '@evmoswap/core-sdk'
-import { BscNetworkModal } from 'app/modals/NetworkModal/indexBsc'
-import { useFaucetContract } from 'app/hooks'
 import { useTransactionAdder } from 'app/state/transactions/hooks'
+import useMigrateState, { MigrateState } from 'app/features/migration/useMigrateState'
+import LPToken from '../../features/migration/LPToken'
+import Web3Connect from 'app/components/Web3Connect'
+import Typography from 'app/components/Typography'
+import Dots from 'app/components/Dots'
+import { useLingui } from '@lingui/react'
+import { t } from '@lingui/macro'
+import { JSBI } from '@evmoswap/core-sdk'
+import DoubleCurrencyLogo from 'app/components/DoubleLogo'
+import { ChevronDownIcon, XIcon } from '@heroicons/react/outline'
+import Empty from 'app/components/Empty'
+import Chip from 'app/components/Chip'
+import { AddressZero } from '@ethersproject/constants'
+import { formatUnits } from '@ethersproject/units'
+import Input from 'app/components/Input'
 import Button from 'app/components/Button'
-import { useTokenBalance } from 'state/wallet/hooks'
-import QuestionHelper from 'app/components/QuestionHelper'
 
-// const ZERO = JSBI.BigInt(0)
+const ZERO = JSBI.BigInt(0)
 
-// const AmountInput = ({ state }: { state: MigrateState }) => {
-//   const { i18n } = useLingui()
-//   const onPressMax = useCallback(() => {
-//     if (state.selectedLPToken) {
-//       let balance = state.selectedLPToken.balance.quotient
-//       if (state.selectedLPToken.address === AddressZero) {
-//         // Subtract 0.01 ETH for gas fee
-//         const fee = JSBI.exponentiate(JSBI.BigInt(10), JSBI.BigInt(16))
-//         balance = JSBI.greaterThan(balance, fee) ? JSBI.subtract(balance, fee) : ZERO
-//       }
+const AmountInput = ({ state }: { state: MigrateState }) => {
+  const { i18n } = useLingui()
+  const onPressMax = useCallback(() => {
+    if (state.selectedLPToken) {
+      let balance = state.selectedLPToken.balance.quotient
+      if (state.selectedLPToken.address === AddressZero) {
+        // Subtract 0.01 ETH for gas fee
+        const fee = JSBI.exponentiate(JSBI.BigInt(10), JSBI.BigInt(16))
+        balance = JSBI.greaterThan(balance, fee) ? JSBI.subtract(balance, fee) : ZERO
+      }
 
-//       state.setAmount(formatUnits(balance.toString(), state.selectedLPToken.decimals))
-//     }
-//   }, [state])
+      state.setAmount(formatUnits(balance.toString(), state.selectedLPToken.decimals))
+    }
+  }, [state])
 
-//   useEffect(() => {
-//     if (!state.mode || state.lpTokens.length === 0 || !state.selectedLPToken) {
-//       state.setAmount('')
-//     }
-//   }, [state])
+  useEffect(() => {
+    if (!state.mode || state.lpTokens.length === 0 || !state.selectedLPToken) {
+      state.setAmount('')
+    }
+  }, [state])
 
-//   if (!state.lpTokens.length) {
-//     return null
-//   }
+  if (!state.lpTokens.length) {
+    return null
+  }
 
-//   if (!state.mode || !state.selectedLPToken) {
-//     return (
-//       <>
-//         <Typography variant="sm" className="text-secondary">
-//           Amount of Tokens
-//         </Typography>
-//         <div className="p-3 text-center rounded cursor-not-allowed bg-dark-800">
-//           <Typography variant="lg" className="text-secondary">
-//             {state.mode && state.lpTokens.length === 0 ? 'No LP tokens found' : 'Select an LP Token'}
-//           </Typography>
-//         </div>
-//       </>
-//     )
-//   }
+  if (!state.mode || !state.selectedLPToken) {
+    return (
+      <>
+        <Typography variant="sm" className="text-secondary">
+          Amount of Tokens
+        </Typography>
+        <div className="p-3 text-center rounded cursor-not-allowed bg-dark-800">
+          <Typography variant="lg" className="text-secondary">
+            {state.mode && state.lpTokens.length === 0 ? 'No LP tokens found' : 'Select an LP Token'}
+          </Typography>
+        </div>
+      </>
+    )
+  }
 
-//   return (
-//     <>
-//       <Typography variant="sm" className="text-secondary">
-//         {i18n._(t`Amount of Tokens`)}
-//       </Typography>
+  return (
+    <>
+      <Typography variant="sm" className="text-secondary">
+        {i18n._(t`Amount of Tokens`)}
+      </Typography>
 
-//       <div className="relative flex items-center w-full mb-4">
-//         <Input.Numeric
-//           className="w-full p-3 rounded bg-dark-700 focus:ring focus:ring-pink"
-//           value={state.amount}
-//           onUserInput={(val: string) => state.setAmount(val)}
-//         />
-//         <Button
-//           variant="outlined"
-//           color="pink"
-//           size="xs"
-//           onClick={onPressMax}
-//           className="absolute right-4 focus:ring focus:ring-pink"
-//         >
-//           {i18n._(t`MAX`)}
-//         </Button>
-//       </div>
-//     </>
-//   )
-// }
+      <div className="relative flex items-center w-full mb-4">
+        <Input.Numeric
+          className="w-full p-3 rounded bg-dark-700 focus:ring focus:ring-pink"
+          value={state.amount}
+          onUserInput={(val: string) => state.setAmount(val)}
+        />
+        <Button
+          variant="outlined"
+          color="pink"
+          size="xs"
+          onClick={onPressMax}
+          className="absolute right-4 focus:ring focus:ring-pink"
+        >
+          {i18n._(t`MAX`)}
+        </Button>
+      </div>
+    </>
+  )
+}
 
-// interface PositionCardProps {
-//   lpToken: LPToken
-//   onToggle: (lpToken: LPToken) => void
-//   isSelected: boolean
-//   updating: boolean
-//   exchange: string | undefined
-// }
+interface PositionCardProps {
+  lpToken: LPToken
+  onToggle: (lpToken: LPToken) => void
+  isSelected: boolean
+  updating: boolean
+  exchange: string | undefined
+}
 
-// const LPTokenSelect = ({ lpToken, onToggle, isSelected, updating, exchange }: PositionCardProps) => {
-//   return (
-//     <div
-//       key={lpToken.address}
-//       className="flex items-center justify-between px-3 py-5 rounded cursor-pointer bg-dark-800 hover:bg-dark-700"
-//       onClick={() => onToggle(lpToken)}
-//     >
-//       <div className="flex items-center space-x-3">
-//         <DoubleCurrencyLogo currency0={lpToken.tokenA} currency1={lpToken.tokenB} size={20} />
-//         <Typography
-//           variant="lg"
-//           className="text-primary"
-//         >{`${lpToken.tokenA.symbol}/${lpToken.tokenB.symbol}`}</Typography>
-//         {lpToken.version && <Chip color="purple" label={lpToken.version} />}
-//       </div>
-//       {isSelected ? <XIcon width={16} height={16} /> : <ChevronDownIcon width={16} height={16} />}
-//     </div>
-//   )
-// }
+const LPTokenSelect = ({ lpToken, onToggle, isSelected, updating, exchange }: PositionCardProps) => {
+  return (
+    <div
+      key={lpToken.address}
+      className="flex items-center justify-between px-3 py-5 rounded cursor-pointer bg-dark-800 hover:bg-dark-700"
+      onClick={() => onToggle(lpToken)}
+    >
+      <div className="flex items-center space-x-3">
+        <DoubleCurrencyLogo currency0={lpToken.tokenA} currency1={lpToken.tokenB} size={20} />
+        <Typography
+          variant="lg"
+          className="text-primary"
+        >{`${lpToken.tokenA.symbol}/${lpToken.tokenB.symbol}`}</Typography>
+        {lpToken.version && <Chip color="purple" label={lpToken.version} />}
+      </div>
+      {isSelected ? <XIcon width={16} height={16} /> : <ChevronDownIcon width={16} height={16} />}
+    </div>
+  )
+}
 
-// const MigrateModeSelect = ({ state }: { state: MigrateState }) => {
-//   const { i18n } = useLingui()
-//   function toggleMode(mode = undefined) {
-//     state.setMode(mode !== state.mode ? mode : undefined)
-//   }
+const MigrateModeSelect = ({ state }: { state: MigrateState }) => {
+  const { i18n } = useLingui()
+  function toggleMode(mode = undefined) {
+    state.setMode(mode !== state.mode ? mode : undefined)
+  }
 
-//   const items = [
-//     {
-//       key: 'permit',
-//       text: i18n._(t`Non-hardware Wallet`),
-//       description: i18n._(t`Migration is done in one-click using your signature (permit)`),
-//     },
-//     {
-//       key: 'approve',
-//       text: i18n._(t`Hardware Wallet`),
-//       description: i18n._(t`You need to first approve LP tokens and then migrate it`),
-//     },
-//   ]
+  const items = [
+    {
+      key: 'permit',
+      text: i18n._(t`Non-hardware Wallet`),
+      description: i18n._(t`Migration is done in one-click using your signature (permit)`),
+    },
+    {
+      key: 'approve',
+      text: i18n._(t`Hardware Wallet`),
+      description: i18n._(t`You need to first approve LP tokens and then migrate it`),
+    },
+  ]
 
-//   return (
-//     <>
-//       {items.reduce((acc: any, { key, text, description }: any) => {
-//         if (state.mode === undefined || key === state.mode)
-//           acc.push(
-//             <div
-//               key={key}
-//               className="flex items-center justify-between p-3 rounded cursor-pointer bg-dark-800 hover:bg-dark-700"
-//               onClick={() => toggleMode(key)}
-//             >
-//               <div>
-//                 <div>
-//                   <Typography variant="sm">{text}</Typography>
-//                 </div>
-//                 <div>
-//                   <Typography variant="sm" className="text-secondary">
-//                     {description}
-//                   </Typography>
-//                 </div>
-//               </div>
-//               {key === state.mode ? <XIcon width={16} height={16} /> : <ChevronDownIcon width={16} height={16} />}
-//             </div>
-//           )
-//         return acc
-//       }, [])}
-//     </>
-//   )
-// }
+  return (
+    <>
+      {items.reduce((acc: any, { key, text, description }: any) => {
+        if (state.mode === undefined || key === state.mode)
+          acc.push(
+            <div
+              key={key}
+              className="flex items-center justify-between p-3 rounded cursor-pointer bg-dark-800 hover:bg-dark-700"
+              onClick={() => toggleMode(key)}
+            >
+              <div>
+                <div>
+                  <Typography variant="sm">{text}</Typography>
+                </div>
+                <div>
+                  <Typography variant="sm" className="text-secondary">
+                    {description}
+                  </Typography>
+                </div>
+              </div>
+              {key === state.mode ? <XIcon width={16} height={16} /> : <ChevronDownIcon width={16} height={16} />}
+            </div>
+          )
+        return acc
+      }, [])}
+    </>
+  )
+}
 
 // const MigrateButtons = ({ state, exchange }: { state: MigrateState; exchange: string | undefined }) => {
 //   const { i18n } = useLingui()
@@ -249,15 +257,83 @@ import QuestionHelper from 'app/components/QuestionHelper'
 //     </div>
 //   )
 // }
+const ExchangeLiquidityPairs = ({ state, exchange }: { state: MigrateState; exchange: undefined | string }) => {
+  const { i18n } = useLingui()
+
+  function onToggle(lpToken: LPToken) {
+    state.setSelectedLPToken(state.selectedLPToken !== lpToken ? lpToken : undefined)
+    state.setAmount('')
+  }
+
+  if (!state.mode) {
+    return null
+  }
+
+  if (state.lpTokens.length === 0) {
+    return <Empty>{i18n._(t`No Liquidity found`)}</Empty>
+  }
+
+  return (
+    <>
+      {state.lpTokens.reduce<JSX.Element[]>((acc, lpToken) => {
+        if (lpToken.balance && JSBI.greaterThan(lpToken.balance.quotient, JSBI.BigInt(0))) {
+          acc.push(
+            <LPTokenSelect
+              lpToken={lpToken}
+              onToggle={onToggle}
+              isSelected={state.selectedLPToken === lpToken}
+              updating={state.updatingLPTokens}
+              exchange={exchange}
+            />
+          )
+        }
+        return acc
+      }, [])}
+    </>
+  )
+}
 
 export default function Migrate() {
-  const { chainId } = useActiveWeb3React()
+  const { i18n } = useLingui()
+  const { account, chainId } = useActiveWeb3React()
   const toggleNetworkModal = useNetworkModalToggle()
   const addTransaction = useTransactionAdder()
+  const state = useMigrateState()
+
+  const exchange = 'Diffusion.fi'
 
   return (
     <div>
-      <div className='mt-16 text-5xl text-white'>Migrate Liquidity</div>
+      <div className='mt-16 mb-8 text-4xl text-white'>Migrate {exchange} Liquidity</div>
+
+      {!account ? (
+        <Web3Connect className="w-full !bg-dark-900 text-white h-[38px]" />
+      ) : (
+        <div className="p-4 space-y-4 rounded bg-dark-900">
+          {state.loading ? (
+            <Typography variant="lg" className="p-4 text-center text-primary">
+              <Dots>{i18n._(t`Loading your ${exchange} liquidity positions`)}</Dots>
+            </Typography>
+          ) : (
+            <>
+              {!state.loading && <Typography variant="lg">{i18n._(t`Your Wallet`)}</Typography>}
+              <MigrateModeSelect state={state} />
+              {!state.loading && state.lpTokens.length > 0 && (
+                <div>
+                  <Typography variant="lg">{i18n._(t`Your Liquidity`)}</Typography>
+                  <Typography variant="sm" className="text-secondary">
+                    {t`Click on a pool below, input the amount you wish to migrate or select max, and click
+                      migrate`}
+                  </Typography>
+                </div>
+              )}
+              <ExchangeLiquidityPairs state={state} exchange={exchange} />
+              <AmountInput state={state} />
+              {/* {state.selectedLPToken && <MigrateButtons state={state} exchange={exchange} />} */}
+            </>
+          )}
+        </div>
+      )}
     </div>
   )
 }

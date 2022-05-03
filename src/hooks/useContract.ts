@@ -63,6 +63,8 @@ import VOTE_ABI from '../constants/abis/vote.json'
 import ZAP_ABI from '../constants/abis/zap.json'
 import FAUCET_ABI from '../constants/abis/faucet.json'
 import PRIATESALE_ABI from '../constants/abis/privatesale.json'
+import EVMOROLL_ABI from '../constants/abis/evmoroll.json'
+import MIGRATE_DASHBOARD_ABI from '../constants/abis/migrateDashboard.json'
 
 import { getContract } from '../functions/contract'
 import { useActiveWeb3React } from '../services/web3'
@@ -81,6 +83,8 @@ import {
   PUBLIC_SALE_ADDRESS,
   MULTI_FEE_DISTRIBUTION_ADDRESSES,
   FEE_DISTRIBUTOR_ADDRESSES,
+  EVMOROLL_ADDRESS,
+  MIGRATE_DASHBOARD_ADDRESS,
 } from '../constants/addresses'
 
 const UNI_FACTORY_ADDRESS = '0x5C69bEe701ef814a2B6a3EDD4B1652CB9cc5aA6f'
@@ -302,7 +306,12 @@ export function useRewardPoolContract(withSignerIfPossible?: boolean): Contract 
   return useContract(REWARD_POOL_ADDRESS[chainId], REWARD_POOL_ABI, withSignerIfPossible)
 }
 
-export function useVotingEscrowContract(withSignerIfPossible?: boolean): Contract | null {
+export function useEvmoRollContract(withSignerIfPossible?: boolean): Contract | null {
   const { chainId } = useActiveWeb3React()
-  return useContract(VOTING_ESCROW_ADDRESS[chainId], VOTING_ESCROW_ABI, withSignerIfPossible)
+  return useContract(EVMOROLL_ADDRESS[chainId], EVMOROLL_ABI, withSignerIfPossible)
+}
+
+export function useMigrateDashboardContract(withSignerIfPossible?: boolean): Contract | null {
+  const { chainId } = useActiveWeb3React()
+  return useContract(MIGRATE_DASHBOARD_ADDRESS[chainId], MIGRATE_DASHBOARD_ABI, withSignerIfPossible)
 }
