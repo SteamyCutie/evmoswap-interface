@@ -15,7 +15,6 @@ import { useActiveWeb3React } from 'services/web3'
 // import { ApplicationModal } from 'state/application/actions'
 // import { getBalanceNumber } from 'functions/formatBalance'
 import { usePrivateSaleContract } from 'hooks/useContract'
-import { GetEMOPrice } from 'app/features/staking/useStaking'
 import { useTransactionAdder } from '../../state/transactions/hooks'
 import { CheckIcon } from '@heroicons/react/solid'
 import ProgressBar from 'app/components/ProgressBar'
@@ -44,7 +43,6 @@ export default function Prisale() {
   const usdcBalance = Number(useTokenBalance(account ?? undefined, USDC[chainId])?.toSignificant(8))
   const usdcBalanceBignumber = useTokenBalance(account ?? undefined, USDC[chainId])
   const tokenBalance = Number(useTokenBalance(account ?? undefined, prisaleToken[chainId])?.toSignificant(8))
-  const emoPrice = GetEMOPrice()
   const prisaleContract = usePrivateSaleContract()
 
   const parsedStakeAmount = tryParseAmount(
@@ -73,7 +71,7 @@ export default function Prisale() {
       ((Number(await prisaleContract.minTokensAmount()) / 1e18) * tokenPrice.current) / 10 ** 6,
     ]
     maxTokensAmount.current = [
-      ((Number(await prisaleContract.maxTokensAmount()) / 1e18) * Number(tokenPrice)) / Number(basePrice.current),
+      ((Number(await prisaleContract.maxTokensAmount()) / 1e18) * Number(tokenPrice.current)) / Number(basePrice.current),
       ((Number(await prisaleContract.maxTokensAmount()) / 1e18) * tokenPrice.current) / 10 ** 6,
     ]
     privateSaleStart.current = Number(await prisaleContract.privateSaleStart())
