@@ -300,16 +300,16 @@ export default function Migrate() {
   const addTransaction = useTransactionAdder()
   const state = useMigrateState()
 
-  const exchange = 'Diffusion.fi'
+  const exchange = ''
 
   return (
     <div>
-      <div className='mt-16 mb-8 text-4xl text-white'>Migrate {exchange} Liquidity</div>
+      <div className='mt-16 mb-8 text-4xl text-center text-white'>Migrate {exchange} Liquidity</div>
 
       {!account ? (
         <Web3Connect className="w-full !bg-dark-900 text-white h-[38px]" />
       ) : (
-        <div className="p-4 space-y-4 rounded bg-dark-900">
+        <div className="p-4 mx-1 space-y-4 rounded bg-dark-900">
           {state.loading ? (
             <Typography variant="lg" className="p-4 text-center text-primary">
               <Dots>{i18n._(t`Loading your ${exchange} liquidity positions`)}</Dots>
