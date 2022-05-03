@@ -92,9 +92,9 @@ export default function Prisale() {
     (privateSaleEnd.current - currentTime - remainingDay * 86400 - remainingHour * 3600) / 60
   )
   const [pendingTx, setPendingTx] = useState(false)
-  const limitValid =
-    Number(investValue) < (toggle ? minTokensAmount.current[0] : minTokensAmount.current[1]) ||
-    Number(investValue) > (toggle ? maxTokensAmount.current[0] : maxTokensAmount.current[1])
+  const lowerLimitError = Number(investValue) < (toggle ? minTokensAmount.current[0] : minTokensAmount.current[1])
+  const upperLimitError = Number(investValue) + purchasedToken.current > (toggle ? maxTokensAmount.current[0] : maxTokensAmount.current[1])
+  const [showLimitTips, setshowLimitTips] = useState(false)
   const handleBuyTokenWithUSDC = async () => {
     setPendingTx(true)
     try {
@@ -136,9 +136,11 @@ export default function Prisale() {
     setPendingTx(false)
   }
 
+  useEffect(() => setshowLimitTips(false), [toggle, investValue])
+
   return (
     <div className="w-5/6 mt-20 md:max-w-5xl">
-      <div className="flex justify-between h-20 gap-1 mb-5 md:h-24 md:gap-4">
+      <div className="flex justify-between h-[84px] gap-1 mb-5 md:h-24 md:gap-4">
         <div className="w-1/2 h-full px-4 py-2 my-auto space-y-1 text-left rounded-lg md:py-4 sm:space-y-2 md:px-10 bg-black-russian">
           {currentTime - privateSaleStart.current < 0 ? (
             <div className="inline-block text-2xl font-bold text-white align-middle lg:text-3xl">
@@ -157,7 +159,7 @@ export default function Prisale() {
         </div>
         <div className="w-1/2 h-full px-4 py-2 my-auto space-y-1 text-left rounded-lg md:py-4 md:px-10 bg-black-russian">
           <div className="text-base md:text-lg">Remaining Tokens</div>
-          <div className="text-xl font-bold text-white md:text-2xl">{((total_purchased.current[0] - total_purchased.current[1])/1e18).toFixed()}</div>
+          <div className="text-base font-bold text-white md:text-xl md:text-2xl">{((total_purchased.current[0] - total_purchased.current[1])/1e18).toFixed()}</div>
         </div>
       </div>
       <div className="py-5 rounded-lg px-7 bg-black-russian">
@@ -278,11 +280,15 @@ export default function Prisale() {
                 <Button color="gray" size="sm" className="h-12" disabled={true}>
                   Exceeds Balance
                 </Button>
-              ) : limitValid ? (
+              ) : lowerLimitError ? (
                 <Button color="gray" size="sm" className="h-12" disabled={true}>
                   Please notice the limit
                 </Button>
-              ) : toggle ? (
+              ) : upperLimitError ? (
+                <Button color="blue" size="sm" className="h-12" onClick={() => {setshowLimitTips(true)}}>
+                  Buy ${prisaleToken[chainId].symbol} Now
+                </Button>
+              ): toggle ? (
                 <Button color="blue" size="sm" className="h-12" onClick={handleBuyTokenWithNATIVE}>
                   Buy ${prisaleToken[chainId].symbol} Now
                 </Button>
@@ -296,6 +302,7 @@ export default function Prisale() {
                 </Button>
               )}
             </div>
+            {showLimitTips && <div className='p-2 text-center text-white rounded-lg bg-red'>Maximum Allowed Exceeded</div>}
           </div>
           <div className="px-5 py-9 border-[1px] border-gray-700 rounded-xl space-y-6 md:w-1/2">
             <div className="rounded-lg border-[1px] border-gray-700 space-y-1 py-2 px-4">
