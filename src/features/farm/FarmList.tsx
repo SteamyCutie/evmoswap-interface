@@ -46,7 +46,7 @@ const FarmList = ({ farms }) => {
   return (
     <>
       <div className={classNames(TABLE_WRAPPER_DIV_CLASSNAME)}>
-        <div className="grid grid-cols-6 min-w-[768px]">
+        <div className="grid grid-cols-6 min-w-[1024px]">
           <div
             className={classNames('flex gap-1 items-center cursor-pointer', TABLE_TR_TH_CLASSNAME(0, 6))}
             onClick={() => requestSort('pair.token0.symbol')}
@@ -100,7 +100,7 @@ const FarmList = ({ farms }) => {
             <SortIcon id={sortConfig.key} direction={sortConfig.direction} active={sortConfig.key === 'roiPerYear'} />
           </div>
         </div>
-        <div className="divide-y divide-dark-900  min-w-[768px]">
+        <div className="divide-y divide-dark-900 min-w-[1024px]">
           <InfiniteScroll
             dataLength={numDisplayed}
             next={() => setNumDisplayed(numDisplayed + 5)}
