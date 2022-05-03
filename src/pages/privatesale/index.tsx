@@ -306,7 +306,7 @@ export default function Prisale() {
           <div className="px-5 py-9 border-[1px] border-gray-700 rounded-xl space-y-6 md:w-1/2">
             <div className="rounded-lg border-[1px] border-gray-700 space-y-1 py-2 px-4">
               <div className="text-base text-white">{i18n._(t`Purchased ${prisaleToken[chainId].symbol}`)}</div>
-              <div className="text-base">${(purchasedToken.current / 1e18 * (tokenPrice.current / 1e6)).toFixed()}</div>
+              <div className="text-base">{(purchasedToken.current / 1e18).toFixed()}(${(purchasedToken.current / 1e18 * (tokenPrice.current / 1e6)).toFixed()})</div>
             </div>
             <div className="rounded-lg border-[1px] border-gray-700 py-2 space-y-1 px-4">
               <div className="text-base text-white">{i18n._(t`Claimable ${prisaleToken[chainId].symbol}`)}</div>
