@@ -306,6 +306,11 @@ export function useRewardPoolContract(withSignerIfPossible?: boolean): Contract 
   return useContract(REWARD_POOL_ADDRESS[chainId], REWARD_POOL_ABI, withSignerIfPossible)
 }
 
+export function useVotingEscrowContract(withSignerIfPossible?: boolean): Contract | null {
+  const { chainId } = useActiveWeb3React()
+  return useContract(VOTING_ESCROW_ADDRESS[chainId], VOTING_ESCROW_ABI, withSignerIfPossible)
+}
+
 export function useEvmoRollContract(withSignerIfPossible?: boolean): Contract | null {
   const { chainId } = useActiveWeb3React()
   return useContract(EVMOROLL_ADDRESS[chainId], EVMOROLL_ABI, withSignerIfPossible)

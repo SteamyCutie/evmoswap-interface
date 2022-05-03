@@ -284,7 +284,7 @@ export default function Boostv3 () {
     return (
         <Container id="boostv3-page" className="py-4 md:py-8 lg:py-12" maxWidth="7xl">
             <Head>
-                <title key="title">Boostv3 | EvmoSwap</title>
+                <title key="title">veEMO | EvmoSwap</title>
                 <meta key="description" name="description" content="Boost EvmoSwap" />
             </Head>
             <div className="flex flex-col justify-start flex-grow w-full h-full px-4 md:px-6 py-4 space-y-6">
@@ -612,10 +612,26 @@ export default function Boostv3 () {
                             <h3 className="text-medium font-bold text-white">{ i18n._( t`Locking demonstrates a commitment to the long-term vision of EvmoSwap` ) }</h3>
                             <p className='my-4 text-sm leading-6'>{ i18n._( t`Lock your ${token.symbol} and get Boost Power to increase your Yield farm earnings and participate in protocol Governance` ) }</p>
 
-                            <div className='bg-dark-800 p-4 h-full rounded mt-4 text-white text-sm grow'>
+                            <div className='bg-dark-800 px-4 py-6 h-full rounded mt-4 space-y-4 text-white text-sm grow'>
+                                <div className='flex items-center space-x-2'>
+                                    <Image src={ DoubleCheckIcon } alt="" className='w-4 h-4' />
+                                    <p>{ i18n._( t`Mint NFTs and Trade` ) }</p>
+                                </div>
+                                <div className='flex items-center space-x-2'>
+                                    <Image src={ DoubleCheckIcon } alt="" className='w-4 h-4' />
+                                    <p>{ i18n._( t`Vote and Govern Protocol` ) }</p>
+                                </div>
+                                <div className='flex items-center space-x-2'>
+                                    <Image src={ DoubleCheckIcon } alt="" className='w-4 h-4' />
+                                    <p>{ i18n._( t`Receive Free Partner Tokens` ) }</p>
+                                </div>
                                 <div className='flex items-center space-x-2'>
                                     <Image src={ DoubleCheckIcon } alt="" className='w-4 h-4' />
                                     <p>{ i18n._( t`Boost your yield farm earnings` ) }</p>
+                                </div>
+                                <div className='flex items-center space-x-2'>
+                                    <Image src={ DoubleCheckIcon } alt="" className='w-4 h-4' />
+                                    <p>{ i18n._( t`Access Exclusive Launchpad Projects` ) }</p>
                                 </div>
                             </div>
                         </div>

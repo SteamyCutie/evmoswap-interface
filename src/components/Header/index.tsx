@@ -65,21 +65,11 @@ function AppBar(): JSX.Element {
                             id={`yield-nav-link`}
                             className="p-2 text-baseline text-primary hover:text-high-emphesis focus:text-high-emphesis md:p-3 whitespace-nowrap"
                           >
-                            {i18n._(t`Yield`)}
+                            {i18n._(t`Farm`)}
                           </a>
                         </NavLink>
                       )}
-                      {chainId && featureEnabled(Feature.PRISALE, chainId) && (
-                        <Link href={'/privatesale'}>
-                          <a
-                            id={`prisale-nav-link`}
-                            className="p-2 text-baseline text-primary hover:text-high-emphesis focus:text-high-emphesis md:p-3 whitespace-nowrap"
-                          >
-                            {' '}
-                            {i18n._(t`Private sale`)}
-                          </a>
-                        </Link>
-                      )}
+                      
                       {chainId && featureEnabled(Feature.LENDING, chainId) && (
                         <>
                           <NavLink href={'/lending'}>
@@ -92,18 +82,7 @@ function AppBar(): JSX.Element {
                           </NavLink>
                         </>
                       )}
-                      {chainId && featureEnabled(Feature.IFO, chainId) && (
-                        <>
-                          <NavLink href={'/ifov2'}>
-                            <a
-                              id={`lend-nav-link`}
-                              className="p-2 text-baseline text-primary hover:text-high-emphesis focus:text-high-emphesis md:p-3 whitespace-nowrap"
-                            >
-                              {i18n._(t`IFO`)}
-                            </a>
-                          </NavLink>
-                        </>
-                      )}
+                      
                       {chainId && featureEnabled(Feature.STAKING, chainId) && (
                         <NavLink href={'/stake'}>
                           <a
@@ -115,14 +94,39 @@ function AppBar(): JSX.Element {
                         </NavLink>
                       )}
                       {chainId && featureEnabled(Feature.BOOST, chainId) && (
-                        <NavLink href={'/boost'}>
+                        <NavLink href={'/veEMO'}>
                           <a
                             id={`boost-nav-link`}
                             className="p-2 text-baseline text-primary hover:text-high-emphesis focus:text-high-emphesis md:p-3 whitespace-nowrap"
                           >
-                            {i18n._(t`Boost`)}
+                            {i18n._(t`veEMO`)}
                           </a>
                         </NavLink>
+                      )}
+
+                      {chainId && featureEnabled(Feature.IFO, chainId) && (
+                        <>
+                          <NavLink href={'/launchpad'}>
+                            <a
+                              id={`lend-nav-link`}
+                              className="p-2 text-baseline text-primary hover:text-high-emphesis focus:text-high-emphesis md:p-3 whitespace-nowrap"
+                            >
+                              {i18n._(t`Launchpad`)}
+                            </a>
+                          </NavLink>
+                        </>
+                      )}
+
+                      {chainId && featureEnabled(Feature.PRISALE, chainId) && (
+                        <Link href={'/privatesale'}>
+                          <a
+                            id={`prisale-nav-link`}
+                            className="p-2 text-baseline text-primary hover:text-high-emphesis focus:text-high-emphesis md:p-3 whitespace-nowrap"
+                          >
+                            {' '}
+                            {i18n._(t`Private sale`)}
+                          </a>
+                        </Link>
                       )}
 
                       {chainId && featureEnabled(Feature.GAMEFI, chainId) && (
@@ -255,7 +259,43 @@ function AppBar(): JSX.Element {
                       className="p-2 text-baseline text-primary hover:text-high-emphesis focus:text-high-emphesis md:p-3 whitespace-nowrap"
                     >
                       {' '}
-                      {i18n._(t`Yield`)}
+                      {i18n._(t`Farm`)}
+                    </a>
+                  </Link>
+                )}
+
+                
+
+                {chainId && featureEnabled(Feature.STAKING, chainId) && (
+                  <Link href={'/stake'}>
+                    <a
+                      id={`stake-nav-link`}
+                      className="p-2 text-baseline text-primary hover:text-high-emphesis focus:text-high-emphesis md:p-3 whitespace-nowrap"
+                    >
+                      {i18n._(t`Stake`)}
+                    </a>
+                  </Link>
+                )}
+
+                {chainId && featureEnabled(Feature.BOOST, chainId) && (
+                  <Link href={'/veEMO'}>
+                    <a
+                      id={`boost-nav-link`}
+                      className="p-2 text-baseline text-primary hover:text-high-emphesis focus:text-high-emphesis md:p-3 whitespace-nowrap"
+                    >
+                      {i18n._(t`veEMO`)}
+                    </a>
+                  </Link>
+                )}
+
+                {chainId && featureEnabled(Feature.IFO, chainId) && (
+                  <Link href={'/launchpad'}>
+                    <a
+                      id={`yield-nav-link`}
+                      className="p-2 text-baseline text-primary hover:text-high-emphesis focus:text-high-emphesis md:p-3 whitespace-nowrap"
+                    >
+                      {' '}
+                      {i18n._(t`LaunchPad`)}
                     </a>
                   </Link>
                 )}
@@ -271,41 +311,6 @@ function AppBar(): JSX.Element {
                     </a>
                   </Link>
                 )}
-
-                {chainId && featureEnabled(Feature.IFO, chainId) && (
-                  <Link href={'/ifov2'}>
-                    <a
-                      id={`yield-nav-link`}
-                      className="p-2 text-baseline text-primary hover:text-high-emphesis focus:text-high-emphesis md:p-3 whitespace-nowrap"
-                    >
-                      {' '}
-                      {i18n._(t`IFO`)}
-                    </a>
-                  </Link>
-                )}
-
-                {chainId && featureEnabled(Feature.STAKING, chainId) && (
-                  <Link href={'/stake'}>
-                    <a
-                      id={`stake-nav-link`}
-                      className="p-2 text-baseline text-primary hover:text-high-emphesis focus:text-high-emphesis md:p-3 whitespace-nowrap"
-                    >
-                      {i18n._(t`Stake`)}
-                    </a>
-                  </Link>
-                )}
-
-                {chainId && featureEnabled(Feature.BOOST, chainId) && (
-                  <Link href={'/boostv2'}>
-                    <a
-                      id={`boost-nav-link`}
-                      className="p-2 text-baseline text-primary hover:text-high-emphesis focus:text-high-emphesis md:p-3 whitespace-nowrap"
-                    >
-                      {i18n._(t`Boost`)}
-                    </a>
-                  </Link>
-                )}
-
                 {chainId && featureEnabled(Feature.BRIDGE, chainId) && (
                   <Link href={'/bridge'}>
                     <a

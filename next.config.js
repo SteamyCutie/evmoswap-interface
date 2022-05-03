@@ -94,6 +94,10 @@ const nextConfig = {
         source: '/migrate',
         destination: '/migrate',
       },
+      {
+        source: '/veEMO',
+        destination: '/boost',
+      },
     ]
   },
   i18n: {
