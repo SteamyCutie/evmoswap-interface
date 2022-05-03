@@ -151,14 +151,14 @@ export default function Prisale() {
               <div className="text-sm font-bold text-white md:text-xl lg:text-2xl">{`${remainingDay} Day ${remainingHour} Hour ${remainingMin} Mins`}</div>
             </>
           ) : (
-            <div className="inline-block text-2xl font-bold text-white align-middle lg:text-3xl">
+            <div className="inline-block text-xl font-bold text-white align-middle md:text-2xl lg:text-3xl">
               Private Sale ended
             </div>
           )}
         </div>
         <div className="w-1/2 h-full px-4 py-2 my-auto space-y-1 text-left rounded-lg md:py-4 md:px-10 bg-black-russian">
           <div className="text-base md:text-lg">Remaining Tokens</div>
-          <div className="text-base font-bold text-white md:text-xl md:text-2xl">{((total_purchased.current[0] - total_purchased.current[1])/1e18).toFixed()}</div>
+          <div className="text-base font-bold text-white md:text-xl lg:text-2xl">{((total_purchased.current[0] - total_purchased.current[1])/1e18).toFixed()}</div>
         </div>
       </div>
       <div className="py-5 rounded-lg px-7 bg-black-russian">
