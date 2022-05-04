@@ -40,19 +40,19 @@ export const IfoQuestions = ({ ifo, publicIfoData }: { ifo: Ifo; publicIfoData: 
   return (
     <div className="px-4 py-6 mx-auto rounded sm:py-8 sm:px-6 lg:px-8 bg-dark-900">
       {/* step */}
-      <h2 className="mb-8 text-3xl font-extrabold text-center text-high-emphesis sm:text-4xl">How to take part</h2>
-      <div className="grid grid-cols-1 gap-4 mb-8 md:grid-cols-3 auto-cols-max">
+      {/* <h2 className="mb-8 text-3xl font-extrabold text-center text-high-emphesis sm:text-4xl">How to take part</h2> */}
+      {/* <div className="grid grid-cols-1 gap-4 mb-8 md:grid-cols-3 auto-cols-max">
         <div className="p-4 rounded-lg bg-dark-800">
           <h1 className="text-lg">1. Get EMO</h1>
           <h2 className="flex flex-row items-center mb-2 text-sm">
             Lock your EMO in the Boost Locker to get EMO. You’ll spend them to buy IFO sale tokens
           </h2>
 
-          {/* <NavLink href={'/boost'}>
-                <a className="p-2 mt-4 text-white rounded-md" >
-                  Get veEMO
-                </a>
-              </NavLink> */}
+          // {/* <NavLink href={'/boost'}>
+          //       <a className="p-2 mt-4 text-white rounded-md" >
+          //         Get veEMO
+          //       </a>
+          //     </NavLink>
           <Button id="btn-create-new-pool" color="gradient" size="sm">
             <a href="/swap">Get EMO</a>
           </Button>
@@ -74,7 +74,7 @@ export const IfoQuestions = ({ ifo, publicIfoData }: { ifo: Ifo; publicIfoData: 
             {raiseTokenBasic.symbol}/{raiseTokenUnlimited.symbol} tokens will be returned to your wallet.
           </h2>
         </div>
-      </div>
+      </div> */}
 
       <div className="mx-auto divide-y-2 divide-dark-800">
         <h2 className="text-3xl font-extrabold text-center text-high-emphesis sm:text-4xl">
