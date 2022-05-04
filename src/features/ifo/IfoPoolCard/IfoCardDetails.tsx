@@ -124,12 +124,12 @@ const IfoCardDetails: React.FC<IfoCardDetailsProps> = ({ poolId, ifo, publicIfoD
 
           <div className="flex justify-between gap-0.5">
             <div className="text-xs">Your committed:</div>
-            <div className="text-xs text-high-emphesis">{raiseTokenPriceInUSD.gt(0) ? yourCommitted : null}</div>
+            <div className="text-xs text-high-emphesis">{yourCommitted}</div>
           </div>
 
           <div className="flex justify-between gap-0.5">
             <div className="text-xs">Total committed:</div>
-            <div className="text-xs text-high-emphesis">{raiseTokenPriceInUSD.gt(0) ? totalCommitted : null}</div>
+            <div className="text-xs text-high-emphesis">{totalCommitted}</div>
           </div>
         </>
       )
@@ -172,12 +172,12 @@ const IfoCardDetails: React.FC<IfoCardDetailsProps> = ({ poolId, ifo, publicIfoD
 
           <div className="flex justify-between gap-0.5">
             <div className="text-xs">Your committed:</div>
-            <div className="text-xs text-high-emphesis">{raiseTokenPriceInUSD.gt(0) ? yourCommitted : null}</div>
+            <div className="text-xs text-high-emphesis">{yourCommitted}</div>
           </div>
 
           <div className="flex justify-between gap-0.5">
             <div className="text-xs">Total committed:</div>
-            <div className="text-xs text-high-emphesis">{raiseTokenPriceInUSD.gt(0) ? totalCommitted : null}</div>
+            <div className="text-xs text-high-emphesis">{totalCommitted}</div>
           </div>
         </>
       )
