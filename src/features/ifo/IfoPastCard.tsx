@@ -8,7 +8,7 @@ import Image from 'next/image'
 import { DiscordIcon, MediumIcon, TwitterIcon } from 'app/components/Icon'
 import { PublicIfoData, WalletIfoData } from './hooks/types'
 import { Ifo } from 'app/constants/types'
-import { useGetPublicIfoData, useGetWalletIfoData } from 'app/features/launchpad/hooks'
+import { useGetPublicIfoData, useGetWalletIfoData } from 'app/features/ifo/hooks'
 import IfoCardData from './IfoCardData'
 
 export const IfoPastCard = ({ inactiveIfo }: { inactiveIfo: Ifo[] }) => {

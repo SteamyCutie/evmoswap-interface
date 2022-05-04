@@ -60,12 +60,12 @@ function AppBar(): JSX.Element {
                       </NavLink>
 
                       {chainId && featureEnabled(Feature.YIELD, chainId) && (
-                        <NavLink href={'/yield'}>
+                        <NavLink href={'/farm'}>
                           <a
                             id={`yield-nav-link`}
                             className="p-2 text-baseline text-primary hover:text-high-emphesis focus:text-high-emphesis md:p-3 whitespace-nowrap"
                           >
-                            {i18n._(t`Farm`)}
+                            {i18n._(t`Farms`)}
                           </a>
                         </NavLink>
                       )}
@@ -106,12 +106,12 @@ function AppBar(): JSX.Element {
 
                       {chainId && featureEnabled(Feature.IFO, chainId) && (
                         <>
-                          <NavLink href={'/launchpad'}>
+                          <NavLink href={'/ieo'}>
                             <a
                               id={`lend-nav-link`}
                               className="p-2 text-baseline text-primary hover:text-high-emphesis focus:text-high-emphesis md:p-3 whitespace-nowrap"
                             >
-                              {i18n._(t`Launchpad`)}
+                              {i18n._(t`IEO`)}
                             </a>
                           </NavLink>
                         </>
@@ -253,13 +253,13 @@ function AppBar(): JSX.Element {
                 </Link>
 
                 {chainId && featureEnabled(Feature.YIELD, chainId) && (
-                  <Link href={'/yield'}>
+                  <Link href={'/farm'}>
                     <a
                       id={`yield-nav-link`}
                       className="p-2 text-baseline text-primary hover:text-high-emphesis focus:text-high-emphesis md:p-3 whitespace-nowrap"
                     >
                       {' '}
-                      {i18n._(t`Farm`)}
+                      {i18n._(t`Farms`)}
                     </a>
                   </Link>
                 )}
@@ -289,13 +289,13 @@ function AppBar(): JSX.Element {
                 )}
 
                 {chainId && featureEnabled(Feature.IFO, chainId) && (
-                  <Link href={'/launchpad'}>
+                  <Link href={'/ieo'}>
                     <a
                       id={`yield-nav-link`}
                       className="p-2 text-baseline text-primary hover:text-high-emphesis focus:text-high-emphesis md:p-3 whitespace-nowrap"
                     >
                       {' '}
-                      {i18n._(t`LaunchPad`)}
+                      {i18n._(t`IEO`)}
                     </a>
                   </Link>
                 )}

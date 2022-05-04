@@ -63,7 +63,7 @@ export default function Farms(): JSX.Element {
         </div>
         <div className="flex gap-3">
           <Button id="btn-create-new-pool" size="sm">
-            <a href="#" target="_blank" rel="noreferrer">
+            <a href="https://forms.gle/rg2ac5xAQKR8d6Ff6" target="_blank" rel="noreferrer">
               {i18n._(t`Apply for Yield Farm`)}
             </a>
           </Button>
@@ -75,28 +75,28 @@ export default function Farms(): JSX.Element {
             {/* Select Tab */}
             <div className="flex m-auto mb-2 rounded h-11 md:m-0 md:w-8/12 bg-dark-800">
               <div className="w-3/12 h-full p-1" onClick={() => setSelected(0)}>
-                <NavLink href="/yield?filter=all">
+                <NavLink href="/farm?filter=all">
                   <div className={selected === 0 ? activeTabStyle : inactiveTabStyle}>
                     <p>All Farms</p>
                   </div>
                 </NavLink>
               </div>
               <div className="w-3/12 h-full p-1" onClick={() => setSelected(1)}>
-                <NavLink href="/yield?filter=stable">
+                <NavLink href="/farm?filter=stable">
                   <div className={selected === 1 ? activeTabStyle : inactiveTabStyle}>
                     <p>Stable Farms</p>
                   </div>
                 </NavLink>
               </div>
               <div className="w-3/12 h-full p-1" onClick={() => setSelected(2)}>
-                <NavLink href="/yield?filter=double">
+                <NavLink href="/farm?filter=double">
                   <div className={selected === 2 ? activeTabStyle : inactiveTabStyle}>
                     <p>Double Rewards</p>
                   </div>
                 </NavLink>
               </div>
               <div className="w-3/12 h-full p-1" onClick={() => setSelected(3)}>
-                <NavLink href="/yield?filter=inactive">
+                <NavLink href="/farm?filter=inactive">
                   <div className={selected === 3 ? activeTabStyle : inactiveTabStyle}>
                     <p>Inactive Farms</p>
                   </div>

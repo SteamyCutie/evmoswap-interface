@@ -1,6 +1,6 @@
 import { ChainId, SUSHI, Token } from '@evmoswap/core-sdk'
 import { Ifo } from './types'
-import { BETA, USDC } from './../config/tokens'
+import { USDC } from './../config/tokens'
 import tokens from './tokens'
 
 // UPCOMING - 0xD1e0Da69F2Ee9B7d3602DB9F41F37beE2d99F176
@@ -11,52 +11,41 @@ const ifos: Ifo[] = [
     id: 'mifo',
     address: {
       [ChainId.EVMOS]: '0xA5F673915F10276999Ab24266bF5E0846344962b',
-      [ChainId.EVMOS_TESTNET]: '0xBad35c158a3955f7aFF8c36960e24E6Bf44E3cFc', //finished 0x5059c8B82BC016BcD81C5d3071570c140fcdC1c0 live-0x947f6899b2DdedD9a03ae62eC92771aD888b1a6F 0x8BC2661d0d483cc0Da04BdbAC001c62E98549CF2
+      [ChainId.EVMOS_TESTNET]: '0xBad35c158a3955f7aFF8c36960e24E6Bf44E3cFc', 
+      [ChainId.BSC_TESTNET]: '0xE84021fDC03FA9AF863B657F451c86FbA04118b3'
     },
     isActive: true,
-    name: 'ARCANE',
+    name: 'EMO',
     poolBasic: {
-      saleAmount: '1,350,000',
-      raiseAmount: '$202,500',
-      emoToBurn: '$90,000',
-      distributionRatio: 0.3,
-      raiseToken: SUSHI,
-    },
-    poolUnlimited: {
-      saleAmount: '2,650,000',
-      raiseAmount: '$397,500',
-      emoToBurn: '$110,000',
-      distributionRatio: 0.7,
+      saleAmount: '4,500,000',
+      raiseAmount: '$450,000',
+      emoToBurn: '$0.00',
+      distributionRatio: 1,
       raiseToken: USDC,
     },
-    // raiseToken: USDC,
+    poolUnlimited: {
+      saleAmount: '0',
+      raiseAmount: '$0.00',
+      emoToBurn: '$0.00',
+      distributionRatio: 0,
+      raiseToken: USDC,
+    },
     offerToken: {
-      [ChainId.EVMOS]: new Token(ChainId.EVMOS, '0x289B8f552c9fD66f9cEA35B193F7ca73ae24A5d5', 18, 'ARC', 'ARCANE'),
-      [ChainId.EVMOS_TESTNET]: new Token(
-        ChainId.EVMOS_TESTNET,
-        '0xf2C856AB8Ed6f67Fd7D45Fd017c811347bF01a28',
-        18,
-        'ARC',
-        'ARCANE'
-      ),
+      [ChainId.EVMOS]: new Token(ChainId.EVMOS, '0x181C262b973B22C307C646a67f64B76410D19b6B', 18, 'EMO', 'EvmoSwap Token'),
+      [ChainId.EVMOS_TESTNET]: new Token(ChainId.EVMOS_TESTNET, '0x15a2E30D2Dfd13a5DEeBdF31d19d73B7494E45e8', 18, 'MPAD', 'LaunchPad Mock'),
+      [ChainId.BSC_TESTNET]: new Token(ChainId.BSC_TESTNET, '0x2fe5d73edC7BA958CaF7eA1bDb700Ac9821e136d', 18, 'MPAD', 'LaunchPad Mock'),
     },
     releaseTimestamp: 1646922000,
     claimDelayTime: 10800, //delay 3 hours
     veEmoCheckPoint: 1646813700, //start time
-
-    // TESTNET
-    // releaseTimestamp: 1644667500,
-    // claimDelayTime: 900, //delay 3 hours 1644760800
-    // veEmoCheckPoint: 1644665700, //start time
-
     campaignId: '511160000',
-    twitterUrl: 'https://twitter.com/thearcanefi',
-    telegramUrl: 'https://t.me/arcanenftfinancial',
-    discordUrl: 'https://discord.gg/ajesZGddzV',
-    articleUrl: 'https://arcanenft.financial/',
+    twitterUrl: 'https://twitter.com/evmoswap',
+    telegramUrl: 'https://t.me/evmoswap',
+    discordUrl: 'https://discord.gg/cEp53UXPw3',
+    articleUrl: 'https://docs.evmoswap.org',
     description:
-      'ARCANE is the premier gaming NFT Token on EVMOS that will allow you to control an infinite supply of Protonium. Gather Protonium and become the most powerful Arcane of all time. ARCANE has one purpose: Unite the cybertornian army to protect the evmos ecosystem.',
-    tokenOfferingPrice: 0.15,
+      'EvmoSwap is a Decentralized Autonomous Organization (DAO) that offers a full suite of tools to explore and engage with decentralized finance opportunities.',
+    tokenOfferingPrice: 0.1,
     version: 2,
   },
   {

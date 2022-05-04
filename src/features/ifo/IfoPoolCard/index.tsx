@@ -39,7 +39,7 @@ const cardConfig = (
   switch (poolId) {
     case PoolIds.poolBasic:
       return {
-        title: 'EMO OFFERING',
+        title: 'Public Sale',
         variant: 'blue',
         tooltip: 'Every person can only commit a limited amount, but may expect a higher return per token committed.',
       }

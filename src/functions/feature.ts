@@ -54,12 +54,12 @@ const features = {
     Feature.YIELD,
     // Feature.FARMV2,
     // Feature.ZAP,
-    // // Feature.LENDING,
-    // Feature.IFO,
-    // Feature.STAKING,
-    // Feature.BOOST,
+    // Feature.LENDING,
+    Feature.IFO,
+    Feature.STAKING,
+    Feature.BOOST,
     // Feature.GAMEFI,
-    // Feature.PRISALE,
+    Feature.PRISALE,
   ],
 }
 
