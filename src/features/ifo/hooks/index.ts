@@ -66,7 +66,7 @@ export function useGetPublicIfoData(ifo: Ifo) {
   const totalSaleTimes = endTimeNum - startTimeNum
   const timesRemaining = endTimeNum - currentTime
 
-  // // Calculate the total progress until finished or until start
+  // Calculate the total progress until finished or until start
   const progress =
     currentTime > startTimeNum
       ? ((currentTime - startTimeNum) / totalSaleTimes) * 100
