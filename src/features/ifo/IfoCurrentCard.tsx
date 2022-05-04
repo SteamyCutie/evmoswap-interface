@@ -10,7 +10,7 @@ import Typography from 'app/components/Typography'
 import { ClockIcon, GlobeAltIcon } from '@heroicons/react/outline'
 import { ChevronDownIcon, ChevronUpIcon, GiftIcon } from '@heroicons/react/solid'
 import CloseIcon from 'app/components/CloseIcon'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import Button from 'app/components/Button'
 
 // Calac remainingTimes
@@ -58,10 +58,43 @@ export const IfoCurrentCard = ({
   const now = Date.parse(new Date().toString()) / 1000
   const [isOpen, setOpen] = useState(true)
 
+  const [didMount, setDidMount] = useState(false)
+
+  useEffect(() => {
+    setDidMount(true)
+    return () => setDidMount(false)
+  }, [])
+
+  const [startTime, setStartTime] = useState(0)
+  const [endTime, setEndTime] = useState(0)
+  var [timer, setTimer] = useState<any>()
+
+  useEffect(() => {
+    let _timer = setInterval(() => {
+      if (publicIfoData.startTimeNum <= 0) return
+      let startOffset = publicIfoData.startTimeNum * 1000 - Date.now()
+      if (startOffset >= 0) setStartTime(startOffset)
+
+      if (publicIfoData.endTimeNum <= 0) return
+      let endOffset = publicIfoData.endTimeNum * 1000 - Date.now()
+      if (endOffset >= 0) setEndTime(endOffset)
+    }, 1000)
+    setTimer(_timer)
+  }, [publicIfoData.startTimeNum, publicIfoData.endTimeNum])
+
+  if (!didMount) {
+    return null
+  }
+
   return (
     <div className="flex-row justify-between gap-4">
-      <div className={`flex items-center justify-end w-full h-[112px] bg-no-repeat bg-cover bg-center rounded-[30px] border-[2px] border-b-[3px] border-[#383241] ${isOpen ? 'rounded-b-none' : 'rounded-b-[30px]'} p-6 `}
-        style={{ backgroundImage: `url('/images/ifo/${ifo.id}-bg.svg'), url('/images/ifo/${ifo.id}-bg.png'), url('/images/ifo/unknown-bg.png')` }}
+      <div
+        className={`flex items-center justify-end w-full h-[112px] bg-no-repeat bg-cover bg-center rounded-[30px] border-[2px] border-b-[3px] border-[#383241] ${
+          isOpen ? 'rounded-b-none' : 'rounded-b-[30px]'
+        } p-6 `}
+        style={{
+          backgroundImage: `url('/images/ifo/${ifo.id}-bg.svg'), url('/images/ifo/${ifo.id}-bg.png'), url('/images/ifo/unknown-bg.png')`,
+        }}
       >
         <Button
           color="pink"
@@ -79,13 +112,30 @@ export const IfoCurrentCard = ({
       </div>
       {isOpen && (
         <div className="w-full rounded rounded-t-none bg-dark-900">
-          {publicIfoData.status === "finished" &&
+          {publicIfoData.status === 'finished' && (
             <div className="flex-row items-center w-full overflow-hidden">
               <div className="flex rounded-[50%] w-[100%] translate-y-[-50%] scale-150 bg-[#372f47] h-[100px] justify-center items-end pb-3 text-[16px] font-extrabold text-white/70">
                 Sale Finished!
               </div>
             </div>
-          }
+          )}
+          {publicIfoData.status === 'coming_soon' && (
+            <div className="flex-row items-center w-full overflow-hidden">
+              <div className="flex rounded-[50%] w-[100%] translate-y-[-50%] scale-150 bg-[#472f2f] h-[100px] justify-center items-end pb-3 text-[16px] font-extrabold text-white/70">
+                {Math.floor(startTime / 1000 / 3600 / 24)} days {Math.floor(((startTime / 1000) % (3600 * 24)) / 3600)}{' '}
+                hours {Math.floor(((startTime / 1000) % 3600) / 60)} minutes {Math.floor((startTime / 1000) % 60)}{' '}
+                seconds
+              </div>
+            </div>
+          )}
+          {publicIfoData.status === 'live' && (
+            <div className="flex-row items-center w-full overflow-hidden">
+              <div className="flex rounded-[50%] w-[100%] translate-y-[-50%] scale-150 bg-[#33472f] h-[100px] justify-center items-end pb-3 text-[16px] font-extrabold text-white/70">
+                {Math.floor(endTime / 1000 / 3600 / 24)} days {Math.floor(((endTime / 1000) % (3600 * 24)) / 3600)}{' '}
+                hours {Math.floor(((endTime / 1000) % 3600) / 60)} minutes {Math.floor((endTime / 1000) % 60)} seconds
+              </div>
+            </div>
+          )}
           <div
             className={
               !publicIfoData.poolBasic || !walletIfoData.poolBasic
@@ -129,14 +179,14 @@ export const IfoCurrentCard = ({
                 {(publicIfoData.status === 'coming_soon' ||
                   publicIfoData.status === 'live' ||
                   publicIfoData.status === 'finished') && (
-                    <>
-                      {/* <CloseIcon className="h-8 text-red " /> */}
-                      <ClockIcon className="h-8 text-yellow " />
-                      <Typography variant="h2" className="opacity-80 text-yellow">
-                        COMING SOON
-                      </Typography>
-                    </>
-                  )}
+                  <>
+                    {/* <CloseIcon className="h-8 text-red " /> */}
+                    <ClockIcon className="h-8 text-yellow " />
+                    <Typography variant="h2" className="opacity-80 text-yellow">
+                      COMING SOON
+                    </Typography>
+                  </>
+                )}
 
                 {/* {(publicIfoData.status === 'coming_soon' || publicIfoData.status === 'live') && (
                 <>
