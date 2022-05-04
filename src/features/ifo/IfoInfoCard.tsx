@@ -4,7 +4,7 @@ import Button from 'app/components/Button'
 
 export const IfoInfoCard = () => {
   return (
-    <div className="px-4 py-6 mx-auto rounded sm:py-8 sm:px-6 lg:px-8 bg-dark-900">
+    <div className="px-4 py-6 mx-auto rounded sm:py-12 sm:px-8 lg:px-12 bg-dark-900">
       <h2 className="mb-4 md:mb-8 text-3xl font-extrabold text-center text-high-emphesis sm:text-4xl">How it works</h2>
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4 p-4">
         <div className="flex space-x-6 items-center">
@@ -58,8 +58,8 @@ export const IfoInfoCard = () => {
       </div>
       <div className="flex items-center justify-center mt-2 md:mt-8">
         <a href={''} target="_blank" rel="noreferrer" aria-disabled={false} className="w-full md:w-1/4">
-          <Button color="gradient" className="w-full" variant="filled" disabled={false}>
-            {i18n._(t`Participate`)}
+          <Button color="gradient" className="w-full uppercase" variant="filled" disabled={false}>
+            {i18n._(t`Participate Now`)}
           </Button>
         </a>
       </div>

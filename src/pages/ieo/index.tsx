@@ -13,6 +13,7 @@ import ifos from 'app/constants/ifo'
 import { useGetPublicIfoData, useGetWalletIfoData } from 'app/features/ifo/hooks'
 import Button from 'app/components/Button'
 import { IfoInfoCard } from 'app/features/ifo/IfoInfoCard'
+import { IfoIdeaCard } from 'app/features/ifo/IfoIdeaCard'
 
 export default function Ifo(): JSX.Element {
   const { i18n } = useLingui()
@@ -84,6 +85,8 @@ export default function Ifo(): JSX.Element {
         <IfoCurrentCard ifo={activeIfo} publicIfoData={publicIfoData} walletIfoData={walletIfoData} />
 
         <IfoInfoCard />
+
+        <IfoIdeaCard />
 
         {/* faq */}
         <IfoQuestions ifo={activeIfo} publicIfoData={publicIfoData} />
