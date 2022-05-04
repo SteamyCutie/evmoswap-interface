@@ -29,7 +29,7 @@ const IfoCardDetails: React.FC<IfoCardDetailsProps> = ({ poolId, ifo, publicIfoD
   const totalLPCommittedInUSD = raiseTokenPriceInUSD.times(totalLPCommitted)
   const totalCommitted = `~$${formatNumber(totalLPCommittedInUSD.toNumber())} ${
     poolId == 'poolBasic' ? `(${totalLPCommitted} EMO)` : ''
-  } (${totalCommittedPercent}%)`
+  } (${totalCommittedPercent === 'NaN' ? 0 : totalCommittedPercent}%)`
 
   // yourCommited
   const yourLPCommitted = getBalanceNumber(walletCharacteristic.amountTokenCommittedInLP, raiseToken.decimals)

@@ -8,7 +8,7 @@ import { getExplorerLink } from 'app/functions'
 import IfoActivityTimer from './IfoActivityTimer'
 import Typography from 'app/components/Typography'
 import { ClockIcon, GlobeAltIcon } from '@heroicons/react/outline'
-import { ChevronDownIcon, ChevronUpIcon, GiftIcon } from '@heroicons/react/solid'
+import { ChevronDownIcon, ChevronUpIcon, GiftIcon, NewspaperIcon } from '@heroicons/react/solid'
 import CloseIcon from 'app/components/CloseIcon'
 import { useEffect, useState } from 'react'
 import Button from 'app/components/Button'
@@ -114,14 +114,14 @@ export const IfoCurrentCard = ({
         <div className="w-full rounded rounded-t-none bg-dark-900">
           {publicIfoData.status === 'finished' && (
             <div className="flex-row items-center w-full overflow-hidden">
-              <div className="flex rounded-[50%] w-[100%] translate-y-[-50%] scale-150 bg-[#372f47] h-[100px] justify-center items-end pb-3 text-[16px] font-extrabold text-white/70">
+              <div className="flex rounded-[50%] w-[100%] translate-y-[-50%] scale-150 bg-[#372f47] h-[100px] justify-center items-end pb-4 md:pb-3 text-[12px] md:text-[16px] font-extrabold text-white/70">
                 Sale Finished!
               </div>
             </div>
           )}
           {publicIfoData.status === 'coming_soon' && (
             <div className="flex-row items-center w-full overflow-hidden">
-              <div className="flex rounded-[50%] w-[100%] translate-y-[-50%] scale-150 bg-[#472f2f] h-[100px] justify-center items-end pb-3 text-[16px] font-extrabold text-white/70">
+              <div className="flex rounded-[50%] w-[100%] translate-y-[-50%] scale-150 bg-[#472f2f] h-[100px] justify-center items-end pb-4 md:pb-3 text-[12px] md:text-[16px] font-extrabold text-white/70">
                 {Math.floor(startTime / 1000 / 3600 / 24)} days {Math.floor(((startTime / 1000) % (3600 * 24)) / 3600)}{' '}
                 hours {Math.floor(((startTime / 1000) % 3600) / 60)} minutes {Math.floor((startTime / 1000) % 60)}{' '}
                 seconds
@@ -130,7 +130,7 @@ export const IfoCurrentCard = ({
           )}
           {publicIfoData.status === 'live' && (
             <div className="flex-row items-center w-full overflow-hidden">
-              <div className="flex rounded-[50%] w-[100%] translate-y-[-50%] scale-150 bg-[#33472f] h-[100px] justify-center items-end pb-3 text-[16px] font-extrabold text-white/70">
+              <div className="flex rounded-[50%] w-[100%] translate-y-[-50%] scale-150 bg-[#33472f] h-[100px] justify-center items-end pb-4 md:pb-3 text-[12px] md:text-[16px] font-extrabold text-white/70">
                 {Math.floor(endTime / 1000 / 3600 / 24)} days {Math.floor(((endTime / 1000) % (3600 * 24)) / 3600)}{' '}
                 hours {Math.floor(((endTime / 1000) % 3600) / 60)} minutes {Math.floor((endTime / 1000) % 60)} seconds
               </div>
@@ -242,6 +242,51 @@ export const IfoCurrentCard = ({
                 </div>
               </div>
             </div>
+          </div>
+          <div className="grid md:flex items-center px-8 pb-6 gap-2 md:gap-4">
+            <div className="flex items-center space-x-2">
+              {ifo.twitterUrl && (
+                <a
+                  href={ifo.twitterUrl}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="duration-100 ease-in transform-all hover:scale-[1.05] active:scale-[0.98]"
+                >
+                  <TwitterIcon width={24} className="text-low-emphesis" />
+                </a>
+              )}
+              {ifo.articleUrl && (
+                <a
+                  href={ifo.articleUrl}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="duration-100 ease-in transform-all hover:scale-[1.05] active:scale-[0.98]"
+                >
+                  <NewspaperIcon width={24} className="text-low-emphesis" />
+                </a>
+              )}
+              {ifo.telegramUrl && (
+                <a
+                  href={ifo.telegramUrl}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="duration-100 ease-in transform-all hover:scale-[1.05] active:scale-[0.98]"
+                >
+                  <TelegramIcon width={24} className="text-low-emphesis" />
+                </a>
+              )}
+              {ifo.discordUrl && (
+                <a
+                  href={ifo.discordUrl}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="duration-100 ease-in transform-all hover:scale-[1.05] active:scale-[0.98]"
+                >
+                  <DiscordIcon width={24} className="text-low-emphesis" />
+                </a>
+              )}
+            </div>
+            <div className="text-justify text-[12px] text-gray-400">{ifo.description}</div>
           </div>
         </div>
       )}
