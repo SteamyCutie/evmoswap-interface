@@ -143,7 +143,7 @@ export default function Prisale() {
         <div className="w-1/2 h-full px-4 py-2 my-auto space-y-1 text-left rounded-lg md:py-4 sm:space-y-2 md:px-10 bg-black-russian">
           {currentTime - privateSaleStart.current < 0 ? (
             <div className="inline-block text-2xl font-bold text-white align-middle lg:text-3xl">
-              Private Sale not started
+              Private sale upcoming
             </div>
           ) : privateSaleEnd.current - currentTime > 0 ? (
             <>
@@ -152,7 +152,7 @@ export default function Prisale() {
             </>
           ) : (
             <div className="inline-block text-xl font-bold text-white align-middle md:text-2xl lg:text-3xl">
-              Private Sale ended
+              Private sale ended
             </div>
           )}
         </div>
@@ -164,7 +164,7 @@ export default function Prisale() {
       <div className="py-5 rounded-lg px-7 bg-black-russian">
         <div className="flex items-center justify-between">
           <div className="space-y-1">
-            <div className="text-sm">Private Sale</div>
+            <div className="text-sm">Private sale</div>
             <div className="text-lg text-white">Buy {prisaleToken[chainId].symbol}</div>
           </div>
           <div className="space-y-2">
@@ -183,16 +183,16 @@ export default function Prisale() {
         </div>
 
         <div className="my-2 text-sm ">
-          {i18n._(t`This private sale have whitelist limit. If you want to participate, You must register in the whitelist first.
+          {i18n._(t`This Private sale have whitelist limit. If you want to participate, You must register in the whitelist first.
           After the sales starts, the first come, first served mechanism will be adopted.`)}
         </div>
 
         <div className="my-7">
           {new Date().getTime() / 1e3 < privateSaleStart.current ? (
-            // <div>Private Sale not started</div>
+            // <div>Private sale upcoming</div>
             <></>
           ) : new Date().getTime() / 1e3 > privateSaleEnd.current ? (
-            // <div>Private Sale ended</div>
+            // <div>Private sale ended</div>
             <></>
           ) : (
             <ProgressBar
@@ -269,11 +269,11 @@ export default function Prisale() {
               )}
               {currentTime - privateSaleStart.current < 0 ? (
                 <Button color="gray" size="sm" className="h-12" disabled={true}>
-                  Private Sale not started
+                  Upcoming
                 </Button>
               ) : privateSaleEnd.current - currentTime < 0 ? (
                 <Button color="gray" size="sm" className="h-12" disabled={true}>
-                  Private Sale ended
+                  Sale ended
                 </Button>
               ) : Number(investValue) > (toggle ? nativeBalance : usdcBalance) ? (
                 <Button color="gray" size="sm" className="h-12" disabled={true}>
@@ -314,7 +314,7 @@ export default function Prisale() {
             </div>
             {new Date().getTime() / 1e3 <= privateSaleEnd.current ? (
               <Button color="gray" size="sm" className="h-12 opacity-90" disabled={true}>
-                Private Sale is not over
+                Private sale is not over
               </Button>
             ) : claimableToken.current ? (
               <Button color="blue" size="sm" className="h-12 opacity-90" onClick={handleClaim}>
@@ -333,17 +333,17 @@ export default function Prisale() {
         </div>
 
         {/* <div className="mt-11">
-          <div className="mb-5 text-base text-white">* Private Sale description</div>
+          <div className="mb-5 text-base text-white">* Private sale description</div>
           <div className="pl-2 space-y-3 text-sm text-gray-500">
-            <div>1, The Private Sale price: 0.12 USDC/{prisaleToken[chainId].symbol}</div>
+            <div>1, The Private sale price: 0.12 USDC/{prisaleToken[chainId].symbol}</div>
             <div>2, The invest amount: Min - $2500, Max - $25,000 per wallet address.</div>
-            <div>3, Private Sale time: Nov 8th @ 3pm UTC - Nov 10th @ 3pm UTC, total of 5,400,000 tokens.</div>
+            <div>3, Private sale time: Nov 8th @ 3pm UTC - Nov 10th @ 3pm UTC, total of 5,400,000 tokens.</div>
             <div>
               4, All tokens will be linearly unlocked within 1 year and can be claimed after unlocking (From the 7th day
               after launched).
             </div>
             <div>5, Participation method: whitelist allowed, the first come, first served purchase method.</div>
-            <div className="overflow-x-auto">6, Private Sale contract: 0xD5bDcd9477ac5F8Bd79833f79F64AcAdA709117f</div>
+            <div className="overflow-x-auto">6, Private sale contract: 0xD5bDcd9477ac5F8Bd79833f79F64AcAdA709117f</div>
           </div>
         </div> */}
       </div>

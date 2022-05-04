@@ -10,8 +10,8 @@ const ifos: Ifo[] = [
     id: 'mpad',
     address: {
       [ChainId.EVMOS]: '0xA5F673915F10276999Ab24266bF5E0846344962b',
-      [ChainId.EVMOS_TESTNET]: '0xBad35c158a3955f7aFF8c36960e24E6Bf44E3cFc', 
-      [ChainId.BSC_TESTNET]: '0xE84021fDC03FA9AF863B657F451c86FbA04118b3'
+      [ChainId.EVMOS_TESTNET]: '0x0cA9e6C79b6D58E77096f7bcDfB293F4f481bBAD', 
+      [ChainId.BSC_TESTNET]: '0xf54FCaE9BA52ffd00a3A7A6077Fdfa9BEe802859'
     },
     isActive: true,
     name: 'EMO',
@@ -19,20 +19,20 @@ const ifos: Ifo[] = [
       saleAmount: '4,500,000',
       raiseAmount: '$450,000',
       emoToBurn: '$0.00',
-      distributionRatio: 1,
+      distributionRatio: 0.99,
       raiseToken: USDC,
     },
     poolUnlimited: {
       saleAmount: '1',
       raiseAmount: '$1.00',
       emoToBurn: '$0.00',
-      distributionRatio: 0,
+      distributionRatio: 0.01,
       raiseToken: USDC,
     },
     offerToken: {
       [ChainId.EVMOS]: new Token(ChainId.EVMOS, '0x181C262b973B22C307C646a67f64B76410D19b6B', 18, 'EMO', 'EvmoSwap Token'),
-      [ChainId.EVMOS_TESTNET]: new Token(ChainId.EVMOS_TESTNET, '0x15a2E30D2Dfd13a5DEeBdF31d19d73B7494E45e8', 18, 'MPAD', 'LaunchPad Mock'),
-      [ChainId.BSC_TESTNET]: new Token(ChainId.BSC_TESTNET, '0x2fe5d73edC7BA958CaF7eA1bDb700Ac9821e136d', 18, 'MPAD', 'LaunchPad Mock'),
+      [ChainId.EVMOS_TESTNET]: new Token(ChainId.EVMOS_TESTNET, '0xA45Ce92c009248372dFfe9177c705a1F9561Beaf', 18, 'MPAD', 'LaunchPad Mock'),
+      [ChainId.BSC_TESTNET]: new Token(ChainId.BSC_TESTNET, '0x3094A01FC000a38c1996fE6c17E92AADa0e585A5', 18, 'MPAD', 'LaunchPad Mock'),
     },
     releaseTimestamp: 1646922000,
     claimDelayTime: 10800, //delay 3 hours

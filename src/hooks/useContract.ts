@@ -22,7 +22,6 @@ import {
 import { AddressZero } from '@ethersproject/constants'
 import BAR_ABI from '../constants/abis/bar.json'
 import BENTOBOX_ABI from '../constants/abis/bentobox.json'
-import BORING_HELPER_ABI from '../constants/abis/boring-helper.json'
 import CHAINLINK_ORACLE_ABI from '../constants/abis/chainlink-oracle.json'
 import CLONE_REWARDER_ABI from '../constants/abis/clone-rewarder.json'
 import COMPLEX_REWARDER_ABI from '../constants/abis/complex-rewarder.json'
@@ -57,8 +56,7 @@ import VOTING_ESCROW_ABI from '../constants/abis/voting-escrow.json'
 import VOTING_ESCROW_AT_ABI from '../constants/abis/voting-escrow-at.json'
 import ANYSWAP_ERC20_ABI from '../constants/abis/anyswap_erc20.json'
 import EMOSVAULT_ABI from '../constants/abis/emosVault.json'
-import IFOV1_ABI from '../constants/abis/ifoV1.json'
-import IFOV2_ABI from '../constants/abis/ifoV2.json'
+import IFO_ABI from '../constants/abis/ifo.json'
 import VOTE_ABI from '../constants/abis/vote.json'
 import ZAP_ABI from '../constants/abis/zap.json'
 import FAUCET_ABI from '../constants/abis/faucet.json'
@@ -262,12 +260,8 @@ export function useEmosVaultContract(withSignerIfPossible?: boolean): Contract |
   return useContract(EMOSVAULT_ADDRESS[chainId], EMOSVAULT_ABI, withSignerIfPossible)
 }
 
-export function useIfoV1Contract(tokenAddress?: string, withSignerIfPossible?: boolean): Contract | null {
-  return useContract(tokenAddress, IFOV1_ABI, withSignerIfPossible)
-}
-
-export function useIfoV2Contract(tokenAddress?: string, withSignerIfPossible?: boolean): Contract | null {
-  return useContract(tokenAddress, IFOV2_ABI, withSignerIfPossible)
+export function useIfoContract(tokenAddress?: string, withSignerIfPossible?: boolean): Contract | null {
+  return useContract(tokenAddress, IFO_ABI, withSignerIfPossible)
 }
 
 export function useVotingContract(withSignerIfPossible?: boolean): Contract | null {
@@ -289,7 +283,6 @@ export function usePrivateSaleContract(withSignerIfPossible?: boolean): Contract
   const { chainId } = useActiveWeb3React()
   return useContract(PRIVATE_SALE_ADDRESS[chainId], PRIATESALE_ABI, withSignerIfPossible)
 }
-
 
 export function useFeeDistributorContract(withSignerIfPossible?: boolean): Contract | null {
   const { chainId } = useActiveWeb3React()

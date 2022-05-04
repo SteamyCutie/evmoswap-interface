@@ -8,6 +8,7 @@ import { useMemo } from 'react'
 import { getStatus } from './helpers'
 import { useWeb3React } from '@web3-react/core'
 import { ChainId } from '@evmoswap/core-sdk'
+import { useEmoUsdcPrice } from 'app/features/farm/hooks'
 import { GetEMOPrice } from 'app/features/staking/useStaking'
 
 const TAX_PRECISION = FixedNumber.from(10000000000)
@@ -25,7 +26,7 @@ const formatPool = (pool) => ({
 export function useGetPublicIfoData(ifo: Ifo) {
   const { chainId } = useWeb3React()
   const { address, releaseTimestamp } = ifo
-  const emoPrice = new BigNumber(GetEMOPrice())
+  const cronaPrice = new BigNumber(GetEMOPrice())
   const usdcPrice = BIG_ONE
   const currentTime = Date.parse(new Date().toString()) / 1000
 
@@ -65,8 +66,9 @@ export function useGetPublicIfoData(ifo: Ifo) {
   const status = getStatus(currentTime, startTimeNum, endTimeNum)
   const totalSaleTimes = endTimeNum - startTimeNum
   const timesRemaining = endTimeNum - currentTime
+  const allowHaverst = allowClaim ? allowClaim[0] : false
 
-  // Calculate the total progress until finished or until start
+  // // Calculate the total progress until finished or until start
   const progress =
     currentTime > startTimeNum
       ? ((currentTime - startTimeNum) / totalSaleTimes) * 100
@@ -74,7 +76,7 @@ export function useGetPublicIfoData(ifo: Ifo) {
 
   return {
     isInitialized: true,
-    // raiseToken: ifo.raiseToken[chainId ? chainId : ChainId.EVMOS],
+    // raiseToken: ifo.raiseToken[chainId ? chainId : ChainId.CRONOS],
     offerToken: ifo.offerToken[chainId ? chainId : ChainId.EVMOS],
     secondsUntilEnd: timesRemaining,
     secondsUntilStart: startTimeNum - currentTime,
@@ -82,7 +84,7 @@ export function useGetPublicIfoData(ifo: Ifo) {
       ...poolBasicFormatted,
       taxRate: 0,
       raiseToken: ifo.poolBasic.raiseToken[chainId ? chainId : ChainId.EVMOS],
-      raiseTokenPriceInUSD: emoPrice,
+      raiseTokenPriceInUSD: cronaPrice,
     },
     poolUnlimited: {
       ...poolUnlimitedFormatted,
@@ -95,7 +97,7 @@ export function useGetPublicIfoData(ifo: Ifo) {
     timesRemaining,
     startTimeNum,
     endTimeNum,
-    allowClaim,
+    allowClaim: allowHaverst,
   }
 }
 
@@ -104,7 +106,7 @@ export function useGetWalletIfoData(ifo: Ifo) {
   const { account, chainId } = useWeb3React()
   const { address } = ifo
   const ifoContract = useIfoContract(address[chainId])
-  const veEmoContract = useVotingEscrowAtContract()
+  const veCronaContract = useVotingEscrowAtContract()
 
   if (!account) {
     return {
@@ -115,6 +117,7 @@ export function useGetWalletIfoData(ifo: Ifo) {
         offeringAmountInToken: BIG_ZERO,
         refundingAmountInLP: BIG_ZERO,
         taxAmountInLP: BIG_ZERO,
+        offeringTokenTotalHarvest: BIG_ZERO,
         hasClaimed: false,
       },
       poolUnlimited: {
@@ -122,6 +125,7 @@ export function useGetWalletIfoData(ifo: Ifo) {
         offeringAmountInToken: BIG_ZERO,
         refundingAmountInLP: BIG_ZERO,
         taxAmountInLP: BIG_ZERO,
+        offeringTokenTotalHarvest: BIG_ZERO,
         hasClaimed: false,
       },
     }
@@ -130,13 +134,15 @@ export function useGetWalletIfoData(ifo: Ifo) {
   const callsData = useMemo(
     () => [
       { methodName: 'viewUserInfo', callInputs: [account, [0, 1]] }, // viewUserInfo
+      { methodName: 'userTokenStatus', callInputs: [account, [0]] }, // userTokenStatus
+      { methodName: 'userTokenStatus', callInputs: [account, [1]] }, // userTokenStatus
       { methodName: 'viewUserOfferingAndRefundingAmountsForPools', callInputs: [account, [0, 1]] }, // viewUserOfferingAndRefundingAmountsForPools
     ],
     [account]
   )
 
   const results = useSingleContractMultipleMethods(ifoContract, callsData)
-  const [{ result: userInfo }, { result: amounts }] = results
+  const [{ result: userInfo }, { result: poolBasic }, { result: poolUnlimited }, { result: amounts }] = results
 
   // Calc VeEMO
   const args = useMemo(() => {
@@ -146,14 +152,16 @@ export function useGetWalletIfoData(ifo: Ifo) {
     return [String(account), ifo.veEmoCheckPoint]
   }, [account, ifo])
 
-  const veEmo = useSingleCallResult(args ? veEmoContract : null, 'balanceOf', args)?.result
+  const veCrona = useSingleCallResult(args ? veCronaContract : null, 'balanceOf', args)?.result
 
-  // const creditLeftWithNegative = veEmo?.[0].minus(new BigNumber(userInfo?.[0][0].toString())).minus(new BigNumber(userInfo?.[0][1].toString()))
-  const creditLeftWithNegative = new BigNumber(veEmo?.[0].toString()).minus(new BigNumber(userInfo?.[0][1].toString()))
+  // const creditLeftWithNegative = veCrona?.[0].minus(new BigNumber(userInfo?.[0][0].toString())).minus(new BigNumber(userInfo?.[0][1].toString()))
+  const creditLeftWithNegative = new BigNumber(veCrona?.[0].toString()).minus(
+    new BigNumber(userInfo?.[0][1].toString())
+  )
 
-  const ifoVeEmo = {
-    veEmo: veEmo?.[0].toString(),
-    veEmoLeft: BigNumber.maximum(BIG_ZERO, creditLeftWithNegative),
+  const ifoVeCrona = {
+    veCrona: veCrona?.[0].toString(),
+    veCronaLeft: BigNumber.maximum(BIG_ZERO, creditLeftWithNegative),
   }
 
   return {
@@ -164,6 +172,7 @@ export function useGetWalletIfoData(ifo: Ifo) {
       offeringAmountInToken: new BigNumber(amounts?.[0][0][0].toString()),
       refundingAmountInLP: new BigNumber(amounts?.[0][0][1].toString()),
       taxAmountInLP: new BigNumber(amounts?.[0][0][2].toString()),
+      offeringTokenTotalHarvest: new BigNumber(poolBasic?.['offeringTokenTotalHarvest'].toString()),
       hasClaimed: userInfo?.[1][0],
     },
     poolUnlimited: {
@@ -171,8 +180,9 @@ export function useGetWalletIfoData(ifo: Ifo) {
       offeringAmountInToken: new BigNumber(amounts?.[0][1][0].toString()),
       refundingAmountInLP: new BigNumber(amounts?.[0][1][1].toString()),
       taxAmountInLP: new BigNumber(amounts?.[0][1][2].toString()),
+      offeringTokenTotalHarvest: new BigNumber(poolUnlimited?.['offeringTokenTotalHarvest'].toString()),
       hasClaimed: userInfo?.[1][1],
     },
-    ifoVeEmo,
+    ifoVeCrona,
   }
 }
