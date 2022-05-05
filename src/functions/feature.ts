@@ -33,7 +33,7 @@ const features = {
     Feature.BRIDGE,
     // Feature.BOOST,
     // Feature.GAMEFI,
-    // Feature.PRISALE,
+    Feature.PRISALE,
   ],
 
   [ChainId.EVMOS_TESTNET]: [
@@ -46,7 +46,7 @@ const features = {
     // Feature.STAKING,
     // Feature.BOOST,
     // Feature.FAUCET,
-    // Feature.PRISALE,
+    Feature.PRISALE,
   ],
 
   [ChainId.BSC_TESTNET]: [
