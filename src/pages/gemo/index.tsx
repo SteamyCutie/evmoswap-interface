@@ -24,7 +24,7 @@ export default function GEmo(): JSX.Element {
         {/* Hero */}
         <div
           className="flex-row items-center justify-between w-full p-8 space-y-2 bg-center bg-no-repeat bg-cover md:p-16 rounded-2xl md:flex bg-dark-900"
-          style={{ backgroundImage: "url('/images/gemo/GEMO-night.svg')" }}
+          style={{ backgroundImage: "url('/images/gemo/gnana-night.svg')" }}
         >
           <div className="gap-8 md:block">
             <Typography className="text-[24px] text-high-emphesis md:text-[40px]" weight={700}>
