@@ -38,8 +38,8 @@ export const IfoInfoCard = () => {
           ></div>
           <div className="grid gap-1">
             <div className="font-bold text-base md:text-lg">2 WAYS TO PARTICIPATE</div>
-            <div className="text-sm md:text-base">Option 1: Commit with BNB.</div>
-            <div className="text-sm md:text-base">Option 2: Commit with GNANA.</div>
+            <div className="text-sm md:text-base">Option 1: Commit with WEVMOS.</div>
+            <div className="text-sm md:text-base">Option 2: Commit with EMO.</div>
           </div>
         </div>
         <div className="flex space-x-6 items-center">
@@ -55,13 +55,6 @@ export const IfoInfoCard = () => {
             </div>
           </div>
         </div>
-      </div>
-      <div className="flex items-center justify-center mt-2 md:mt-8">
-        <a href={''} target="_blank" rel="noreferrer" aria-disabled={false} className="w-full md:w-1/4">
-          <Button color="gradient" className="w-full uppercase" variant="filled" disabled={false}>
-            {i18n._(t`Participate Now`)}
-          </Button>
-        </a>
       </div>
     </div>
   )

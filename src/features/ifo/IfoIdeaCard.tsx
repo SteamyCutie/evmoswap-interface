@@ -50,14 +50,14 @@ export const IfoIdeaCard = () => {
         </div>
       </div>
       <div className="grid md:flex items-center justify-center mt-2 md:mt-8 gap-4 md:gap-16">
-        <a href={''} target="_blank" rel="noreferrer" aria-disabled={false} className="w-full md:w-1/4">
+        <a href={'https://forms.gle/rg2ac5xAQKR8d6Ff6'} target="_blank" rel="noreferrer" aria-disabled={false} className="w-full md:w-1/4">
           <Button color="gradient" className="w-full uppercase px-12" variant="filled" disabled={false}>
             {i18n._(t`Become a Partner`)}
           </Button>
         </a>
         <a href={''} target="_blank" rel="noreferrer" aria-disabled={false} className="w-full md:w-1/4">
           <Button color="gradient" className="w-full uppercase" variant="filled" disabled={false}>
-            {i18n._(t`Launch your own`)}
+            {i18n._(t`Participate Now`)}
           </Button>
         </a>
       </div>
