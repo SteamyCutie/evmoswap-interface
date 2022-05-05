@@ -468,7 +468,7 @@ const GEmoUtility = () => {
             </div>
             <Link href="/ieo" passHref>
               <a target="_blank" rel="noreferrer noopenner" className="w-full">
-                <Button color="blue" variant="filled" className="uppercase transition-all duration-300">
+                <Button color="blue" variant="filled" className="uppercase">
                   Go to IEOs
                 </Button>
               </a>
