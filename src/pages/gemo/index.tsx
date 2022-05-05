@@ -7,6 +7,7 @@ import { useLingui } from '@lingui/react'
 import { ChevronRightIcon, ExclamationIcon } from '@heroicons/react/solid'
 import Typography from '../../components/Typography'
 import GEmoControl from 'app/features/gemo/GEmoControl'
+import GEmoUtility from 'app/features/gemo/GEmoUtility'
 
 export default function GEmo(): JSX.Element {
   const { i18n } = useLingui()
@@ -49,6 +50,7 @@ export default function GEmo(): JSX.Element {
         </div>
 
         <GEmoControl />
+        <GEmoUtility />
       </div>
     </Container>
   )
