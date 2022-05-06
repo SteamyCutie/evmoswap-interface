@@ -174,7 +174,7 @@ export default function Prisale() {
           <div className="flex items-center justify-between">
             <div className="space-y-1">
               <div className="text-sm">Private sale</div>
-              <div className="text-lg text-white">Buy {prisaleToken[chainId].symbol}</div>
+              <div className="text-lg text-white">Buy {prisaleToken[chainId].symbol} (Token price $0.045)</div>
             </div>
             <div className="space-y-2">
               {account && isWhitelisted.current ? (
@@ -192,8 +192,7 @@ export default function Prisale() {
           </div>
 
           <div className="my-2 text-sm ">
-            {i18n._(t`This Private sale have whitelist limit. If you want to participate, You must register in the whitelist first.
-            After the sales starts, the first come, first served mechanism will be adopted.`)}
+            {i18n._(t`Private sales are limited to whitelisted users only, while a first-come, first-served mechanism is used.`)} <a href="https://evmoswap.medium.com/announcing-private-sale-whitelist-token-sale-1ea4ee262dd6" className='text-red' target="_blank">Read more</a>
           </div>
 
           <div className="my-7">
@@ -290,7 +289,7 @@ export default function Prisale() {
                   </Button>
                 ) : lowerLimitError ? (
                   <Button color="gray" size="sm" className="h-12" disabled={true}>
-                    Please notice the limit
+                    Buy ${prisaleToken[chainId].symbol} Now
                   </Button>
                 ) : upperLimitError ? (
                   <Button color="blue" size="sm" className="h-12" onClick={() => {setshowLimitTips(true)}}>
@@ -323,7 +322,7 @@ export default function Prisale() {
               </div>
               {new Date().getTime() / 1e3 <= privateSaleEnd.current ? (
                 <Button color="gray" size="sm" className="h-12 opacity-90" disabled={true}>
-                  Private sale is not over
+                  Upcoming
                 </Button>
               ) : claimableToken.current ? (
                 <Button color="gradient" size="sm" className="h-12 opacity-90" onClick={handleClaim}>
@@ -331,7 +330,7 @@ export default function Prisale() {
                 </Button>
               ) : vestingStart.current == 0 ? (
                 <Button color="gray" size="sm" className="h-12 opacity-90" disabled={true}>
-                  Vesting is not set
+                  Vesting not start
                 </Button>
               ) : (
                 <Button color="gray" size="sm" className="h-12 opacity-90" disabled={true}>
