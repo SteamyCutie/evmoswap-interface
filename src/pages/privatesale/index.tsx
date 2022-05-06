@@ -166,9 +166,13 @@ export default function Prisale() {
                 <div className="text-base md:text-lg">Remaining time</div>
                 <div className="text-sm font-bold text-white md:text-xl lg:text-2xl">{`${remainingDay} Day ${remainingHour} Hour ${remainingMin} Mins`}</div>
               </>
-            ) : (
+            ) : privateSaleEnd.current && (privateSaleEnd.current - currentTime < 0) ? (
               <div className="inline-block text-xl font-bold text-white align-middle md:text-2xl lg:text-3xl">
                 Private sale ended
+              </div>
+            ) : (
+              <div className="inline-block text-xl font-bold text-white align-middle md:text-2xl lg:text-3xl">
+                <Dots>Loading</Dots>
               </div>
             )}
           </div>
