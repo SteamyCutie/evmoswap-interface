@@ -55,6 +55,7 @@ export default function Prisale() {
 
   const isWhitelisted = useRef(false)
   const purchasedToken = useRef(0)
+  const claimedToken = useRef(0)
   const claimableToken = useRef(0)
   const minTokensAmount = useRef([0, 0])
   const maxTokensAmount = useRef([0, 0])
@@ -80,6 +81,7 @@ export default function Prisale() {
     privateSaleEnd.current = Number(await prisaleContract.privateSaleEnd())
     isWhitelisted.current = await prisaleContract.whitelisted(account)
     purchasedToken.current = Number(await prisaleContract.purchased(account))
+    claimedToken.current = Number(await prisaleContract.claimed(account))
     claimableToken.current = Number(await prisaleContract.claimable(account))
     vestingStart.current = Number(await prisaleContract.vestingStart())
     total_purchased.current = [Number(await prisaleContract.privateSaleTokenPool()), Number(await prisaleContract.purchasedPrivateSale())]
@@ -316,16 +318,16 @@ export default function Prisale() {
                 <div className="text-base">{(purchasedToken.current / 1e18).toFixed()}(${(purchasedToken.current / 1e18 * (tokenPrice.current / 1e6)).toFixed()})</div>
               </div>
               <div className="rounded-lg border-[1px] border-gray-700 py-2 space-y-1 px-4">
-                <div className="text-base text-white">{i18n._(t`Claimable ${prisaleToken[chainId].symbol}`)}</div>
-                <div className="text-base">{claimableToken.current / 1e18}</div>
+                <div className="text-base text-white">{i18n._(t`Unclaimed ${prisaleToken[chainId].symbol}`)}</div>
+                <div className="text-base">{(purchasedToken.current / 1e18 - claimedToken.current / 1e18).toFixed(2)}</div>
               </div>
               {new Date().getTime() / 1e3 <= privateSaleEnd.current ? (
                 <Button color="gray" size="sm" className="h-12 opacity-90" disabled={true}>
                   Private sale is not over
                 </Button>
               ) : claimableToken.current ? (
-                <Button color="blue" size="sm" className="h-12 opacity-90" onClick={handleClaim}>
-                  Claim Your {prisaleToken[chainId].symbol}
+                <Button color="gradient" size="sm" className="h-12 opacity-90" onClick={handleClaim}>
+                  Claim Your ${prisaleToken[chainId].symbol}s ({(claimableToken.current / 1e18).toFixed(2)})
                 </Button>
               ) : vestingStart.current == 0 ? (
                 <Button color="gray" size="sm" className="h-12 opacity-90" disabled={true}>
@@ -338,21 +340,6 @@ export default function Prisale() {
               )}
             </div>
           </div>
-
-          {/* <div className="mt-11">
-            <div className="mb-5 text-base text-white">* Private sale description</div>
-            <div className="pl-2 space-y-3 text-sm text-gray-500">
-              <div>1, The Private sale price: 0.12 USDC/{prisaleToken[chainId].symbol}</div>
-              <div>2, The invest amount: Min - $2500, Max - $25,000 per wallet address.</div>
-              <div>3, Private sale time: Nov 8th @ 3pm UTC - Nov 10th @ 3pm UTC, total of 5,400,000 tokens.</div>
-              <div>
-                4, All tokens will be linearly unlocked within 1 year and can be claimed after unlocking (From the 7th day
-                after launched).
-              </div>
-              <div>5, Participation method: whitelist allowed, the first come, first served purchase method.</div>
-              <div className="overflow-x-auto">6, Private sale contract: 0xD5bDcd9477ac5F8Bd79833f79F64AcAdA709117f</div>
-            </div>
-          </div> */}
         </div>
       </div>
     </Container>
