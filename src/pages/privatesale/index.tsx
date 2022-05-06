@@ -28,6 +28,8 @@ import { PRIVATE_SALE_ADDRESS } from 'app/constants/addresses'
 import { useETHBalances } from 'app/state/wallet/hooks'
 import Head from 'next/head'
 import Container from 'app/components/Container'
+import BigNumber from 'bignumber.js'
+import { BIG_ONE, BIG_TEN } from 'app/functions/bigNumber'
 
 const tabStyle = 'flex justify-center items-center h-full w-full rounded-lg cursor-pointer text-sm md:text-base'
 const activeTabStyle = `${tabStyle} text-high-emphaise font-bold bg-dark-900`
@@ -102,7 +104,11 @@ export default function Prisale() {
     setPendingTx(true)
     try {
       const args = [USDC[chainId].address, Number(investValue) * 10 ** 6]
-      const tx = await prisaleContract.purchaseTokenWithCoin(...args)
+
+      const gasLimit = await prisaleContract.estimateGas.purchaseTokenWithCoin(...args)
+      const tx = await prisaleContract.purchaseTokenWithCoin(...args, {
+        gasLimit: gasLimit.mul(150).div(100),
+      })
       addTransaction(tx, {
         summary: `${i18n._(t`Buy`)} ${prisaleToken[chainId].symbol}`,
       })
@@ -115,8 +121,9 @@ export default function Prisale() {
   const handleBuyTokenWithNATIVE = async () => {
     setPendingTx(true)
     try {
-      const args = []
-      const tx = await prisaleContract.purchaseTokenWithETH(...args)
+      const msgValue = new BigNumber(investValue).times(BIG_TEN.pow(18)).toString()
+      const tx = await prisaleContract.purchaseTokenWithETH({value: msgValue})
+
       addTransaction(tx, {
         summary: `${i18n._(t`Buy`)} ${prisaleToken[chainId].symbol}`,
       })
