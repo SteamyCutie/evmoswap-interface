@@ -179,7 +179,7 @@ export const STABLE_POOLS: StableAddressMap = {
             pooledTokens: [
                 {
                     index: 1,
-                    address: "0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48",
+                    address: "0x9b5bb7F5BE680843Bcd3B54D4E5C6eE889c124Df",
                     name: "USD Coin",
                     symbol: "USDC",
                     decimals: 6,
@@ -190,7 +190,7 @@ export const STABLE_POOLS: StableAddressMap = {
                     }
                 }, {
                     index: 0,
-                    address: "0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48",
+                    address: "0x6456d6f7B224283f8B22F03347B58D8B6d975677",
                     name: "DAI Coin",
                     symbol: "DAI",
                     decimals: 18,
@@ -201,7 +201,7 @@ export const STABLE_POOLS: StableAddressMap = {
                     }
                 }, {
                     index: 2,
-                    address: "0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48",
+                    address: "0x648D3d969760FDabc71ea9d59c020AD899237b32",
                     name: "Tether",
                     symbol: "USDT",
                     decimals: 6,
