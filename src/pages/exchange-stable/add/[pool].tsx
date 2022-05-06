@@ -144,7 +144,6 @@ export default function Add () {
         let count = 0;
         for ( let index = 0; index < tokens.length; index++ ) {
             if ( approvals[ index ] !== ApprovalState.APPROVED ) {
-                console.log( tokens[ index ], approvals )
                 count++;
                 break;
             }
@@ -179,7 +178,7 @@ export default function Add () {
                 const approval = approvals[ index ]
 
                 if ( !amount?.greaterThan( ZERO ) ) {
-                    console.log( amount )
+
                     error = error ?? i18n._( t`Enter an amount for ${token?.symbol}` )
                     break;
                 }
