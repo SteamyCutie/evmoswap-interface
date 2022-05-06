@@ -5,7 +5,7 @@ import { Currency, CurrencyAmount, Percent, Token, ZERO } from '@evmoswap/core-s
 import React, { useCallback, useMemo, useState } from 'react'
 import TransactionConfirmationModal, { ConfirmationModalContent } from '../../../modals/TransactionConfirmationModal'
 import { calculateGasMargin, calculateSlippageAmount } from '../../../functions/trade'
-import { useExpertModeManager, useUserSlippageToleranceWithDefault } from '../../../state/user/hooks'
+import { useUserSlippageToleranceWithDefault } from '../../../state/user/hooks'
 import { AutoColumn } from '../../../components/Column'
 import { BigNumber } from '@ethersproject/bignumber'
 import Container from '../../../components/Container'
