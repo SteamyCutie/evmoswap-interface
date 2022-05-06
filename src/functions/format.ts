@@ -81,9 +81,11 @@ export function formatPercent ( percentString ) {
     }
 }
 
-export function formatNumberPercentage ( numberString: any ): string {
-    const percent = parseFloat( numberString );
-    return formatPercent( String( percent / 100 ) )
+export function formatNumberPercentage ( value: any, totalValue: any = 1 ): string {
+    const valueN = parseFloat( value );
+    const totalValueN = parseFloat( totalValue );
+    if ( valueN === 0 ) return valueN + ' %';
+    return formatPercent( String( ( 100 / totalValueN ) * valueN ) )
 }
 
 export const formatNumber = ( number: any, usd = false, scale = true, decimals = 0 ) => {
