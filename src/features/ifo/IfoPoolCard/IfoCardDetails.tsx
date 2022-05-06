@@ -73,7 +73,7 @@ const IfoCardDetails: React.FC<IfoCardDetailsProps> = ({ poolId, ifo, publicIfoD
             <div className="text-xs text-high-emphesis">{ifo[poolId].raiseAmount}</div>
           </div>
 
-          {ifo[poolId].emoToBurn !== '$0' && (
+          {ifo[poolId].emoToBurn !== '$0.00' && (
             <div className="flex justify-between gap-0.5">
               <div className="text-xs text-pink-red">EMO to burn:</div>
               <div className="text-xs text-pink-red">{ifo[poolId].emoToBurn}</div>
@@ -95,7 +95,7 @@ const IfoCardDetails: React.FC<IfoCardDetailsProps> = ({ poolId, ifo, publicIfoD
             <div className="text-xs text-high-emphesis">{ifo[poolId].raiseAmount}</div>
           </div>
 
-          {ifo[poolId].emoToBurn !== '$0' && (
+          {ifo[poolId].emoToBurn !== '$0.00' && (
             <div className="flex justify-between gap-0.5">
               <div className="text-xs text-pink-red">EMO to burn:</div>
               <div className="text-xs text-pink-red">{ifo[poolId].emoToBurn}</div>
@@ -143,7 +143,7 @@ const IfoCardDetails: React.FC<IfoCardDetailsProps> = ({ poolId, ifo, publicIfoD
             <div className="text-xs text-high-emphesis">{ifo[poolId].raiseAmount}</div>
           </div>
 
-          {ifo[poolId].emoToBurn !== '$0' && (
+          {ifo[poolId].emoToBurn !== '$0.00' && (
             <div className="flex justify-between gap-0.5">
               <div className="text-xs text-pink-red">EMO to burn:</div>
               <div className="text-xs text-pink-red">{ifo[poolId].emoToBurn}</div>

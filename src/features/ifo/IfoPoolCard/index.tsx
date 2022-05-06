@@ -39,7 +39,7 @@ const cardConfig = (
   switch (poolId) {
     case PoolIds.poolBasic:
       return {
-        title: 'Public Sale',
+        title: 'WEVMOS OFFERING',
         variant: 'blue',
         tooltip: 'Every person can only commit a limited amount, but may expect a higher return per token committed.',
       }
@@ -248,7 +248,7 @@ const IfoPoolCard: React.FC<IfoCardProps> = ({ poolId, ifo, publicIfoData, walle
       <div className={`flex flex-row justify-between px-6 py-4 items-center rounded-t-3xl item-center bg-gradient-to-b ${poolId === PoolIds.poolBasic ? "from-[#6c4999] to-[#6d4db2]" : "from-[#00707f] to-[#19778c]"}`}>
         <div className="flex flex-row items-center text-2xl font-bold text-high-emphesis">
           {config.title}
-          <QuestionHelper text={config.tooltip} />
+          {/* <QuestionHelper text={config.tooltip} /> */}
         </div>
 
         {status === 'coming_soon' && (

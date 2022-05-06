@@ -9,9 +9,9 @@ const ifos: Ifo[] = [
   {
     id: 'mpad',
     address: {
-      [ChainId.EVMOS]: '0xA5F673915F10276999Ab24266bF5E0846344962b',
-      [ChainId.EVMOS_TESTNET]: '0x0cA9e6C79b6D58E77096f7bcDfB293F4f481bBAD', 
-      [ChainId.BSC_TESTNET]: '0xf54FCaE9BA52ffd00a3A7A6077Fdfa9BEe802859'
+      [ChainId.EVMOS]: '0xe1708a1a92CBe3914D9F1115BDF3dadE58933D5e',
+      [ChainId.EVMOS_TESTNET]: '0x9A50B8d5e3fAbda824d14A1350e8d8fFB19B6f2a', 
+      [ChainId.BSC_TESTNET]: '0x95025Ffe145d0332B1Edca19c992713B3264b607'
     },
     isActive: true,
     name: 'EMO',
@@ -19,14 +19,14 @@ const ifos: Ifo[] = [
       saleAmount: '4,500,000',
       raiseAmount: '$450,000',
       emoToBurn: '$0.00',
-      distributionRatio: 0.99,
+      distributionRatio: 0.01,
       raiseToken: USDC,
     },
     poolUnlimited: {
-      saleAmount: '1',
-      raiseAmount: '$1.00',
+      saleAmount: '8,000,000',
+      raiseAmount: '$720,000.00',
       emoToBurn: '$0.00',
-      distributionRatio: 0.01,
+      distributionRatio: 1,
       raiseToken: USDC,
     },
     offerToken: {
@@ -44,7 +44,7 @@ const ifos: Ifo[] = [
     articleUrl: 'https://docs.evmoswap.org',
     description:
       'EvmoSwap is a Decentralized Autonomous Organization (DAO) that offers a full suite of tools to explore and engage with decentralized finance opportunities.',
-    tokenOfferingPrice: 0.1,
+    tokenOfferingPrice: 0.09,
     version: 2,
   },
 ]

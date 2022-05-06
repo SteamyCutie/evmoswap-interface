@@ -15,7 +15,7 @@ export const IfoInfoCard = () => {
           <div className="grid gap-1">
             <div className="font-bold text-base md:text-lg">CONTRIBUTION WINDOW</div>
             <div className="text-sm md:text-base">
-              IEOs run anywhere from 12-24 hours to ensure everyone across the globe has time to enter with ease.
+              IEOs run anywhere from 12-48 hours to ensure everyone across the globe has time to enter with ease.
             </div>
           </div>
         </div>
@@ -27,19 +27,19 @@ export const IfoInfoCard = () => {
           <div className="grid gap-1">
             <div className="font-bold text-base md:text-lg">VESTING SCHEDULE</div>
             <div className="text-sm md:text-base">
-              25% of tokens unlock immediately. The remaining 75% vest linearly over a timeframe specific to each IEO.
+              20% of tokens unlock immediately. The remaining 80% vest linearly over a timeframe specific to each IEO.
             </div>
           </div>
         </div>
         <div className="flex space-x-6 items-center">
           <div
             className="bg-dark-700 min-w-[100px] w-[100px] h-[100px] rounded-xl bg-no-repeat bg-center"
-            style={{ backgroundImage: "url('/images/ifo/bnb-gnana-dark.svg')" }}
+            style={{ backgroundImage: "url('/images/ifo/bitcoin.svg')" }}
           ></div>
           <div className="grid gap-1">
-            <div className="font-bold text-base md:text-lg">2 WAYS TO PARTICIPATE</div>
-            <div className="text-sm md:text-base">Option 1: Commit with WEVMOS.</div>
-            <div className="text-sm md:text-base">Option 2: Commit with EMO.</div>
+            <div className="font-bold text-base md:text-lg">1 WAYS TO PARTICIPATE</div>
+            <div className="text-sm md:text-base">Option 1: Commit with USDC.</div>
+            {/* <div className="text-sm md:text-base">Option 2: Commit with EMO.</div> */}
           </div>
         </div>
         <div className="flex space-x-6 items-center">

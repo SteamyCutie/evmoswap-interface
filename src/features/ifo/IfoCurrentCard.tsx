@@ -121,7 +121,7 @@ export const IfoCurrentCard = ({
           )}
           {publicIfoData.status === 'coming_soon' && (
             <div className="flex-row items-center w-full overflow-hidden">
-              <div className="flex rounded-[50%] w-[100%] translate-y-[-50%] scale-150 bg-[#472f2f] h-[100px] justify-center items-end pb-4 md:pb-3 text-[12px] md:text-[16px] font-extrabold text-white/70">
+              <div className="flex rounded-[50%] w-[100%] translate-y-[-50%] scale-150 bg-dark-800 h-[100px] justify-center items-end pb-4 md:pb-3 text-[12px] md:text-[16px] font-extrabold text-white/70">
                 {Math.floor(startTime / 1000 / 3600 / 24)} days {Math.floor(((startTime / 1000) % (3600 * 24)) / 3600)}{' '}
                 hours {Math.floor(((startTime / 1000) % 3600) / 60)} minutes {Math.floor((startTime / 1000) % 60)}{' '}
                 seconds
@@ -130,7 +130,7 @@ export const IfoCurrentCard = ({
           )}
           {publicIfoData.status === 'live' && (
             <div className="flex-row items-center w-full overflow-hidden">
-              <div className="flex rounded-[50%] w-[100%] translate-y-[-50%] scale-150 bg-[#33472f] h-[100px] justify-center items-end pb-4 md:pb-3 text-[12px] md:text-[16px] font-extrabold text-white/70">
+              <div className="flex rounded-[50%] w-[100%] translate-y-[-50%] scale-150 bg-opaque-blue h-[100px] justify-center items-end pb-4 md:pb-3 text-[12px] md:text-[16px] font-extrabold text-white/70">
                 {Math.floor(endTime / 1000 / 3600 / 24)} days {Math.floor(((endTime / 1000) % (3600 * 24)) / 3600)}{' '}
                 hours {Math.floor(((endTime / 1000) % 3600) / 60)} minutes {Math.floor((endTime / 1000) % 60)} seconds
               </div>
@@ -140,18 +140,18 @@ export const IfoCurrentCard = ({
             className={
               !publicIfoData.poolBasic || !walletIfoData.poolBasic
                 ? `grid grid-cols-1 gap-4 md:grid-cols-2 p-4 pt-0`
-                : `grid grid-cols-1 gap-4 md:grid-cols-2 p-4 pt-0`
+                : `grid grid-cols-1 gap-4 md:grid-cols-1 px-32 py-4`
             }
           >
             {/* Base sale */}
-            {publicIfoData.poolBasic && walletIfoData.poolBasic && (
+            {/* {publicIfoData.poolBasic && walletIfoData.poolBasic && (
               <IfoPoolCard
                 poolId={PoolIds.poolBasic}
                 ifo={ifo}
                 publicIfoData={publicIfoData}
                 walletIfoData={walletIfoData}
               />
-            )}
+            )} */}
 
             {/* Unlimited Sale */}
             <IfoPoolCard

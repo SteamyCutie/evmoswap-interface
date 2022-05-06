@@ -61,7 +61,7 @@ export const IfoIdeaCard = () => {
           className="w-full md:w-1/4"
         >
           <Button color="gradient" className="w-full px-12 uppercase" variant="filled" disabled={false}>
-            {i18n._(t`Become a Partner`)}
+            {i18n._(t`Apply for IEO`)}
           </Button>
         </a>
         <a

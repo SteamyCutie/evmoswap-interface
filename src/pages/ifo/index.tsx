@@ -30,7 +30,7 @@ export default function Ifo(): JSX.Element {
   const [activeTab, setActiveTab] = useState(0)
 
   return (
-    <Container id="farm-page" className="grid h-full px-2 py-4 mx-auto md:py-8 lg:py-12 gap-9" maxWidth="7xl">
+    <Container id="farm-page" className="grid h-full px-2 py-4 mx-auto md:py-8 lg:py-12 gap-9" maxWidth="5xl">
       <Head>
         <title>IEO | EvmoSwap</title>
         <meta key="description" name="description" content="Farm EvmoSwap" />
@@ -89,7 +89,7 @@ export default function Ifo(): JSX.Element {
         <IfoIdeaCard />
 
         {/* faq */}
-        <IfoQuestions ifo={activeIfo} publicIfoData={publicIfoData} />
+        {/* <IfoQuestions ifo={activeIfo} publicIfoData={publicIfoData} /> */}
       </div>
     </Container>
   )

@@ -14,7 +14,7 @@ export default function GEmo(): JSX.Element {
   const { i18n } = useLingui()
 
   return (
-    <Container id="gemo" className="grid h-full px-2 py-4 mx-auto md:py-8 lg:py-12 gap-9" maxWidth="7xl">
+    <Container id="gemo" className="grid h-full px-2 py-4 mx-auto md:py-8 lg:py-12 gap-9" maxWidth="5xl">
       <Head>
         <title>GEMO | EvmoSwap</title>
         <meta key="description" name="description" content="Farm EvmoSwap" />

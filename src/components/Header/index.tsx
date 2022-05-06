@@ -117,17 +117,7 @@ function AppBar(): JSX.Element {
                         </>
                       )}
 
-                      {chainId && featureEnabled(Feature.PRISALE, chainId) && (
-                        <Link href={'/privatesale'}>
-                          <a
-                            id={`prisale-nav-link`}
-                            className="p-2 text-baseline text-primary hover:text-high-emphesis focus:text-high-emphesis md:p-3 whitespace-nowrap"
-                          >
-                            {' '}
-                            {i18n._(t`Private sale`)}
-                          </a>
-                        </Link>
-                      )}
+                     
 
                       {chainId && featureEnabled(Feature.GAMEFI, chainId) && (
                         <NavLink href={'/gamefi'}>
@@ -160,6 +150,18 @@ function AppBar(): JSX.Element {
                             {i18n._(t`Bridges`)}
                           </a>
                         </NavLink>
+                      )}
+
+                      {chainId && featureEnabled(Feature.PRISALE, chainId) && (
+                        <Link href={'/privatesale'}>
+                          <a
+                            id={`prisale-nav-link`}
+                            className="p-2 text-baseline text-primary hover:text-high-emphesis focus:text-high-emphesis md:p-3 whitespace-nowrap"
+                          >
+                            {' '}
+                            {i18n._(t`Private sale 🚀`)}
+                          </a>
+                        </Link>
                       )}
                     </div>
                   </div>
@@ -300,6 +302,18 @@ function AppBar(): JSX.Element {
                   </Link>
                 )}
 
+                
+                {chainId && featureEnabled(Feature.BRIDGE, chainId) && (
+                  <Link href={'/bridge'}>
+                    <a
+                      id={`gamefi-nav-link`}
+                      className="p-2 text-baseline text-primary hover:text-high-emphesis focus:text-high-emphesis md:p-3 whitespace-nowrap"
+                    >
+                      {i18n._(t`Bridges`)}
+                    </a>
+                  </Link>
+                )}
+
                 {chainId && featureEnabled(Feature.PRISALE, chainId) && (
                   <Link href={'/privatesale'}>
                     <a
@@ -308,16 +322,6 @@ function AppBar(): JSX.Element {
                     >
                       {' '}
                       {i18n._(t`Private sale`)}
-                    </a>
-                  </Link>
-                )}
-                {chainId && featureEnabled(Feature.BRIDGE, chainId) && (
-                  <Link href={'/bridge'}>
-                    <a
-                      id={`gamefi-nav-link`}
-                      className="p-2 text-baseline text-primary hover:text-high-emphesis focus:text-high-emphesis md:p-3 whitespace-nowrap"
-                    >
-                      {i18n._(t`Bridges`)}
                     </a>
                   </Link>
                 )}
