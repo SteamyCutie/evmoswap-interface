@@ -267,17 +267,15 @@ export default function Add () {
                 <div className="flex items-center justify-start gap-3">
                     <div className="text-xl font-bold md:text-2xl text-high-emphesis">{ minToMint?.toSignificant( 6 ) }</div>
                     <div className="grid grid-flow-col gap-2">
+                        <div className="text-lg font-medium md:text-2xl text-high-emphesis">
+                            { lpToken?.symbol }
+                        </div>
                     </div>
-                </div>
-                <div className="text-lg font-medium md:text-2xl text-high-emphesis">
-                    { lpToken?.symbol }
-                    &nbsp;{ i18n._( t`Tokens` ) }
                 </div>
                 <div className="pt-3 text-xs italic text-secondary">
                     { i18n._( t`Output is estimated. If the price changes by more than ${allowedSlippage.toSignificant(
                         4
-                    )}% your transaction
-            will revert.`) }
+                    )}% your transaction will revert.` ) }
                 </div>
             </div>
         )
@@ -443,6 +441,7 @@ export default function Add () {
                                                 !isValid
                                             }
                                             error={ !isValid }
+                                            className={ !isValid ? 'bg-red-600' : '' }
                                         >
                                             { error ?? i18n._( t`Confirm Adding Liquidity` ) }
                                         </ButtonError>

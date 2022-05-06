@@ -14,10 +14,8 @@ function ApproveToken ( { currencyAmount, spender, onApprovalChange, ...rest }: 
 } & ButtonProps ): JSX.Element {
 
     const [ approval, approveCallback ] = useApproveCallback( currencyAmount, spender )
-    console.log( approval )
     useEffect( () => {
         if ( onApprovalChange ) {
-            console.log( approval )
             onApprovalChange( approval );
         }
     }, [ approval ] )

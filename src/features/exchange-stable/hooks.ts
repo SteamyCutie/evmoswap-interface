@@ -122,7 +122,7 @@ export function useStableTokenToMint ( poolAddress: string, amounts: string[] | 
         } )
     }, [ amounts ] )
 
-    const amountToRecieve = useSingleCallResult( contract, "calculateTokenAmount", account ? [ account, amountsBN, String( deposit ) ] : undefined )
+    const amountToRecieve = useSingleCallResult( contract, "calculateTokenAmount", [ account, amountsBN, String( deposit ) ] )
     return amountToRecieve?.result?.[ 0 ];
 }
 

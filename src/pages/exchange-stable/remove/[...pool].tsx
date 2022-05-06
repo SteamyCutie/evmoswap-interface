@@ -166,7 +166,7 @@ export default function Add () {
                 error = i18n._( t`Insufficient ${lpToken?.symbol} balance` )
             } else if ( amount && singleMode && poolBalances && Number( amount.toExact() ) > Number( poolBalances[ selectTokenIndex ].toExact() ) ) {
 
-                error = i18n._( t`Exceeds available` )
+                error = i18n._( t`Exceeds available - use 'Max'` )
             } else if ( amount && amount.greaterThan( ZERO ) && approval !== ApprovalState.APPROVED ) {
 
                 error = i18n._( t`Requires ${lpToken?.symbol} approval` )
@@ -449,7 +449,7 @@ export default function Add () {
                                 { !account ? (
                                     <Web3Connect size="lg" color="blue" className="w-full" />
                                 ) : (
-                                    <div className="grid grid-cols-2 gap-4">
+                                    <div className="grid grid-rows gap-4 md:grid-cols-2">
                                         <ButtonConfirmed
                                             onClick={ approveCallback }
                                             confirmed={ approval === ApprovalState.APPROVED }
@@ -469,6 +469,7 @@ export default function Add () {
                                             } }
                                             disabled={ !isValid }
                                             error={ !isValid && !!parsedAmount }
+                                            className={ !isValid ? 'bg-red-600' : '' }
                                         >
                                             { error || i18n._( t`Remove` ) }
                                         </ButtonError>
