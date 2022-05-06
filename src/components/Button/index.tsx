@@ -61,29 +61,36 @@ export interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElemen
     ref?: React.Ref<HTMLButtonElement>
 }
 
-function Button ( {
-    children,
-    className = undefined,
-    color = 'default',
-    size = 'default',
-    variant = 'filled',
-    ...rest
-}: ButtonProps ): JSX.Element {
-    return (
-        <button
-            className={ classNames(
-                VARIANT[ variant ][ color ],
-                variant !== 'empty' && SIZE[ size ],
-                'rounded disabled:cursor-not-allowed focus:outline-none',
-                // 'rounded focus:outline-none focus:ring disabled:opacity-50 disabled:cursor-not-allowed font-medium',
-                className
-            ) }
-            { ...rest }
-        >
-            { children }
-        </button>
-    )
-}
+
+const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
+    (
+        {
+            children,
+            className = '',
+            color = 'default',
+            size = 'default',
+            variant = 'filled',
+            ...rest
+        },
+        ref
+    ) => {
+        return (
+            <button
+                ref={ ref }
+                className={ classNames(
+                    VARIANT[ variant ][ color ],
+                    variant !== 'empty' && SIZE[ size ],
+                    'rounded disabled:cursor-not-allowed focus:outline-none',
+                    // 'rounded focus:outline-none focus:ring disabled:opacity-50 disabled:cursor-not-allowed font-medium',
+                    className
+                ) }
+                { ...rest }
+            >
+                { children }
+            </button>
+        )
+    }
+)
 
 export default Button
 
