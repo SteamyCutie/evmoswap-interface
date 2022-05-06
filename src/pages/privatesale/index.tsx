@@ -192,7 +192,7 @@ export default function Prisale() {
           </div>
 
           <div className="my-2 text-sm ">
-            {i18n._(t`Private sales are limited to whitelisted users only, while a first-come, first-served mechanism is used.`)} <a href="https://evmoswap.medium.com/announcing-private-sale-whitelist-token-sale-1ea4ee262dd6" className='text-red' target="_blank">Read more</a>
+            {i18n._(t`Private sales are limited to whitelisted users only, while a first-come, first-served mechanism is used.`)} <a href="https://evmoswap.medium.com/announcing-private-sale-whitelist-token-sale-1ea4ee262dd6" className='text-red' target="_blank" rel="noreferrer" >Read more</a>
           </div>
 
           <div className="my-7">
