@@ -45,7 +45,7 @@ const cardConfig = (
       }
     case PoolIds.poolUnlimited:
       return {
-        title: 'USDC OFFERING',
+        title: 'Public sale',
         variant: 'violet',
         tooltip: 'No limits on the amount you can commit. Additional fee applies when claiming.',
       }

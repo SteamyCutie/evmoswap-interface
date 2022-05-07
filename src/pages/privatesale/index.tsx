@@ -253,7 +253,7 @@ export default function Prisale() {
                   }`}
                   onClick={() => setToggle(false)}
                 >
-                  Use USDC
+                  Use madUSDC
                 </div>
               </div>
               <div className="flex justify-between gap-1 px-1">

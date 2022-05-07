@@ -28,7 +28,7 @@ const features = {
     // Feature.ZAP,
     // // Feature.MIGRATE,
     // // Feature.ANALYTICS,
-    // Feature.IFO,
+    Feature.IFO,
     // Feature.STAKING,
     Feature.BRIDGE,
     // Feature.BOOST,
