@@ -99,8 +99,9 @@ export default function Add () {
         const amounts: CurrencyAmount<Currency>[] | undefined[] = new Array( tokensInput.length );
         tokensInput.map( ( typedValue, index ) => {
             amounts[ index ] = tryParseAmount(
-                typedValue,
-                tokens[ index ]
+                ( !typedValue || typedValue === "" ) ? "0" : typedValue,
+                tokens[ index ],
+                true
             )
         } )
         return amounts;
@@ -157,6 +158,7 @@ export default function Add () {
     const checkError = () => {
 
         let error: string | undefined
+        let zeroCount = 0;
 
         if ( !account ) {
             error = i18n._( t`Connect Wallet` )
@@ -179,8 +181,7 @@ export default function Add () {
 
                 if ( !amount?.greaterThan( ZERO ) ) {
 
-                    error = error ?? i18n._( t`Enter an amount for ${token?.symbol}` )
-                    break;
+                    zeroCount++;
                 }
 
                 if ( amount && balance.lessThan( amount ) ) {
@@ -194,6 +195,11 @@ export default function Add () {
                 }
 
             }
+
+        if ( zeroCount >= tokens.length ) {
+
+            error = error ?? i18n._( t`Enter an amount` )
+        }
 
         return error;
 
@@ -279,7 +285,7 @@ export default function Add () {
             </div>
         )
     }
-
+    console.log( parsedAmounts )
     const modalBottom = () => {
         return (
             <ConfirmAddStableModalBottom
