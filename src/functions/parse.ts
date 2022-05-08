@@ -14,7 +14,7 @@ export function tryParseAmount<T extends Currency> ( value?: string, currency?: 
     }
     try {
         const typedValueParsed = parseUnits( value, currency.decimals ).toString()
-        if ( allowZero === true ) {
+        if ( typedValueParsed !== '0' || ( typedValueParsed == '0' && allowZero === true ) ) {
             return CurrencyAmount.fromRawAmount( currency, JSBI.BigInt( typedValueParsed ) )
         }
     } catch ( error ) {
