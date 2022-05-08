@@ -140,7 +140,7 @@ export const IfoCurrentCard = ({
             className={
               !publicIfoData.poolBasic || !walletIfoData.poolBasic
                 ? `grid grid-cols-1 gap-4 md:grid-cols-2 p-4 pt-0`
-                : `grid grid-cols-1 gap-4 md:grid-cols-1 px-32 py-4`
+                : `grid grid-cols-1 gap-4 md:grid-cols-1 p-4 md:px-32 py-4`
             }
           >
             {/* Base sale */}
@@ -164,7 +164,7 @@ export const IfoCurrentCard = ({
             {/* ifo info */}
 
             <div
-              className="hidden flex-col px-4 space-y-8 rounded-r pt-14 bg-dark-800"
+              className="flex-col hidden px-4 space-y-8 rounded-r pt-14 bg-dark-800"
               {...{
                 style: {
                   backgroundImage: `url("/images/ifo/${ifo.id}-bg.png")`,
@@ -243,7 +243,7 @@ export const IfoCurrentCard = ({
               </div>
             </div>
           </div>
-          <div className="grid md:flex items-center px-8 pb-6 gap-2 md:gap-4">
+          <div className="grid items-center gap-2 px-8 pb-6 md:flex md:gap-4">
             <div className="flex items-center space-x-2">
               {ifo.twitterUrl && (
                 <a
