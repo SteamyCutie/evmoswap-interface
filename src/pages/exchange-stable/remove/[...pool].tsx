@@ -257,7 +257,7 @@ export default function Add () {
                         ( singleMode ? [ minToMints[ selectTokenIndex ] ] : minToMints ).map( ( estimate, index ) => {
                             const notLastIndex = singleMode ? false : index !== ( minToMints.length - 1 )
                             return (
-                                <>
+                                <React.Fragment key={ index }>
                                     <div className="flex items-center justify-between">
                                         <div className="flex items-center gap-3">
                                             <CurrencyLogo currency={ estimate.currency } size={ 48 } />
@@ -271,7 +271,9 @@ export default function Add () {
                                         <div className="ml-3 mr-3 min-w-[24px]">
                                             <Plus size={ 24 } />
                                         </div>
-                                    }</> )
+                                    }
+                                </React.Fragment>
+                            )
                         } )
                     }
                 </div>
