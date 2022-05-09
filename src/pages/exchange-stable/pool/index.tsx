@@ -11,7 +11,7 @@ import { useActiveWeb3React } from '../../../services/web3'
 import { useLingui } from '@lingui/react'
 import { STABLE_POOLS } from 'app/constants/pools'
 import StablePool from 'app/features/exchange-stable/components/StablePool'
-import PoolsNav from 'app/features/exchange-stable/components/PoolsNav'
+import PoolsNav from 'app/features/exchange-stable/components/StablePoolsNav'
 
 const alert = {
     title: "Stable AMM Liquidity Provider Rewards",

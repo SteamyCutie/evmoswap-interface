@@ -21,7 +21,7 @@ import { useLingui } from '@lingui/react'
 import { useRouter } from 'next/router'
 import { useTokenBalancesWithLoadingIndicator } from '../../../state/wallet/hooks'
 import { useV2Pairs } from '../../../hooks/useV2Pairs'
-import PoolsNav from 'app/features/exchange-stable/components/PoolsNav'
+import PoolsNav from 'app/features/exchange-stable/components/StablePoolsNav'
 
 export default function Pool () {
     const { i18n } = useLingui()
