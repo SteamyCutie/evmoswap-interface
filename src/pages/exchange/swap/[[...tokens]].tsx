@@ -136,7 +136,7 @@ export default function Swap () {
 
     const trade = showWrap ? undefined : ( isStableSwap ? stableTrade : v2Trade );
 
-    const swapInputError = standardInputError ?? stableInputError;
+    const swapInputError = isStableSwap ? ( standardInputError ?? stableInputError ) : standardInputError;
 
     const parsedAmount = isStableSwap ? stableParsedAmount : standardParsedAmount;
 
