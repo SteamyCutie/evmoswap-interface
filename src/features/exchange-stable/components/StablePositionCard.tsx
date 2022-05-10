@@ -1,18 +1,10 @@
-import { Currency, TradeType, Trade as V2Trade, Percent, CurrencyAmount, Token, computePriceImpact, JSBI } from '@evmoswap/core-sdk'
-import React, { ReactNode, useMemo } from 'react'
+import { Currency, CurrencyAmount } from '@evmoswap/core-sdk'
+import React, { } from 'react'
 import { t } from '@lingui/macro'
 import { useLingui } from '@lingui/react'
 import { RowBetween } from 'app/components/Row'
 import QuestionHelper from 'app/components/QuestionHelper'
-import FormattedPriceImpact from 'app/features/swap/FormattedPriceImpact'
-import { classNames, computeFiatValuePriceImpact, formatBalance, formatNumber, formatNumberPercentage, formatPercent } from 'app/functions'
-import { usePoolsInfo } from 'app/features/staking/IncentivePool/hooks'
-import { useStablePool, useStablePoolInfo, useStableTokenToMint } from '../hooks'
-import { useUSDCValue } from 'app/hooks/useUSDCPrice'
-import { Field } from 'app/state/burn/actions'
-import { useWeb3React } from '@web3-react/core'
-import { STABLE_POOLS } from 'app/constants/pools'
-import { ONE_HUNDRED_PERCENT } from 'app/constants'
+import { classNames, formatNumberPercentage } from 'app/functions'
 import { sumCurrencyAmounts } from '../utils'
 
 export default function StablePositionCard ( { amounts, poolTVL, poolTokenPercentage, estimatedSLP, className = '' }:
@@ -27,14 +19,6 @@ export default function StablePositionCard ( { amounts, poolTVL, poolTokenPercen
 
     const total = Number( sumCurrencyAmounts( amounts ) )
 
-    /*const pool = STABLE_POOLS[ chainId ]?.[ poolAddress ]
-    const lpToken = chainId ? pool.lpToken : undefined;
-
-    const minReceived = useStableTokenToMint( poolAddress, amountsBN, true );
-    const baseMinReceived = useStableTokenToMint( poolAddress, unitAmountsBN, true );
-    const baseMinReceivedFormatted = Number( formatBalance( baseMinReceived || "0", lpToken.decimals, 4 ) );
-    const minReceivedFormatted = Number( formatBalance( minReceived || "0", lpToken.decimals, 4 ) );
-*/
     const shareOfPool = poolTokenPercentage;
 
     const percent = total / poolTVL

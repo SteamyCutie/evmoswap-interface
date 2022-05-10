@@ -57,7 +57,7 @@ export default function StablePools () {
                 { !account && <Web3Connect size="lg" color="blue" className="w-full" /> }
                 {
                     Object.keys( pools ).map( ( pAddress, index ) => (
-                        <StablePool key={ index } poolAddress={ pAddress } />
+                        <StablePool key={ index } poolId={ pAddress } />
                     ) )
                 }
             </div>

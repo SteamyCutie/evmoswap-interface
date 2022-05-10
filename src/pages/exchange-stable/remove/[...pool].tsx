@@ -25,8 +25,7 @@ import { useRouter } from 'next/router'
 import { useTransactionAdder } from '../../../state/transactions/hooks'
 import useTransactionDeadline from '../../../hooks/useTransactionDeadline'
 import { useWalletModalToggle } from '../../../state/application/hooks'
-import { STABLE_POOLS } from 'app/constants/pools'
-import { useStablePoolContract, useStablePoolInfo, useStableTokensInfo, useStableTokenToReceive } from 'app/features/exchange-stable/hooks'
+import { useStablePoolFromRouter, useStablePoolInfo, useStableTokensInfo, useStableTokenToReceive } from 'app/features/exchange-stable/hooks'
 import { useTokenBalance } from 'app/state/wallet/hooks'
 import { classNames, tryParseAmount } from 'app/functions'
 import { currencyAmountsToString } from 'app/features/exchange-stable/utils'
@@ -45,34 +44,17 @@ export default function Add () {
     const router = useRouter()
 
     //pool details
-    const poolParams = router.query.pool;
-    const poolId = Array.isArray( poolParams ) ? poolParams[ 0 ] : poolParams;
-    const pools = STABLE_POOLS[ chainId ];
-    const [ pool, poolAddress ] = useMemo( () => {
-        const poolAddresses = Object.keys( pools );
-        let address = poolAddresses[ 0 ];
-        let resp = pools[ address ]
-        for ( let index = 0; index < poolAddresses.length; index++ ) {
-            if ( String( pools?.[ poolAddresses[ index ] ]?.name ).toLowerCase() === String( poolId ).toLowerCase() ) {
-                address = poolAddresses[ index ]
-                resp = pools[ address ];
-                break;
-            }
-        }
-        return [ resp, address ];
-    }, [ poolId, pools ] )
-    const poolContract = useStablePoolContract( poolAddress )
-
+    const { poolId, pool, poolAddress, poolContract } = useStablePoolFromRouter( router.query.pool );
 
     //pool lp
-    const poolInfo = useStablePoolInfo( poolAddress );
+    const poolInfo = useStablePoolInfo( poolId );
     const lpToken = poolInfo?.lpToken ? { ...pool?.lpToken, ...{ address: poolInfo.lpToken } } : pool?.lpToken
     const balance = useTokenBalance( account, lpToken ? new Token( chainId, lpToken.address, lpToken.decimals, lpToken.symbol ) : undefined );
     const lpTokenCurrency = balance?.currency;
 
 
     //pool pooledTokens details
-    const poolTokensInfo = useStableTokensInfo( poolAddress, pool?.pooledTokens )
+    const poolTokensInfo = useStableTokensInfo( poolId, pool?.pooledTokens )
     const poolBalances = poolTokensInfo?.balances;
     const tokens = useMemo( () => {
         let tokens: Currency[] = [];
@@ -117,7 +99,7 @@ export default function Add () {
 
 
     //basic infrered stats
-    const estimatedSLPs = useStableTokenToReceive( poolAddress, parsedAmount, selectTokenIndex );
+    const estimatedSLPs = useStableTokenToReceive( poolId, parsedAmount, selectTokenIndex );
     const [ minToMints, minToMintsWithSlippage, amountSummaryTexts ] = useMemo( () => {
 
         let tempMints: CurrencyAmount<Currency>[] = new Array( tokens.length );
@@ -386,7 +368,7 @@ export default function Add () {
                                 />
 
                                 <AutoColumn justify="space-between" className="py-2.5">
-                                    <AutoRow justify={ 'flex-start' } style={ { padding: '0 1rem', 'justify-content': 'space-between' } }>
+                                    <AutoRow justify={ 'flex-start' } style={ { padding: '0 1rem', justifyContent: 'space-between' } }>
                                         <button className="z-10 -mt-6 -mb-6 rounded-full cursor-default bg-dark-900 p-3px">
                                             <div className="p-3 rounded-full bg-dark-800">
                                                 <ArrowDownIcon width="32px" height="32px" />

@@ -12,14 +12,14 @@ import { useStablePoolInfo, useStableTokensInfo } from "../hooks";
 
 const FEE_DECIMALS = 10;
 
-const StablePoolInfo = ( { poolAddress, showHeader = false, className = '' }: { poolAddress: string, showHeader?: boolean, className?: string } ) => {
+const StablePoolInfo = ( { poolId, showHeader = false, className = '' }: { poolId: string, showHeader?: boolean, className?: string } ) => {
 
     const { chainId } = useActiveWeb3React()
-    const pool = STABLE_POOLS[ chainId ][ poolAddress ]
+    const pool = STABLE_POOLS[ chainId ][ poolId ]
 
-    const poolInfo = useStablePoolInfo( poolAddress );
+    const poolInfo = useStablePoolInfo( poolId );
     const virtualPrice = Number( formatBalance( poolInfo?.virtualPrice || 0, pool?.lpToken?.decimals || 0 ) )
-    const poolTokensInfo = useStableTokensInfo( poolAddress, pool?.pooledTokens, virtualPrice );
+    const poolTokensInfo = useStableTokensInfo( poolId, pool?.pooledTokens, virtualPrice );
     const isLoading = poolInfo?.isLoading;
     const swapFee = Number( formatBalance( poolInfo.swapFee || "0", FEE_DECIMALS ) ) * 100;
     const totalTvl = poolTokensInfo.tvl

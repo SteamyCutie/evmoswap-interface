@@ -98,3 +98,7 @@ export const PRIVATESALE_ADDRESS: AddressMap = {
 export const EVMOSWAP_ADDRESS: AddressMap = {
     [ ChainId.BSC_TESTNET ]: '0x2fBaE0415375b505e23887B81BaBD637CcBc7f3C',
 }
+
+export const EVMOMETASWAP_ADDRESS: AddressMap = {
+    [ ChainId.BSC_TESTNET ]: '0x7f7d0E9c89f81849929EB024757F28f0b30f8628',
+}

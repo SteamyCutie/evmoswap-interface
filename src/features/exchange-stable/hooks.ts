@@ -13,8 +13,9 @@ import {
 } from '@evmoswap/core-sdk'
 import { useWeb3React } from '@web3-react/core'
 import EVMOSWAP_ABI from 'app/constants/abis/evmo-swap.json'
-import { EVMOSWAP_ADDRESS } from 'app/constants/addresses'
-import { StableTokenInfo, STABLE_POOLS } from 'app/constants/pools'
+import EVMOMETASWAP_ABI from 'app/constants/abis/evmo-meta-swap.json'
+import { EVMOMETASWAP_ADDRESS, EVMOSWAP_ADDRESS } from 'app/constants/addresses'
+import { StablePoolInfo, StableTokenInfo, STABLE_POOLS } from 'app/constants/pools'
 import { calculateGasMargin, isAddress, shortenAddress, tryParseAmount } from 'app/functions'
 import { useApproveCallback, useContract } from 'app/hooks'
 import { useToken } from 'app/hooks/Tokens'
@@ -38,17 +39,50 @@ import { i18n } from '@lingui/core'
 import { t } from '@lingui/macro'
 import { useCurrencyBalances } from 'app/state/wallet/hooks'
 
-export function useStablePoolContract ( address: string ): Contract | null {
-    return useContract( address, EVMOSWAP_ABI, true )
+export function useStablePoolContract ( poolId: string | number ): Contract | null {
+
+    const { chainId } = useWeb3React();
+    const isMeta = STABLE_POOLS[ chainId ][ poolId ].isMeta;
+    return useStableSwapContract( isMeta, true )
 }
 
-export function useStableSwapContract ( withSignerIfPossible?: boolean ): Contract | null {
+export function useStableSwapContract ( isMeta?: boolean, withSignerIfPossible?: boolean ): Contract | null {
     const { chainId } = useWeb3React()
-    return useContract( EVMOSWAP_ADDRESS[ chainId ], EVMOSWAP_ABI, withSignerIfPossible )
+    const address = isMeta ? EVMOMETASWAP_ADDRESS[ chainId ] : EVMOSWAP_ADDRESS[ chainId ];
+    const abi = isMeta ? EVMOMETASWAP_ABI : EVMOSWAP_ABI
+    return useContract( address, abi, withSignerIfPossible )
 }
 
+export function useStablePoolFromRouter ( routeParams: string | string[] ): { poolId: string; pool: StablePoolInfo; poolContract: Contract; poolAddress: string } {
+
+    const { chainId } = useWeb3React()
+    const poolSlug = Array.isArray( routeParams ) ? routeParams[ 0 ] : routeParams;
+    const pools = STABLE_POOLS[ chainId ];
+    const [ pool, poolId ] = useMemo( () => {
+        const poolIdes = Object.keys( pools );
+        let id = poolIdes[ 0 ];
+        let resp = pools[ id ]
+        for ( let index = 0; index < poolIdes.length; index++ ) {
+            if ( String( pools?.[ poolIdes[ index ] ]?.slug ).toLowerCase() === String( poolSlug ).toLowerCase() ) {
+                id = poolIdes[ index ]
+                resp = pools[ id ];
+                break;
+            }
+        }
+        return [ resp, id ];
+    }, [ poolSlug, pools ] )
+    const poolContract = useStablePoolContract( poolId )
+    const poolAddress = poolContract?.address;
+
+    return {
+        poolId,
+        pool,
+        poolContract,
+        poolAddress
+    }
+}
 // fetch pool info
-export function useStablePoolInfo ( poolAddress: string ): {
+export function useStablePoolInfo ( poolId: string ): {
     swapFee: number
     adminFee: number
     virtualPrice: number
@@ -56,7 +90,7 @@ export function useStablePoolInfo ( poolAddress: string ): {
     isLoading: boolean
     lpToken: any
 } {
-    const contract = useStablePoolContract( poolAddress )
+    const contract = useStablePoolContract( poolId )
     const resp = {
         swapFee: 0,
         adminFee: 0,
@@ -94,7 +128,7 @@ export function useStablePoolInfo ( poolAddress: string ): {
 
 // fetch pool info
 export function useStableTokensInfo (
-    poolAddress: string,
+    poolId: string,
     tokens?: StableTokenInfo[],
     virtualPrice: number = 1
 ): {
@@ -104,7 +138,7 @@ export function useStableTokensInfo (
     addresses: undefined | string[]
 } {
     const { chainId } = useWeb3React()
-    const contract = useStablePoolContract( poolAddress )
+    const contract = useStablePoolContract( poolId )
     const resp = {
         balances: undefined, //array of token balances
         total: 0,
@@ -154,12 +188,12 @@ export function useStableTokensInfo (
 
 // Estimate lp amount to receive
 export function useStableTokenToMint (
-    poolAddress: string,
+    poolId: string,
     amounts: string[] | CurrencyAmount<Currency>[],
     deposit: boolean = true
 ) {
     const { account } = useActiveWeb3React()
-    const contract = useStablePoolContract( poolAddress )
+    const contract = useStablePoolContract( poolId )
     const amountsBN =
         amounts && amounts[ 0 ] instanceof String
             ? amounts
@@ -174,9 +208,9 @@ export function useStableTokenToMint (
 }
 
 //Estimate withdrawal for pooled tokens
-export function useStableTokenToReceive ( poolAddress: string, lptAmount: CurrencyAmount<Currency>, tokenIndex?: number ) {
+export function useStableTokenToReceive ( poolId: string, lptAmount: CurrencyAmount<Currency>, tokenIndex?: number ) {
     const { account } = useActiveWeb3React()
-    const contract = useStablePoolContract( poolAddress )
+    const contract = useStablePoolContract( poolId )
 
     let callMethod = 'calculateRemoveLiquidity'
     let callData: any[] = [ account, lptAmount?.quotient?.toString() ]
@@ -190,9 +224,9 @@ export function useStableTokenToReceive ( poolAddress: string, lptAmount: Curren
     return amountToRecieve?.result?.[ 0 ]
 }
 
-export function useStablePool ( poolAddress ) {
+export function useStablePool ( poolId ) {
     const { account } = useActiveWeb3React()
-    const contract = useContract( poolAddress, EVMOSWAP_ABI )
+    const contract = useContract( poolId, EVMOSWAP_ABI )
     const calculateTokenAmount = useCallback(
         async ( amounts: BigNumberish[], deposit: boolean ) => {
             let resp: any

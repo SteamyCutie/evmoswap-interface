@@ -12,10 +12,10 @@ import StablePoolInfo from './StablePoolInfo'
 import NavLink from 'app/components/NavLink'
 
 
-const StablePool = ( { poolAddress }: { poolAddress: string } ) => {
+const StablePool = ( { poolId }: { poolId: string } ) => {
 
     const { chainId } = useActiveWeb3React()
-    const pool = STABLE_POOLS[ chainId ][ poolAddress ]
+    const pool = STABLE_POOLS[ chainId ][ poolId ]
 
     return (
         <div className="rounded bg-dark-800">
@@ -35,12 +35,12 @@ const StablePool = ( { poolAddress }: { poolAddress: string } ) => {
                 }
             >
                 <div className='p-4 space-y-4'>
-                    <StablePoolInfo poolAddress={ poolAddress } />
+                    <StablePoolInfo poolId={ poolId } />
                 </div>
 
                 {/** Action Buttons */ }
                 <div className={ classNames( 'grid gap-4', 'grid-cols-2' ) }>
-                    <NavLink href={ `/stable-pool/add/${pool.name}` }>
+                    <NavLink href={ `/stable-pool/add/${pool.slug}` }>
                         <Button
                             id="add-pool-button"
                             color="blue"
@@ -49,7 +49,7 @@ const StablePool = ( { poolAddress }: { poolAddress: string } ) => {
                             { i18n._( t`Add` ) }
                         </Button>
                     </NavLink>
-                    <NavLink href={ `/stable-pool/remove/${pool.name}` }>
+                    <NavLink href={ `/stable-pool/remove/${pool.slug}` }>
                         <Button id="add-pool-button" color="gray">
                             { i18n._( t`Remove` ) }
                         </Button>

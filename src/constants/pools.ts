@@ -132,7 +132,7 @@ export type StableTokenInfo = {
     name: string;
     symbol: string;
     decimals: number;
-    icon: {
+    icon?: {
         src: string;
         height: number;
         width: number;
@@ -147,11 +147,12 @@ export type StablePoolInfo = {
     title: string;
     lpToken: StableLpTokenInfo;
     pooledTokens: StableTokenInfo[];
+    isMeta?: boolean;
 };
 
 type StableAddressMap = {
     [ chainId: number ]: {
-        [ address: string ]: StablePoolInfo;
+        [ poolId: string ]: StablePoolInfo;
     };
 };
 export const STABLE_POOLS: StableAddressMap = {
@@ -160,7 +161,7 @@ export const STABLE_POOLS: StableAddressMap = {
     [ ChainId.EVMOS_TESTNET ]: {},
 
     [ ChainId.BSC_TESTNET ]: {
-        "0x2fBaE0415375b505e23887B81BaBD637CcBc7f3C": {
+        "0": {
             pid: 0,
             slug: "3pool",
             name: "3Pool",
@@ -182,36 +183,54 @@ export const STABLE_POOLS: StableAddressMap = {
                     address: "0x9b5bb7F5BE680843Bcd3B54D4E5C6eE889c124Df",
                     name: "USD Coin",
                     symbol: "USDC",
-                    decimals: 6,
-                    icon: {
-                        src: "https://raw.githubusercontent.com/sushiswap/icons/master/token/usdt.jpg",
-                        height: 48,
-                        width: 100
-                    }
+                    decimals: 6
                 }, {
                     index: 0,
                     address: "0x6456d6f7B224283f8B22F03347B58D8B6d975677",
                     name: "DAI Coin",
                     symbol: "DAI",
-                    decimals: 18,
-                    icon: {
-                        src: "https://raw.githubusercontent.com/sushiswap/icons/master/token/usdt.jpg",
-                        height: 48,
-                        width: 100
-                    }
+                    decimals: 18
                 }, {
                     index: 2,
                     address: "0x648D3d969760FDabc71ea9d59c020AD899237b32",
                     name: "Tether",
                     symbol: "USDT",
-                    decimals: 6,
-                    icon: {
-                        src: "https://raw.githubusercontent.com/sushiswap/icons/master/token/usdt.jpg",
-                        height: 48,
-                        width: 100
-                    }
+                    decimals: 6
                 }
             ]
+        },
+        "1": {
+            pid: 1,
+            slug: "ust-3Pool",
+            name: "UST + 3Pool",
+            title: "UST + 3Pool",
+            lpToken: {
+                address: "0x4Fc1C86b459d3899dcBe569F95A2CA91F4B006a1",
+                name: "UST 3Pool LP",
+                symbol: "UST3Pool",
+                decimals: 18,
+                icon: {
+                    src: "https://raw.githubusercontent.com/sushiswap/icons/master/token/usdt.jpg",
+                    height: 48,
+                    width: 100
+                }
+            },
+            pooledTokens: [
+                {
+                    index: 0,
+                    address: "0xf8e00573a7e669e42F4bF022497bAfca527c403F",
+                    name: "UST",
+                    symbol: "UST",
+                    decimals: 6
+                }, {
+                    index: 1,
+                    address: "0x0E094ECbF4d6A36993e3169AbEB9df5702A92797",
+                    name: "3Pool",
+                    symbol: "3Pool",
+                    decimals: 18,
+                }
+            ],
+            isMeta: true
         }
     }
 };
