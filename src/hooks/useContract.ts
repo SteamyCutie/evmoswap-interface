@@ -63,6 +63,7 @@ import FAUCET_ABI from '../constants/abis/faucet.json'
 import PRIATESALE_ABI from '../constants/abis/privatesale.json'
 import EVMOROLL_ABI from '../constants/abis/evmoroll.json'
 import MIGRATE_DASHBOARD_ABI from '../constants/abis/migrateDashboard.json'
+import TREASURY_ABI from '../constants/abis/treasury.json'
 
 import { getContract } from '../functions/contract'
 import { useActiveWeb3React } from '../services/web3'
@@ -83,6 +84,7 @@ import {
   FEE_DISTRIBUTOR_ADDRESSES,
   EVMOROLL_ADDRESS,
   MIGRATE_DASHBOARD_ADDRESS,
+  TREASURY_ADDRESS,
 } from '../constants/addresses'
 
 const UNI_FACTORY_ADDRESS = '0x5C69bEe701ef814a2B6a3EDD4B1652CB9cc5aA6f'
@@ -312,4 +314,9 @@ export function useEvmoRollContract(withSignerIfPossible?: boolean): Contract | 
 export function useMigrateDashboardContract(withSignerIfPossible?: boolean): Contract | null {
   const { chainId } = useActiveWeb3React()
   return useContract(MIGRATE_DASHBOARD_ADDRESS[chainId], MIGRATE_DASHBOARD_ABI, withSignerIfPossible)
+}
+
+export function useTreasuryContract(withSignerIfPossible?: boolean): Contract | null {
+  const { chainId } = useActiveWeb3React()
+  return useContract(TREASURY_ADDRESS[chainId], TREASURY_ABI, withSignerIfPossible)
 }
