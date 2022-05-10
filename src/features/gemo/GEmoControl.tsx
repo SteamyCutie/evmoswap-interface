@@ -4,17 +4,17 @@ import { t } from '@lingui/macro'
 import Button from 'app/components/Button'
 import Dots from 'app/components/Dots'
 import NumericalInput from 'app/components/NumericalInput'
-import { ApprovalState, useApproveCallback } from 'app/hooks'
+import { ApprovalState, useApproveCallback, useTreasuryContract } from 'app/hooks'
+import { useTransactionAdder } from 'app/state/transactions/hooks'
 import { useTokenBalance } from 'app/state/wallet/hooks'
 import { useActiveWeb3React } from 'app/services/web3'
-import pool from 'pages/exchange/pool'
-import { useState } from 'react'
-import { getAddress } from '@ethersproject/address'
+import { useCallback, useState } from 'react'
 import { tryParseAmount } from 'app/functions'
-import { POOLS } from 'app/constants/pools'
-import { EvmoSwap } from 'app/config/tokens'
+import { EvmoSwap, GEMO } from 'app/config/tokens'
 import Checkbox from 'app/components/Checkbox'
 import { ChevronRightIcon } from '@heroicons/react/solid'
+import { useBuyGemEMO, useSellGemEMO } from './useGemEMO'
+import { useSingleCallResult } from 'app/state/multicall/hooks'
 
 const GEmoControl = () => {
   const styleCard = 'grid w-full p-4 md:p-6 rounded-xl bg-dark-900/60 gap-3'
@@ -26,21 +26,56 @@ const GEmoControl = () => {
   const { account, chainId } = useActiveWeb3React()
 
   const [pendingTx, setPendingTx] = useState(false)
-  const [depositValue, setDepositValue] = useState<any>('')
-  const [returnValue, setReturnValue] = useState<any>('')
+  const [depositValue, setDepositValue] = useState<string>('')
+  const [returnValue, setReturnValue] = useState<string>('')
 
   const stakingToken = EvmoSwap[chainId]
-  const earningToken = EvmoSwap[chainId]
+  const earningToken = GEMO[chainId]
+  const treasuryContract = useTreasuryContract()
 
   const typedDepositValue = tryParseAmount(depositValue, stakingToken)
   const typedReturnValue = tryParseAmount(returnValue, earningToken)
+
   const stakeBalance = useTokenBalance(account, stakingToken)
-  const earnBalance = useTokenBalance(account, earningToken)
-  const [approvalDepositState, approveDeposit] = useApproveCallback(typedDepositValue, '')
-  const [approvalReturnState, approveReturn] = useApproveCallback(typedReturnValue, '')
+  const earnBalance = useSingleCallResult(treasuryContract, 'gEmoReserves')?.result
+
+  const [approvalDepositState, approveDeposit] = useApproveCallback(typedDepositValue, treasuryContract.address)
+  const [approvalReturnState, approveReturn] = useApproveCallback(typedReturnValue, treasuryContract.address)
+  const addTransaction = useTransactionAdder()
 
   const initMax = 50
   const [maxValue, setMaxValue] = useState(initMax)
+
+  const { handleBuy } = useBuyGemEMO()
+  const { handleSell } = useSellGemEMO()
+
+  const buy = useCallback(async () => {
+    try {
+      setPendingTx(true)
+      let tx = await handleBuy(depositValue)
+      addTransaction(tx, {
+        summary: `${i18n._(t`Convert `)} ${stakingToken?.symbol} ${i18n._(t`to `)} ${earningToken?.symbol}`,
+      })
+      setPendingTx(false)
+    } catch (e) {
+      setPendingTx(false)
+      console.warn(e)
+    }
+  }, [handleBuy, depositValue])
+
+  const sell = useCallback(async () => {
+    try {
+      setPendingTx(true)
+      let tx = await handleSell(returnValue)
+      addTransaction(tx, {
+        summary: `${i18n._(t`Convert `)} ${earningToken?.symbol} ${i18n._(t`to `)} ${stakingToken?.symbol}`,
+      })
+      setPendingTx(false)
+    } catch (e) {
+      setPendingTx(false)
+      console.warn(e)
+    }
+  }, [handleSell, returnValue])
 
   return (
     <div className="grid items-start justify-center w-full grid-cols-1 gap-4 bg-center bg-no-repeat bg-cover md:gap-0 md:grid-cols-2 rounded-2xl md:flex">
@@ -71,8 +106,8 @@ const GEmoControl = () => {
                   if (!stakeBalance?.equalTo(ZERO)) {
                     setDepositValue(
                       Number(stakeBalance?.toFixed(stakingToken?.decimals)) > maxValue
-                        ? maxValue
-                        : Number(stakeBalance?.toFixed(stakingToken?.decimals))
+                        ? maxValue.toFixed()
+                        : stakeBalance?.toFixed(stakingToken?.decimals)
                     )
                   }
                 }}
@@ -103,27 +138,15 @@ const GEmoControl = () => {
               disabled={
                 pendingTx ||
                 !typedDepositValue ||
-                Number(depositValue) > 30000 ||
+                Number(depositValue) > maxValue ||
                 stakeBalance?.lessThan(typedDepositValue)
               }
-              onClick={async () => {
-                setPendingTx(true)
-                try {
-                  // KMP decimals depend on asset, SLP is always 18
-                  // const tx = await deposit(depositValue.toBigNumber(stakingToken?.decimals))
-                  // addTransaction(tx, {
-                  // summary: `${i18n._(t`Deposit`)} ${stakingToken?.symbol}`,
-                  // })
-                } catch (error) {
-                  console.error(error)
-                }
-                setPendingTx(false)
-              }}
+              onClick={buy}
             >
               {i18n._(t`Convert`)}
             </Button>
           )}
-          <div className="mt-8 font-extrabold">Output GEMO {Number(depositValue * convertRate).toFixed(2)}</div>
+          <div className="mt-8 font-extrabold">Output GEMO {Number(Number(depositValue) * convertRate).toFixed(2)}</div>
           <div className="mb-2 text-sm font-extrabold normal-case">
             * Current max conversion is {maxValue === initMax ? initMax : 'unlimited'}
           </div>
@@ -146,8 +169,7 @@ const GEmoControl = () => {
         </div>
         <div className={styleItem}>
           <div className="mb-2 text-sm text-right normal-case">
-            {earnBalance ? Number(earnBalance?.toFixed(earningToken.decimals)).toFixed(2) : 0} {earningToken?.symbol}{' '}
-            Available
+            {earnBalance ? Number(earnBalance).toFixed(2) : 0} {earningToken?.symbol} Available
           </div>
           <div className="relative flex items-center w-full mb-4">
             <NumericalInput
@@ -161,8 +183,10 @@ const GEmoControl = () => {
                 color="blue"
                 size="xs"
                 onClick={() => {
-                  if (!earnBalance?.equalTo(ZERO)) {
-                    setReturnValue(Number(earnBalance?.toFixed(earningToken?.decimals)))
+                  if (Number(earnBalance) !== 0) {
+                    setReturnValue(Number(earnBalance).toFixed())
+                  } else {
+                    setReturnValue('')
                   }
                 }}
                 className="absolute border-0 right-4 focus:ring focus:ring-light-purple"
@@ -189,30 +213,15 @@ const GEmoControl = () => {
             <Button
               className="w-full"
               color="blue"
-              disabled={
-                pendingTx ||
-                !typedDepositValue ||
-                Number(returnValue) > 30000 ||
-                earnBalance?.lessThan(typedDepositValue)
-              }
-              onClick={async () => {
-                setPendingTx(true)
-                try {
-                  // KMP decimals depend on asset, SLP is always 18
-                  // const tx = await deposit(depositValue.toBigNumber(stakingToken?.decimals))
-                  // addTransaction(tx, {
-                  // summary: `${i18n._(t`Deposit`)} ${stakingToken?.symbol}`,
-                  // })
-                } catch (error) {
-                  console.error(error)
-                }
-                setPendingTx(false)
-              }}
+              disabled={pendingTx || !typedReturnValue || Number(earnBalance) < Number(typedReturnValue.toFixed())}
+              onClick={sell}
             >
               {i18n._(t`Return`)}
             </Button>
           )}
-          <div className="mt-8 font-extrabold">Output EMO {Number(returnValue * (1 - returnFee)).toFixed(2)}</div>
+          <div className="mt-8 font-extrabold">
+            Output EMO {Number(Number(returnValue) * (1 - returnFee)).toFixed(2)}
+          </div>
           <div className="mb-2 text-sm font-extrabold normal-case md:mb-16">*After 2% reflect fees</div>
         </div>
       </div>
