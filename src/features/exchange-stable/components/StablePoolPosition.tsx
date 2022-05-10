@@ -4,11 +4,9 @@ import Dots from 'app/components/Dots'
 import Empty from 'app/components/Empty'
 import { RowBetween } from 'app/components/Row'
 import { STABLE_POOLS } from 'app/constants/pools'
-import { classNames, formatBalance, formatPercent } from 'app/functions'
+import { classNames, formatPercent } from 'app/functions'
 import { useActiveWeb3React } from 'app/services/web3'
-import { useStablePoolInfo, useStableTokensInfo } from '../hooks'
-
-const FEE_DECIMALS = 10
+import { useStablePoolInfo } from '../hooks'
 
 const StablePoolInfo = ( {
     poolId,
@@ -22,11 +20,9 @@ const StablePoolInfo = ( {
     const pool = STABLE_POOLS[ chainId ][ poolId ]
 
     const poolInfo = useStablePoolInfo( poolId )
-    const virtualPrice = Number( formatBalance( poolInfo?.virtualPrice || 0, pool?.lpToken?.decimals || 0 ) )
-    const poolTokensInfo = useStableTokensInfo( poolId, pool?.pooledTokens, virtualPrice )
+    const poolTokensInfo = poolInfo.tokensInfo
     const isLoading = poolInfo?.isLoading
-    const swapFee = Number( formatBalance( poolInfo.swapFee || '0', FEE_DECIMALS ) ) * 100
-    const totalTvl = poolTokensInfo.tvl
+    const totalTvl = Number( poolTokensInfo?.total ) * Number( poolInfo?.virtualPrice )
     const poolTokenPercentage = totalTvl
     return (
         <>

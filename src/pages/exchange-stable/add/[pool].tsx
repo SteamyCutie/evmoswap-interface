@@ -26,7 +26,7 @@ import { useRouter } from 'next/router'
 import { useTransactionAdder } from '../../../state/transactions/hooks'
 import useTransactionDeadline from '../../../hooks/useTransactionDeadline'
 import { useWalletModalToggle } from '../../../state/application/hooks'
-import { useStablePoolFromRouter, useStableTokensInfo, useStableTokenToMint } from 'app/features/exchange-stable/hooks'
+import { useStablePoolFromRouter, useStablePoolInfo, useStableTokenToMint } from 'app/features/exchange-stable/hooks'
 import ApproveToken from 'app/features/exchange-stable/components/ApproveToken'
 import { useCurrencyBalances } from 'app/state/wallet/hooks'
 import { formatNumberPercentage, tryParseAmount } from 'app/functions'
@@ -52,17 +52,11 @@ export default function Add () {
     const lpToken = pool?.lpToken
     const lpTokenCurrency = lpToken ? new Token( chainId, lpToken.address, lpToken.decimals, lpToken.symbol ) : undefined;
 
-    //pool pooledTokens details
-    const poolTokensInfo = useStableTokensInfo( poolId, pool?.pooledTokens )
-    const poolTVL = poolTokensInfo.tvl;
-    const tokens = useMemo( () => {
-        let tokens: Currency[] = [];
-        if ( pool )
-            pool.pooledTokens.map( ( t ) => {
-                tokens[ t.index ] = new Token( chainId, poolTokensInfo?.addresses?.[ t.index ] ?? t.address, t.decimals, t.symbol, t.name )
-            } )
-        return tokens;
-    }, [ pool, poolTokensInfo.addresses, chainId ] )
+    //pool pooled Tokens details
+    const poolInfo = useStablePoolInfo( poolId )
+    const poolTokensInfo = poolInfo.tokensInfo;
+    const poolTVL = Number( poolTokensInfo.total ) * Number( poolInfo.virtualPrice )
+    const tokens = poolTokensInfo.tokens
 
 
     //get user balances for each pooled tokens

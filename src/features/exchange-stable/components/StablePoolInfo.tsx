@@ -8,9 +8,7 @@ import { RowBetween } from "app/components/Row";
 import { STABLE_POOLS } from "app/constants/pools";
 import { classNames, formatBalance, formatNumber, formatNumberPercentage, formatPercent } from "app/functions";
 import { useActiveWeb3React } from "app/services/web3";
-import { useStablePoolInfo, useStableTokensInfo } from "../hooks";
-
-const FEE_DECIMALS = 10;
+import { useStablePoolInfo } from "../hooks";
 
 const StablePoolInfo = ( { poolId, showHeader = false, className = '' }: { poolId: string, showHeader?: boolean, className?: string } ) => {
 
@@ -18,11 +16,13 @@ const StablePoolInfo = ( { poolId, showHeader = false, className = '' }: { poolI
     const pool = STABLE_POOLS[ chainId ][ poolId ]
 
     const poolInfo = useStablePoolInfo( poolId );
-    const virtualPrice = Number( formatBalance( poolInfo?.virtualPrice || 0, pool?.lpToken?.decimals || 0 ) )
-    const poolTokensInfo = useStableTokensInfo( poolId, pool?.pooledTokens, virtualPrice );
-    const isLoading = poolInfo?.isLoading;
-    const swapFee = Number( formatBalance( poolInfo.swapFee || "0", FEE_DECIMALS ) ) * 100;
-    const totalTvl = poolTokensInfo.tvl
+    const poolTokensInfo = poolInfo.tokensInfo;
+    const balances = poolTokensInfo.balances;
+    const virtualPrice = poolInfo.virtualPrice;
+    const isLoading = poolInfo.isLoading;
+    const swapFee = poolInfo.swapFee;
+    const adminFee = poolInfo.adminFee;
+    const totalTvl = Number( poolTokensInfo.total ) * Number( poolInfo.virtualPrice )
 
     return (
         <>
@@ -47,12 +47,11 @@ const StablePoolInfo = ( { poolId, showHeader = false, className = '' }: { poolI
                 </RowBetween>
                 }
                 <div className="flex flex-col w-full p-3  space-y-2 text-sm rounded text-high-emphesis">
-                    { pool.pooledTokens.map( ( pToken, index ) => {
-                        const poolBalance = poolTokensInfo?.balances?.[ pToken.index ]
+                    { balances && balances.map( ( poolBalance, index ) => {
                         const tvl = Number( poolBalance?.toExact() ) * virtualPrice;
 
                         return ( <RowBetween key={ index }>
-                            <div>{ pToken.symbol }</div>
+                            <div>{ poolBalance?.currency?.symbol }</div>
                             <div className="font-bold">
                                 { formatNumber( tvl, true, false, 4 ) }<span> ({ formatNumberPercentage( poolBalance?.toExact(), totalTvl ) })</span>
                             </div>
@@ -88,7 +87,7 @@ const StablePoolInfo = ( { poolId, showHeader = false, className = '' }: { poolI
                     </RowBetween>
                     <RowBetween>
                         <div>{ i18n._( t`Admin Fee` ) }</div>
-                        <div className="font-bold">{ formatPercent( Number( formatBalance( poolInfo.adminFee || "0", FEE_DECIMALS ) ) * 100 ) } of { formatPercent( swapFee ) }</div>
+                        <div className="font-bold">{ formatPercent( adminFee ) } of { formatPercent( swapFee ) }</div>
                     </RowBetween>
                 </div>
             </div>

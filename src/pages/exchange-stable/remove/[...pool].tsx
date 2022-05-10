@@ -25,7 +25,7 @@ import { useRouter } from 'next/router'
 import { useTransactionAdder } from '../../../state/transactions/hooks'
 import useTransactionDeadline from '../../../hooks/useTransactionDeadline'
 import { useWalletModalToggle } from '../../../state/application/hooks'
-import { useStablePoolFromRouter, useStablePoolInfo, useStableTokensInfo, useStableTokenToReceive } from 'app/features/exchange-stable/hooks'
+import { useStablePoolFromRouter, useStablePoolInfo, useStableTokenToReceive } from 'app/features/exchange-stable/hooks'
 import { useTokenBalance } from 'app/state/wallet/hooks'
 import { classNames, tryParseAmount } from 'app/functions'
 import { currencyAmountsToString } from 'app/features/exchange-stable/utils'
@@ -52,18 +52,10 @@ export default function Add () {
     const balance = useTokenBalance( account, lpToken ? new Token( chainId, lpToken.address, lpToken.decimals, lpToken.symbol ) : undefined );
     const lpTokenCurrency = balance?.currency;
 
-
-    //pool pooledTokens details
-    const poolTokensInfo = useStableTokensInfo( poolId, pool?.pooledTokens )
+    //pool pooled Tokens details
+    const poolTokensInfo = poolInfo.tokensInfo
     const poolBalances = poolTokensInfo?.balances;
-    const tokens = useMemo( () => {
-        let tokens: Currency[] = [];
-        if ( pool )
-            pool.pooledTokens.map( ( t ) => {
-                tokens[ t.index ] = new Token( chainId, poolTokensInfo?.addresses?.[ t.index ] ?? t.address, t.decimals, t.symbol, t.name )
-            } )
-        return tokens;
-    }, [ pool, poolTokensInfo.addresses, chainId ] )
+    const tokens = poolTokensInfo.tokens
 
 
 
@@ -390,9 +382,9 @@ export default function Add () {
                                                                 { i18n._( t`All Tokens` ) }
                                                             </NeonSelectItem>
                                                             {
-                                                                pool && pool.pooledTokens.map( ( token ) => {
+                                                                tokens && tokens.map( ( token, index ) => {
                                                                     return (
-                                                                        <NeonSelectItem key={ token.index } value={ token.index } onClick={ () => { setSelectedTokenIndex( token.index ) } }>
+                                                                        <NeonSelectItem key={ index } value={ index } onClick={ () => { setSelectedTokenIndex( index ) } }>
                                                                             { token.symbol }
                                                                         </NeonSelectItem>
                                                                     )
