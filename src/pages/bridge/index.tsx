@@ -23,13 +23,13 @@ const BRIDGE_DATA = [
     link: 'https://cbridge.celer.network/#/transfer',
     active: true,
   },
-  // {
-  //   name: 'Multichain',
-  //   description:
-  //     'Multichain is the ultimate Router for web3. It is an infrastructure developed for arbitrary cross-chain interactions.',
-  //   link: 'https://app.multichain.org/#/router',
-  //   active: false,
-  // },
+  {
+    name: 'Multichain',
+    description:
+      'Multichain is the ultimate Router for web3. It is an infrastructure developed for arbitrary cross-chain interactions.',
+    link: 'https://app.multichain.org/#/router',
+    active: true,
+  },
 ]
 
 export default function Bridge() {
