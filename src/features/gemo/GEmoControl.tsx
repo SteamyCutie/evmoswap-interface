@@ -25,7 +25,9 @@ const GEmoControl = () => {
 
   const { account, chainId } = useActiveWeb3React()
 
-  const [pendingTx, setPendingTx] = useState(false)
+  const [pendingConvert, setPendingConvert] = useState(false)
+  const [pendingReturn, setPendingReturn] = useState(false)
+
   const [depositValue, setDepositValue] = useState<string>('')
   const [returnValue, setReturnValue] = useState<string>('')
 
@@ -37,7 +39,6 @@ const GEmoControl = () => {
   const typedReturnValue = tryParseAmount(returnValue, earningToken)
 
   const stakeBalance = useTokenBalance(account, stakingToken)
-  // const earnBalance = (useSingleCallResult(treasuryContract, 'gEmoReserves')?.result)?.toString().toBigNumber(0).toFixed(18)
   const earnBalance = useTokenBalance(account, earningToken)
 
   const [approvalDepositState, approveDeposit] = useApproveCallback(typedDepositValue, treasuryContract.address)
@@ -52,31 +53,31 @@ const GEmoControl = () => {
 
   const buy = useCallback(async () => {
     try {
-      setPendingTx(true)
+      setPendingConvert(true)
       let tx = await handleBuy(depositValue)
       addTransaction(tx, {
         summary: `${i18n._(t`Convert `)} ${stakingToken?.symbol} ${i18n._(t`to `)} ${earningToken?.symbol}`,
       })
-      setPendingTx(false)
+      setPendingConvert(false)
     } catch (e) {
-      setPendingTx(false)
+      setPendingConvert(false)
       console.warn(e)
     }
-  }, [handleBuy, depositValue])
+  }, [handleBuy, depositValue, addTransaction, stakingToken?.symbol, earningToken?.symbol])
 
   const sell = useCallback(async () => {
     try {
-      setPendingTx(true)
+      setPendingReturn(true)
       let tx = await handleSell(returnValue)
       addTransaction(tx, {
         summary: `${i18n._(t`Convert `)} ${earningToken?.symbol} ${i18n._(t`to `)} ${stakingToken?.symbol}`,
       })
-      setPendingTx(false)
+      setPendingReturn(false)
     } catch (e) {
-      setPendingTx(false)
+      setPendingReturn(false)
       console.warn(e)
     }
-  }, [handleSell, returnValue])
+  }, [addTransaction, earningToken?.symbol, handleSell, returnValue, stakingToken?.symbol])
 
   return (
     <div className="grid items-start justify-center w-full grid-cols-1 gap-4 bg-center bg-no-repeat bg-cover md:gap-0 md:grid-cols-2 rounded-2xl md:flex">
@@ -137,14 +138,14 @@ const GEmoControl = () => {
               className="w-full"
               color="blue"
               disabled={
-                pendingTx ||
+                pendingConvert ||
                 !typedDepositValue ||
                 Number(depositValue) > maxValue ||
                 stakeBalance?.lessThan(typedDepositValue)
               }
               onClick={buy}
             >
-              {i18n._(t`Convert`)}
+              {pendingConvert ? <Dots>{i18n._(t`Pending`)}</Dots> : i18n._(t`Convert`)}
             </Button>
           )}
           <div className="mt-8 font-extrabold">Output GEMO {Number(Number(depositValue) * convertRate).toFixed(2)}</div>
@@ -170,7 +171,6 @@ const GEmoControl = () => {
         </div>
         <div className={styleItem}>
           <div className="mb-2 text-sm text-right normal-case">
-            {/* {earnBalance ? Number(earnBalance).toFixed(2) : 0} {earningToken?.symbol} Available */}
             {earnBalance ? Number(earnBalance?.toFixed(earningToken.decimals)).toFixed(2) : 0} {earningToken?.symbol}{' '}
             Available
           </div>
@@ -186,11 +186,6 @@ const GEmoControl = () => {
                 color="blue"
                 size="xs"
                 onClick={() => {
-                  // if (Number(earnBalance) !== 0) {
-                  //   setReturnValue(Number(earnBalance).toFixed())
-                  // } else {
-                  //   setReturnValue('')
-                  // }
                   if (!earnBalance?.equalTo(ZERO)) {
                     setReturnValue(earnBalance?.toFixed(earningToken?.decimals))
                   }
@@ -219,10 +214,10 @@ const GEmoControl = () => {
             <Button
               className="w-full"
               color="blue"
-              disabled={pendingTx || !typedReturnValue || Number(earnBalance) < Number(typedReturnValue.toFixed())}
+              disabled={pendingReturn || !typedReturnValue || Number(earnBalance) < Number(typedReturnValue.toFixed())}
               onClick={sell}
             >
-              {i18n._(t`Return`)}
+              {pendingReturn ? <Dots>{i18n._(t`Pending`)}</Dots> : i18n._(t`Return`)}
             </Button>
           )}
           <div className="mt-8 font-extrabold">
