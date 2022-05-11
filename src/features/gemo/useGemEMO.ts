@@ -2,17 +2,17 @@ import { useTreasuryContract } from 'app/hooks'
 import { useCallback } from 'react'
 import BigNumber from 'bignumber.js'
 
-export const buy = async (contract, amount) => {
+export const buy = async (contract, amount: string) => {
   try {
-    return contract.buy(new BigNumber(amount).toString()).then((tx) => {})
+    return contract.buy(amount.toBigNumber(18).toString()).then((tx) => {})
   } catch (err) {
     return console.warn(err)
   }
 }
 
-export const sell = async (contract, amount) => {
+export const sell = async (contract, amount: string) => {
   try {
-    return contract.sell(amount.toString()).then((tx) => {
+    return contract.sell(amount.toBigNumber(18).toString()).then((tx) => {
       return tx.hash
     })
   } catch (err) {
@@ -26,6 +26,7 @@ export const useSellGemEMO = () => {
   const handleSell = useCallback(
     async (amount: string) => {
       try {
+        console.log(amount)
         const txHash = await sell(treasuryContract, amount)
         return txHash
       } catch (e) {

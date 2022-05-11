@@ -37,7 +37,8 @@ const GEmoControl = () => {
   const typedReturnValue = tryParseAmount(returnValue, earningToken)
 
   const stakeBalance = useTokenBalance(account, stakingToken)
-  const earnBalance = useSingleCallResult(treasuryContract, 'gEmoReserves')?.result
+  // const earnBalance = (useSingleCallResult(treasuryContract, 'gEmoReserves')?.result)?.toString().toBigNumber(0).toFixed(18)
+  const earnBalance = useTokenBalance(account, earningToken)
 
   const [approvalDepositState, approveDeposit] = useApproveCallback(typedDepositValue, treasuryContract.address)
   const [approvalReturnState, approveReturn] = useApproveCallback(typedReturnValue, treasuryContract.address)
@@ -169,7 +170,9 @@ const GEmoControl = () => {
         </div>
         <div className={styleItem}>
           <div className="mb-2 text-sm text-right normal-case">
-            {earnBalance ? Number(earnBalance).toFixed(2) : 0} {earningToken?.symbol} Available
+            {/* {earnBalance ? Number(earnBalance).toFixed(2) : 0} {earningToken?.symbol} Available */}
+            {earnBalance ? Number(earnBalance?.toFixed(earningToken.decimals)).toFixed(2) : 0} {earningToken?.symbol}{' '}
+            Available
           </div>
           <div className="relative flex items-center w-full mb-4">
             <NumericalInput
@@ -183,10 +186,13 @@ const GEmoControl = () => {
                 color="blue"
                 size="xs"
                 onClick={() => {
-                  if (Number(earnBalance) !== 0) {
-                    setReturnValue(Number(earnBalance).toFixed())
-                  } else {
-                    setReturnValue('')
+                  // if (Number(earnBalance) !== 0) {
+                  //   setReturnValue(Number(earnBalance).toFixed())
+                  // } else {
+                  //   setReturnValue('')
+                  // }
+                  if (!earnBalance?.equalTo(ZERO)) {
+                    setReturnValue(earnBalance?.toFixed(earningToken?.decimals))
                   }
                 }}
                 className="absolute border-0 right-4 focus:ring focus:ring-light-purple"
