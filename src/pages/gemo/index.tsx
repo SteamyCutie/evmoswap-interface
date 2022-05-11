@@ -9,6 +9,7 @@ import Typography from '../../components/Typography'
 import GEmoControl from 'app/features/gemo/GEmoControl'
 import GEmoUtility from 'app/features/gemo/GEmoUtility'
 import GEmoFlow from 'app/features/gemo/GEmoFlow'
+import Alert from 'app/components/Alert'
 
 export default function GEmo(): JSX.Element {
   const { i18n } = useLingui()
@@ -24,7 +25,7 @@ export default function GEmo(): JSX.Element {
         {/* Hero */}
         <div
           className="flex-row items-center justify-between w-full p-8 space-y-2 bg-center bg-no-repeat bg-cover md:p-16 rounded-2xl md:flex bg-dark-900"
-          style={{ backgroundImage: "url('/images/gemo/gnana-night.svg')" }}
+          style={{ backgroundImage: "url('/images/gemo/gnana-night.png')" }}
         >
           <div className="gap-8 md:block">
             <Typography className="text-[24px] text-high-emphesis md:text-[40px]" weight={700}>
@@ -38,7 +39,7 @@ export default function GEmo(): JSX.Element {
             </a>
           </div>
         </div>
-        <div className="flex items-center justify-between gap-2 p-2 px-4 md:p-4 md:px-6 md:gap-6 bg-yellow/30 rounded-2xl">
+        {/* <div className="flex items-center justify-between gap-2 p-2 px-4 md:p-4 md:px-6 md:gap-6 bg-yellow/30 rounded-2xl">
           <ExclamationIcon className="w-1/3 md:w-auto" height={64} />
           <div className="flex-row">
             <div className="text-base font-extrabold text-center uppercase md:text-xl">Warning</div>
@@ -48,8 +49,13 @@ export default function GEmo(): JSX.Element {
             </div>
           </div>
           <ExclamationIcon className="w-1/3 md:w-auto" height={64} />
-        </div>
+        </div> */}
 
+        <Alert
+          title={i18n._(t`Gem EMO mechanism`)}
+          message={i18n._(t`Converting GEMO involves paying a 28% burn fee and a 2% reflect fee for a total cost of 30%. This means that for every 1 EMO you trade in, you will receive 0.7 GEMO.`)}
+          type="information"
+        />
         <GEmoControl />
         <GEmoUtility />
         <GEmoFlow />
