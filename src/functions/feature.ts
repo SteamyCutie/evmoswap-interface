@@ -23,7 +23,7 @@ const features = {
 
   [ChainId.EVMOS]: [
     Feature.AMM,
-    // Feature.YIELD,
+    Feature.YIELD,
     // Feature.FARMV2,
     // Feature.ZAP,
     // // Feature.MIGRATE,
@@ -31,7 +31,7 @@ const features = {
     Feature.IFO,
     // Feature.STAKING,
     Feature.BRIDGE,
-    // Feature.BOOST,
+    Feature.BOOST,
     // Feature.GAMEFI,
     Feature.PRISALE,
   ],
