@@ -15,6 +15,7 @@ import Checkbox from 'app/components/Checkbox'
 import { ChevronRightIcon } from '@heroicons/react/solid'
 import { useBuyGemEMO, useSellGemEMO } from './useGemEMO'
 import { useSingleCallResult } from 'app/state/multicall/hooks'
+import Loader from 'app/components/Loader'
 
 const GEmoControl = () => {
   const styleCard = 'grid w-full p-4 md:p-6 rounded-xl bg-dark-900/60 gap-3'
@@ -128,7 +129,10 @@ const GEmoControl = () => {
               onClick={approveDeposit}
             >
               {approvalDepositState === ApprovalState.PENDING ? (
-                <Dots>{i18n._(t`Approving`)}</Dots>
+                <div className="flex justify-center items-center space-x-2">
+                  <Loader stroke="white" />
+                  <Dots>{i18n._(t`Approving`)}</Dots>
+                </div>
               ) : (
                 i18n._(t`Approve Contract`)
               )}
@@ -145,7 +149,14 @@ const GEmoControl = () => {
               }
               onClick={buy}
             >
-              {pendingConvert ? <Dots>{i18n._(t`Pending`)}</Dots> : i18n._(t`Convert`)}
+              {pendingConvert ? (
+                <div className="flex justify-center items-center space-x-2">
+                  <Loader stroke="white" />
+                  <Dots>{i18n._(t`Confirming`)}</Dots>
+                </div>
+              ) : (
+                i18n._(t`Convert`)
+              )}
             </Button>
           )}
           <div className="mt-8 font-extrabold">Output GEMO {Number(Number(depositValue) * convertRate).toFixed(2)}</div>
@@ -217,7 +228,14 @@ const GEmoControl = () => {
               disabled={pendingReturn || !typedReturnValue || Number(earnBalance) < Number(typedReturnValue.toFixed())}
               onClick={sell}
             >
-              {pendingReturn ? <Dots>{i18n._(t`Pending`)}</Dots> : i18n._(t`Return`)}
+              {pendingReturn ? (
+                <div className="flex justify-center items-center space-x-2">
+                  <Loader stroke="white" />
+                  <Dots>{i18n._(t`Confirming`)}</Dots>
+                </div>
+              ) : (
+                i18n._(t`Return`)
+              )}
             </Button>
           )}
           <div className="mt-8 font-extrabold">

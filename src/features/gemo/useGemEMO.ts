@@ -4,7 +4,7 @@ import BigNumber from 'bignumber.js'
 
 export const buy = async (contract, amount: string) => {
   try {
-    return contract.buy(amount.toBigNumber(18).toString()).then((tx) => {})
+    return await contract.buy(amount.toBigNumber(18).toString())
   } catch (err) {
     return console.warn(err)
   }
@@ -12,9 +12,7 @@ export const buy = async (contract, amount: string) => {
 
 export const sell = async (contract, amount: string) => {
   try {
-    return contract.sell(amount.toBigNumber(18).toString()).then((tx) => {
-      return tx.hash
-    })
+    return await contract.sell(amount.toBigNumber(18).toString())
   } catch (err) {
     return console.warn(err)
   }
@@ -26,9 +24,7 @@ export const useSellGemEMO = () => {
   const handleSell = useCallback(
     async (amount: string) => {
       try {
-        console.log(amount)
-        const txHash = await sell(treasuryContract, amount)
-        return txHash
+        return await sell(treasuryContract, amount)
       } catch (e) {
         return false
       }
@@ -45,8 +41,7 @@ export const useBuyGemEMO = () => {
   const handleBuy = useCallback(
     async (amount: string) => {
       try {
-        const txHash = await buy(treasuryContract, amount)
-        return txHash
+        return await buy(treasuryContract, amount)
       } catch (e) {
         return false
       }
