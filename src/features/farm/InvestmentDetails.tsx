@@ -29,12 +29,15 @@ const InvestmentDetails = ( { farm, handleDismiss } ) => {
     const pendingReward = usePendingReward( farm )
     const canHarvest = Number( pendingReward?.amounts[ 0 ] ) > 0
 
+    const isStableFarm = farm.farmType === FarmType.STABLE;
+
     async function onHarvest () {
         setPendingTx( true )
         try {
             const tx = await harvest( farm.pid )
+            const tokensSummary = isStableFarm ? farm.name : `${farm.token0.name}/${farm.token1.name}`;
             addTransaction( tx, {
-                summary: i18n._( t`Harvest ${farm.token0.name}/${farm.token1.name}` ),
+                summary: i18n._( t`Harvest ${tokensSummary}` ),
             } )
         } catch ( error ) {
             console.error( error )
@@ -46,7 +49,7 @@ const InvestmentDetails = ( { farm, handleDismiss } ) => {
 
     return (
         <>
-            { farm.farmType !== FarmType.STABLE && <HeadlessUiModal.BorderedContent className="flex flex-col gap-2 bg-dark-1000/40">
+            { !isStableFarm && <HeadlessUiModal.BorderedContent className="flex flex-col gap-2 bg-dark-1000/40">
                 <PositionCard showUnwrapped={ true } pair={ pair } farm={ farm } />
             </HeadlessUiModal.BorderedContent>
             }
