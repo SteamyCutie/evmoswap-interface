@@ -196,7 +196,7 @@ export const useFarmsReward = () => {
 }
 
 
-//get locker reward balance
+//get locker reward balance by simulating claim() 
 export const useLockerExtraRewards = (): CurrencyAmount<Token | Currency> => {
 
     const contract = useFeeDistributorContract();
@@ -208,8 +208,8 @@ export const useLockerExtraRewards = (): CurrencyAmount<Token | Currency> => {
         let resp = "0"
         if ( !contract?.callStatic ) return resp;
         try {
+            //use contract.callStatic to simulate write method. The only way to know lock extra reward
             const result = await contract.callStatic[ 'claim()' ]();
-            console.log( result )
             resp = String( result )
         } catch ( e ) {
             console.log( e.message )
