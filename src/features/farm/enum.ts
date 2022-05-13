@@ -1,21 +1,23 @@
 export enum Chef {
-  MASTERCHEF,
+    MASTERCHEF,
 }
 
 export enum Rewarder {
-  SIMPLE,
-  COMPLEX,
-  ALCX,
+    SIMPLE,
+    COMPLEX,
+    ALCX,
 }
 
 export enum PairType {
-  SWAP,
-  KASHI,
+    SWAP,
+    KASHI,
 }
 
 export enum OnsenModalView {
-  Liquidity,
-  Staking,
-  Position,
-  AddLiquidityConfirm,
+    Liquidity,
+    Staking,
+    Position,
+    AddLiquidityConfirm,
+    Withdraw,
+    Deposit,
 }
