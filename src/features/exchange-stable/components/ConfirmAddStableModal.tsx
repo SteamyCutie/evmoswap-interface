@@ -1,4 +1,4 @@
-import { Currency, CurrencyAmount, ZERO } from '@evmoswap/core-sdk'
+import { Currency, CurrencyAmount } from '@evmoswap/core-sdk'
 
 import React from 'react'
 import { t } from '@lingui/macro'
@@ -60,7 +60,7 @@ export function ConfirmAddStableModalBottom ( {
                 </div>
             </div>
 
-            <Button color="blue" size="lg" onClick={ onAdd } disabled={ !estimatedSLP.greaterThan( ZERO ) }>
+            <Button color="blue" size="lg" onClick={ onAdd }>
                 { i18n._( t`Confirm Deposit` ) }
             </Button>
         </div>

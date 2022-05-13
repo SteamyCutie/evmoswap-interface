@@ -14,7 +14,8 @@ import {
 import { useWeb3React } from '@web3-react/core'
 import EVMOSWAP_ABI from 'app/constants/abis/evmo-swap.json'
 import EVMOMETASWAP_ABI from 'app/constants/abis/evmo-meta-swap.json'
-import { EVMOMETASWAP_ADDRESS, EVMOSWAP_ADDRESS } from 'app/constants/addresses'
+import EVMOMETASWAP_DEPOSIT_ABI from 'app/constants/abis/evmo-meta-swap-deposit.json'
+import { EVMOMETASWAP_ADDRESS, EVMOMETASWAP_DEPOSIT_ADDRESS, EVMOSWAP_ADDRESS } from 'app/constants/addresses'
 import { StablePoolInfo, StableTokenInfo, STABLE_POOLS } from 'app/constants/pools'
 import { calculateGasMargin, formatBalance, isAddress, shortenAddress, tryParseAmount } from 'app/functions'
 import { useApproveCallback, useContract } from 'app/hooks'
@@ -41,8 +42,16 @@ import { useCurrencyBalances } from 'app/state/wallet/hooks'
 
 const FEE_DECIMALS = 10;
 
+export function useStableSwapDepositContract ( poolId: string, withSignerIfPossible?: boolean ): Contract | null {
 
-export function useStablePoolContract ( poolId: string | number ): Contract | null {
+    const { chainId } = useWeb3React()
+    const isMeta = STABLE_POOLS?.[ chainId ]?.[ poolId ]?.isMeta;
+    const address = isMeta ? EVMOMETASWAP_DEPOSIT_ADDRESS[ chainId ] : EVMOSWAP_ADDRESS[ chainId ];
+    const abi = isMeta ? EVMOMETASWAP_DEPOSIT_ABI : EVMOSWAP_ABI
+    return useContract( address, abi, withSignerIfPossible )
+}
+
+export function useStablePoolContract ( poolId: string ): Contract | null {
 
     const { chainId } = useWeb3React();
     const isMeta = STABLE_POOLS?.[ chainId ]?.[ poolId ]?.isMeta;
@@ -74,7 +83,7 @@ export function useStablePoolFromRouter ( routeParams: string | string[] ): { po
         }
         return [ resp, id ];
     }, [ poolSlug, pools ] )
-    const poolContract = useStablePoolContract( poolId )
+    const poolContract = useStableSwapDepositContract( poolId )
     const poolAddress = poolContract?.address;
 
     return {
@@ -84,6 +93,8 @@ export function useStablePoolFromRouter ( routeParams: string | string[] ): { po
         poolAddress
     }
 }
+
+
 // fetch pool info
 export function useStablePoolInfo ( poolId: string ): {
     swapFee: number;
@@ -136,63 +147,80 @@ export function useStablePoolInfo ( poolId: string ): {
         resp.isLoading = false
     }
 
-    const tokensInfo = useStableTokensInfo( poolId, pool?.pooledTokens )
+    const tokensInfo = useStableTokensInfo( poolId )
 
     resp.tokensInfo = tokensInfo;
 
     return resp
 }
 
-// fetch pool info
+// fetch pool pooled tokens info
 export function useStableTokensInfo (
     poolId: string,
-    poolTokens?: StableTokenInfo[],
+    selectTokensId?: string[],
 ): {
     balances: undefined | CurrencyAmount<Token>[] //array of token balances
     total: number
     tokens: undefined | Token[]
 } {
+
     const { chainId } = useWeb3React()
-    const contract = useStablePoolContract( poolId )
+    const pool = STABLE_POOLS?.[ chainId ]?.[ poolId ];
+
+    const swapContract = useStablePoolContract( poolId )
+    const swapDepositContract = useStableSwapDepositContract( poolId )
+
     const resp = {
         balances: undefined, //array of token balances
         tokens: undefined,
         total: 0,
     }
 
-    const tokens = poolTokens ?? STABLE_POOLS?.[ chainId ]?.[ poolId ]?.pooledTokens;
+    const tokens = pool?.pooledTokens;
 
+    const selectTokensIdSorted = selectTokensId ? selectTokensId.join( "," ).toLowerCase().split( "," ) : []
     //make call data base on token index.
     const callsData = useMemo( () => {
-        if ( !tokens ) return [ undefined ]
-        const resp = [];
-        tokens.map( ( token, index ) => {
-            //const index = token.index;
-            resp[ index ] = [ index ]
+        const ret = []
+        if ( !tokens ) return [ [ undefined ] ];
+        tokens.map( ( token, i ) => {
+            let index;
+            if ( selectTokensId ) {
+                if ( selectTokensIdSorted.includes( token.address.toLowerCase() ) )
+                    index = i;
+            } else {
+                index = i;
+            }
+            if ( index !== undefined )
+                ret[ i ] = [ index ]
         } )
-        return resp;
-    }, [ tokens ] )
+        return ret;
+    }, [ tokens, selectTokensIdSorted ] )
 
-    const addressesResult = useSingleContractMultipleData( contract, 'getToken', callsData )
-    const balancesResult = useSingleContractMultipleData( contract, 'getTokenBalance', callsData )
+
+    const addressesResult = useSingleContractMultipleData( swapDepositContract, 'getToken', callsData )
+    const balancesResult = useSingleContractMultipleData( swapContract, 'getTokenBalance', callsData )
 
     const [ currencies, balances, total ] = useMemo( () => {
         const tempCurrencies: Token[] = [];
         const tempBalances: CurrencyAmount<Token>[] = []
         let total = 0
 
-        tokens.map( ( token, index ) => {
-            const address = addressesResult?.[ index ]?.result?.[ 0 ]
-            const currency = new Token( chainId, address ?? token.address, token.decimals, token.symbol )
+        if ( tokens )
+            tokens.map( ( token, index ) => {
+                if ( token ) {
+                    const address = addressesResult?.[ index ]?.result?.[ 0 ]
+                    const currency = new Token( chainId, address ?? token.address, token.decimals, token.symbol )
 
-            tempCurrencies[ index ] = currency
-            const balance = balancesResult?.[ index ]?.result?.[ 0 ]
-            if ( balance ) {
-                const amount = CurrencyAmount.fromRawAmount( currency, balance )
-                tempBalances[ index ] = amount
-                total += Number( amount.toFixed( token.decimals ) )
-            }
-        } )
+                    tempCurrencies[ index ] = currency
+                    const balance = balancesResult?.[ index ]?.result?.[ 0 ]
+                    if ( balance ) {
+                        const amount = CurrencyAmount.fromRawAmount( currency, balance )
+                        tempBalances[ index ] = amount
+                        total += Number( amount.toFixed( token.decimals ) )
+                    }
+                }
+            } )
 
         return [ tempCurrencies, tempBalances, total ]
 
@@ -216,7 +244,7 @@ export function useStableTokenToMint (
     deposit: boolean = true
 ) {
     const { account } = useActiveWeb3React()
-    const contract = useStablePoolContract( poolId )
+    const contract = useStableSwapDepositContract( poolId )
     const amountsBN =
         amounts && amounts[ 0 ] instanceof String
             ? amounts
@@ -233,7 +261,7 @@ export function useStableTokenToMint (
 //Estimate withdrawal for pooled tokens
 export function useStableTokenToReceive ( poolId: string, lptAmount: CurrencyAmount<Currency>, tokenIndex?: number ) {
     const { account } = useActiveWeb3React()
-    const contract = useStablePoolContract( poolId )
+    const contract = useStableSwapDepositContract( poolId )
 
     let callMethod = 'calculateRemoveLiquidity'
     let callData: any[] = [ account, lptAmount?.quotient?.toString() ]
@@ -304,7 +332,7 @@ export function useStableSwapCallback (
                         toIndex = index;
                     }
 
-                    if ( fromToken !== undefined && toToken !== undefined ) return [ fromToken, toToken ]
+                    if ( fromToken !== undefined && toToken !== undefined ) return [ fromToken, toToken, fromIndex, toIndex ]
                 }
             }
 
@@ -354,7 +382,7 @@ export function useStableSwapCallback (
     //console.log( parsedInputAmount?.toExact(), parsedOutputAmount?.toExact() )
 
     //create stable Trade
-    const stableTrade = useStableTrade( tokenFrom, tokenTo, parsedInputAmount, parsedOutputAmount, isExactIn )
+    const stableTrade = useStableTrade( parsedInputAmount, parsedOutputAmount, isExactIn )
 
 
     //swap callback method for carrying out swapping
@@ -435,10 +463,32 @@ export function useStableSwapCallback (
 }
 
 
+
+//stable pair reserve for swap
+export function useStableTokenReserve (
+    token?: Token
+) {
+    const { chainId } = useWeb3React()
+    const basePool = STABLE_POOLS?.[ chainId ]?.[ "0" ];
+    let baseTokens = useMemo( () => {
+        if ( !basePool ) return [];
+        return basePool.pooledTokens.map( ( t, i ) => {
+            return t.address.toLowerCase();
+        } )
+    }, [ basePool ] )
+
+    let isBaseTokens = token ? baseTokens.includes( token.address.toLowerCase() ) : false;
+    let tokenIndex = token ? ( isBaseTokens ? baseTokens.indexOf( token.address.toLowerCase() ) : 0 ) : undefined; //index for meta token will always be zero(i.e UST + 3Pool)
+
+    const swapContract = useStableSwapContract( !isBaseTokens );
+
+    const balanceResult = useSingleCallResult( swapContract, 'getTokenBalance', [ tokenIndex ] )?.result?.[ 0 ]
+    return token && balanceResult ? CurrencyAmount.fromRawAmount( token, balanceResult ) : undefined;
+}
+
+
 //create stabe trade
 export function useStableTrade (
-    inputToken: StableTokenInfo,
-    outputToken: StableTokenInfo,
     inputAmount?: CurrencyAmount<Token>,
     outputAmount?: CurrencyAmount<Token>,
     isExactIn?: Boolean
@@ -457,12 +507,12 @@ export function useStableTrade (
             : undefined
 
     //get token pool balance
-    const poolInfo = useStableTokensInfo( EVMOSWAP_ADDRESS[ chainId ], [ inputToken, outputToken ] )
-    const reserves = poolInfo?.balances
-    const [ inputReserve, outputReserve ] = reserves ?? [ undefined ]
-
+    const inputReserve = useStableTokenReserve( inputAmount?.currency );
+    const outputReserve = useStableTokenReserve( outputAmount?.currency );
+    const canMakePair = inputReserve && outputReserve && !inputReserve.equalTo( outputReserve )
     //create pair and route
-    const pair = inputReserve && outputReserve ? new Pair( inputReserve, outputReserve ) : undefined
+    const pair = canMakePair ? new Pair( inputReserve, outputReserve ) : undefined
+
     const route =
         pair && inputAmount && outputAmount ? new Route( [ pair ], inputAmount.currency, outputAmount.currency ) : undefined
 

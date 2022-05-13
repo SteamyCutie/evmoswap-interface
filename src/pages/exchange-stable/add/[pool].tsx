@@ -117,16 +117,17 @@ export default function Add () {
         approvals[ index ] = approval;
         if ( approval === ApprovalState.APPROVED ) reload()
     }
-    const allTokenApproved = useMemo( () => {
+    const totalApproved = useMemo( () => {
         let count = 0;
         for ( let index = 0; index < tokens.length; index++ ) {
-            if ( approvals[ index ] !== ApprovalState.APPROVED ) {
+            if ( approvals[ index ] === ApprovalState.APPROVED ) {
                 count++;
                 break;
             }
         }
-        return count === 0;
-    }, [ approvals, tokens ] )
+        return count;
+    }, [ approvals, tokens, account ] )
+    const allTokenApproved = totalApproved === tokens.length;
 
 
 
@@ -205,8 +206,9 @@ export default function Add () {
         args = [
             tokensInputBN,
             minToMintWithSlippage.quotient.toString(),
-            deadline.toHexString(),
+            deadline.mul( 1000 ).toHexString(),
         ]
+        console.log( args, poolContract.address )
         value = null
 
 
@@ -413,7 +415,7 @@ export default function Add () {
                                         </RowBetween>
                                     }
 
-                                    { allTokenApproved && (
+                                    { totalApproved > 0 && (
                                         <ButtonError
                                             onClick={ () => {
                                                 isExpertMode ? onAdd() : setShowConfirm( true )

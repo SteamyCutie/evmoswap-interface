@@ -131,7 +131,7 @@ export default function Swap () {
         approvalCallback: stableApprovalCallback,
         swapCallback: stableSwapCallback,
         inputError: stableInputError
-    } = useStableSwapCallback( v2Trade, allowedSlippage );
+    } = useStableSwapCallback( allowedSlippage );
     const isStableSwap = tradingMode === TRADING_MODE.STABLE;
 
     const trade = showWrap ? undefined : ( isStableSwap ? stableTrade : v2Trade );

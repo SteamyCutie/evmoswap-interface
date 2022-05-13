@@ -179,7 +179,7 @@ export const STABLE_POOLS_TOKENS = {
         address: "0xf8e00573a7e669e42F4bF022497bAfca527c403F",
         name: "UST",
         symbol: "UST",
-        decimals: 6
+        decimals: 18
     },
 }
 
@@ -196,7 +196,7 @@ export const STABLE_POOLS_META_TOKENS = {
         }
     },
     "UST3POOL": {
-        address: "0x4Fc1C86b459d3899dcBe569F95A2CA91F4B006a1",
+        address: "0xa3747c559323e06418b176cf2e191766d6222029",
         name: "UST 3Pool LP",
         symbol: "UST3Pool",
         decimals: 18,
@@ -223,7 +223,7 @@ export const STABLE_POOLS: StableAddressMap = {
             pooledTokens: [
                 STABLE_POOLS_TOKENS.DAI,
                 STABLE_POOLS_TOKENS.USDC,
-                STABLE_POOLS_TOKENS.UST
+                STABLE_POOLS_TOKENS.USDT
             ]
         },
         "1": {
@@ -236,7 +236,7 @@ export const STABLE_POOLS: StableAddressMap = {
                 STABLE_POOLS_TOKENS.UST,
                 STABLE_POOLS_TOKENS.DAI,
                 STABLE_POOLS_TOKENS.USDC,
-                STABLE_POOLS_TOKENS.UST
+                STABLE_POOLS_TOKENS.USDT
             ],
             metaPooledTokens: [
                 STABLE_POOLS_TOKENS.UST,
