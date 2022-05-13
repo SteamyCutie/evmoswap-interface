@@ -43,6 +43,8 @@ const FarmListItemDetailsStable = ( { farm, onDismiss, handleDismiss } ) => {
     const balance = useTokenBalance( account, liquidityToken )
     const userInfo = useUserInfo( farm, liquidityToken )
     const stakedBalance = userInfo.stakedAmount;
+    const selectedBalance = view === OnsenModalView.Deposit ? balance : stakedBalance;
+
 
     //input 
     const [ typedValue, setTypedValue ] = useState( '' )
@@ -62,9 +64,8 @@ const FarmListItemDetailsStable = ( { farm, onDismiss, handleDismiss } ) => {
     //om max input
     const onMax = () => {
 
-        const maxAmount = view === OnsenModalView.Deposit ? balance : stakedBalance;
-        if ( !maxAmount?.equalTo( ZERO ) )
-            handleInput( maxAmount?.toSignificant( maxAmount?.currency.decimals ) )
+        if ( !selectedBalance?.equalTo( ZERO ) )
+            handleInput( selectedBalance?.toSignificant( selectedBalance?.currency.decimals ) )
     }
 
     const renderBalance = () => {
@@ -83,12 +84,11 @@ const FarmListItemDetailsStable = ( { farm, onDismiss, handleDismiss } ) => {
     const getError = () => {
 
         let error: string;
-        const maxAmount = view === OnsenModalView.Deposit ? balance : stakedBalance;
 
         if ( !typedValue || !parsedAmount || !parsedAmount.greaterThan( ZERO ) )
             error = i18n._( t`Enter an amount` )
 
-        else if ( !maxAmount || maxAmount.lessThan( parsedAmount ) )
+        else if ( !selectedBalance || selectedBalance?.lessThan( parsedAmount ) )
             error = i18n._( t`Insufficient balance` )
 
         return error
@@ -192,7 +192,7 @@ const FarmListItemDetailsStable = ( { farm, onDismiss, handleDismiss } ) => {
                         onUserInput={ handleInput }
                         onMax={ onMax }
                         renderBalance={ renderBalance }
-                        showMaxButton={ typedValue !== balance?.toSignificant( balance?.currency?.decimals ) }
+                        showMaxButton={ typedValue !== selectedBalance?.toSignificant( selectedBalance?.currency?.decimals ) }
                         currency={ liquidityToken }
                         id="add-liquidity-input-token"
                         showCommonBases
