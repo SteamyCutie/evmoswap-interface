@@ -200,16 +200,36 @@ export const useFarmsReward = () => {
 export const useLockerExtraRewards = (): CurrencyAmount<Token | Currency> => {
 
     const contract = useFeeDistributorContract();
+    const { account } = useActiveWeb3React();
+    const [ rewards, setRewards ] = useState( "0" )
 
-    let rewards = "0";
+    const lockerExtraRewards = useCallback( async (): Promise<string> => {
 
-    try {
-        const resp = useSingleCallResult( contract, "claim()" )
-        if ( resp && Array.isArray( resp.result ) ) {
-            rewards = String( resp.result[ 0 ] );
+        let resp = "0"
+        if ( !contract?.callStatic ) return resp;
+        try {
+            const result = await contract.callStatic[ 'claim()' ]();
+            console.log( result )
+            resp = String( result )
+        } catch ( e ) {
+            console.log( e.message )
         }
-    } catch ( error ) {
-        console.log( error )
-    }
+        return resp;
+    }, [ contract, account ] )
+
+
+    useEffect( () => {
+        let active = true;
+
+        ( async () => {
+            let rewards = await lockerExtraRewards();
+            if ( active )
+                setRewards( rewards );
+        } )()
+
+        return () => {
+            active = false;
+        }
+    }, [ lockerExtraRewards ] )
     return CurrencyAmount.fromRawAmount( EMOSPlaceholder, rewards )
 }
