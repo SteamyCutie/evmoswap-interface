@@ -55,5 +55,5 @@ export function getExplorerLink(
   type: 'transaction' | 'token' | 'address' | 'block'
 ): string {
   const chain = chains[chainId]
-  return chain.builder(chain.link, data, type)
+  return chain?.builder(chain.link, data, type)
 }

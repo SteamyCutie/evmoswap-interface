@@ -75,7 +75,7 @@ export default function NetworkModal(): JSX.Element | null {
   const networkModalOpen = useModalOpen(ApplicationModal.NETWORK)
   const toggleNetworkModal = useNetworkModalToggle()
 
-  if (!chainId) return null
+  // if (!chainId) return null
 
   return (
     <Modal isOpen={networkModalOpen} onDismiss={toggleNetworkModal} maxWidth={672}>

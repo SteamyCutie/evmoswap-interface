@@ -1,7 +1,9 @@
 import React, { useEffect, useState } from 'react'
 import { SUPPORTED_WALLETS, injected } from '../../config/wallets'
 import { UnsupportedChainIdError, useWeb3React } from '@web3-react/core'
-import { useModalOpen, useWalletModalToggle } from '../../state/application/hooks'
+import { useModalOpen, useNetworkModalToggle, useWalletModalToggle } from '../../state/application/hooks'
+import { NETWORK_ICON, NETWORK_LABEL } from '../../config/networks'
+import { ChainId } from '@evmoswap/core-sdk'
 
 import { AbstractConnector } from '@web3-react/abstract-connector'
 import AccountDetails from '../../components/AccountDetails'
@@ -19,6 +21,10 @@ import { isMobile } from 'react-device-detect'
 import { t } from '@lingui/macro'
 import { useLingui } from '@lingui/react'
 import usePrevious from '../../hooks/usePrevious'
+import { useActiveWeb3React } from '../../services/web3'
+import Image from 'next/image'
+import cookie from 'cookie-cutter'
+import { SUPPORTED_NETWORKS } from '../NetworkModal'
 
 const WALLET_VIEWS = {
   OPTIONS: 'options',
@@ -38,7 +44,7 @@ export default function WalletModal({
 }) {
   // console.log({ ENSName })
   // important that these are destructed from the account-specific web3-react context
-  const { active, account, connector, activate, error, deactivate } = useWeb3React()
+  const { active, account, connector, activate, error, deactivate, library, chainId } = useWeb3React()
 
   const { i18n } = useLingui()
 
@@ -51,6 +57,7 @@ export default function WalletModal({
   const walletModalOpen = useModalOpen(ApplicationModal.WALLET)
 
   const toggleWalletModal = useWalletModalToggle()
+  const toggleNetworkModal = useNetworkModalToggle()
 
   const previousAccount = usePrevious(account)
 
@@ -222,6 +229,77 @@ export default function WalletModal({
             ) : (
               i18n._(t`Error connecting. Try refreshing the page.`)
             )}
+            <div style={{ marginTop: '1rem' }} />
+            <div className="grid grid-flow-row-dense grid-cols-1 gap-5 overflow-y-auto md:grid-cols-2">
+              {/* {[ChainId.EVMOS, ChainId.EVMOS_TESTNET].map((key: ChainId, i: number) => { */}
+              {[ChainId.BSC_TESTNET, ChainId.EVMOS_TESTNET].map((key: ChainId, i: number) => {
+                if (chainId === key) {
+                  return (
+                    <button key={i} className="w-full col-span-1 p-px rounded bg-gradient-to-r from-blue to-pink">
+                      <div className="flex items-center w-full h-full p-3 space-x-3 rounded bg-dark-1000">
+                        <Image
+                          src={NETWORK_ICON[key]}
+                          alt={`Switch to ${NETWORK_LABEL[key]} Network`}
+                          className="rounded-md"
+                          width="32px"
+                          height="32px"
+                        />
+                        <div className="font-bold text-primary">{NETWORK_LABEL[key]}</div>
+                      </div>
+                    </button>
+                  )
+                }
+                return (
+                  <button
+                    key={i}
+                    onClick={async () => {
+                      const provider: any = window.ethereum
+                      const params = SUPPORTED_NETWORKS[key]
+
+                      try {
+                        await provider.request({
+                          method: 'wallet_addEthereumChain',
+                          params: [params],
+                        })
+                        cookie.set('chainId', key)
+
+                        console.log('You have succefully switched to Binance Test network')
+                      } catch (switchError) {
+                        if (switchError.code === 4902) {
+                          console.log('This network is not available in your metamask, please add it')
+                        }
+                        console.log('Failed to switch to the network')
+                      }
+                    }}
+                    className="flex items-center w-full col-span-1 p-3 space-x-3 rounded cursor-pointer bg-dark-800 hover:bg-dark-700"
+                  >
+                    <Image
+                      src={NETWORK_ICON[key]}
+                      alt="Switch Network"
+                      className="rounded-md"
+                      width="32px"
+                      height="32px"
+                    />
+                    <div className="font-bold text-primary">{NETWORK_LABEL[key]}</div>
+                  </button>
+                )
+              })}
+              {/* {['Clover', 'Telos', 'Optimism'].map((network, i) => (
+          <button
+            key={i}
+            className="flex items-center w-full col-span-1 p-3 space-x-3 rounded cursor-pointer bg-dark-800 hover:bg-dark-700"
+          >
+            <Image
+              src="/images/tokens/unknown.png"
+              alt="Switch Network"
+              className="rounded-md"
+              width="32px"
+              height="32px"
+            />
+            <div className="font-bold text-primary">{network} (Coming Soon)</div>
+          </button>
+        ))} */}
+            </div>
             <div style={{ marginTop: '1rem' }} />
             <ButtonError error={true} size="sm" onClick={deactivate}>
               {i18n._(t`Disconnect`)}

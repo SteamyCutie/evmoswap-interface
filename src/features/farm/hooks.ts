@@ -67,7 +67,7 @@ export function useTokenInfo(tokenContract?: Contract | null) {
 
   const circulatingSupply = JSBI.subtract(totalSupply, burnt)
 
-  const token = useToken(tokenContract.address)
+  const token = useToken(tokenContract?.address)
 
   return useMemo(() => {
     if (!token) {

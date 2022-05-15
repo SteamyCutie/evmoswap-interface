@@ -41,7 +41,7 @@ function StatusIcon({ connector }: { connector: AbstractConnector }) {
   } else if (connector.constructor.name === 'WalletConnectConnector') {
     return (
       <IconWrapper size={16}>
-        <Image src="/images/wallets/wallet-connect.png" alt={'Wallet Connect'} width="16px" height="16px" />
+        <Image src="/images/wallets/wallet-connect.svg" alt={'Wallet Connect'} width="16px" height="16px" />
       </IconWrapper>
     )
   } else if (connector.constructor.name === 't') {
@@ -125,9 +125,9 @@ export default function Web3Status() {
   const pending = sortedRecentTransactions.filter((tx) => !tx.receipt).map((tx) => tx.hash)
   const confirmed = sortedRecentTransactions.filter((tx) => tx.receipt).map((tx) => tx.hash)
 
-  if (!contextNetwork.active && !active) {
-    return null
-  }
+  // if (!contextNetwork.active && !active) {
+  //   return null
+  // }
 
   return (
     <>
