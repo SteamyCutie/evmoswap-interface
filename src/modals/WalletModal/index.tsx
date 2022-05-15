@@ -232,7 +232,7 @@ export default function WalletModal({
             <div style={{ marginTop: '1rem' }} />
             <div className="grid grid-flow-row-dense grid-cols-1 gap-5 overflow-y-auto md:grid-cols-2">
               {/* {[ChainId.EVMOS, ChainId.EVMOS_TESTNET].map((key: ChainId, i: number) => { */}
-              {[ChainId.BSC_TESTNET, ChainId.EVMOS_TESTNET].map((key: ChainId, i: number) => {
+              {[ChainId.EVMOS, ChainId.EVMOS_TESTNET].map((key: ChainId, i: number) => {
                 if (chainId === key) {
                   return (
                     <button key={i} className="w-full col-span-1 p-px rounded bg-gradient-to-r from-blue to-pink">
