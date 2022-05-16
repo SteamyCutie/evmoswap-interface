@@ -126,7 +126,7 @@ export default function Add () {
             }
         }
         return count;
-    }, [ approvals, tokens, account ] )
+    }, [ approvals, tokens ] )
     const allTokenApproved = totalApproved === tokens.length;
 
 
