@@ -26,7 +26,8 @@ export type PairInfo = {
     migrate?: boolean
     isVote?: boolean
     isZap?: boolean
-    farmType?: FarmType
+    farmType?: FarmType,
+    incentives?: string[],
 }
 
 export type FarmPairInfo = {
@@ -130,6 +131,10 @@ export const FARMS: AddressMap = {
             token1: { id: '0xd41223b4Ed7e68275D3C567c237217Fbb2575568', name: 'EvmoSwap', symbol: 'EMO', decimals: 18 },
             isVote: true,
             isZap: false,
+            farmType: FarmType.DOUBLE,
+            incentives: [
+                "0x3570A0800874a78607DD31Fac18495A2e50A68C1",
+            ]
         },
 
         '0x1658E34386Cc5Ec3B703a34567790d95F1C94cCb': {

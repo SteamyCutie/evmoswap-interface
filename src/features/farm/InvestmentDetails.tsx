@@ -12,6 +12,8 @@ import { useDerivedMintInfo } from 'app/state/mint/hooks'
 import Dots from 'app/components/Dots'
 import { usePendingReward } from 'app/features/farm/hooks'
 import { FarmType } from 'app/constants/farms'
+import FarmIncentiveAmount from './FarmIncentiveAmount'
+import FarmIncentiveRewards from './FarmIncentiveRewards'
 
 // @ts-ignore TYPE NEEDS FIXING
 const InvestmentDetails = ( { farm, handleDismiss } ) => {
@@ -55,6 +57,7 @@ const InvestmentDetails = ( { farm, handleDismiss } ) => {
             }
             <HeadlessUiModal.BorderedContent className="flex flex-col gap-2 bg-dark-1000/40">
                 <RewardCard reward={ pendingReward } />
+                <FarmIncentiveRewards incentives={ farm.incentives } />
             </HeadlessUiModal.BorderedContent>
             <Button color={ canHarvest ? 'blue' : 'gray' } disabled={ pendingTx || !canHarvest } onClick={ onHarvest }>
                 { canHarvest ? pendingTx ? <Dots>{ i18n._( t`Harvesting` ) }</Dots> : i18n._( t`Harvest Rewards` ) : i18n._( t`No rewards yet` ) }

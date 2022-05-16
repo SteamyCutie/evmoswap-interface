@@ -15,6 +15,8 @@ import { usePendingReward } from 'app/features/farm/hooks'
 import { useTokenBalance } from 'app/state/wallet/hooks'
 import { useUserInfo } from 'features/farm/hooks'
 import { useDerivedMintInfo } from 'app/state/mint/hooks'
+import FarmIncentiveAmount from './FarmIncentiveAmount'
+import FarmIncentiveRewards from './FarmIncentiveRewards'
 
 interface FarmListItem {
     farm: any
@@ -76,9 +78,12 @@ const FarmListItem: FC<FarmListItem> = ( { farm, onClick } ) => {
                 </div>
             </div>
             <div className={ TABLE_TBODY_TD_CLASSNAME( 1, 6 ) }>
-                <div className="flex items-center gap-2">
-                    <CurrencyLogo currency={ nativeToken } size={ 20 } />
-                    <div>{ `${Number( rewardAmounts ).toFixed( 2 )} ${rewardToken?.symbol}` }</div>
+                <div className='flex flex-col items-start'>
+                    <div className="flex items-center gap-2">
+                        <CurrencyLogo currency={ nativeToken } size={ 20 } />
+                        <div>{ `${Number( rewardAmounts ).toFixed( 2 )} ${rewardToken?.symbol}` }</div>
+                    </div>
+                    <FarmIncentiveRewards incentives={ farm.incentives } />
                 </div>
             </div>
             <div className={ TABLE_TBODY_TD_CLASSNAME( 2, 6 ) }>
