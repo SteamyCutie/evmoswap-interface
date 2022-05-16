@@ -1,23 +1,23 @@
 import {
-  BAR_ADDRESS,
-  BENTOBOX_ADDRESS,
-  CHAINLINK_ORACLE_ADDRESS,
-  ChainId,
-  ENS_REGISTRAR_ADDRESS,
-  FACTORY_ADDRESS,
-  MAKER_ADDRESS,
-  MERKLE_DISTRIBUTOR_ADDRESS,
-  MULTICALL2_ADDRESS,
-  ROUTER_ADDRESS,
-  SUSHI_ADDRESS,
-  TIMELOCK_ADDRESS,
-  WNATIVE_ADDRESS,
+    BAR_ADDRESS,
+    BENTOBOX_ADDRESS,
+    CHAINLINK_ORACLE_ADDRESS,
+    ChainId,
+    ENS_REGISTRAR_ADDRESS,
+    FACTORY_ADDRESS,
+    MAKER_ADDRESS,
+    MERKLE_DISTRIBUTOR_ADDRESS,
+    MULTICALL2_ADDRESS,
+    ROUTER_ADDRESS,
+    SUSHI_ADDRESS,
+    TIMELOCK_ADDRESS,
+    WNATIVE_ADDRESS,
 } from '@evmoswap/core-sdk'
 import { STOP_LIMIT_ORDER_ADDRESS } from '@sushiswap/limit-order-sdk'
 
 import {
-  ARGENT_WALLET_DETECTOR_ABI,
-  ARGENT_WALLET_DETECTOR_MAINNET_ADDRESS,
+    ARGENT_WALLET_DETECTOR_ABI,
+    ARGENT_WALLET_DETECTOR_MAINNET_ADDRESS,
 } from '../constants/abis/argent-wallet-detector'
 import { AddressZero } from '@ethersproject/constants'
 import BAR_ABI from '../constants/abis/bar.json'
@@ -64,259 +64,264 @@ import PRIATESALE_ABI from '../constants/abis/privatesale.json'
 import EVMOROLL_ABI from '../constants/abis/evmoroll.json'
 import MIGRATE_DASHBOARD_ABI from '../constants/abis/migrateDashboard.json'
 import TREASURY_ABI from '../constants/abis/treasury.json'
+import SIMPLE_INCENTIVE_CONTROLLER_ABI from '../constants/abis/simple-incentives-controller.json'
 
 import { getContract } from '../functions/contract'
 import { useActiveWeb3React } from '../services/web3'
 import { useMemo } from 'react'
 import {
-  DASHBOARD_ADDRESS,
-  MASTERCHEF_ADDRESS,
-  SEED_SALE_ADDRESS,
-  VOTING_ESCROW_ADDRESS,
-  EMOSVAULT_ADDRESS,
-  REWARD_POOL_ADDRESS,
-  VOTE_ADDRESS,
-  ZAP_ADDRESS,
-  FAUCET_ADDRESS,
-  PRIVATE_SALE_ADDRESS,
-  PUBLIC_SALE_ADDRESS,
-  MULTI_FEE_DISTRIBUTION_ADDRESSES,
-  FEE_DISTRIBUTOR_ADDRESSES,
-  EVMOROLL_ADDRESS,
-  MIGRATE_DASHBOARD_ADDRESS,
-  TREASURY_ADDRESS,
+    DASHBOARD_ADDRESS,
+    MASTERCHEF_ADDRESS,
+    SEED_SALE_ADDRESS,
+    VOTING_ESCROW_ADDRESS,
+    EMOSVAULT_ADDRESS,
+    REWARD_POOL_ADDRESS,
+    VOTE_ADDRESS,
+    ZAP_ADDRESS,
+    FAUCET_ADDRESS,
+    PRIVATE_SALE_ADDRESS,
+    PUBLIC_SALE_ADDRESS,
+    MULTI_FEE_DISTRIBUTION_ADDRESSES,
+    FEE_DISTRIBUTOR_ADDRESSES,
+    EVMOROLL_ADDRESS,
+    MIGRATE_DASHBOARD_ADDRESS,
+    TREASURY_ADDRESS,
 } from '../constants/addresses'
 
 const UNI_FACTORY_ADDRESS = '0x5C69bEe701ef814a2B6a3EDD4B1652CB9cc5aA6f'
 
-export function useEIP2612Contract(tokenAddress?: string): Contract | null {
-  return useContract(tokenAddress, EIP_2612_ABI, false)
+export function useEIP2612Contract ( tokenAddress?: string ): Contract | null {
+    return useContract( tokenAddress, EIP_2612_ABI, false )
 }
 
 // returns null on errors
-export function useContract(address: string | undefined, ABI: any, withSignerIfPossible = true): Contract | null {
-  const { library, account } = useActiveWeb3React()
-  return useMemo(() => {
-    if (!address || address === AddressZero || !ABI || !library) return null
-    try {
-      return getContract(address, ABI, library, withSignerIfPossible && account ? account : undefined)
-    } catch (error) {
-      console.error('Failed to get contract', error)
-      return null
-    }
-  }, [address, ABI, library, withSignerIfPossible, account])
+export function useContract ( address: string | undefined, ABI: any, withSignerIfPossible = true ): Contract | null {
+    const { library, account } = useActiveWeb3React()
+    return useMemo( () => {
+        if ( !address || address === AddressZero || !ABI || !library ) return null
+        try {
+            return getContract( address, ABI, library, withSignerIfPossible && account ? account : undefined )
+        } catch ( error ) {
+            console.error( 'Failed to get contract', error )
+            return null
+        }
+    }, [ address, ABI, library, withSignerIfPossible, account ] )
 }
 
-export function useTokenContract(tokenAddress?: string, withSignerIfPossible?: boolean): Contract | null {
-  return useContract(tokenAddress, ERC20_ABI, withSignerIfPossible)
+export function useTokenContract ( tokenAddress?: string, withSignerIfPossible?: boolean ): Contract | null {
+    return useContract( tokenAddress, ERC20_ABI, withSignerIfPossible )
 }
 
-export function useWETH9Contract(withSignerIfPossible?: boolean): Contract | null {
-  const { chainId } = useActiveWeb3React()
-  return useContract(chainId && WNATIVE_ADDRESS[chainId], WETH9_ABI, withSignerIfPossible)
+export function useWETH9Contract ( withSignerIfPossible?: boolean ): Contract | null {
+    const { chainId } = useActiveWeb3React()
+    return useContract( chainId && WNATIVE_ADDRESS[ chainId ], WETH9_ABI, withSignerIfPossible )
 }
 
-export function useArgentWalletDetectorContract(): Contract | null {
-  const { chainId } = useActiveWeb3React()
-  return useContract(
-    chainId === ChainId.ETHEREUM ? ARGENT_WALLET_DETECTOR_MAINNET_ADDRESS : undefined,
-    ARGENT_WALLET_DETECTOR_ABI,
-    false
-  )
+export function useArgentWalletDetectorContract (): Contract | null {
+    const { chainId } = useActiveWeb3React()
+    return useContract(
+        chainId === ChainId.ETHEREUM ? ARGENT_WALLET_DETECTOR_MAINNET_ADDRESS : undefined,
+        ARGENT_WALLET_DETECTOR_ABI,
+        false
+    )
 }
 
-export function useENSRegistrarContract(withSignerIfPossible?: boolean): Contract | null {
-  const { chainId } = useActiveWeb3React()
-  return useContract(chainId && ENS_REGISTRAR_ADDRESS[chainId], ENS_ABI, withSignerIfPossible)
+export function useENSRegistrarContract ( withSignerIfPossible?: boolean ): Contract | null {
+    const { chainId } = useActiveWeb3React()
+    return useContract( chainId && ENS_REGISTRAR_ADDRESS[ chainId ], ENS_ABI, withSignerIfPossible )
 }
 
-export function useENSResolverContract(address: string | undefined, withSignerIfPossible?: boolean): Contract | null {
-  return useContract(address, ENS_PUBLIC_RESOLVER_ABI, withSignerIfPossible)
+export function useENSResolverContract ( address: string | undefined, withSignerIfPossible?: boolean ): Contract | null {
+    return useContract( address, ENS_PUBLIC_RESOLVER_ABI, withSignerIfPossible )
 }
 
-export function useBytes32TokenContract(tokenAddress?: string, withSignerIfPossible?: boolean): Contract | null {
-  return useContract(tokenAddress, ERC20_BYTES32_ABI, withSignerIfPossible)
+export function useBytes32TokenContract ( tokenAddress?: string, withSignerIfPossible?: boolean ): Contract | null {
+    return useContract( tokenAddress, ERC20_BYTES32_ABI, withSignerIfPossible )
 }
 
-export function usePairContract(pairAddress?: string, withSignerIfPossible?: boolean): Contract | null {
-  return useContract(pairAddress, IUniswapV2PairABI, withSignerIfPossible)
+export function usePairContract ( pairAddress?: string, withSignerIfPossible?: boolean ): Contract | null {
+    return useContract( pairAddress, IUniswapV2PairABI, withSignerIfPossible )
 }
 
-export function useMerkleDistributorContract(): Contract | null {
-  const { chainId } = useActiveWeb3React()
-  return useContract(chainId ? MERKLE_DISTRIBUTOR_ADDRESS[chainId] : undefined, MERKLE_DISTRIBUTOR_ABI, true)
+export function useMerkleDistributorContract (): Contract | null {
+    const { chainId } = useActiveWeb3React()
+    return useContract( chainId ? MERKLE_DISTRIBUTOR_ADDRESS[ chainId ] : undefined, MERKLE_DISTRIBUTOR_ABI, true )
 }
 
-export function useProtocolMerkleDistributorContract(): Contract | null {
-  const { chainId } = useActiveWeb3React()
-  return useContract(chainId ? '0x1026cbed7b7E851426b959BC69dcC1bf5876512d' : undefined, MERKLE_DISTRIBUTOR_ABI, true)
+export function useProtocolMerkleDistributorContract (): Contract | null {
+    const { chainId } = useActiveWeb3React()
+    return useContract( chainId ? '0x1026cbed7b7E851426b959BC69dcC1bf5876512d' : undefined, MERKLE_DISTRIBUTOR_ABI, true )
 }
 
-export function useMulticall2Contract() {
-  const { chainId } = useActiveWeb3React()
-  return useContract(chainId && MULTICALL2_ADDRESS[chainId], MULTICALL2_ABI, false)
+export function useMulticall2Contract () {
+    const { chainId } = useActiveWeb3React()
+    return useContract( chainId && MULTICALL2_ADDRESS[ chainId ], MULTICALL2_ABI, false )
 }
 
-export function useEmosContract(withSignerIfPossible = true): Contract | null {
-  const { chainId } = useActiveWeb3React()
-  return useContract(chainId && SUSHI_ADDRESS[chainId], SUSHI_ABI, withSignerIfPossible)
+export function useEmosContract ( withSignerIfPossible = true ): Contract | null {
+    const { chainId } = useActiveWeb3React()
+    return useContract( chainId && SUSHI_ADDRESS[ chainId ], SUSHI_ABI, withSignerIfPossible )
 }
 
-export function useMasterChefContract(withSignerIfPossible?: boolean): Contract | null {
-  const { chainId } = useActiveWeb3React()
-  return useContract(chainId && MASTERCHEF_ADDRESS[chainId], MASTERCHEF_ABI, withSignerIfPossible)
+export function useMasterChefContract ( withSignerIfPossible?: boolean ): Contract | null {
+    const { chainId } = useActiveWeb3React()
+    return useContract( chainId && MASTERCHEF_ADDRESS[ chainId ], MASTERCHEF_ABI, withSignerIfPossible )
 }
 
-export function useFactoryContract(): Contract | null {
-  const { chainId } = useActiveWeb3React()
-  return useContract(chainId && FACTORY_ADDRESS[chainId], FACTORY_ABI, false)
+export function useFactoryContract (): Contract | null {
+    const { chainId } = useActiveWeb3React()
+    return useContract( chainId && FACTORY_ADDRESS[ chainId ], FACTORY_ABI, false )
 }
 
-export function useRouterContract(): Contract | null {
-  const { chainId } = useActiveWeb3React()
-  return useContract(ROUTER_ADDRESS[chainId], ROUTER_ABI, true)
+export function useRouterContract (): Contract | null {
+    const { chainId } = useActiveWeb3React()
+    return useContract( ROUTER_ADDRESS[ chainId ], ROUTER_ABI, true )
 }
 
-export function useSushiBarContract(withSignerIfPossible?: boolean): Contract | null {
-  const { chainId } = useActiveWeb3React()
-  return useContract(chainId && BAR_ADDRESS[chainId], BAR_ABI, withSignerIfPossible)
+export function useSushiBarContract ( withSignerIfPossible?: boolean ): Contract | null {
+    const { chainId } = useActiveWeb3React()
+    return useContract( chainId && BAR_ADDRESS[ chainId ], BAR_ABI, withSignerIfPossible )
 }
 
-export function useMakerContract(): Contract | null {
-  const { chainId } = useActiveWeb3React()
-  return useContract(chainId && MAKER_ADDRESS[chainId], MAKER_ABI, false)
+export function useMakerContract (): Contract | null {
+    const { chainId } = useActiveWeb3React()
+    return useContract( chainId && MAKER_ADDRESS[ chainId ], MAKER_ABI, false )
 }
 
-export function useTimelockContract(): Contract | null {
-  const { chainId } = useActiveWeb3React()
-  return useContract(chainId && TIMELOCK_ADDRESS[chainId], TIMELOCK_ABI, false)
+export function useTimelockContract (): Contract | null {
+    const { chainId } = useActiveWeb3React()
+    return useContract( chainId && TIMELOCK_ADDRESS[ chainId ], TIMELOCK_ABI, false )
 }
 
-export function useBentoBoxContract(withSignerIfPossible?: boolean): Contract | null {
-  const { chainId } = useActiveWeb3React()
-  return useContract(chainId && BENTOBOX_ADDRESS[chainId], BENTOBOX_ABI, withSignerIfPossible)
+export function useBentoBoxContract ( withSignerIfPossible?: boolean ): Contract | null {
+    const { chainId } = useActiveWeb3React()
+    return useContract( chainId && BENTOBOX_ADDRESS[ chainId ], BENTOBOX_ABI, withSignerIfPossible )
 }
 
-export function useChainlinkOracle(): Contract | null {
-  const { chainId } = useActiveWeb3React()
-  return useContract(chainId && CHAINLINK_ORACLE_ADDRESS[chainId], CHAINLINK_ORACLE_ABI, false)
+export function useChainlinkOracle (): Contract | null {
+    const { chainId } = useActiveWeb3React()
+    return useContract( chainId && CHAINLINK_ORACLE_ADDRESS[ chainId ], CHAINLINK_ORACLE_ABI, false )
 }
 
-export function useUniV2FactoryContract(): Contract | null {
-  return useContract(UNI_FACTORY_ADDRESS, UNI_FACTORY_ABI, false)
+export function useUniV2FactoryContract (): Contract | null {
+    return useContract( UNI_FACTORY_ADDRESS, UNI_FACTORY_ABI, false )
 }
 
-export function useComplexRewarderContract(address, withSignerIfPossible?: boolean): Contract | null {
-  return useContract(address, COMPLEX_REWARDER_ABI, withSignerIfPossible)
+export function useComplexRewarderContract ( address, withSignerIfPossible?: boolean ): Contract | null {
+    return useContract( address, COMPLEX_REWARDER_ABI, withSignerIfPossible )
 }
 
-export function useCloneRewarderContract(address, withSignerIfPossibe?: boolean): Contract | null {
-  return useContract(address, CLONE_REWARDER_ABI, withSignerIfPossibe)
+export function useCloneRewarderContract ( address, withSignerIfPossibe?: boolean ): Contract | null {
+    return useContract( address, CLONE_REWARDER_ABI, withSignerIfPossibe )
 }
 
-export function useLimitOrderContract(withSignerIfPossibe?: boolean): Contract | null {
-  const { chainId } = useActiveWeb3React()
-  return useContract(STOP_LIMIT_ORDER_ADDRESS[chainId], LIMIT_ORDER_ABI, withSignerIfPossibe)
+export function useLimitOrderContract ( withSignerIfPossibe?: boolean ): Contract | null {
+    const { chainId } = useActiveWeb3React()
+    return useContract( STOP_LIMIT_ORDER_ADDRESS[ chainId ], LIMIT_ORDER_ABI, withSignerIfPossibe )
 }
 
-export function useLimitOrderHelperContract(withSignerIfPossible?: boolean): Contract | null {
-  return useContract('0xe2f736B7d1f6071124CBb5FC23E93d141CD24E12', LIMIT_ORDER_HELPER_ABI, withSignerIfPossible)
+export function useLimitOrderHelperContract ( withSignerIfPossible?: boolean ): Contract | null {
+    return useContract( '0xe2f736B7d1f6071124CBb5FC23E93d141CD24E12', LIMIT_ORDER_HELPER_ABI, withSignerIfPossible )
 }
 
-export function useInariContract(withSignerIfPossible?: boolean): Contract | null {
-  return useContract('0x195E8262AA81Ba560478EC6Ca4dA73745547073f', INARI_ABI, withSignerIfPossible)
+export function useInariContract ( withSignerIfPossible?: boolean ): Contract | null {
+    return useContract( '0x195E8262AA81Ba560478EC6Ca4dA73745547073f', INARI_ABI, withSignerIfPossible )
 }
 
-export function useZenkoContract(withSignerIfPossible?: boolean): Contract | null {
-  return useContract('0xa8f676c49f91655ab3b7c3ea2b73bb3088b2bc1f', ZENKO_ABI, withSignerIfPossible)
+export function useZenkoContract ( withSignerIfPossible?: boolean ): Contract | null {
+    return useContract( '0xa8f676c49f91655ab3b7c3ea2b73bb3088b2bc1f', ZENKO_ABI, withSignerIfPossible )
 }
 
 // add new address for evmoswapv2
-export function useSeedSaleContract(withSignerIfPossible?: boolean): Contract | null {
-  const { chainId } = useActiveWeb3React()
-  return useContract(SEED_SALE_ADDRESS[chainId], SEEDSALE_ABI, withSignerIfPossible)
+export function useSeedSaleContract ( withSignerIfPossible?: boolean ): Contract | null {
+    const { chainId } = useActiveWeb3React()
+    return useContract( SEED_SALE_ADDRESS[ chainId ], SEEDSALE_ABI, withSignerIfPossible )
 }
 
-export function usePublicSaleContract(withSignerIfPossible?: boolean): Contract | null {
-  const { chainId } = useActiveWeb3React()
-  return useContract(PUBLIC_SALE_ADDRESS[chainId], PUBLICSALE_ABI, withSignerIfPossible)
+export function usePublicSaleContract ( withSignerIfPossible?: boolean ): Contract | null {
+    const { chainId } = useActiveWeb3React()
+    return useContract( PUBLIC_SALE_ADDRESS[ chainId ], PUBLICSALE_ABI, withSignerIfPossible )
 }
 
-export function useDashboardContract(withSignerIfPossible?: boolean): Contract | null {
-  const { chainId } = useActiveWeb3React()
-  return useContract(DASHBOARD_ADDRESS[chainId], DASHBOARD_ABI, withSignerIfPossible)
+export function useDashboardContract ( withSignerIfPossible?: boolean ): Contract | null {
+    const { chainId } = useActiveWeb3React()
+    return useContract( DASHBOARD_ADDRESS[ chainId ], DASHBOARD_ABI, withSignerIfPossible )
 }
 
 // This is a specifically function for balanceOf(address, timestamp) etc
-export function useVotingEscrowAtContract(withSignerIfPossible?: boolean): Contract | null {
-  const { chainId } = useActiveWeb3React()
-  return useContract(VOTING_ESCROW_ADDRESS[chainId], VOTING_ESCROW_AT_ABI, withSignerIfPossible)
+export function useVotingEscrowAtContract ( withSignerIfPossible?: boolean ): Contract | null {
+    const { chainId } = useActiveWeb3React()
+    return useContract( VOTING_ESCROW_ADDRESS[ chainId ], VOTING_ESCROW_AT_ABI, withSignerIfPossible )
 }
 
-export function useAnyswapTokenContract(tokenAddress?: string, withSignerIfPossible?: boolean): Contract | null {
-  return useContract(tokenAddress, ANYSWAP_ERC20_ABI, withSignerIfPossible)
+export function useAnyswapTokenContract ( tokenAddress?: string, withSignerIfPossible?: boolean ): Contract | null {
+    return useContract( tokenAddress, ANYSWAP_ERC20_ABI, withSignerIfPossible )
 }
 
-export function useEmosVaultContract(withSignerIfPossible?: boolean): Contract | null {
-  const { chainId } = useActiveWeb3React()
-  return useContract(EMOSVAULT_ADDRESS[chainId], EMOSVAULT_ABI, withSignerIfPossible)
+export function useEmosVaultContract ( withSignerIfPossible?: boolean ): Contract | null {
+    const { chainId } = useActiveWeb3React()
+    return useContract( EMOSVAULT_ADDRESS[ chainId ], EMOSVAULT_ABI, withSignerIfPossible )
 }
 
-export function useIfoContract(tokenAddress?: string, withSignerIfPossible?: boolean): Contract | null {
-  return useContract(tokenAddress, IFO_ABI, withSignerIfPossible)
+export function useIfoContract ( tokenAddress?: string, withSignerIfPossible?: boolean ): Contract | null {
+    return useContract( tokenAddress, IFO_ABI, withSignerIfPossible )
 }
 
-export function useVotingContract(withSignerIfPossible?: boolean): Contract | null {
-  const { chainId } = useActiveWeb3React()
-  return useContract(VOTE_ADDRESS[chainId], VOTE_ABI, withSignerIfPossible)
+export function useVotingContract ( withSignerIfPossible?: boolean ): Contract | null {
+    const { chainId } = useActiveWeb3React()
+    return useContract( VOTE_ADDRESS[ chainId ], VOTE_ABI, withSignerIfPossible )
 }
 
-export function useZapContract(withSignerIfPossible?: boolean): Contract | null {
-  const { chainId } = useActiveWeb3React()
-  return useContract(ZAP_ADDRESS[chainId], ZAP_ABI, withSignerIfPossible)
+export function useZapContract ( withSignerIfPossible?: boolean ): Contract | null {
+    const { chainId } = useActiveWeb3React()
+    return useContract( ZAP_ADDRESS[ chainId ], ZAP_ABI, withSignerIfPossible )
 }
 
-export function useFaucetContract(withSignerIfPossible?: boolean): Contract | null {
-  const { chainId } = useActiveWeb3React()
-  return useContract(FAUCET_ADDRESS[chainId], FAUCET_ABI, withSignerIfPossible)
+export function useFaucetContract ( withSignerIfPossible?: boolean ): Contract | null {
+    const { chainId } = useActiveWeb3React()
+    return useContract( FAUCET_ADDRESS[ chainId ], FAUCET_ABI, withSignerIfPossible )
 }
 
-export function usePrivateSaleContract(withSignerIfPossible?: boolean): Contract | null {
-  const { chainId } = useActiveWeb3React()
-  return useContract(PRIVATE_SALE_ADDRESS[chainId], PRIATESALE_ABI, withSignerIfPossible)
+export function usePrivateSaleContract ( withSignerIfPossible?: boolean ): Contract | null {
+    const { chainId } = useActiveWeb3React()
+    return useContract( PRIVATE_SALE_ADDRESS[ chainId ], PRIATESALE_ABI, withSignerIfPossible )
 }
 
-export function useFeeDistributorContract(withSignerIfPossible?: boolean): Contract | null {
-  const { chainId } = useActiveWeb3React()
-  return useContract(FEE_DISTRIBUTOR_ADDRESSES[chainId], FEE_DISTRIBUTOR_ABI, withSignerIfPossible)
+export function useFeeDistributorContract ( withSignerIfPossible?: boolean ): Contract | null {
+    const { chainId } = useActiveWeb3React()
+    return useContract( FEE_DISTRIBUTOR_ADDRESSES[ chainId ], FEE_DISTRIBUTOR_ABI, withSignerIfPossible )
 }
 
-export function useMultiFeeDistributionContract(withSignerIfPossible?: boolean): Contract | null {
-  const { chainId } = useActiveWeb3React()
-  return useContract(MULTI_FEE_DISTRIBUTION_ADDRESSES[chainId], MULTI_FEE_DISTRIBUTION_ABI, withSignerIfPossible)
+export function useMultiFeeDistributionContract ( withSignerIfPossible?: boolean ): Contract | null {
+    const { chainId } = useActiveWeb3React()
+    return useContract( MULTI_FEE_DISTRIBUTION_ADDRESSES[ chainId ], MULTI_FEE_DISTRIBUTION_ABI, withSignerIfPossible )
 }
 
-export function useRewardPoolContract(withSignerIfPossible?: boolean): Contract | null {
-  const { chainId } = useActiveWeb3React()
-  return useContract(REWARD_POOL_ADDRESS[chainId], REWARD_POOL_ABI, withSignerIfPossible)
+export function useRewardPoolContract ( withSignerIfPossible?: boolean ): Contract | null {
+    const { chainId } = useActiveWeb3React()
+    return useContract( REWARD_POOL_ADDRESS[ chainId ], REWARD_POOL_ABI, withSignerIfPossible )
 }
 
-export function useVotingEscrowContract(withSignerIfPossible?: boolean): Contract | null {
-  const { chainId } = useActiveWeb3React()
-  return useContract(VOTING_ESCROW_ADDRESS[chainId], VOTING_ESCROW_ABI, withSignerIfPossible)
+export function useVotingEscrowContract ( withSignerIfPossible?: boolean ): Contract | null {
+    const { chainId } = useActiveWeb3React()
+    return useContract( VOTING_ESCROW_ADDRESS[ chainId ], VOTING_ESCROW_ABI, withSignerIfPossible )
 }
 
-export function useEvmoRollContract(withSignerIfPossible?: boolean): Contract | null {
-  const { chainId } = useActiveWeb3React()
-  return useContract(EVMOROLL_ADDRESS[chainId], EVMOROLL_ABI, withSignerIfPossible)
+export function useEvmoRollContract ( withSignerIfPossible?: boolean ): Contract | null {
+    const { chainId } = useActiveWeb3React()
+    return useContract( EVMOROLL_ADDRESS[ chainId ], EVMOROLL_ABI, withSignerIfPossible )
 }
 
-export function useMigrateDashboardContract(withSignerIfPossible?: boolean): Contract | null {
-  const { chainId } = useActiveWeb3React()
-  return useContract(MIGRATE_DASHBOARD_ADDRESS[chainId], MIGRATE_DASHBOARD_ABI, withSignerIfPossible)
+export function useMigrateDashboardContract ( withSignerIfPossible?: boolean ): Contract | null {
+    const { chainId } = useActiveWeb3React()
+    return useContract( MIGRATE_DASHBOARD_ADDRESS[ chainId ], MIGRATE_DASHBOARD_ABI, withSignerIfPossible )
 }
 
-export function useTreasuryContract(withSignerIfPossible?: boolean): Contract | null {
-  const { chainId } = useActiveWeb3React()
-  return useContract(TREASURY_ADDRESS[chainId], TREASURY_ABI, withSignerIfPossible)
+export function useTreasuryContract ( withSignerIfPossible?: boolean ): Contract | null {
+    const { chainId } = useActiveWeb3React()
+    return useContract( TREASURY_ADDRESS[ chainId ], TREASURY_ABI, withSignerIfPossible )
+}
+
+export function useSimpleIncentiveContract ( address?: string, withSignerIfPossible?: boolean ): Contract | null {
+    return useContract( address, SIMPLE_INCENTIVE_CONTROLLER_ABI, withSignerIfPossible )
 }

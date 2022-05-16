@@ -3,9 +3,9 @@ import { Contract } from '@ethersproject/contracts'
 import { useActiveWeb3React } from 'app/services/web3'
 import { BigNumber } from '@ethersproject/bignumber'
 import { ChainId, CurrencyAmount, JSBI } from '@sushiswap/core-sdk'
-import { useDashboardContract, useMasterChefContract } from 'app/hooks/useContract'
+import { useContract, useDashboardContract, useMasterChefContract, useSimpleIncentiveContract } from 'app/hooks/useContract'
 import { NEVER_RELOAD, useSingleCallResult } from 'app/state/multicall/hooks'
-import { useToken } from 'app/hooks/Tokens'
+import { useCurrency, useToken } from 'app/hooks/Tokens'
 
 // @ts-ignore TYPE NEEDS FIXING
 export function useUserInfo ( farm, token ) {
@@ -44,6 +44,21 @@ export function usePendingReward ( farm ) {
     }, [] )
 
     return reward
+}
+
+
+export function useIncentive ( incentiveAddress: string ) {
+    const { account } = useActiveWeb3React()
+    const contract = useSimpleIncentiveContract( incentiveAddress );
+    const tokenAddress = useSingleCallResult( contract, 'rewardToken' )?.result?.[ 0 ];
+    const rewardToken = useCurrency( tokenAddress );
+    const pendingReward = useSingleCallResult( contract, 'pendingTokens', [ account ] )?.result?.[ 0 ];
+    const rewardAmount = rewardToken && pendingReward ? CurrencyAmount.fromRawAmount( rewardToken, pendingReward ) : null;
+    return {
+        rewardToken,
+        pendingReward,
+        rewardAmount
+    }
 }
 
 export const useEmoUsdcPrice = (): BigNumber | undefined => {
