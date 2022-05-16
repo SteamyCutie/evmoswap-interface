@@ -116,7 +116,7 @@ export default function Boostv3 () {
         if ( earnedBalances && earnedBalances?.earningsData?.length )
             earnedBalances.earningsData.map( ( earning: { unlockTime: number; amount: number } ) => {
                 const amount = CurrencyAmount.fromRawAmount( balance?.currency, earning?.amount?.toString() || "0" );
-                const penaltyAmount = amount.divide( 2 ).toExact().toBigNumber( token.decimals );
+                const penaltyAmount = amount.divide( 2 ).toExact().toBigNumber( amount.currency.decimals );
                 const expired = isFuture( getUnixTime( earning?.unlockTime ) );
 
                 if ( ( amount.greaterThan( 0 ) && expired ) || penaltyAmount.gt( 0 ) )

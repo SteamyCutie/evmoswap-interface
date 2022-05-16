@@ -9,6 +9,7 @@ const BLOCKCHAIN = {
   [ChainId.ETHEREUM]: 'ethereum',
   [ChainId.EVMOS]: 'evmos',
   [ChainId.EVMOS_TESTNET]: 'evmos-testnet',
+  [ChainId.BSC_TESTNET]: 'bsc-testnet',
 }
 
 export function getCurrencyLogoUrls(currency) {
