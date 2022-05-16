@@ -12,10 +12,7 @@ import { WNATIVE, Token } from '@evmoswap/core-sdk'
 import { useActiveWeb3React } from '../../services/web3'
 import { EvmoSwap } from 'config/tokens'
 import { usePendingReward } from 'app/features/farm/hooks'
-import { useTokenBalance } from 'app/state/wallet/hooks'
 import { useUserInfo } from 'features/farm/hooks'
-import { useDerivedMintInfo } from 'app/state/mint/hooks'
-import FarmIncentiveAmount from './FarmIncentiveAmount'
 import FarmIncentiveRewards from './FarmIncentiveRewards'
 
 interface FarmListItem {
