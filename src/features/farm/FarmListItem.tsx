@@ -83,7 +83,7 @@ const FarmListItem: FC<FarmListItem> = ( { farm, onClick } ) => {
                         <CurrencyLogo currency={ nativeToken } size={ 20 } />
                         <div>{ `${Number( rewardAmounts ).toFixed( 2 )} ${rewardToken?.symbol}` }</div>
                     </div>
-                    <FarmIncentiveRewards incentives={ farm.incentives } />
+                    <FarmIncentiveRewards incentives={ farm.incentives } decimals={ 2 } />
                 </div>
             </div>
             <div className={ TABLE_TBODY_TD_CLASSNAME( 2, 6 ) }>
