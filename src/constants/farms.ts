@@ -146,7 +146,6 @@ export const FARMS: AddressMap = {
             isZap: true,
             token0: { id: '0x9b5bb7F5BE680843Bcd3B54D4E5C6eE889c124Df', name: 'USD Coin', symbol: 'USDC', decimals: 6 },
             token1: { id: '0x648D3d969760FDabc71ea9d59c020AD899237b32', name: 'Tether USD', symbol: 'USDT', decimals: 6 },
-            farmType: FarmType.DOUBLE,
         },
 
         '0x87ce4e5bBCE1Ee646Fa28B61CbC7EFac4722680e': {

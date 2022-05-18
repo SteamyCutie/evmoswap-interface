@@ -94,6 +94,18 @@ function AppBar(): JSX.Element {
                           </a>
                         </NavLink>
                       )}
+
+                      {chainId && featureEnabled(Feature.GEMO, chainId) && (
+                        <NavLink href={'/gemo'}>
+                          <a
+                            id={`boost-nav-link`}
+                            className="p-2 text-baseline text-primary hover:text-high-emphesis focus:text-high-emphesis md:p-3 whitespace-nowrap"
+                          >
+                            {i18n._(t`GEMO`)}
+                          </a>
+                        </NavLink>
+                      )}
+
                       {chainId && featureEnabled(Feature.BOOST, chainId) && (
                         <NavLink href={'/veEMO'}>
                           <a
@@ -272,6 +284,17 @@ function AppBar(): JSX.Element {
                       className="p-2 text-baseline text-primary hover:text-high-emphesis focus:text-high-emphesis md:p-3 whitespace-nowrap"
                     >
                       {i18n._(t`Stake`)}
+                    </a>
+                  </Link>
+                )}
+
+                {chainId && featureEnabled(Feature.GEMO, chainId) && (
+                  <Link href={'/gemo'}>
+                    <a
+                      id={`boost-nav-link`}
+                      className="p-2 text-baseline text-primary hover:text-high-emphesis focus:text-high-emphesis md:p-3 whitespace-nowrap"
+                    >
+                      {i18n._(t`GEMO`)}
                     </a>
                   </Link>
                 )}

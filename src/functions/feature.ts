@@ -3,7 +3,7 @@ import { ChainId } from '@evmoswap/core-sdk'
 export enum Feature {
   AMM = 'AMM',
   YIELD = 'Yield',
-  FARMV2 = 'Farm V2',
+  GEMO = 'Gemo',
   LENDING = 'Lending',
   ANALYTICS = 'Analytics',
   MIGRATE = 'Migrate',
@@ -52,7 +52,7 @@ const features = {
   [ChainId.BSC_TESTNET]: [
     Feature.AMM,
     Feature.YIELD,
-    // Feature.FARMV2,
+    Feature.GEMO,
     // Feature.ZAP,
     // Feature.LENDING,
     Feature.IFO,
