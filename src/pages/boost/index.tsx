@@ -25,7 +25,7 @@ import { BigNumber } from '@ethersproject/bignumber'
 import { useRewardPool } from 'app/features/boost/hooks/useRewardPool'
 import useVotingEscrow from 'app/features/boost/hooks/useVotingEscrow'
 import { useFeeDistributor } from 'app/features/boost/hooks/useFeeDistributor'
-import { timestampToDate } from 'app/features/boost/functions/app'
+import { timestampToDate } from 'app/features/boost/functions'
 import { EMOSPlaceholder, useFarmsReward, useLockedBalance, useLockerExtraRewards, useRewardsBalance, useStakingBalance } from 'app/features/boost/hooks/balances'
 
 type VestingRow = {
@@ -54,6 +54,16 @@ const LOCK_PERIODS = [
     { week: WEEKS_PER_MONTH * 12 * 3, title: '3 year' },
     { week: WEEKS_PER_MONTH * 12 * 4, title: '4 years' },
 ]
+
+//evmo benefit outlines
+const OUTLINES = [
+    "Mint NFTs and Trade",
+    "Vote and Govern Protocol",
+    "Receive Free Partner Tokens",
+    "Boost your yield farm earnings",
+    "Access Exclusive Launchpad Projects",
+];
+
 
 export default function Boostv3 () {
 
@@ -612,27 +622,16 @@ export default function Boostv3 () {
                             <h3 className="text-medium font-bold text-white">{ i18n._( t`Locking demonstrates a commitment to the long-term vision of EvmoSwap` ) }</h3>
                             <p className='my-4 text-sm leading-6'>{ i18n._( t`Lock your ${token.symbol} and get Boost Power to increase your Yield farm earnings and participate in protocol Governance` ) }</p>
 
+                            {/** benefit outlines */ }
                             <div className='bg-dark-800 px-4 py-6 h-full rounded mt-4 space-y-4 text-white text-sm grow'>
-                                <div className='flex items-center space-x-2'>
-                                    <Image src={ DoubleCheckIcon } alt="" className='w-4 h-4' />
-                                    <p>{ i18n._( t`Mint NFTs and Trade` ) }</p>
-                                </div>
-                                <div className='flex items-center space-x-2'>
-                                    <Image src={ DoubleCheckIcon } alt="" className='w-4 h-4' />
-                                    <p>{ i18n._( t`Vote and Govern Protocol` ) }</p>
-                                </div>
-                                <div className='flex items-center space-x-2'>
-                                    <Image src={ DoubleCheckIcon } alt="" className='w-4 h-4' />
-                                    <p>{ i18n._( t`Receive Free Partner Tokens` ) }</p>
-                                </div>
-                                <div className='flex items-center space-x-2'>
-                                    <Image src={ DoubleCheckIcon } alt="" className='w-4 h-4' />
-                                    <p>{ i18n._( t`Boost your yield farm earnings` ) }</p>
-                                </div>
-                                <div className='flex items-center space-x-2'>
-                                    <Image src={ DoubleCheckIcon } alt="" className='w-4 h-4' />
-                                    <p>{ i18n._( t`Access Exclusive Launchpad Projects` ) }</p>
-                                </div>
+                                {
+                                    OUTLINES && OUTLINES.map( ( outline, index ) =>
+                                        <div className='flex items-center space-x-2' key={ index }>
+                                            <Image src={ DoubleCheckIcon } alt="" className='w-4 h-4' />
+                                            <p>{ i18n._( t`${outline}` ) }</p>
+                                        </div>
+                                    )
+                                }
                             </div>
                         </div>
                         <div className="grid grid-cols-2 gap-2 mt-8">
