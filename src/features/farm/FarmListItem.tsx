@@ -62,7 +62,7 @@ const FarmListItem: FC<FarmListItem> = ( { farm, onClick } ) => {
             <div className={ classNames( 'flex gap-2', TABLE_TBODY_TD_CLASSNAME( 0, 6 ) ) }>
                 { token0 && token1 && <CurrencyLogoArray currencies={ currencies || [ token0, token1 ] } dense size={ 32 } /> }
                 <div className="flex flex-col items-start">
-                    <Typography weight={ 700 } className="flex gap-1 text-high-emphasis">
+                    <Typography weight={ 700 } className="text-high-emphasis">
                         {
                             currencies.map( ( token, index ) => (
                                 <span key={ index }>
