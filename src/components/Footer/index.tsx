@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { t } from '@lingui/macro'
 import { useLingui } from '@lingui/react'
 import { DiscordIcon, MediumIcon, TwitterIcon } from '../Icon'
@@ -103,15 +104,17 @@ const Footer = () => {
     }
   }, [])
 
-  const handleDarkTheme = () => {
+  const handleClearTheme = () => {
     document.documentElement.classList.remove('dark')
     document.documentElement.classList.remove('light')
+  }
+  const handleDarkTheme = () => {
+    handleClearTheme()
     document.documentElement.classList.add('dark')
     localStorage.setItem('color-theme', 'dark')
   }
   const handleLightTheme = () => {
-    document.documentElement.classList.remove('dark')
-    document.documentElement.classList.remove('light')
+    handleClearTheme()
     document.documentElement.classList.add('light')
     localStorage.setItem('color-theme', 'light')
   }
