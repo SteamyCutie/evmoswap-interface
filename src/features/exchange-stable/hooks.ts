@@ -63,6 +63,9 @@ export function useStablePoolFromRouter ( routeParams: string | string[] ): {
     const poolSlug = Array.isArray( routeParams ) ? routeParams[ 0 ] : routeParams
     const pools = STABLE_POOLS[ chainId ]
     const [ pool, poolId ] = useMemo( () => {
+
+        if ( !pools ) return [];
+
         const poolIdes = Object.keys( pools )
         let id = poolIdes[ 0 ]
         let resp = pools[ id ]
@@ -89,7 +92,7 @@ export function useStablePoolFromRouter ( routeParams: string | string[] ): {
 // fetch pool info
 export function useStablePoolInfo ( poolId: string ): StablePoolInfo {
     const { chainId } = useWeb3React()
-    const pool = STABLE_POOLS[ chainId ][ poolId ]
+    const pool = STABLE_POOLS[ chainId ]?.[ poolId ]
 
     const contract = useStablePoolContract( poolId )
     const resp = {

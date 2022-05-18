@@ -14,8 +14,8 @@ import StablePoolPosition from "./StablePoolPosition";
 const StablePoolItem = ( { poolId, showHeader = false, showPosition = false, className = '' }: { poolId: string, showHeader?: boolean, showPosition?: boolean, className?: string } ) => {
 
     const { chainId } = useActiveWeb3React()
-    const pool = STABLE_POOLS[ chainId ][ poolId ]
 
+    const pool = STABLE_POOLS[ chainId ]?.[ poolId ]
     const poolInfo = useStablePoolInfo( poolId );
     const poolTokensInfo = poolInfo.pooledTokensInfo;
     const balances = poolTokensInfo.balances;
