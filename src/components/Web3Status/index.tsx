@@ -29,12 +29,12 @@ const IconWrapper = styled.div<{ size?: number }>`
 `
 
 // we want the latest one to come first, so return negative if a is after b
-function newTransactionsFirst(a: TransactionDetails, b: TransactionDetails) {
+const newTransactionsFirst = (a: TransactionDetails, b: TransactionDetails) => {
   return b.addedTime - a.addedTime
 }
 
 // eslint-disable-next-line react/prop-types
-function StatusIcon({ connector }: { connector: AbstractConnector }) {
+const StatusIcon = ({ connector }: { connector: AbstractConnector }) => {
   if (connector === injected) {
     return <Image src="/images/wallets/metamask.png" alt="Injected (MetaMask etc...)" width={20} height={20} />
     // return <Identicon />
@@ -55,7 +55,7 @@ function StatusIcon({ connector }: { connector: AbstractConnector }) {
   return null
 }
 
-function Web3StatusInner() {
+const Web3StatusInner = () => {
   const { i18n } = useLingui()
   const { account, connector } = useWeb3React()
 
@@ -88,7 +88,7 @@ function Web3StatusInner() {
     return (
       <div
         id="web3-status-connected"
-        className="flex items-center px-3 py-2 text-sm rounded-lg bg-dark-1000 text-secondary"
+        className="flex items-center px-3 py-2 m-0.5 text-sm rounded-lg bg-light-bg/80 dark:bg-dark-primary/80 transition-all text-dark-primary/80 dark:text-light-primary/80"
         onClick={toggleWalletModal}
       >
         {hasPendingTransactions ? (
@@ -105,11 +105,11 @@ function Web3StatusInner() {
       </div>
     )
   } else {
-    return <Web3Connect style={{ paddingTop: '6px', paddingBottom: '6px' }} />
+    return <Web3Connect />
   }
 }
 
-export default function Web3Status() {
+const Web3Status = () => {
   const { active, account } = useWeb3React()
   const contextNetwork = useWeb3React(NetworkContextName)
 
@@ -136,3 +136,5 @@ export default function Web3Status() {
     </>
   )
 }
+
+export default Web3Status

@@ -22,11 +22,11 @@ interface TokenStatsProps {
   token: string
 }
 
-function TokenStatusInner({ token, price }) {
+const TokenStatusInner = ({ token, price }) => {
   const toggleModal = useTokenStatsModalToggle()
   return (
     <div
-      className="flex items-center px-2 py-2 text-sm rounded-lg bg-dark-900 hover:bg-dark-800 text-secondary"
+      className="flex items-center px-2 py-2 text-sm transition-all bg-transparent rounded-lg text-dark-primary/80 dark:text-light-primary/80"
       onClick={toggleModal}
     >
       {token.icon && (
@@ -39,12 +39,14 @@ function TokenStatusInner({ token, price }) {
           className="rounded-md"
         />
       )}
-      <div className="px-1 text-primary">{formatNumberScale(price, true)}</div>
+      <div className="px-1 transition-all text-dark-primary/80 dark:text-light-primary/80">
+        {formatNumberScale(price, true)}
+      </div>
     </div>
   )
 }
 
-export default function TokenStats({ token, ...rest }: TokenStatsProps) {
+const TokenStats = ({ token, ...rest }: TokenStatsProps) => {
   const selectedToken = supportedTokens[token]
   const evmoPrice = useEmoUsdcPrice()
 
@@ -55,3 +57,5 @@ export default function TokenStats({ token, ...rest }: TokenStatsProps) {
     </>
   )
 }
+
+export default TokenStats

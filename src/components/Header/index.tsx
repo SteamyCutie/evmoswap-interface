@@ -21,32 +21,47 @@ import { useLingui } from '@lingui/react'
 import { ExternalLink as LinkIcon } from 'react-feather'
 import Typography from '../Typography'
 import TokenStats from '../TokenStats'
+import { useRouter } from 'next/router'
 
 // import { ExternalLink, NavLink } from "./Link";
 // import { ReactComponent as Burger } from "../assets/images/burger.svg";
 
-function AppBar(): JSX.Element {
+const AppBar: React.FC<JSX.Element> = () => {
   const { i18n } = useLingui()
   const { account, chainId, library } = useActiveWeb3React()
 
   const userEthBalance = useETHBalances(account ? [account] : [])?.[account ?? '']
+
+  const navLinkStyle =
+    'p-2 text-base font-bold transition-all text-dark/80 hover:text-dark active:text-dark/90 focus:text-dark dark:text-light/80 dark:hover:text-light dark:active:text-light/90 dark:focus:text-light md:p-3 whitespace-nowrap'
+
+  const routeTag: any = useRouter().asPath.split('/')[1].split('?')[0]
 
   return (
     <header className="flex-shrink-0 w-full">
       <Popover as="nav" className="z-10 w-full bg-transparent header-border-b">
         {({ open }) => (
           <>
-            <div className="px-4 py-4">
+            <div className="px-4 py-4 border-b border-dark-primary/10 dark:border-light-primary/10 bg-light-primary/50 dark:bg-dark-primary/50 lg:backdrop-blur-lg">
               <div className="flex items-center justify-between">
                 <div className="flex items-center">
-                  <Image src="/logo.png" alt="EvmoSwap" width="171px" height="32px" />
+                  <div className="grid dark:hidden">
+                    <Image src="/logo.png" alt="light logo" width="191px" height="33px" />
+                  </div>
+                  <div className="hidden dark:grid">
+                    <Image src="/logo-dark.png" alt="dark logo" width="191px" height="33px" />
+                  </div>
                   <div className="hidden sm:block sm:ml-4">
                     <div className="flex space-x-2">
                       {/* <Buy /> */}
                       <NavLink href="/swap">
                         <a
                           id={`swap-nav-link`}
-                          className="p-2 text-baseline text-primary hover:text-high-emphesis focus:text-high-emphesis md:p-3 whitespace-nowrap"
+                          className={`${navLinkStyle} ${
+                            routeTag === 'swap' || routeTag === 'add' || routeTag === 'remove'
+                              ? 'text-dark dark:text-light'
+                              : ''
+                          }`}
                         >
                           {i18n._(t`Swap`)}
                         </a>
@@ -54,7 +69,7 @@ function AppBar(): JSX.Element {
                       <NavLink href="/pool">
                         <a
                           id={`pool-nav-link`}
-                          className="p-2 text-baseline text-primary hover:text-high-emphesis focus:text-high-emphesis md:p-3 whitespace-nowrap"
+                          className={`${navLinkStyle} ${routeTag === 'pool' ? 'text-dark dark:text-light' : ''}`}
                         >
                           {i18n._(t`Pool`)}
                         </a>
@@ -64,7 +79,7 @@ function AppBar(): JSX.Element {
                         <NavLink href={'/farm'}>
                           <a
                             id={`yield-nav-link`}
-                            className="p-2 text-baseline text-primary hover:text-high-emphesis focus:text-high-emphesis md:p-3 whitespace-nowrap"
+                            className={`${navLinkStyle} ${routeTag === 'farm' ? 'text-dark dark:text-light' : ''}`}
                           >
                             {i18n._(t`Farms`)}
                           </a>
@@ -76,7 +91,7 @@ function AppBar(): JSX.Element {
                           <NavLink href={'/lending'}>
                             <a
                               id={`lend-nav-link`}
-                              className="p-2 text-baseline text-primary hover:text-high-emphesis focus:text-high-emphesis md:p-3 whitespace-nowrap"
+                              className={`${navLinkStyle} ${routeTag === 'lending' ? 'text-dark dark:text-light' : ''}`}
                             >
                               {i18n._(t`Lending`)}
                             </a>
@@ -88,7 +103,7 @@ function AppBar(): JSX.Element {
                         <NavLink href={'/stake'}>
                           <a
                             id={`stake-nav-link`}
-                            className="p-2 text-baseline text-primary hover:text-high-emphesis focus:text-high-emphesis md:p-3 whitespace-nowrap"
+                            className={`${navLinkStyle} ${routeTag === 'stake' ? 'text-dark dark:text-light' : ''}`}
                           >
                             {i18n._(t`Stake`)}
                           </a>
@@ -98,7 +113,7 @@ function AppBar(): JSX.Element {
                         <NavLink href={'/veEMO'}>
                           <a
                             id={`boost-nav-link`}
-                            className="p-2 text-baseline text-primary hover:text-high-emphesis focus:text-high-emphesis md:p-3 whitespace-nowrap"
+                            className={`${navLinkStyle} ${routeTag === 'veEMO' ? 'text-dark dark:text-light' : ''}`}
                           >
                             {i18n._(t`veEMO`)}
                           </a>
@@ -110,7 +125,7 @@ function AppBar(): JSX.Element {
                           <NavLink href={'/ieo'}>
                             <a
                               id={`lend-nav-link`}
-                              className="p-2 text-baseline text-primary hover:text-high-emphesis focus:text-high-emphesis md:p-3 whitespace-nowrap"
+                              className={`${navLinkStyle} ${routeTag === 'ieo' ? 'text-dark dark:text-light' : ''}`}
                             >
                               {i18n._(t`IEO`)}
                             </a>
@@ -122,7 +137,7 @@ function AppBar(): JSX.Element {
                         <NavLink href={'/gamefi'}>
                           <a
                             id={`boost-nav-link`}
-                            className="p-2 text-baseline text-primary hover:text-high-emphesis focus:text-high-emphesis md:p-3 whitespace-nowrap"
+                            className={`${navLinkStyle} ${routeTag === 'gamefi' ? 'text-dark dark:text-light' : ''}`}
                           >
                             {i18n._(t`GameFi`)}
                           </a>
@@ -133,7 +148,7 @@ function AppBar(): JSX.Element {
                         <NavLink href={'/tools'}>
                           <a
                             id={`bridge-nav-link`}
-                            className="p-2 text-baseline text-primary hover:text-high-emphesis focus:text-high-emphesis md:p-3 whitespace-nowrap"
+                            className={`${navLinkStyle} ${routeTag === 'tools' ? 'text-dark dark:text-light' : ''}`}
                           >
                             {i18n._(t`Faucet`)}
                           </a>
@@ -144,7 +159,7 @@ function AppBar(): JSX.Element {
                         <NavLink href={'/bridge'}>
                           <a
                             id={`bridge-nav-link`}
-                            className="p-2 text-baseline text-primary hover:text-high-emphesis focus:text-high-emphesis md:p-3 whitespace-nowrap"
+                            className={`${navLinkStyle} ${routeTag === 'bridge' ? 'text-dark dark:text-light' : ''}`}
                           >
                             {i18n._(t`Bridges`)}
                           </a>
@@ -155,7 +170,9 @@ function AppBar(): JSX.Element {
                         <Link href={'/privatesale'}>
                           <a
                             id={`prisale-nav-link`}
-                            className="p-2 text-baseline text-primary hover:text-high-emphesis focus:text-high-emphesis md:p-3 whitespace-nowrap"
+                            className={`${navLinkStyle} ${
+                              routeTag === 'privatesale' ? 'text-dark dark:text-light' : ''
+                            }`}
                           >
                             {' '}
                             {i18n._(t`Private sale 🚀`)}
@@ -166,9 +183,9 @@ function AppBar(): JSX.Element {
                   </div>
                 </div>
 
-                <div className="fixed bottom-0 left-0 z-20 flex flex-row items-center justify-center w-full p-4 lg:w-auto bg-dark-1000 lg:relative lg:p-0 lg:bg-transparent">
+                <div className="fixed bottom-0 left-0 z-20 flex flex-row items-center justify-center w-full p-4 transition-all lg:w-auto bg-light-primary/30 dark:bg-dark-primary/50 backdrop-blur-lg lg:backdrop-filter-none lg:relative lg:p-0 lg:bg-transparent lg:dark:bg-transparent">
                   <div className="flex items-center justify-between w-full space-x-2 sm:justify-end">
-                    <div className="flex items-center w-auto mr-1 text-xs font-bold rounded shadow-sm cursor-pointer pointer-events-auto select-none bg-dark-800 text-primary hover:bg-dark-700 whitespace-nowrap sm:block">
+                    <div className="flex items-center w-auto mr-1 text-xs font-bold transition-all bg-transparent rounded cursor-pointer pointer-events-auto select-none hover:bg-dark-primary/10 text-primary dark:hover:bg-light-primary/5 whitespace-nowrap sm:block">
                       <TokenStats token="EMO" />
                     </div>
                     {library && library.provider.isMetaMask && (
@@ -177,7 +194,7 @@ function AppBar(): JSX.Element {
                       </div>
                     )}
 
-                    <div className="w-auto flex items-center rounded bg-dark-900 hover:bg-dark-800 p-0.5 whitespace-nowrap text-sm font-bold cursor-pointer select-none pointer-events-auto">
+                    <div className="flex items-center w-auto text-sm font-bold transition-all rounded cursor-pointer pointer-events-auto select-none text-dark-primary/80 dark:text-light-primary/80 bg-light-bg/30 dark:bg-light-primary/10 hover:bg-light-bg/50 dark:hover:bg-light-bg/20 whitespace-nowrap">
                       {account && chainId && userEthBalance && (
                         <>
                           <div className="px-3 py-2 text-primary text-bold">
@@ -190,7 +207,7 @@ function AppBar(): JSX.Element {
                     {/* <div className="hidden md:block">
                       <LanguageSwitch />
                     </div> */}
-                    {/* <More /> */}
+                    <More />
                   </div>
                 </div>
                 <div className="flex -mr-2 sm:hidden">
@@ -198,7 +215,7 @@ function AppBar(): JSX.Element {
                   {/* <div className="block mr-2 md:hidden">
                     <LanguageSwitch />
                   </div> */}
-                  <Popover.Button className="inline-flex items-center justify-center p-2 rounded-md text-primary hover:text-high-emphesis focus:outline-none">
+                  <Popover.Button className="inline-flex items-center justify-center p-2 rounded-md text-dark dark:text-light hover:text-high-emphesis focus:outline-none">
                     <span className="sr-only">{i18n._(t`Open main menu`)}</span>
                     {open ? (
                       <svg
@@ -235,11 +252,15 @@ function AppBar(): JSX.Element {
             </div>
 
             <Popover.Panel className="sm:hidden">
-              <div className="flex flex-col px-4 pt-2 pb-3 space-y-1">
+              <div className="flex flex-col px-4 pt-2 pb-3 space-y-1 bg-light-primary/50 dark:bg-dark-primary/50 backdrop-blur-lg">
                 <Link href={'/swap'}>
                   <a
                     id={`swap-nav-link`}
-                    className="p-2 text-baseline text-primary hover:text-high-emphesis focus:text-high-emphesis md:p-3 whitespace-nowrap"
+                    className={`${navLinkStyle} ${
+                      routeTag === 'swap' || routeTag === 'add' || routeTag === 'remove'
+                        ? 'text-dark dark:text-light'
+                        : ''
+                    }`}
                   >
                     {i18n._(t`Swap`)}
                   </a>
@@ -247,7 +268,7 @@ function AppBar(): JSX.Element {
                 <Link href={'/pool'}>
                   <a
                     id={`pool-nav-link`}
-                    className="p-2 text-baseline text-primary hover:text-high-emphesis focus:text-high-emphesis md:p-3 whitespace-nowrap"
+                    className={`${navLinkStyle} ${routeTag === 'pool' ? 'text-dark dark:text-light' : ''}`}
                   >
                     {i18n._(t`Pool`)}
                   </a>
@@ -257,7 +278,7 @@ function AppBar(): JSX.Element {
                   <Link href={'/farm'}>
                     <a
                       id={`yield-nav-link`}
-                      className="p-2 text-baseline text-primary hover:text-high-emphesis focus:text-high-emphesis md:p-3 whitespace-nowrap"
+                      className={`${navLinkStyle} ${routeTag === 'farm' ? 'text-dark dark:text-light' : ''}`}
                     >
                       {' '}
                       {i18n._(t`Farms`)}
@@ -269,7 +290,7 @@ function AppBar(): JSX.Element {
                   <Link href={'/stake'}>
                     <a
                       id={`stake-nav-link`}
-                      className="p-2 text-baseline text-primary hover:text-high-emphesis focus:text-high-emphesis md:p-3 whitespace-nowrap"
+                      className={`${navLinkStyle} ${routeTag === 'stake' ? 'text-dark dark:text-light' : ''}`}
                     >
                       {i18n._(t`Stake`)}
                     </a>
@@ -280,7 +301,7 @@ function AppBar(): JSX.Element {
                   <Link href={'/veEMO'}>
                     <a
                       id={`boost-nav-link`}
-                      className="p-2 text-baseline text-primary hover:text-high-emphesis focus:text-high-emphesis md:p-3 whitespace-nowrap"
+                      className={`${navLinkStyle} ${routeTag === 'veEMO' ? 'text-dark dark:text-light' : ''}`}
                     >
                       {i18n._(t`veEMO`)}
                     </a>
@@ -291,7 +312,7 @@ function AppBar(): JSX.Element {
                   <Link href={'/ieo'}>
                     <a
                       id={`yield-nav-link`}
-                      className="p-2 text-baseline text-primary hover:text-high-emphesis focus:text-high-emphesis md:p-3 whitespace-nowrap"
+                      className={`${navLinkStyle} ${routeTag === 'ieo' ? 'text-dark dark:text-light' : ''}`}
                     >
                       {' '}
                       {i18n._(t`IEO`)}
@@ -303,7 +324,7 @@ function AppBar(): JSX.Element {
                   <Link href={'/bridge'}>
                     <a
                       id={`gamefi-nav-link`}
-                      className="p-2 text-baseline text-primary hover:text-high-emphesis focus:text-high-emphesis md:p-3 whitespace-nowrap"
+                      className={`${navLinkStyle} ${routeTag === 'bridge' ? 'text-dark dark:text-light' : ''}`}
                     >
                       {i18n._(t`Bridges`)}
                     </a>
@@ -314,7 +335,7 @@ function AppBar(): JSX.Element {
                   <Link href={'/privatesale'}>
                     <a
                       id={`prisale-nav-link`}
-                      className="p-2 text-baseline text-primary hover:text-high-emphesis focus:text-high-emphesis md:p-3 whitespace-nowrap"
+                      className={`${navLinkStyle} ${routeTag === 'privatesale' ? 'text-dark dark:text-light' : ''}`}
                     >
                       {' '}
                       {i18n._(t`Private sale`)}
@@ -326,7 +347,7 @@ function AppBar(): JSX.Element {
                   <ExternalLink
                     id={`analytics-nav-link`}
                     href={ANALYTICS_URL[chainId] || 'https://analytics.x.com'}
-                    className="p-2 text-baseline text-primary hover:text-high-emphesis focus:text-high-emphesis md:p-3 whitespace-nowrap"
+                    className={navLinkStyle}
                   >
                     {i18n._(t`Analytics`)}
                   </ExternalLink>

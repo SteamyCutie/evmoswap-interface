@@ -60,7 +60,7 @@ const items = (i18n: I18n) => [
   },
 ]
 
-export default function Menu() {
+const Menu = () => {
   const { i18n } = useLingui()
   const solutions = items(i18n)
   const isDesktop = window.innerWidth > 1024
@@ -71,36 +71,42 @@ export default function Menu() {
         <>
           <Popover.Button
             className={classNames(
-              open ? 'text-primary' : 'text-secondary',
-              'focus:outline-none hover:text-high-emphesis'
+              open
+                ? 'text-dark-primary/80 dark:text-light-primary/80'
+                : 'text-dark-primary/60 dark:text-light-primary/60',
+              'focus:outline-none hover:text-dark-primary dark:hover:text-light-primary transition-all m-2 mr-1'
             )}
           >
-            <svg
-              width="16px"
-              height="16px"
-              className="inline-flex items-center w-5 h-5 ml-2"
-              viewBox="0 0 24 24"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
-            >
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
               <path
-                d="M12 13C12.5523 13 13 12.5523 13 12C13 11.4477 12.5523 11 12 11C11.4477 11 11 11.4477 11 12C11 12.5523 11.4477 13 12 13Z"
+                fillRule="evenodd"
+                clipRule="evenodd"
+                d="M0.5 3.41667C0.5 1.22899 0.523424 0.5 3.41667 0.5C6.30991 0.5 6.33333 1.22899 6.33333 3.41667C6.33333 5.60434 6.34256 6.33333 3.41667 6.33333C0.490773 6.33333 0.5 5.60434 0.5 3.41667Z"
                 stroke="currentColor"
-                strokeWidth="2"
                 strokeLinecap="round"
                 strokeLinejoin="round"
               />
               <path
-                d="M19 13C19.5523 13 20 12.5523 20 12C20 11.4477 19.5523 11 19 11C18.4477 11 18 11.4477 18 12C18 12.5523 18.4477 13 19 13Z"
+                fillRule="evenodd"
+                clipRule="evenodd"
+                d="M9.66699 3.41667C9.66699 1.22899 9.69042 0.5 12.5837 0.5C15.4769 0.5 15.5003 1.22899 15.5003 3.41667C15.5003 5.60434 15.5096 6.33333 12.5837 6.33333C9.65776 6.33333 9.66699 5.60434 9.66699 3.41667Z"
                 stroke="currentColor"
-                strokeWidth="2"
                 strokeLinecap="round"
                 strokeLinejoin="round"
               />
               <path
-                d="M5 13C5.55228 13 6 12.5523 6 12C6 11.4477 5.55228 11 5 11C4.44772 11 4 11.4477 4 12C4 12.5523 4.44772 13 5 13Z"
+                fillRule="evenodd"
+                clipRule="evenodd"
+                d="M0.5 12.5833C0.5 10.3956 0.523424 9.66666 3.41667 9.66666C6.30991 9.66666 6.33333 10.3956 6.33333 12.5833C6.33333 14.771 6.34256 15.5 3.41667 15.5C0.490773 15.5 0.5 14.771 0.5 12.5833Z"
                 stroke="currentColor"
-                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              />
+              <path
+                fillRule="evenodd"
+                clipRule="evenodd"
+                d="M9.66699 12.5833C9.66699 10.3956 9.69042 9.66666 12.5837 9.66666C15.4769 9.66666 15.5003 10.3956 15.5003 12.5833C15.5003 14.771 15.5096 15.5 12.5837 15.5C9.65776 15.5 9.66699 14.771 9.66699 12.5833Z"
+                stroke="currentColor"
                 strokeLinecap="round"
                 strokeLinejoin="round"
               />
@@ -124,22 +130,26 @@ export default function Menu() {
               }`}
             >
               <div className="overflow-hidden rounded-lg shadow-lg ring-1 ring-black ring-opacity-5">
-                <div className="relative grid gap-6 px-5 py-6 bg-dark-900 sm:gap-8 sm:p-8">
+                <div className="relative grid gap-6 px-5 py-6 transition-all bg-light-primary/50 dark:bg-dark-primary/50 backdrop-blur-lg sm:gap-8 sm:p-8">
                   {solutions.map((item) =>
                     item.external ? (
                       <ExternalLink
                         key={item.name}
                         href={item.href}
-                        className="block p-3 -m-3 transition duration-150 ease-in-out rounded-md hover:bg-dark-800"
+                        className="block p-3 -m-3 transition-all duration-150 ease-in-out rounded-md hover:bg-dark-primary/10 dark:hover:bg-light-primary/5"
                       >
-                        <p className="text-base font-medium text-high-emphesis">{item.name}</p>
-                        <p className="mt-1 text-sm text-secondary">{item.description}</p>
+                        <p className="text-base font-bold transition-all text-dark dark:text-light">{item.name}</p>
+                        <p className="mt-1 text-sm transition-all text-dark/80 dark:text-light/80">
+                          {item.description}
+                        </p>
                       </ExternalLink>
                     ) : (
                       <NavLink key={item.name} href={item.href}>
-                        <a className="block p-3 -m-3 transition duration-150 ease-in-out rounded-md hover:bg-dark-800">
-                          <p className="text-base font-medium text-high-emphesis">{item.name}</p>
-                          <p className="mt-1 text-sm text-secondary">{item.description}</p>
+                        <a className="block p-3 -m-3 transition-all duration-150 ease-in-out rounded-md hover:bg-dark-primary/10 dark:hover:bg-light-primary/5">
+                          <p className="text-base font-bold transition-all text-dark dark:text-light">{item.name}</p>
+                          <p className="mt-1 text-sm transition-all text-dark/80 dark:text-light/80">
+                            {item.description}
+                          </p>
                         </a>
                       </NavLink>
                     )
@@ -153,3 +163,5 @@ export default function Menu() {
     </Popover>
   )
 }
+
+export default Menu
