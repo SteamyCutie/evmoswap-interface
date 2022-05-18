@@ -56,8 +56,7 @@ const InvestmentDetails = ( { farm, handleDismiss } ) => {
             </HeadlessUiModal.BorderedContent>
             }
             <HeadlessUiModal.BorderedContent className="flex flex-col gap-2 bg-dark-1000/40">
-                <RewardCard reward={ pendingReward } />
-                <FarmIncentiveRewards incentives={ farm.incentives } />
+                <RewardCard reward={ pendingReward } incentives={ farm.incentives } />
             </HeadlessUiModal.BorderedContent>
             <Button color={ canHarvest ? 'blue' : 'gray' } disabled={ pendingTx || !canHarvest } onClick={ onHarvest }>
                 { canHarvest ? pendingTx ? <Dots>{ i18n._( t`Harvesting` ) }</Dots> : i18n._( t`Harvest Rewards` ) : i18n._( t`No rewards yet` ) }
