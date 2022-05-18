@@ -90,7 +90,7 @@ const FarmListItem: FC<FarmListItem> = ( { farm, onClick } ) => {
             </div>
             <div className={ TABLE_TBODY_TD_CLASSNAME( 3, 6 ) }>
                 <Typography weight={ 700 } className="text-high-emphasis">
-                    ${ ( Number( userPoolBalance?.toExact() ) * farm?.lpPrice ).toFixed( 2 ) }
+                    { formatNumber( Number( userPoolBalance?.toExact() ) * Number( farm?.lpPrice ), true, false, 2 ) }
                 </Typography>
             </div>
             <div className={ classNames( 'flex flex-col !items-end !justify-center mr-2', TABLE_TBODY_TD_CLASSNAME( 4, 6 ) ) }>
