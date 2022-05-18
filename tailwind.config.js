@@ -66,8 +66,6 @@ module.exports = {
         'dark-500': '#223D5E',
         'dark-400': '#171522',
         'low-emphesis': '#575757',
-        primary: '#BFBFBF',
-        secondary: '#7F7F7F',
         'high-emphesis': '#E3E3E3',
         blackberry: '#3A1F3E',
         bunting: '#202C45',
@@ -88,9 +86,17 @@ module.exports = {
         '48px': '48px',
       },
       fontFamily: {
-        sans: ['DM Sans', ...defaultTheme.fontFamily.sans],
+        sans: ['Montserrat', 'DM Sans', ...defaultTheme.fontFamily.sans],
       },
       fontSize: {
+        base: [
+          '14px',
+          {
+            letterSpacing: '0',
+            lineHeight: '22.4px',
+            fontWeight: 400,
+          },
+        ],
         hero: [
           '48px',
           {
