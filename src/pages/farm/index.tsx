@@ -16,98 +16,88 @@ const tabStyle = 'flex justify-center items-center h-full w-full rounded-lg curs
 const activeTabStyle = `${tabStyle} text-high-emphasis font-bold bg-dark-900`
 const inactiveTabStyle = `${tabStyle} text-white`
 
-export default function Farms(): JSX.Element {
-  const { i18n } = useLingui()
-  const [selected, setSelected] = useState(0)
-  const router = useRouter()
-  const type = router.query.filter == null ? 'all' : (router.query.filter as string)
+const FILTER_TYPES = [
+    { key: 'all', title: 'All Farms' },
+    { key: 'stable', title: 'Stable Farms' },
+    { key: 'double', title: 'Double Rewards' },
+    { key: 'inactive', title: 'Inactive Farms' }
+]
 
-  const query = useFarms()
+export default function Farms (): JSX.Element {
+    const { i18n } = useLingui()
+    const router = useRouter()
+    const type = router.query.filter == null ? 'all' : ( router.query.filter as string )
+    const [ selected, setSelected ] = useState( type )
 
-  let tokenPrice = 0
-  let totalTvlInUSD = 0
+    const query = useFarms()
 
-  query?.farms.map((farm: any) => {
-    tokenPrice = farm.tokenPrice
-    totalTvlInUSD = farm.totalTvlInUSD
-  })
+    let tokenPrice = 0
+    let totalTvlInUSD = 0
 
-  const FILTER = {
-    all: (farm) => farm.multiplier !== 0,
-    stable: (farm) => farm.farmType == 'stable',
-    double: (farm) => farm.farmType == 'double',
-    inactive: (farm) => farm.multiplier == 0,
-  }
+    query?.farms.map( ( farm: any ) => {
+        tokenPrice = farm.tokenPrice
+        totalTvlInUSD = farm.totalTvlInUSD
+    } )
 
-  const datas = query?.farms.filter((farm) => {
-    return type in FILTER ? FILTER[type](farm) : true
-  })
+    const FILTER = {
+        all: ( farm ) => farm.multiplier !== 0,
+        stable: ( farm ) => farm.farmType == 'stable',
+        double: ( farm ) => farm.farmType == 'double',
+        inactive: ( farm ) => farm.multiplier == 0,
+    }
 
-  // Search Setup
-  const options = { keys: ['symbol', 'name', 'lpToken'], threshold: 0.4 }
-  const { result, search, term } = useFuse({
-    data: datas && datas.length > 0 ? datas : [],
-    options,
-  })
+    const datas = query?.farms.filter( ( farm ) => {
+        return type in FILTER ? FILTER[ type ]( farm ) : true
+    } )
 
-  return (
-    <>
-      <TridentHeader className="sm:!flex-row justify-between items-center" pattern="bg-bubble">
-        <div>
-          <Typography variant="h2" className="text-high-emphesis" weight={700}>
-            {i18n._(t`Yield Farm`)}
-          </Typography>
-          <Typography variant="sm" weight={400}>
-            {i18n._(t`Earn fees and rewards by depositing and staking your tokens to the platform.`)}
-          </Typography>
-        </div>
-        <div className="flex gap-3">
-          <Button id="btn-create-new-pool" size="sm">
-            <a href="https://forms.gle/rg2ac5xAQKR8d6Ff6" target="_blank" rel="noreferrer">
-              {i18n._(t`Apply for Yield Farm`)}
-            </a>
-          </Button>
-        </div>
-      </TridentHeader>
-      <TridentBody>
-        <div className="flex flex-col w-full gap-6">
-          <div className="flex flex-col items-center justify-between gap-4 sm:flex-row">
-            {/* Select Tab */}
-            <div className="flex m-auto mb-2 rounded h-11 md:m-0 md:w-8/12 bg-dark-800">
-              <div className="w-3/12 h-full p-1" onClick={() => setSelected(0)}>
-                <NavLink href="/farm?filter=all">
-                  <div className={selected === 0 ? activeTabStyle : inactiveTabStyle}>
-                    <p>All Farms</p>
-                  </div>
-                </NavLink>
-              </div>
-              <div className="w-3/12 h-full p-1" onClick={() => setSelected(1)}>
-                <NavLink href="/farm?filter=stable">
-                  <div className={selected === 1 ? activeTabStyle : inactiveTabStyle}>
-                    <p>Stable Farms</p>
-                  </div>
-                </NavLink>
-              </div>
-              <div className="w-3/12 h-full p-1" onClick={() => setSelected(2)}>
-                <NavLink href="/farm?filter=double">
-                  <div className={selected === 2 ? activeTabStyle : inactiveTabStyle}>
-                    <p>Double Rewards</p>
-                  </div>
-                </NavLink>
-              </div>
-              <div className="w-3/12 h-full p-1" onClick={() => setSelected(3)}>
-                <NavLink href="/farm?filter=inactive">
-                  <div className={selected === 3 ? activeTabStyle : inactiveTabStyle}>
-                    <p>Inactive Farms</p>
-                  </div>
-                </NavLink>
-              </div>
-            </div>
-            <SearchPools search={search} term={term} />
-          </div>
-          <FarmList farms={result} />
-        </div>
-      </TridentBody>
-    </>
-  )
+    // Search Setup
+    const options = { keys: [ 'symbol', 'name', 'lpToken' ], threshold: 0.4 }
+    const { result, search, term } = useFuse( {
+        data: datas && datas.length > 0 ? datas : [],
+        options,
+    } )
+
+    return (
+        <>
+            <TridentHeader className="sm:!flex-row justify-between items-center" pattern="bg-bubble">
+                <div>
+                    <Typography variant="h2" className="text-high-emphesis" weight={ 700 }>
+                        { i18n._( t`Yield Farm` ) }
+                    </Typography>
+                    <Typography variant="sm" weight={ 400 }>
+                        { i18n._( t`Earn fees and rewards by depositing and staking your tokens to the platform.` ) }
+                    </Typography>
+                </div>
+                <div className="flex gap-3">
+                    <Button id="btn-create-new-pool" size="sm">
+                        <a href="https://forms.gle/rg2ac5xAQKR8d6Ff6" target="_blank" rel="noreferrer">
+                            { i18n._( t`Apply for Yield Farm` ) }
+                        </a>
+                    </Button>
+                </div>
+            </TridentHeader>
+            <TridentBody>
+                <div className="flex flex-col w-full gap-6">
+                    <div className="flex flex-col items-center justify-between gap-4 sm:flex-row">
+                        {/* Select Tab */ }
+                        <div className="flex m-auto mb-2 rounded h-11 md:m-0 md:w-8/12 bg-dark-800">
+                            {
+                                FILTER_TYPES.map( ( filter, index ) => (
+                                    <div className="w-3/12 h-full p-1" onClick={ () => setSelected( filter.key ) } key={ index }>
+                                        <NavLink href={ `/farm?filter=${filter.key}` }>
+                                            <div className={ selected === filter.key ? activeTabStyle : inactiveTabStyle }>
+                                                <p>{ i18n._( t`${filter.title}` ) }</p>
+                                            </div>
+                                        </NavLink>
+                                    </div>
+                                ) )
+                            }
+                        </div>
+                        <SearchPools search={ search } term={ term } />
+                    </div>
+                    <FarmList farms={ result } />
+                </div>
+            </TridentBody>
+        </>
+    )
 }
