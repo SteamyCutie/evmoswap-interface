@@ -58,7 +58,7 @@ const FarmListItem: FC<FarmListItem> = ( { farm, onClick } ) => {
 
     // console.log('farm: ', farm)
     return (
-        <div className={ classNames( TABLE_TBODY_TR_CLASSNAME, 'grid grid-cols-6' ) } onClick={ onClick }>
+        <div className={ classNames( TABLE_TBODY_TR_CLASSNAME, 'grid grid-cols-6 gap-2 min-w-[1024px]' ) } onClick={ onClick }>
             <div className={ classNames( 'flex gap-2', TABLE_TBODY_TD_CLASSNAME( 0, 6 ) ) }>
                 { token0 && token1 && <CurrencyLogoArray currencies={ currencies || [ token0, token1 ] } dense size={ 32 } /> }
                 <div className="flex flex-col items-start">
@@ -75,7 +75,7 @@ const FarmListItem: FC<FarmListItem> = ( { farm, onClick } ) => {
                 </div>
             </div>
             <div className={ TABLE_TBODY_TD_CLASSNAME( 1, 6 ) }>
-                <div className='flex flex-col items-start'>
+                <div className='flex flex-col items-start justify-start'>
                     <div className="flex items-center gap-2">
                         <CurrencyLogo currency={ nativeToken } size={ 20 } />
                         <div>{ `${Number( rewardAmounts ).toFixed( 2 )} ${rewardToken?.symbol}` }</div>
