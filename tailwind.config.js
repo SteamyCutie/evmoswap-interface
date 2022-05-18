@@ -10,7 +10,7 @@ module.exports = {
   //   applyComplexClasses: true,
   // },
   purge: ['./src/**/*.{js,ts,jsx,tsx}'],
-  darkMode: false,
+  darkMode: 'class',
   theme: {
     extend: {
       linearBorderGradients: {
@@ -77,6 +77,12 @@ module.exports = {
         'black-russian': '#1A1D26',
         'carribean-green': '#00D395',
         'tahiti-gold': '#F5841F',
+        'dark-primary': '#121212',
+        'dark-bg': '#1A1A1A',
+        dark: '#0F0F0F',
+        'light-primary': '#F9F6FF',
+        'light-bg': '#EFEFFB',
+        light: '#FBFBFB',
       },
       lineHeight: {
         '48px': '48px',

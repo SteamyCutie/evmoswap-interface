@@ -2,7 +2,7 @@ import { t } from '@lingui/macro'
 import { useLingui } from '@lingui/react'
 import { DiscordIcon, MediumIcon, TwitterIcon } from '../Icon'
 import Image from 'next/image'
-import React from 'react'
+import React, { useEffect } from 'react'
 import { useActiveWeb3React } from '../../services/web3'
 import Polling from '../Polling'
 
@@ -17,9 +17,7 @@ const Footer = () => {
       { name: `${i18n._(t`Tokenomics`)}`, href: 'https://docs.evmoswap.org/tokenomics/token-and-supply' },
     ],
 
-    partner: [
-      { name: `${i18n._(t`Defi Llama`)}`, href: 'https://defillama.com/protocol/evmoswap' },
-    ],
+    partner: [{ name: `${i18n._(t`Defi Llama`)}`, href: 'https://defillama.com/protocol/evmoswap' }],
 
     developers: [
       { name: `${i18n._(t`Github`)}`, href: 'https://github.com/evmoswap' },
@@ -91,6 +89,30 @@ const Footer = () => {
     ],
   }
 
+  useEffect(() => {
+    if (
+      localStorage.getItem('color-theme') === 'dark' ||
+      (!('color-theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)
+    ) {
+      handleDarkTheme()
+    } else {
+      handleLightTheme()
+    }
+  }, [])
+
+  const handleDarkTheme = () => {
+    document.documentElement.classList.remove('dark')
+    document.documentElement.classList.remove('light')
+    document.documentElement.classList.add('dark')
+    localStorage.setItem('color-theme', 'dark')
+  }
+  const handleLightTheme = () => {
+    document.documentElement.classList.remove('dark')
+    document.documentElement.classList.remove('light')
+    document.documentElement.classList.add('light')
+    localStorage.setItem('color-theme', 'light')
+  }
+
   return (
     <footer className="z-10 w-full px-6 mt-20 bg-dark-900/30" aria-labelledby="footer-heading">
       <h2 id="footer-heading" className="sr-only">
@@ -99,7 +121,23 @@ const Footer = () => {
       <div className="px-4 py-12 mx-auto max-w-7xl sm:px-6 lg:py-16 lg:px-8">
         <div className="xl:grid xl:grid-cols-3 xl:gap-8">
           <div className="space-y-4 xl:col-span-1">
-            <Image src="/logo.png" alt="EvmoSwap logo" width="150px" height="28px" />
+            <div className="flex items-center justify-between">
+              <Image src="/logo.png" alt="EvmoSwap logo" width="150px" height="28px" />
+              <div className="flex space-x-0 w-[90px] h-[30px] p-1 bg-[#EFEFFB] dark:bg-[#262230] rounded-md transition-colors">
+                <div
+                  className="w-[42.5px] h-[22px] items-center justify-center select-none cursor-pointer flex rounded-[4px] bg-transparent dark:bg-dark-primary transition-colors hover:bg-dark-primary/40"
+                  onClick={handleDarkTheme}
+                >
+                  <Image src="/moon.png" alt="moon" width={14} height={14} />
+                </div>
+                <div
+                  className="w-[42.5px] h-[22px] items-center justify-center select-none cursor-pointer flex rounded-[4px] bg-light-primary dark:bg-transparent transition-colors dark:hover:bg-light-primary/10"
+                  onClick={handleLightTheme}
+                >
+                  <Image src="/sun.png" alt="sun" width={14} height={14} />
+                </div>
+              </div>
+            </div>
             <p className="text-base text-gray-500">
               {i18n._(
                 t`EvmoSwap is a Decentralized Autonomous Organization (DAO) that offers a full suite of tools to explore and engage with decentralized finance opportunities.`
