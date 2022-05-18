@@ -1,4 +1,4 @@
-import { ChainId, Token } from "@evmoswap/core-sdk";
+import { ChainId, CurrencyAmount, Token } from "@evmoswap/core-sdk";
 
 export enum PoolCategory {
     "CORE" = "Core",
@@ -156,7 +156,11 @@ export interface StablePoolInfo extends StablePool {
     virtualPrice: number
     a: number
     isLoading: boolean
-    pooledTokensInfo: any
+    pooledTokensInfo: {
+        balances: CurrencyAmount<Token>[] | undefined //array of token balances
+        total: number
+        tokens: Token[] | undefined
+    }
 }
 
 type StableAddressMap = {
