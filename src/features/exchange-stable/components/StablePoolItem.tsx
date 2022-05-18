@@ -6,17 +6,18 @@ import Logo from "app/components/Logo";
 import QuestionHelper from "app/components/QuestionHelper";
 import { RowBetween } from "app/components/Row";
 import { STABLE_POOLS } from "app/constants/pools";
-import { classNames, formatBalance, formatNumber, formatNumberPercentage, formatPercent } from "app/functions";
+import { classNames, formatNumber, formatNumberPercentage, formatPercent } from "app/functions";
 import { useActiveWeb3React } from "app/services/web3";
 import { useStablePoolInfo } from "../hooks";
+import StablePoolPosition from "./StablePoolPosition";
 
-const StablePoolInfo = ( { poolId, showHeader = false, className = '' }: { poolId: string, showHeader?: boolean, className?: string } ) => {
+const StablePoolItem = ( { poolId, showHeader = false, showPosition = false, className = '' }: { poolId: string, showHeader?: boolean, showPosition?: boolean, className?: string } ) => {
 
     const { chainId } = useActiveWeb3React()
     const pool = STABLE_POOLS[ chainId ][ poolId ]
 
     const poolInfo = useStablePoolInfo( poolId );
-    const poolTokensInfo = poolInfo.tokensInfo;
+    const poolTokensInfo = poolInfo.pooledTokensInfo;
     const balances = poolTokensInfo.balances;
     const virtualPrice = poolInfo.virtualPrice;
     const isLoading = poolInfo.isLoading;
@@ -29,6 +30,9 @@ const StablePoolInfo = ( { poolId, showHeader = false, className = '' }: { poolI
             { isLoading && <Empty><Dots>{ i18n._( t`Loading` ) }</Dots></Empty> }
 
             { pool && <div className={ classNames( "grid gap-4 rounded bg-dark-800 text-high-emphesis", className ) }>
+
+                { showPosition && <StablePoolPosition poolInfo={ poolInfo } /> }
+
                 <div className="text-lg">{ i18n._( t`Pool Info` ) }</div>
                 { showHeader && <RowBetween>
                     <div className="flex items-center space-x-4">
@@ -46,6 +50,7 @@ const StablePoolInfo = ( { poolId, showHeader = false, className = '' }: { poolI
 
                 </RowBetween>
                 }
+
                 <div className="flex flex-col w-full p-3  space-y-2 text-sm rounded text-high-emphesis">
                     { balances && balances.map( ( poolBalance, index ) => {
                         const tvl = Number( poolBalance?.toExact() ) * virtualPrice;
@@ -96,4 +101,4 @@ const StablePoolInfo = ( { poolId, showHeader = false, className = '' }: { poolI
     )
 }
 
-export default StablePoolInfo;
+export default StablePoolItem;

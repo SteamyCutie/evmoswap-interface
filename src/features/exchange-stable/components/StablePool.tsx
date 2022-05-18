@@ -8,8 +8,8 @@ import { t } from '@lingui/macro'
 import Button from 'app/components/Button'
 import { classNames } from 'app/functions'
 import Accordion from 'app/components/Accordion'
-import StablePoolInfo from './StablePoolInfo'
 import NavLink from 'app/components/NavLink'
+import StablePoolItem from './StablePoolItem'
 
 
 const StablePool = ( { poolId }: { poolId: string } ) => {
@@ -35,7 +35,7 @@ const StablePool = ( { poolId }: { poolId: string } ) => {
                 }
             >
                 <div className='p-4 space-y-4'>
-                    <StablePoolInfo poolId={ poolId } />
+                    <StablePoolItem poolId={ poolId } showPosition={ true } />
                 </div>
 
                 {/** Action Buttons */ }

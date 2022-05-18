@@ -139,7 +139,7 @@ export type StableTokenInfo = {
 };
 export interface StableLpTokenInfo extends StableTokenInfo { }
 
-export type StablePoolInfo = {
+export type StablePool = {
     pid: number;
     slug: string;
     name: string;
@@ -150,9 +150,18 @@ export type StablePoolInfo = {
     isMeta?: boolean;
 };
 
+export interface StablePoolInfo extends StablePool {
+    swapFee: number
+    adminFee: number
+    virtualPrice: number
+    a: number
+    isLoading: boolean
+    pooledTokensInfo: any
+}
+
 type StableAddressMap = {
     [ chainId: number ]: {
-        [ poolId: string ]: StablePoolInfo;
+        [ poolId: string ]: StablePool;
     };
 };
 

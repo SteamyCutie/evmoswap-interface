@@ -31,7 +31,7 @@ import ApproveToken from 'app/features/exchange-stable/components/ApproveToken'
 import { useCurrencyBalances } from 'app/state/wallet/hooks'
 import { formatNumberPercentage, tryParseAmount } from 'app/functions'
 import StablePositionCard from 'app/features/exchange-stable/components/StablePositionCard'
-import StablePoolInfo from 'app/features/exchange-stable/components/StablePoolInfo'
+import StablePoolInfo from 'app/features/exchange-stable/components/StablePoolItem'
 import { useReload } from 'app/hooks/useReload'
 import ConfirmAddStableModalBottom from 'app/features/exchange-stable/components/ConfirmAddStableModal'
 import { currencyAmountsToString, sumCurrencyAmounts } from 'app/features/exchange-stable/utils'
@@ -48,15 +48,15 @@ export default function Add () {
     //pool details
     const { poolId, pool, poolAddress, poolContract } = useStablePoolFromRouter( router.query.pool );
 
-    //pool lp
-    const lpToken = pool?.lpToken
-    const lpTokenCurrency = lpToken ? new Token( chainId, lpToken.address, lpToken.decimals, lpToken.symbol ) : undefined;
-
     //pool pooled Tokens details
     const poolInfo = useStablePoolInfo( poolId )
-    const poolTokensInfo = poolInfo.tokensInfo;
+    const poolTokensInfo = poolInfo.pooledTokensInfo;
     const poolTVL = Number( poolTokensInfo.total ) * Number( poolInfo.virtualPrice )
     const tokens = poolTokensInfo.tokens
+
+    //pool lp
+    const lpToken = poolInfo?.lpToken
+    const lpTokenCurrency = lpToken ? new Token( chainId, lpToken.address, lpToken.decimals, lpToken.symbol ) : undefined;
 
 
     //get user balances for each pooled tokens
