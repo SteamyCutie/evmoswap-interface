@@ -50,7 +50,7 @@ export const GEMO_ADDRESS: AddressMap = {
 export const TREASURY_ADDRESS: AddressMap = {
     [ ChainId.EVMOS ]: '0x24cd6322F3139E146dAC0eea105EB58b3526A299',
     [ ChainId.EVMOS_TESTNET ]: '0x4de1B99a508c3569C47807bb3e6C7fb41D4F2a50',
-    
+
     [ ChainId.BSC_TESTNET ]: '0x0829D857Ec0c07fD9F7EbE7503b0bdbfE0e3d66F',
 }
 
@@ -61,6 +61,23 @@ export const DASHBOARD_ADDRESS: AddressMap = {
     [ ChainId.BSC_TESTNET ]: '0x790E5EE47ff3AEF2B906155e39CE5C16390e1E0B',
 }
 
+// stable coin pool
+export const EVMOSWAP_ADDRESS: AddressMap = {
+    [ ChainId.EVMOS ]: '',
+    [ ChainId.EVMOS_TESTNET ]: '0x4d15569cDB9fD14687d5cf6FcE628f2792CD2Ea7',
+    
+    [ ChainId.BSC_TESTNET ]: '0x6493F1BfE563A09485A3888617EDAf62f8A43dF0',
+}
+
+export const EVMOMETASWAP_ADDRESS: AddressMap = {
+    [ ChainId.BSC_TESTNET ]: '0x7f7d0E9c89f81849929EB024757F28f0b30f8628',
+}
+
+export const EVMOMETASWAP_DEPOSIT_ADDRESS: AddressMap = {
+    [ ChainId.BSC_TESTNET ]: '0xC2273621F3750dB0E6b4D8F66AF8B270E07Aa034',
+}
+
+// private sale
 export const PRIVATE_SALE_ADDRESS: AddressMap = {
     [ ChainId.EVMOS ]: '0x2F76Fbf8db43A7Ec93d7315b94F847ddB09137f0',
     [ ChainId.EVMOS_TESTNET ]: '0x64108b11bcBC8342517343e992F7b3177d995804',
@@ -114,15 +131,4 @@ export const EVMOROLL_ADDRESS: AddressMap = {
 
 export const MIGRATE_DASHBOARD_ADDRESS: AddressMap = {
     [ ChainId.BSC_TESTNET ]: '0xB8819bA56c81b81181e5F662309b7bf4a9bDCD12',
-}
-export const EVMOSWAP_ADDRESS: AddressMap = {
-    [ ChainId.BSC_TESTNET ]: '0x6493F1BfE563A09485A3888617EDAf62f8A43dF0',
-}
-
-export const EVMOMETASWAP_ADDRESS: AddressMap = {
-    [ ChainId.BSC_TESTNET ]: '0x7f7d0E9c89f81849929EB024757F28f0b30f8628',
-}
-
-export const EVMOMETASWAP_DEPOSIT_ADDRESS: AddressMap = {
-    [ ChainId.BSC_TESTNET ]: '0xC2273621F3750dB0E6b4D8F66AF8B270E07Aa034',
 }
