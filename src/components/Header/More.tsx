@@ -125,31 +125,85 @@ const Menu = () => {
           >
             <Popover.Panel
               static
-              className={`absolute z-50 w-screen max-w-xs px-2 mt-3 transform -translate-x-full bottom-12 lg:top-12 left-full sm:px-0 ${
+              className={`absolute w-screen max-w-sm px-2 mt-[9px] transform -translate-x-full bottom-12 lg:top-12 left-full sm:px-0 ${
                 isDesktop ? '' : 'overflow-y-scroll max-h-[480px]'
               }`}
             >
-              <div className="overflow-hidden rounded-lg shadow-lg ring-1 ring-black ring-opacity-5">
-                <div className="relative grid gap-6 px-5 py-6 transition-all bg-light-primary/50 dark:bg-dark-primary/50 backdrop-blur-lg sm:gap-8 sm:p-8">
-                  {solutions.map((item) =>
+              <div className="overflow-hidden border-0">
+                <div className="relative z-50 grid gap-4 px-5 py-6 transition-all bg-light-primary/70 dark:bg-dark-primary/80 sm:gap-6 sm:p-8">
+                  {solutions.map((item, idx) =>
                     item.external ? (
                       <ExternalLink
                         key={item.name}
                         href={item.href}
-                        className="block p-3 -m-3 transition-all duration-150 ease-in-out rounded-md hover:bg-dark-primary/10 dark:hover:bg-light-primary/5"
+                        className={`flex items-center justify-between p-3 -m-3 transition-all duration-150 ease-in-out hover:bg-dark-primary/10 dark:hover:bg-light-primary/5 ${
+                          idx > 0 ? 'border-t border-[#12121219] dark:border-[#FFFFFF19]' : ''
+                        }`}
                       >
-                        <p className="text-base font-bold transition-all text-dark dark:text-light">{item.name}</p>
-                        <p className="mt-1 text-sm transition-all text-dark/80 dark:text-light/80">
-                          {item.description}
-                        </p>
-                      </ExternalLink>
-                    ) : (
-                      <NavLink key={item.name} href={item.href}>
-                        <a className="block p-3 -m-3 transition-all duration-150 ease-in-out rounded-md hover:bg-dark-primary/10 dark:hover:bg-light-primary/5">
+                        <div>
                           <p className="text-base font-bold transition-all text-dark dark:text-light">{item.name}</p>
                           <p className="mt-1 text-sm transition-all text-dark/80 dark:text-light/80">
                             {item.description}
                           </p>
+                        </div>
+                        <div className="text-dark dark:text-light">
+                          <svg
+                            width="18"
+                            height="18"
+                            viewBox="0 0 18 18"
+                            fill="none"
+                            xmlns="http://www.w3.org/2000/svg"
+                          >
+                            <path
+                              d="M14.8125 8.79425H3.5625"
+                              stroke="currentColor"
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                            />
+                            <path
+                              d="M10.2754 4.27596L14.8129 8.79396L10.2754 13.3127"
+                              stroke="currentColor"
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                            />
+                          </svg>
+                        </div>
+                      </ExternalLink>
+                    ) : (
+                      <NavLink key={item.name} href={item.href}>
+                        <a
+                          className={`flex items-center justify-between p-3 -m-3 transition-all duration-150 ease-in-out hover:bg-dark-primary/10 dark:hover:bg-light-primary/5 ${
+                            idx > 0 ? 'border-t border-[#12121219] dark:border-[#FFFFFF19]' : ''
+                          }`}
+                        >
+                          <div>
+                            <p className="text-base font-bold transition-all text-dark dark:text-light">{item.name}</p>
+                            <p className="mt-1 text-sm transition-all text-dark/80 dark:text-light/80">
+                              {item.description}
+                            </p>
+                          </div>
+                          <div className="text-dark dark:text-light">
+                            <svg
+                              width="18"
+                              height="18"
+                              viewBox="0 0 18 18"
+                              fill="none"
+                              xmlns="http://www.w3.org/2000/svg"
+                            >
+                              <path
+                                d="M14.8125 8.79425H3.5625"
+                                stroke="currentColor"
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                              />
+                              <path
+                                d="M10.2754 4.27596L14.8129 8.79396L10.2754 13.3127"
+                                stroke="currentColor"
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                              />
+                            </svg>
+                          </div>
                         </a>
                       </NavLink>
                     )
