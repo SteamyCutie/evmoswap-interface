@@ -169,6 +169,7 @@ type StableAddressMap = {
     };
 };
 
+// this is bsctest tokens
 export const STABLE_POOLS_TOKENS = {
     "DAI": {
         address: "0x6456d6f7B224283f8B22F03347B58D8B6d975677",
@@ -196,6 +197,7 @@ export const STABLE_POOLS_TOKENS = {
     },
 }
 
+// this is bsctest tokens
 export const STABLE_POOLS_META_TOKENS = {
     "3POOL": {
         address: "0x6a6047cC45261FeaC3baEF19FD2b3f9a7B3b7463",
@@ -203,7 +205,7 @@ export const STABLE_POOLS_META_TOKENS = {
         symbol: "3Pool",
         decimals: 18,
         icon: {
-            src: "https://raw.githubusercontent.com/sushiswap/icons/master/token/usdt.jpg",
+            src: "https://raw.githubusercontent.com/evmoswap/default-token-list/main/assets/icons/stable/stableswap_3pool.png",
             height: 48,
             width: 100
         }
@@ -222,9 +224,85 @@ export const STABLE_POOLS_META_TOKENS = {
 }
 
 export const STABLE_POOLS: StableAddressMap = {
-    [ ChainId.EVMOS ]: {},
+    [ ChainId.EVMOS ]: {
+        "0": {
+            pid: 0,
+            slug: "3pool",
+            name: "3Pool",
+            title: "USDC + DAI + USDT",
+            lpToken: {
+                address: "0x69C2fF0B85Bcc68B2f101a8241d25cD5084EbDD9",
+                name: "3EMOS",
+                symbol: "3Pool",
+                decimals: 18,
+                icon: {
+                    src: "https://raw.githubusercontent.com/evmoswap/default-token-list/main/assets/icons/stable/stableswap_3pool.png",
+                    height: 48,
+                    width: 100
+                }
+            },
+            pooledTokens: [
+                {
+                    address: "0x63743ACF2c7cfee65A5E356A4C4A005b586fC7AA",
+                    name: "DAI Coin",
+                    symbol: "DAI",
+                    decimals: 18
+                },
+                {
+                    address: "0x51e44FfaD5C2B122C8b635671FCC8139dc636E82",
+                    name: "USD Coin",
+                    symbol: "USDC",
+                    decimals: 6
+                },
+                {
+                    address: "0x7FF4a56B32ee13D7D4D405887E0eA37d61Ed919e",
+                    name: "Tether",
+                    symbol: "USDT",
+                    decimals: 6
+                }
+            ]
+        },
+    },
 
-    [ ChainId.EVMOS_TESTNET ]: {},
+    [ ChainId.EVMOS_TESTNET ]: {
+        "0": {
+            pid: 0,
+            slug: "3pool",
+            name: "3Pool",
+            title: "USDC + DAI + USDT",
+            lpToken: {
+                address: "0x4d15569cDB9fD14687d5cf6FcE628f2792CD2Ea7",
+                name: "3EMOS",
+                symbol: "3Pool",
+                decimals: 18,
+                icon: {
+                    src: "https://raw.githubusercontent.com/evmoswap/default-token-list/main/assets/icons/stable/stableswap_3pool.png",
+                    height: 48,
+                    width: 100
+                }
+            },
+            pooledTokens: [
+                {
+                    address: "0x7c4a1D38A755a7Ce5521260e874C009ad9e4Bf9c",
+                    name: "DAI Coin",
+                    symbol: "DAI",
+                    decimals: 18
+                },
+                {
+                    address: "0xae95d4890bf4471501E0066b6c6244E1CAaEe791",
+                    name: "USD Coin",
+                    symbol: "USDC",
+                    decimals: 6
+                },
+                {
+                    address: "0x397F8aBd481B7c00883fb70da2ea5Ae70999c37c",
+                    name: "Tether",
+                    symbol: "USDT",
+                    decimals: 6
+                }
+            ]
+        },
+    },
 
     [ ChainId.BSC_TESTNET ]: {
         "0": {
