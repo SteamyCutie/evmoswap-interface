@@ -89,12 +89,12 @@ export function useStablePoolFromRouter ( routeParams: string | string[] ): {
     }
 }
 
+
 // fetch pool info
 export function useStablePoolInfo ( poolId: string ): StablePoolInfo {
     const { chainId } = useWeb3React()
     const pool = STABLE_POOLS[ chainId ]?.[ poolId ]
 
-    const contract = useStablePoolContract( poolId )
     const resp = {
         ...pool,
         ...{
@@ -108,7 +108,29 @@ export function useStablePoolInfo ( poolId: string ): StablePoolInfo {
         },
     }
 
-    let lpAddress: string;
+    const { swapStorage, virtualPrice, a } = useStablePoolStorage( poolId );
+
+    const lpToken = useToken( swapStorage?.lpToken )
+
+    if ( swapStorage && virtualPrice && a ) {
+        resp.a = a;
+        resp.swapFee = Number( formatBalance( swapStorage?.swapFee || '0', FEE_DECIMALS ) ) * 100
+        resp.virtualPrice = Number( formatBalance( virtualPrice || '0', lpToken?.decimals || 0 ) )
+        resp.adminFee = Number( formatBalance( swapStorage?.adminFee || '0', FEE_DECIMALS ) ) * 100
+        resp.isLoading = false;
+    }
+
+    resp.lpToken = lpToken;
+
+    resp.pooledTokensInfo = useStablePooledTokensInfo( poolId )
+
+    return resp
+}
+
+
+export function useStablePoolStorage ( poolId: string ): { swapStorage: any; virtualPrice: any; a: any } {
+
+    const contract = useStablePoolContract( poolId )
 
     const callsData = useMemo(
         () => [
@@ -125,24 +147,13 @@ export function useStablePoolInfo ( poolId: string ): StablePoolInfo {
     const virtualPrice = results?.[ 1 ]?.result?.[ 0 ];
     const a = results?.[ 2 ]?.result?.[ 0 ];
 
-    const lpToken = useToken( swapStorage?.lpToken )
-
-    if ( swapStorage && virtualPrice && a ) {
-        resp.a = a;
-        resp.swapFee = Number( formatBalance( swapStorage?.swapFee || '0', FEE_DECIMALS ) ) * 100
-        resp.virtualPrice = Number( formatBalance( virtualPrice || '0', lpToken?.decimals || 0 ) )
-        resp.adminFee = Number( formatBalance( swapStorage?.adminFee || '0', FEE_DECIMALS ) ) * 100
+    return {
+        swapStorage,
+        virtualPrice,
+        a
     }
-
-    if ( results )
-        resp.isLoading = false;
-
-    resp.lpToken = lpToken;
-
-    resp.pooledTokensInfo = useStablePooledTokensInfo( poolId )
-
-    return resp
 }
+
 
 // fetch pool pooled tokens info
 export function useStablePooledTokensInfo (
