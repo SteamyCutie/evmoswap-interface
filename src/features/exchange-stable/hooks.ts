@@ -490,7 +490,7 @@ export function useStableTrade (
     //get token pool balance
     const inputReserve = useStableTokenReserve( inputAmount?.currency )
     const outputReserve = useStableTokenReserve( outputAmount?.currency )
-    const canMakePair = inputReserve && outputReserve && !inputReserve.equalTo( outputReserve )
+    const canMakePair = inputReserve && outputReserve && !inputAmount?.currency?.equals( outputAmount?.currency )
     //create pair and route
     const pair = canMakePair ? new Pair( inputReserve, outputReserve ) : undefined
 
