@@ -182,7 +182,7 @@ const MigrateButtons = ( { state, exchange }: { state: MigrateState; exchange: s
             ) }
             <div className="text-sm text-center text-low-emphesis">
                 { i18n._(
-                    t`Your ${exchange} ${state.selectedLPToken.tokenA.symbol}/${state.selectedLPToken.tokenB.symbol} liquidity will become SushiSwap ${state.selectedLPToken.tokenA.symbol}/${state.selectedLPToken.tokenB.symbol} liquidity.`
+                    t`Your ${exchange} ${state.selectedLPToken.tokenA.symbol}/${state.selectedLPToken.tokenB.symbol} liquidity will become EmoSwap ${state.selectedLPToken.tokenA.symbol}/${state.selectedLPToken.tokenB.symbol} liquidity.`
                 ) }
             </div>
         </div>
