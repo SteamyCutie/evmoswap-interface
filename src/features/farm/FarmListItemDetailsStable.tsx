@@ -80,11 +80,10 @@ const FarmListItemDetailsStable = ( { farm, onDismiss, handleDismiss } ) => {
 
     const renderBalance = () => {
 
-        const sBalance = view === OnsenModalView.Deposit ? balance : stakedBalance;
         const prefixText = isWidthdraw ? "Staked" : "Balance"
         return (
             <>
-                { i18n._( t`${prefixText}` ) }: { formatCurrencyAmount( sBalance, 4 ) }
+                { i18n._( t`${prefixText}` ) }: { formatCurrencyAmount( selectedBalance, 4 ) }
             </>
         )
     }
@@ -210,6 +209,7 @@ const FarmListItemDetailsStable = ( { farm, onDismiss, handleDismiss } ) => {
                                     size="xs"
                                     color={ !isWidthdraw ? 'blue' : 'pink' }
                                     key={ i }
+                                    disabled={ !selectedBalance || !selectedBalance?.greaterThan( ZERO ) }
                                     onClick={ () => { selectedBalance ? onMax( selectedBalance.multiply( multiplier ).divide( 100 ).toExact() ) : undefined } }
                                     className={ classNames(
                                         'text-md border border-opacity-50',
@@ -266,7 +266,9 @@ const FarmListItemDetailsStable = ( { farm, onDismiss, handleDismiss } ) => {
                 </div>
             </div>
 
-            { !liquidityToken && <Dots>{ i18n._( t`Loading` ) }</Dots> }
+            <div className='text-center m-2'>
+                { !liquidityToken && <Dots>{ i18n._( t`Loading` ) }</Dots> }
+            </div>
         </div>
     )
 }
