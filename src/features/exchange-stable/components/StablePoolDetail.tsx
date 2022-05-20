@@ -5,7 +5,7 @@ import Dots from "app/components/Dots";
 import Empty from "app/components/Empty";
 import QuestionHelper from "app/components/QuestionHelper";
 import { RowBetween } from "app/components/Row";
-import { StablePoolInfo } from "app/constants/pools";
+import { StablePoolInfo } from "app/constants/stables";
 import { classNames, formatNumber, formatNumberPercentage, formatPercent } from "app/functions";
 import StablePoolPosition from "./StablePoolPosition";
 

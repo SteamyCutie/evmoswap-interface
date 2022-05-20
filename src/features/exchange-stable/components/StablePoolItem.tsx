@@ -1,7 +1,7 @@
 import React from 'react'
 
 import { useActiveWeb3React } from 'app/services/web3'
-import { STABLE_POOLS } from 'app/constants/pools'
+import { STABLE_POOLS } from 'app/constants/stables'
 import { i18n } from '@lingui/core'
 import { t } from '@lingui/macro'
 import Button from 'app/components/Button'
