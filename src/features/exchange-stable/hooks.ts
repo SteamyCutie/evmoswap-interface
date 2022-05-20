@@ -120,20 +120,25 @@ export function useStablePoolInfo ( poolId: string ): StablePoolInfo {
     )
 
     const results = useSingleContractMultipleMethods( contract, callsData )
-    const [ { result: swapStorage }, { result: virtualPrice }, { result: a } ] = results
+
+    const swapStorage = results?.[ 0 ]?.result;
+    const virtualPrice = results?.[ 1 ]?.result?.[ 0 ];
+    const a = results?.[ 2 ]?.result?.[ 0 ];
 
     const lpToken = useToken( swapStorage?.lpToken )
 
     if ( swapStorage && virtualPrice && a ) {
-        resp.a = a?.[ 0 ]
+        resp.a = a;
         resp.swapFee = Number( formatBalance( swapStorage?.swapFee || '0', FEE_DECIMALS ) ) * 100
-        resp.virtualPrice = Number( formatBalance( virtualPrice?.[ 0 ] || '0', lpToken?.decimals || 0 ) )
+        resp.virtualPrice = Number( formatBalance( virtualPrice || '0', lpToken?.decimals || 0 ) )
         resp.adminFee = Number( formatBalance( swapStorage?.adminFee || '0', FEE_DECIMALS ) ) * 100
-
-        resp.isLoading = false
     }
 
+    if ( results )
+        resp.isLoading = false;
+
     resp.lpToken = lpToken;
+
     resp.pooledTokensInfo = useStablePooledTokensInfo( poolId )
 
     return resp

@@ -130,10 +130,10 @@ export const POOLS: AddressMap = {
  */
 
 export type StableTokenInfo = {
-    address: string;
     name: string;
     symbol: string;
     decimals: number;
+    address?: string;
     icon?: {
         src: string;
         height: number;
@@ -172,10 +172,10 @@ type StableAddressMap = {
 
 //common stable tokens
 export const STABLE_POOLS_TOKENS = {
-    "DAI": { address: "", name: "DAI Coin", symbol: "DAI", decimals: 18 },
-    "USDC": { address: "", name: "USD Coin", symbol: "USDC", decimals: 6 },
-    "USDT": { address: "", name: "Tether", symbol: "USDT", decimals: 6 },
-    "UST": { address: "", name: "UST", symbol: "UST", decimals: 18 },
+    "DAI": { name: "DAI Coin", symbol: "DAI", decimals: 18 },
+    "USDC": { name: "USD Coin", symbol: "USDC", decimals: 6 },
+    "USDT": { name: "Tether", symbol: "USDT", decimals: 6 },
+    "UST": { name: "UST", symbol: "UST", decimals: 18 },
 }
 
 //common pools to all chains. This is used to reduce entry repetition.
