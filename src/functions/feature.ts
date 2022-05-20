@@ -24,7 +24,7 @@ const features = {
   [ChainId.EVMOS]: [
     Feature.AMM,
     Feature.YIELD,
-    Feature.GEMO,
+    // Feature.GEMO,
     // Feature.ZAP,
     // // Feature.MIGRATE,
     // // Feature.ANALYTICS,
