@@ -25,6 +25,7 @@ import NavLink from 'app/components/NavLink'
 import { RowBetween } from 'app/components/Row'
 import Button from 'app/components/Button'
 import Input from 'app/components/Input'
+import Typography from 'app/components/Typography'
 
 
 const COLUMN_CONTAINER = 'flex flex-col flex-grow gap-4'
@@ -194,9 +195,13 @@ const FarmListItemDetailsStable = ( { farm, onDismiss, handleDismiss } ) => {
                 </ToggleButtonGroup>
 
                 {/*Dont unmount following components to make modal more react faster*/ }
-                <div className={ classNames( COLUMN_CONTAINER, [ OnsenModalView.Deposit, OnsenModalView.Withdraw ].includes( view ) ? 'block' : 'hidden' ) }>
+                <div className={ classNames( COLUMN_CONTAINER, [ OnsenModalView.Deposit, OnsenModalView.Withdraw ].includes( view ) ? 'block px-2' : 'hidden' ) }>
 
-                    <RowBetween className="pl-2 mt-4">
+                    <Typography variant="sm" className="text-secondary my-4">
+                        { i18n._( t`Use one of the buttons to set a percentage or enter a value manually using the input field` ) }
+                    </Typography>
+
+                    <RowBetween>
                         <div className="text-base text-white">{ renderBalance() }</div>
                         <div className="flex justify-end gap-2">
                             { [ '25', '50', '75', '100' ].map( ( multiplier, i ) => (
