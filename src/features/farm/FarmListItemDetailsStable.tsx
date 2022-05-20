@@ -22,6 +22,7 @@ import { OnsenModalView } from './enum'
 import ReactGA from 'react-ga'
 import { useUserInfo } from './hooks'
 import InvestmentDetails from './InvestmentDetails'
+import NavLink from 'app/components/NavLink'
 
 
 const COLUMN_CONTAINER = 'flex flex-col flex-grow gap-4'
@@ -197,6 +198,14 @@ const FarmListItemDetailsStable = ( { farm, onDismiss, handleDismiss } ) => {
                         id="add-liquidity-input-token"
                         showCommonBases
                     />
+
+                    <NavLink
+                        href={ `/stable-pool/add/${String( liquidityToken?.symbol ).toLowerCase()}` }
+                    >
+                        <a className="flex items-center justify-end space-x-2 text-base cursor-pointer font text-secondary hover:text-high-emphesis">
+                            { i18n._( t`Add Liquidity` ) }
+                        </a>
+                    </NavLink>
                     <ButtonError
                         onClick={ () => { approved ? onDeposit() : approveACallback() } }
                         color={ error ? 'gray' : 'blue' }
