@@ -225,43 +225,43 @@ export const STABLE_POOLS_META_TOKENS = {
 
 export const STABLE_POOLS: StableAddressMap = {
     [ ChainId.EVMOS ]: {
-        "0": {
-            pid: 0,
-            slug: "3pool",
-            name: "3Pool",
-            title: "USDC + DAI + USDT",
-            lpToken: {
-                address: "0x69C2fF0B85Bcc68B2f101a8241d25cD5084EbDD9",
-                name: "3EMOS",
-                symbol: "3Pool",
-                decimals: 18,
-                icon: {
-                    src: "https://raw.githubusercontent.com/evmoswap/default-token-list/main/assets/icons/stable/stableswap_3pool.png",
-                    height: 48,
-                    width: 100
-                }
-            },
-            pooledTokens: [
-                {
-                    address: "0x63743ACF2c7cfee65A5E356A4C4A005b586fC7AA",
-                    name: "DAI Coin",
-                    symbol: "DAI",
-                    decimals: 18
-                },
-                {
-                    address: "0x51e44FfaD5C2B122C8b635671FCC8139dc636E82",
-                    name: "USD Coin",
-                    symbol: "USDC",
-                    decimals: 6
-                },
-                {
-                    address: "0x7FF4a56B32ee13D7D4D405887E0eA37d61Ed919e",
-                    name: "Tether",
-                    symbol: "USDT",
-                    decimals: 6
-                }
-            ]
-        },
+        // "0": {
+        //     pid: 0,
+        //     slug: "3pool",
+        //     name: "3Pool",
+        //     title: "USDC + DAI + USDT",
+        //     lpToken: {
+        //         address: "0x69C2fF0B85Bcc68B2f101a8241d25cD5084EbDD9",
+        //         name: "3EMOS",
+        //         symbol: "3Pool",
+        //         decimals: 18,
+        //         icon: {
+        //             src: "https://raw.githubusercontent.com/evmoswap/default-token-list/main/assets/icons/stable/stableswap_3pool.png",
+        //             height: 48,
+        //             width: 100
+        //         }
+        //     },
+        //     pooledTokens: [
+        //         {
+        //             address: "0x63743ACF2c7cfee65A5E356A4C4A005b586fC7AA",
+        //             name: "DAI Coin",
+        //             symbol: "DAI",
+        //             decimals: 18
+        //         },
+        //         {
+        //             address: "0x51e44FfaD5C2B122C8b635671FCC8139dc636E82",
+        //             name: "USD Coin",
+        //             symbol: "USDC",
+        //             decimals: 6
+        //         },
+        //         {
+        //             address: "0x7FF4a56B32ee13D7D4D405887E0eA37d61Ed919e",
+        //             name: "Tether",
+        //             symbol: "USDT",
+        //             decimals: 6
+        //         }
+        //     ]
+        // },
     },
 
     [ ChainId.EVMOS_TESTNET ]: {
