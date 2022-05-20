@@ -1,5 +1,5 @@
 import { ChainId } from '@evmoswap/core-sdk'
-import { STABLE_POOLS_TOKENS } from './pools'
+import { STABLE_POOLS_TOKENS } from './stables'
 
 export type TokenInfo = {
     id: string
@@ -88,14 +88,14 @@ export const FARMS: AddressMap = {
         },
 
         '0x6320CFBEBbE1f18160DA60eA06ACc87F82dBCf36': {
-          id: 2,
-          pid: 3,
-          symbol: 'ELP',
-          name: 'USDC-EVMOS',
-          token0: { id: '0xae95d4890bf4471501E0066b6c6244E1CAaEe791', name: 'USD Coin', symbol: 'USDC', decimals: 6 },
-          token1: { id: '0x3d486E0fBa11f6F929E99a47037A5cd615636E17', name: 'WEVMOS Token', symbol: 'EVMOS', decimals: 18 },
-          isVote: true,
-          isZap: false,
+            id: 2,
+            pid: 3,
+            symbol: 'ELP',
+            name: 'USDC-EVMOS',
+            token0: { id: '0xae95d4890bf4471501E0066b6c6244E1CAaEe791', name: 'USD Coin', symbol: 'USDC', decimals: 6 },
+            token1: { id: '0x3d486E0fBa11f6F929E99a47037A5cd615636E17', name: 'WEVMOS Token', symbol: 'EVMOS', decimals: 18 },
+            isVote: true,
+            isZap: false,
         },
 
         '0x34ae15A977761BB07aCd7E09354802F26a5F7C1D': {
