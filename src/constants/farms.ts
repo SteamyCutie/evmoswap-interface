@@ -96,22 +96,22 @@ export const FARMS: AddressMap = {
             isZap: false,
         },
 
-        '0x898563F02DB0e60Aff2A6d45DA1b9fAEedFFc4F1': {
-            id: 3,
-            pid: 4,
-            symbol: '3POOL',
-            name: '3EMO LP',
-            token0: { ...STABLE_POOLS_TOKENS.DAI, ...{ id: "0x63743ACF2c7cfee65A5E356A4C4A005b586fC7AA" } },
-            token1: { ...STABLE_POOLS_TOKENS.USDC, ...{ id: "0x51e44FfaD5C2B122C8b635671FCC8139dc636E82" } },
-            tokens: [
-                { ...STABLE_POOLS_TOKENS.DAI, ...{ id: "0x63743ACF2c7cfee65A5E356A4C4A005b586fC7AA" } },
-                { ...STABLE_POOLS_TOKENS.USDC, ...{ id: "0x51e44FfaD5C2B122C8b635671FCC8139dc636E82" } },
-                { ...STABLE_POOLS_TOKENS.USDT, ...{ id: "0x7FF4a56B32ee13D7D4D405887E0eA37d61Ed919e" } },
-            ],
-            isVote: true,
-            isZap: false,
-            farmType: FarmType.STABLE,
-        },
+        // '0x898563F02DB0e60Aff2A6d45DA1b9fAEedFFc4F1': {
+        //     id: 3,
+        //     pid: 4,
+        //     symbol: '3POOL',
+        //     name: '3EMO LP',
+        //     token0: { ...STABLE_POOLS_TOKENS.DAI, ...{ id: "0x63743ACF2c7cfee65A5E356A4C4A005b586fC7AA" } },
+        //     token1: { ...STABLE_POOLS_TOKENS.USDC, ...{ id: "0x51e44FfaD5C2B122C8b635671FCC8139dc636E82" } },
+        //     tokens: [
+        //         { ...STABLE_POOLS_TOKENS.DAI, ...{ id: "0x63743ACF2c7cfee65A5E356A4C4A005b586fC7AA" } },
+        //         { ...STABLE_POOLS_TOKENS.USDC, ...{ id: "0x51e44FfaD5C2B122C8b635671FCC8139dc636E82" } },
+        //         { ...STABLE_POOLS_TOKENS.USDT, ...{ id: "0x7FF4a56B32ee13D7D4D405887E0eA37d61Ed919e" } },
+        //     ],
+        //     isVote: true,
+        //     isZap: false,
+        //     farmType: FarmType.STABLE,
+        // },
     },
 
     [ ChainId.EVMOS_TESTNET ]: {
