@@ -275,7 +275,7 @@ export function PositionCard ( { pair, farm, showUnwrapped = false, border }: Po
         chainId,
         getAddress( farm.lpToken ),
         farm.token1 ? 18 : farm.token0 ? farm.token0.decimals : 18,
-        'SLP'
+        'ELP'
     )
     const { stakedAmount: userPoolBalance } = useUserInfo( farm, liquidityToken )
     const totalPoolTokens = useTotalSupply( pair?.liquidityToken )
