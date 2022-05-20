@@ -1,4 +1,5 @@
 import { ChainId } from '@evmoswap/core-sdk'
+import LPToken from 'app/features/migration/LPToken'
 
 type AddressMap = { [ chainId: number ]: string }
 
@@ -106,8 +107,28 @@ export const PRIVATESALE_ADDRESS: AddressMap = {
     [ ChainId.BSC_TESTNET ]: '0xf3CAb862A2f696fa493db85749736411635fA273',
 }
 
-export const EVMOROLL_ADDRESS: AddressMap = {
-    [ ChainId.BSC_TESTNET ]: '0x9A87b976Cc1b95465C1FB91D1Fc23ac342B2030E',
+type AddressMapRoll = {
+
+    [ chainId: number ]: {
+        [ dexName in LPToken[ 'dex' ] ]?: string
+    }
+}
+
+export const EVMOROLL_ADDRESS: AddressMapRoll = {
+    [ ChainId.BSC_TESTNET ]: {
+        diffusion: '0x9A87b976Cc1b95465C1FB91D1Fc23ac342B2030E',
+        cronus: '0x9A87b976Cc1b95465C1FB91D1Fc23ac342B2030E'
+    },
+
+    [ ChainId.EVMOS ]: {
+        diffusion: '0x9A87b976Cc1b95465C1FB91D1Fc23ac342B2030E',
+        cronus: '0x9A87b976Cc1b95465C1FB91D1Fc23ac342B2030E'
+    },
+
+    [ ChainId.EVMOS_TESTNET ]: {
+        diffusion: '0x9A87b976Cc1b95465C1FB91D1Fc23ac342B2030E',
+        cronus: '0x9A87b976Cc1b95465C1FB91D1Fc23ac342B2030E'
+    },
 }
 
 export const MIGRATE_DASHBOARD_ADDRESS: AddressMap = {
@@ -124,3 +145,4 @@ export const EVMOMETASWAP_ADDRESS: AddressMap = {
 export const EVMOMETASWAP_DEPOSIT_ADDRESS: AddressMap = {
     [ ChainId.BSC_TESTNET ]: '0xC2273621F3750dB0E6b4D8F66AF8B270E07Aa034',
 }
+
