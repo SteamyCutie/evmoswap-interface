@@ -3,7 +3,7 @@ import { AutoRow, RowBetween } from '../../../components/Row'
 import Button, { ButtonConfirmed, ButtonError } from '../../../components/Button'
 import { Currency, CurrencyAmount, Percent, Token, ZERO } from '@evmoswap/core-sdk'
 import React, { useCallback, useMemo, useState } from 'react'
-import TransactionConfirmationModal, { ConfirmationModalContent } from '../../../modals/TransactionConfirmationModal'
+import TransactionConfirmationModal, { ConfirmationModalContent, TransactionErrorContent } from '../../../modals/TransactionConfirmationModal'
 import { calculateGasMargin, calculateSlippageAmount } from '../../../functions/trade'
 import { useUserSlippageToleranceWithDefault } from '../../../state/user/hooks'
 import { AutoColumn } from '../../../components/Column'
@@ -28,7 +28,7 @@ import { useWalletModalToggle } from '../../../state/application/hooks'
 import { useStablePoolFromRouter, useStablePoolInfo, useStableTokenToReceive } from 'app/features/exchange-stable/hooks'
 import { useTokenBalance } from 'app/state/wallet/hooks'
 import { classNames, tryParseAmount } from 'app/functions'
-import { currencyAmountsToString } from 'app/features/exchange-stable/utils'
+import { contractErrorToUserReadableMessage, currencyAmountsToString } from 'app/features/exchange-stable/utils'
 import { ArrowDownIcon } from '@heroicons/react/solid'
 import { CurrencyLogo } from 'app/components/CurrencyLogo'
 import Dots from 'app/components/Dots'
@@ -80,6 +80,7 @@ export default function Add () {
     // modal and loading
     const [ showConfirm, setShowConfirm ] = useState<boolean>( false )
     const [ attemptingTxn, setAttemptingTxn ] = useState<boolean>( false ) // clicked confirm
+    const [ errorMessage, setErrorMessage ] = useState( "" );
 
 
     // txn values
@@ -217,6 +218,7 @@ export default function Add () {
                 // we only care if the error is something _other_ than the user rejected the tx
                 if ( error?.code !== 4001 ) {
                     console.error( error )
+                    setErrorMessage( contractErrorToUserReadableMessage( error ) )
                 }
             } )
     }
@@ -291,6 +293,7 @@ export default function Add () {
             setTokenInput( '' )
         }
         setTxHash( '' )
+        setErrorMessage( '' )
     }, [ txHash ] )
 
     return (
@@ -333,12 +336,14 @@ export default function Add () {
                             attemptingTxn={ attemptingTxn }
                             hash={ txHash ? txHash : '' }
                             content={ () => (
-                                <ConfirmationModalContent
-                                    title={ i18n._( t`You will receive` ) }
-                                    onDismiss={ handleDismissConfirmation }
-                                    topContent={ modalHeader }
-                                    bottomContent={ modalBottom }
-                                />
+                                errorMessage ?
+                                    <TransactionErrorContent onDismiss={ handleDismissConfirmation } message={ errorMessage } /> :
+                                    <ConfirmationModalContent
+                                        title={ i18n._( t`You will receive` ) }
+                                        onDismiss={ handleDismissConfirmation }
+                                        topContent={ modalHeader }
+                                        bottomContent={ modalBottom }
+                                    />
                             ) }
                             pendingText={ pendingText }
                         />

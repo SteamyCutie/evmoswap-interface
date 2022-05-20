@@ -1,4 +1,4 @@
-import { Currency, CurrencyAmount, Token } from '@evmoswap/core-sdk'
+import { Currency, CurrencyAmount, Token, ZERO } from '@evmoswap/core-sdk'
 
 import React from 'react'
 import { t } from '@lingui/macro'
@@ -49,7 +49,7 @@ export function ConfirmAddStableModalBottom ( {
                 }
             </div>
             <div className='p-4 mb-4 rounded-lg bg-dark-1000'>
-                <div>{ i18n._( t`You will receive(at least)` ) }:</div>
+                <div>{ i18n._( t`Minimum receivable` ) }:</div>
                 <div className='flex items-center justify-between mt-1 font-bold text-white'>
                     { estimatedSLP?.toFixed( 6 ) }&nbsp;
                     <div>
@@ -59,7 +59,7 @@ export function ConfirmAddStableModalBottom ( {
                 </div>
             </div>
 
-            <Button color="blue" size="lg" onClick={ onAdd }>
+            <Button color="blue" size="lg" onClick={ onAdd } disabled={ !estimatedSLP.greaterThan( ZERO ) } className="disabled:bg-blue-600">
                 { i18n._( t`Confirm Deposit` ) }
             </Button>
         </div>

@@ -239,15 +239,15 @@ export function useStableTokenToMint (
 ) {
     const { account } = useActiveWeb3React()
     const contract = useStableSwapDepositContract( poolId )
-    const amountsBN =
-        amounts && amounts[ 0 ] instanceof String
-            ? amounts
-            : useMemo( () => {
-                return amounts.map( ( amount ) => {
-                    return amount?.quotient?.toString()
-                } )
-            }, [ amounts ] )
 
+    const amountsBN = useMemo( () => {
+        const tempA = [];
+        for ( let index = 0; index < amounts.length; index++ ) {
+            const amount = amounts[ index ];
+            tempA[ index ] = amount ? ( amount instanceof CurrencyAmount ? amount.quotient.toString() : amount ) : "0"
+        }
+        return tempA;
+    }, [ amounts ] )
     const amountToRecieve = useSingleCallResult( contract, 'calculateTokenAmount', [ account, amountsBN, String( deposit ) ] )
     return amountToRecieve?.result?.[ 0 ]
 }

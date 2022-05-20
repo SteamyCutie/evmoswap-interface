@@ -3,7 +3,7 @@ import { AutoRow, RowBetween } from '../../../components/Row'
 import { ButtonError } from '../../../components/Button'
 import { Currency, CurrencyAmount, Percent, ZERO } from '@evmoswap/core-sdk'
 import React, { useCallback, useMemo, useRef, useState } from 'react'
-import TransactionConfirmationModal, { ConfirmationModalContent } from '../../../modals/TransactionConfirmationModal'
+import TransactionConfirmationModal, { ConfirmationModalContent, TransactionErrorContent } from '../../../modals/TransactionConfirmationModal'
 import { calculateGasMargin, calculateSlippageAmount } from '../../../functions/trade'
 import { useExpertModeManager, useUserSlippageToleranceWithDefault } from '../../../state/user/hooks'
 import Alert from '../../../components/Alert'
@@ -34,7 +34,8 @@ import StablePositionCard from 'app/features/exchange-stable/components/StablePo
 import StablePoolInfo from 'app/features/exchange-stable/components/StablePoolDetail'
 import { useReload } from 'app/hooks/useReload'
 import ConfirmAddStableModalBottom from 'app/features/exchange-stable/components/ConfirmAddStableModal'
-import { currencyAmountsToString, sumCurrencyAmounts } from 'app/features/exchange-stable/utils'
+import { contractErrorToUserReadableMessage, currencyAmountsToString, sumCurrencyAmounts } from 'app/features/exchange-stable/utils'
+import { swapErrorToUserReadableMessage } from 'app/hooks/useSwapCallback'
 
 const DEFAULT_ADD_V2_SLIPPAGE_TOLERANCE = new Percent( 50, 10_000 )
 
@@ -70,13 +71,10 @@ export default function Add () {
         setTokensInput( newInput )
     }
     const parsedAmounts = useMemo( () => {
-        const amounts: CurrencyAmount<Currency>[] | undefined[] = new Array( tokensInput.length );
-        tokensInput.map( ( typedValue, index ) => {
-            amounts[ index ] = tryParseAmount(
-                ( !typedValue || typedValue === "" ) ? "0" : typedValue,
-                tokens[ index ],
-                true
-            )
+        const amounts: CurrencyAmount<Currency>[] | undefined[] = new Array( tokens.length );
+        tokens.map( ( token, index ) => {
+            const typedValue = tokensInput[ index ] || "0"
+            amounts[ index ] = tryParseAmount( typedValue, token, true )
         } )
         return amounts;
     }, [ tokensInput, tokens ] );
@@ -90,7 +88,7 @@ export default function Add () {
     // modal and loading
     const [ showConfirm, setShowConfirm ] = useState<boolean>( false )
     const [ attemptingTxn, setAttemptingTxn ] = useState<boolean>( false ) // clicked confirm
-
+    const [ errorMessage, setErrorMessage ] = useState( "" );
 
     // txn values
     const deadline = useTransactionDeadline() // custom from users settings
@@ -206,7 +204,7 @@ export default function Add () {
             minToMintWithSlippage.quotient.toString(),
             deadline.mul( 1000 ).toHexString(),
         ]
-        console.log( args, poolContract.address )
+
         value = null
 
 
@@ -237,6 +235,7 @@ export default function Add () {
                 // we only care if the error is something _other_ than the user rejected the tx
                 if ( error?.code !== 4001 ) {
                     console.error( error )
+                    setErrorMessage( contractErrorToUserReadableMessage( error ) )
                 }
             } )
     }
@@ -267,7 +266,7 @@ export default function Add () {
             <ConfirmAddStableModalBottom
                 lpToken={ lpToken } onAdd={ onAdd }
                 parsedAmounts={ parsedAmounts }
-                estimatedSLP={ minToMint }
+                estimatedSLP={ minToMintWithSlippage }
                 poolTokenPercentage={ poolTokenPercentage }
             />
         )
@@ -284,6 +283,8 @@ export default function Add () {
             setTokensInput( defaultInputs )
         }
         setTxHash( '' )
+
+        setErrorMessage( '' )
     }, [ txHash, defaultInputs ] )
 
 
@@ -347,12 +348,14 @@ export default function Add () {
                             attemptingTxn={ attemptingTxn }
                             hash={ txHash }
                             content={ () => (
-                                <ConfirmationModalContent
-                                    title={ i18n._( t`You will receive` ) }
-                                    onDismiss={ handleDismissConfirmation }
-                                    topContent={ modalHeader }
-                                    bottomContent={ modalBottom }
-                                />
+                                errorMessage ?
+                                    <TransactionErrorContent onDismiss={ handleDismissConfirmation } message={ errorMessage } /> :
+                                    <ConfirmationModalContent
+                                        title={ i18n._( t`You will receive` ) }
+                                        onDismiss={ handleDismissConfirmation }
+                                        topContent={ modalHeader }
+                                        bottomContent={ modalBottom }
+                                    />
                             ) }
                             pendingText={ pendingText }
                         />
@@ -362,7 +365,7 @@ export default function Add () {
 
                                     <React.Fragment key={ index }>
                                         <CurrencyInputPanel
-                                            value={ tokensInput[ index ] }
+                                            value={ tokensInput[ index ] ?? "" }
                                             onUserInput={ ( value ) => onTokenInput( index, value ) }
                                             onMax={ () => {
                                                 onTokenInput( index, balances?.[ index ]?.toExact() )
