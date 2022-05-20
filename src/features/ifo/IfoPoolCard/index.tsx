@@ -356,8 +356,7 @@ const IfoPoolCard: React.FC<IfoCardProps> = ({ poolId, ifo, publicIfoData, walle
 
         {/* claim */}
         {status === 'finished' &&
-          !userPoolCharacteristics.hasClaimed &&
-          now > publicIfoData.endTimeNum + ifo.claimDelayTime &&
+          now > publicIfoData.endTimeNum &&
           (userPoolCharacteristics.offeringAmountInToken.isGreaterThan(0) ||
             userPoolCharacteristics.refundingAmountInLP.isGreaterThan(0)) && (
             <Button className="w-full mt-2" color="gradient" disabled={claimPendingTx} onClick={handleHarvestPool}>
