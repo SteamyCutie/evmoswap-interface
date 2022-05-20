@@ -26,7 +26,7 @@ import { useRouter } from 'next/router'
 // import { ExternalLink, NavLink } from "./Link";
 // import { ReactComponent as Burger } from "../assets/images/burger.svg";
 
-const AppBar: React.FC<JSX.Element> = () => {
+const AppBar = () => {
   const { i18n } = useLingui()
   const { account, chainId, library } = useActiveWeb3React()
 
