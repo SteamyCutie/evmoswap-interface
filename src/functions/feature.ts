@@ -24,7 +24,7 @@ const features = {
   [ChainId.EVMOS]: [
     Feature.AMM,
     Feature.YIELD,
-    // Feature.FARMV2,
+    Feature.GEMO,
     // Feature.ZAP,
     // // Feature.MIGRATE,
     // // Feature.ANALYTICS,
@@ -39,7 +39,7 @@ const features = {
   [ChainId.EVMOS_TESTNET]: [
     Feature.AMM,
     Feature.YIELD,
-    // Feature.FARMV2,
+    Feature.GEMO,
     // Feature.ZAP,
     // Feature.LENDING,
     Feature.IFO,

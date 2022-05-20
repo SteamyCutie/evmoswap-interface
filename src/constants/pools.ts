@@ -122,6 +122,9 @@ export const POOLS: AddressMap = {
     }
 };
 
+
+
+
 /**
  * Stable swap config
  */
@@ -180,18 +183,18 @@ export const STABLE_POOLS_TOKENS = {
 //stable pools lp tokens 
 export const STABLE_POOLS_LP_TOKENS = {
     "3POOL": {
-        address: "0x6a6047cC45261FeaC3baEF19FD2b3f9a7B3b7463",
+        address: "",
         name: "3EMOS",
         symbol: "3Pool",
         decimals: 18,
         icon: {
-            src: "https://raw.githubusercontent.com/sushiswap/icons/master/token/usdt.jpg",
+            src: "https://raw.githubusercontent.com/evmoswap/default-token-list/main/assets/icons/stable/stableswap_3pool.png",
             height: 48,
             width: 100
         }
     },
     "UST3POOL": {
-        address: "0xa3747c559323e06418b176cf2e191766d6222029",
+        address: "",
         name: "UST 3Pool LP",
         symbol: "UST3Pool",
         decimals: 18,
@@ -228,9 +231,9 @@ const BASE_STABLE_POOLS = {
 
 //chains configuration for stable pools. Inherit and extend as neccessary
 export const STABLE_POOLS: StableAddressMap = {
-    [ ChainId.EVMOS ]: {},
+    [ ChainId.EVMOS ]: { "0": BASE_STABLE_POOLS[ "0" ] },
 
-    [ ChainId.EVMOS_TESTNET ]: BASE_STABLE_POOLS,
+    [ ChainId.EVMOS_TESTNET ]: { "0": BASE_STABLE_POOLS[ "0" ] },
 
     [ ChainId.BSC_TESTNET ]: BASE_STABLE_POOLS
 };

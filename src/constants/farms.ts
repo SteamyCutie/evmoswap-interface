@@ -87,9 +87,20 @@ export const FARMS: AddressMap = {
             isZap: false,
         },
 
+        '0x6320CFBEBbE1f18160DA60eA06ACc87F82dBCf36': {
+          id: 2,
+          pid: 3,
+          symbol: 'ELP',
+          name: 'USDC-EVMOS',
+          token0: { id: '0xae95d4890bf4471501E0066b6c6244E1CAaEe791', name: 'USD Coin', symbol: 'USDC', decimals: 6 },
+          token1: { id: '0x3d486E0fBa11f6F929E99a47037A5cd615636E17', name: 'WEVMOS Token', symbol: 'EVMOS', decimals: 18 },
+          isVote: true,
+          isZap: false,
+        },
+
         '0x34ae15A977761BB07aCd7E09354802F26a5F7C1D': {
-            id: 2,
-            pid: 3,
+            id: 3,
+            pid: 4,
             symbol: 'ELP',
             name: 'USDC-USDT',
             isVote: true,
@@ -97,17 +108,6 @@ export const FARMS: AddressMap = {
             token0: { id: '0xae95d4890bf4471501E0066b6c6244E1CAaEe791', name: 'USD Coin', symbol: 'USDC', decimals: 6 },
             token1: { id: '0x397F8aBd481B7c00883fb70da2ea5Ae70999c37c', name: 'Tether USD', symbol: 'USDT', decimals: 6 },
         },
-
-        // '0x87ce4e5bBCE1Ee646Fa28B61CbC7EFac4722680e': {
-        //   id: 3,
-        //   pid: 4,
-        //   symbol: 'ELP',
-        //   name: 'USDC-BNB',
-        //   token0: { id: '0x9b5bb7F5BE680843Bcd3B54D4E5C6eE889c124Df', name: 'USD Coin', symbol: 'USDC', decimals: 6 },
-        //   token1: { id: '0xab0D0540b724D7A1BCF64A651fc245BEDb11C091', name: 'WBNB Token', symbol: 'BNB', decimals: 18 },
-        //   isVote: true,
-        //   isZap: false,
-        // },
     },
 
     [ ChainId.BSC_TESTNET ]: {

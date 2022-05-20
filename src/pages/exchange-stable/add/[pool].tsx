@@ -56,7 +56,7 @@ export default function Add () {
 
     //pool lp
     const lpToken = poolInfo?.lpToken
-    const lpTokenCurrency = lpToken ? new Token( chainId, lpToken.address, lpToken.decimals, lpToken.symbol ) : undefined;
+    const lpTokenCurrency = lpToken && lpToken.address ? new Token( chainId, lpToken.address, lpToken.decimals, lpToken.symbol ) : undefined;
 
 
     //get user balances for each pooled tokens
