@@ -88,7 +88,7 @@ const Web3StatusInner = () => {
     return (
       <div
         id="web3-status-connected"
-        className="flex items-center px-3 py-2 m-0.5 text-sm rounded-lg bg-light-bg/80 dark:bg-dark-primary/80 transition-all text-dark-primary/80 dark:text-light-primary/80"
+        className="flex items-center px-3 py-2 m-1 text-sm rounded-xl bg-light-bg dark:bg-dark-bg transition-all text-dark-primary/80 dark:text-light-primary/80"
         onClick={toggleWalletModal}
       >
         {hasPendingTransactions ? (

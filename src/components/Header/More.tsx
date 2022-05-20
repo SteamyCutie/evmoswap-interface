@@ -74,7 +74,7 @@ const Menu = () => {
               open
                 ? 'text-dark-primary/80 dark:text-light-primary/80'
                 : 'text-dark-primary/60 dark:text-light-primary/60',
-              'focus:outline-none hover:text-dark-primary dark:hover:text-light-primary transition-all m-2 mr-1'
+              'focus:outline-none hover:text-dark-primary dark:hover:text-light-primary transition-all m-0 mr-1 flex justify-center items-center'
             )}
           >
             <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
