@@ -60,9 +60,9 @@ export const STABLE_POOLS: StableAddressMap = {
             name: "3Pool",
             title: "USDC + DAI + USDT",
             pooledTokens: [
-                { ...STABLE_POOLS_TOKENS.DAI, ...{ address: "" } },
-                { ...STABLE_POOLS_TOKENS.USDC, ...{ address: "" } },
-                { ...STABLE_POOLS_TOKENS.USDT, ...{ address: "" } },
+                { ...STABLE_POOLS_TOKENS.DAI, ...{ address: "0x63743ACF2c7cfee65A5E356A4C4A005b586fC7AA" } },
+                { ...STABLE_POOLS_TOKENS.USDC, ...{ address: "0x51e44FfaD5C2B122C8b635671FCC8139dc636E82" } },
+                { ...STABLE_POOLS_TOKENS.USDT, ...{ address: "0x7FF4a56B32ee13D7D4D405887E0eA37d61Ed919e" } },
             ]
         }
     },
@@ -74,9 +74,9 @@ export const STABLE_POOLS: StableAddressMap = {
             name: "3Pool",
             title: "USDC + DAI + USDT",
             pooledTokens: [
-                { ...STABLE_POOLS_TOKENS.DAI, ...{ address: "" } },
-                { ...STABLE_POOLS_TOKENS.USDC, ...{ address: "" } },
-                { ...STABLE_POOLS_TOKENS.USDT, ...{ address: "" } },
+                { ...STABLE_POOLS_TOKENS.DAI, ...{ address: "0x7c4a1D38A755a7Ce5521260e874C009ad9e4Bf9c" } },
+                { ...STABLE_POOLS_TOKENS.USDC, ...{ address: "0xae95d4890bf4471501E0066b6c6244E1CAaEe791" } },
+                { ...STABLE_POOLS_TOKENS.USDT, ...{ address: "0x397F8aBd481B7c00883fb70da2ea5Ae70999c37c" } },
             ]
         }
     },
