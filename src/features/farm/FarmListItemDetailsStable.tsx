@@ -5,7 +5,6 @@ import { ZERO } from '@evmoswap/core-sdk'
 import { t } from '@lingui/macro'
 import { useLingui } from '@lingui/react'
 import { ButtonError } from 'app/components/Button'
-import CurrencyInput from 'app/components/CurrencyInput'
 import Dots from 'app/components/Dots'
 import HeadlessUiModal from 'app/components/Modal/HeadlessUIModal'
 import ToggleButtonGroup from 'app/components/ToggleButton'
@@ -23,6 +22,9 @@ import ReactGA from 'react-ga'
 import { useUserInfo } from './hooks'
 import InvestmentDetails from './InvestmentDetails'
 import NavLink from 'app/components/NavLink'
+import { RowBetween } from 'app/components/Row'
+import Button from 'app/components/Button'
+import Input from 'app/components/Input'
 
 
 const COLUMN_CONTAINER = 'flex flex-col flex-grow gap-4'
@@ -36,6 +38,8 @@ const FarmListItemDetailsStable = ( { farm, onDismiss, handleDismiss } ) => {
     //view/tab toggle
     const [ view, setView ] = useState( OnsenModalView.Deposit )
     const action = view === OnsenModalView.Deposit ? "Deposit" : "Withdraw";
+    const isWidthdraw = view === OnsenModalView.Withdraw;
+
     const updateView = ( view ) => { setView( view ); handleInput( '' ); }
 
     //farm details
@@ -63,19 +67,23 @@ const FarmListItemDetailsStable = ( { farm, onDismiss, handleDismiss } ) => {
 
 
     //om max input
-    const onMax = () => {
+    const onMax = ( value?: string ) => {
 
-        if ( !selectedBalance?.equalTo( ZERO ) )
-            handleInput( selectedBalance?.toSignificant( selectedBalance?.currency.decimals ) )
+        let amount = value;
+        if ( !amount && selectedBalance.greaterThan( ZERO ) )
+            amount = selectedBalance?.toSignificant( selectedBalance?.currency.decimals );
+
+        if ( amount )
+            handleInput( amount )
     }
 
     const renderBalance = () => {
 
         const sBalance = view === OnsenModalView.Deposit ? balance : stakedBalance;
-        const prefixText = view === OnsenModalView.Withdraw ? "Staked" : "Balance"
+        const prefixText = isWidthdraw ? "Staked" : "Balance"
         return (
             <>
-                { i18n._( t`${prefixText}` ) }: { formatCurrencyAmount( sBalance, 4 ) } { sBalance?.currency?.symbol }
+                { i18n._( t`${prefixText}` ) }: { formatCurrencyAmount( sBalance, 4 ) }
             </>
         )
     }
@@ -116,8 +124,8 @@ const FarmListItemDetailsStable = ( { farm, onDismiss, handleDismiss } ) => {
         if ( !approved || !chainId || !account || !masterChefContract || !parsedAmount || !liquidityToken ) return
 
 
-        const endpoint = view === OnsenModalView.Deposit ? "deposit" : "withdraw"
-        const action = view === OnsenModalView.Deposit ? "Deposit" : "Withdraw";
+        const endpoint = !isWidthdraw ? "deposit" : "withdraw"
+        const action = !isWidthdraw ? "Deposit" : "Withdraw";
 
         let estimate,
             method: ( ...args: any ) => Promise<TransactionResponse>,
@@ -187,25 +195,46 @@ const FarmListItemDetailsStable = ( { farm, onDismiss, handleDismiss } ) => {
 
                 {/*Dont unmount following components to make modal more react faster*/ }
                 <div className={ classNames( COLUMN_CONTAINER, [ OnsenModalView.Deposit, OnsenModalView.Withdraw ].includes( view ) ? 'block' : 'hidden' ) }>
-                    <CurrencyInput
+
+                    <RowBetween className="pl-2 mt-4">
+                        <div className="text-base text-white">{ renderBalance() }</div>
+                        <div className="flex justify-end gap-2">
+                            { [ '25', '50', '75', '100' ].map( ( multiplier, i ) => (
+                                <Button
+                                    variant="outlined"
+                                    size="xs"
+                                    color={ !isWidthdraw ? 'blue' : 'pink' }
+                                    key={ i }
+                                    onClick={ () => { selectedBalance ? onMax( selectedBalance.multiply( multiplier ).divide( 100 ).toExact() ) : undefined } }
+                                    className={ classNames(
+                                        'text-md border border-opacity-50',
+                                        !isWidthdraw ? 'focus:ring-blue border-blue' : 'focus:ring-pink border-pink'
+                                    ) }
+                                >
+                                    { multiplier === '100' ? 'MAX' : multiplier + '%' }
+                                </Button>
+                            ) ) }
+                        </div>
+                    </RowBetween>
+
+                    <Input.Numeric
+                        className='w-full px-4 py-4 pr-20 rounded bg-dark-700 focus:ring focus:ring-dark-purple'
                         label=''
                         value={ typedValue }
                         onUserInput={ handleInput }
-                        onMax={ onMax }
-                        renderBalance={ renderBalance }
-                        showMaxButton={ typedValue !== selectedBalance?.toSignificant( selectedBalance?.currency?.decimals ) }
-                        currency={ liquidityToken }
                         id="add-liquidity-input-token"
-                        showCommonBases
                     />
 
-                    <NavLink
-                        href={ `/stable-pool/add/${String( liquidityToken?.symbol ).toLowerCase()}` }
-                    >
-                        <a className="flex items-center justify-end space-x-2 text-base cursor-pointer font text-secondary hover:text-high-emphesis">
-                            { i18n._( t`Add Liquidity` ) }
-                        </a>
-                    </NavLink>
+                    <div className="w-full flex items-center justify-end">
+                        <NavLink
+                            href={ `/stable-pool/add/${String( liquidityToken?.symbol ).toLowerCase()}` }
+                        >
+                            <a className="space-x-2 text-base cursor-pointer font text-secondary hover:text-high-emphesis">
+                                { i18n._( t`Add Liquidity` ) }
+                            </a>
+                        </NavLink>
+                    </div>
+
                     <ButtonError
                         onClick={ () => { approved ? onDeposit() : approveACallback() } }
                         color={ error ? 'gray' : 'blue' }
@@ -216,7 +245,7 @@ const FarmListItemDetailsStable = ( { farm, onDismiss, handleDismiss } ) => {
                         { !error && <>
                             { !approved &&
                                 <>
-                                    { approval === ApprovalState.PENDING ? <Dots>{ i18n._( t`Approving ${liquidityToken?.symbol}` ) }</Dots> : i18n._( t`Approve` ) }
+                                    { approval === ApprovalState.PENDING ? <Dots>{ i18n._( t`Approving` ) }</Dots> : i18n._( t`Approve` ) }
                                 </>
                             }
                             { approved &&
