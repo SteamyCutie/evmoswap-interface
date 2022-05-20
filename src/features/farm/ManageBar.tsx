@@ -47,7 +47,7 @@ const ManageBar = ({ farm, handleDismiss }) => {
     chainId,
     getAddress(farm.lpToken),
     farm.token1 ? 18 : farm.token0 ? farm.token0.decimals : 18,
-    'SLP'
+    'ELP'
   )
   const balance = useTokenBalance(account, liquidityToken)
   const { stakedAmount } = useUserInfo(farm, liquidityToken)
