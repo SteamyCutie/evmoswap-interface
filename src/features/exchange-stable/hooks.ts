@@ -104,9 +104,11 @@ export function useStablePoolInfo ( poolId: string ): StablePoolInfo {
             a: 0,
             isLoading: true,
             pooledTokensInfo: undefined,
-            lpTokenInstance: undefined
+            lpToken: undefined
         },
     }
+
+    let lpAddress: string;
 
     const callsData = useMemo(
         () => [
@@ -118,26 +120,20 @@ export function useStablePoolInfo ( poolId: string ): StablePoolInfo {
     )
 
     const results = useSingleContractMultipleMethods( contract, callsData )
+    const [ { result: swapStorage }, { result: virtualPrice }, { result: a } ] = results
 
-    if ( results && Array.isArray( results ) && results.length === callsData.length ) {
-        const [ { result: swapStorage }, { result: virtualPrice }, { result: a } ] = results
+    const lpToken = useToken( swapStorage?.lpToken )
+
+    if ( swapStorage && virtualPrice && a ) {
         resp.a = a?.[ 0 ]
         resp.swapFee = Number( formatBalance( swapStorage?.swapFee || '0', FEE_DECIMALS ) ) * 100
-        resp.virtualPrice = Number( formatBalance( virtualPrice?.[ 0 ] || '0', pool?.lpToken?.decimals || 0 ) )
+        resp.virtualPrice = Number( formatBalance( virtualPrice?.[ 0 ] || '0', lpToken?.decimals || 0 ) )
         resp.adminFee = Number( formatBalance( swapStorage?.adminFee || '0', FEE_DECIMALS ) ) * 100
 
-        //update lp address with chain storage.
-        if ( swapStorage?.lpToken ) {
-            resp.lpToken.address = swapStorage?.lpToken
-            resp.lpTokenInstance = new Token( chainId, resp.lpToken.address, resp.lpToken.decimals, resp.lpToken.symbol )
-        }
-
-
-        resp.isLoading = false
-    } else {
         resp.isLoading = false
     }
 
+    resp.lpToken = lpToken;
     resp.pooledTokensInfo = useStablePooledTokensInfo( poolId )
 
     return resp

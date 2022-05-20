@@ -25,7 +25,7 @@ const StablePoolItem = ( { poolId }: { poolId: string } ) => {
                 className="flex bg-transparent justify-center items-center disabled:opacity-50 disabled:cursor-auto bg-opacity-90 hover:bg-opacity-100 rounded disabled:cursor-not-allowed focus:outline-none flex items-center justify-between w-full px-4 py-6 cursor-pointer bg-dark-800 hover:bg-dark-700 !bg-dark-700"
                 header={
                     <div className="flex items-center space-x-4">
-                        <CurrencyLogo currency={ poolInfo.lpTokenInstance } />
+                        <CurrencyLogo currency={ poolInfo.lpToken } />
                         <div className="flex flex-col text-left">
                             <div className="text-lg sm:text-xl font-semibold">{ pool.name }</div>
                             <div className="text-sm">{ pool.title }</div>

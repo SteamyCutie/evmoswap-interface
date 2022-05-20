@@ -48,9 +48,8 @@ export default function Add () {
 
     //pool lp
     const poolInfo = useStablePoolInfo( poolId );
-    const lpToken = poolInfo?.lpToken;
-    const balance = useTokenBalance( account, poolInfo.lpTokenInstance );
-    const lpTokenCurrency = balance?.currency;
+    const lpToken = poolInfo.lpToken;
+    const balance = useTokenBalance( account, lpToken );
 
     //pool pooled Tokens details
     const poolTokensInfo = poolInfo.pooledTokensInfo
@@ -68,9 +67,9 @@ export default function Add () {
     const parsedAmount = useMemo( () => {
         return tryParseAmount(
             tokenInput,
-            lpTokenCurrency
+            lpToken
         )
-    }, [ tokenInput, lpTokenCurrency ] );
+    }, [ tokenInput, lpToken ] );
 
 
     //token selection management
@@ -353,7 +352,7 @@ export default function Add () {
                                         onTokenInput( singleMode ? poolBalances?.[ selectTokenIndex ]?.toExact() : balance?.toExact() )
                                     } }
                                     showMaxButton={ true }
-                                    currency={ lpTokenCurrency }
+                                    currency={ lpToken }
                                     id={ `add-liquidity-input-token-lp}` }
                                     showCommonBases
                                     disableCurrencySelect={ true }

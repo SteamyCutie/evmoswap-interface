@@ -30,7 +30,7 @@ const StablePoolDetail = ( { poolInfo, showHeader = false, showPosition = false,
                 <div className="text-lg">{ i18n._( t`Pool Info` ) }</div>
                 { showHeader && <RowBetween>
                     <div className="flex items-center space-x-4">
-                        <CurrencyLogo currency={ poolInfo.lpTokenInstance } />
+                        <CurrencyLogo currency={ poolInfo.lpToken } />
                         <div className="flex flex-col text-left">
                             <div className="text-lg sm:text-2xl font-bold text-white">{ poolInfo.name }</div>
                         </div>

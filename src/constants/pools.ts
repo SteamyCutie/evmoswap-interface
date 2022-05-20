@@ -140,16 +140,13 @@ export type StableTokenInfo = {
         width: number;
     };
 };
-export interface StableLpTokenInfo extends StableTokenInfo { }
 
 export type StablePool = {
     pid: number;
     slug: string;
     name: string;
     title: string;
-    lpToken: StableLpTokenInfo;
     pooledTokens: StableTokenInfo[]; //arranged based on token index.
-    metaPooledTokens?: StableTokenInfo[]; //arranged based on token index.
     isMeta?: boolean;
 };
 
@@ -164,7 +161,7 @@ export interface StablePoolInfo extends StablePool {
         total: number
         tokens: Token[] | undefined
     },
-    lpTokenInstance: Token
+    lpToken: Token | undefined
 }
 
 type StableAddressMap = {
@@ -181,22 +178,6 @@ export const STABLE_POOLS_TOKENS = {
     "UST": { address: "", name: "UST", symbol: "UST", decimals: 18 },
 }
 
-//stable pools lp tokens 
-export const STABLE_POOLS_LP_TOKENS = {
-    "3POOL": {
-        address: "",
-        name: "3EMOS",
-        symbol: "3Pool",
-        decimals: 18,
-    },
-    "UST3POOL": {
-        address: "",
-        name: "UST 3Pool LP",
-        symbol: "UST3Pool",
-        decimals: 18
-    }
-}
-
 //common pools to all chains. This is used to reduce entry repetition.
 const BASE_STABLE_POOLS = {
     "0": {
@@ -204,7 +185,6 @@ const BASE_STABLE_POOLS = {
         slug: "3pool",
         name: "3Pool",
         title: "USDC + DAI + USDT",
-        lpToken: STABLE_POOLS_LP_TOKENS[ "3POOL" ],
         pooledTokens: [ STABLE_POOLS_TOKENS.DAI, STABLE_POOLS_TOKENS.USDC, STABLE_POOLS_TOKENS.USDT ]
     },
     "1": {
@@ -212,9 +192,7 @@ const BASE_STABLE_POOLS = {
         slug: "ust-3Pool",
         name: "UST + 3Pool",
         title: "UST + 3Pool",
-        lpToken: STABLE_POOLS_LP_TOKENS[ "UST3POOL" ],
         pooledTokens: [ STABLE_POOLS_TOKENS.UST, STABLE_POOLS_TOKENS.DAI, STABLE_POOLS_TOKENS.USDC, STABLE_POOLS_TOKENS.USDT ],
-        metaPooledTokens: [ STABLE_POOLS_TOKENS.UST, STABLE_POOLS_LP_TOKENS[ "3POOL" ] ],
         isMeta: true
     }
 }

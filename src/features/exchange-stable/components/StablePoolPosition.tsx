@@ -21,7 +21,7 @@ const StablePoolPosition = ( { poolInfo, className = '' }: { poolInfo: StablePoo
     const isLoading = poolInfo?.isLoading
     const tokens = poolInfo?.pooledTokensInfo?.tokens
 
-    const balance = useTokenBalance( account, poolInfo.lpTokenInstance );
+    const balance = useTokenBalance( account, poolInfo.lpToken );
 
     const totalLpSupply = useTotalSupply( balance?.currency )
 

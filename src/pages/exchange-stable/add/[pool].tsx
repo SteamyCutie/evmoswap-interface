@@ -55,8 +55,7 @@ export default function Add () {
     const tokens = poolTokensInfo.tokens || []
 
     //pool lp
-    const lpToken = poolInfo?.lpToken
-    const lpTokenCurrency = poolInfo.lpTokenInstance
+    const lpToken = poolInfo.lpToken
 
     //get user balances for each pooled tokens
     const balances = useCurrencyBalances( account ?? undefined, tokens )
@@ -103,8 +102,8 @@ export default function Add () {
 
     //basic infrered stats
     const estimatedSLP = useStableTokenToMint( poolId, parsedAmounts, true );
-    const minToMint = lpTokenCurrency ? CurrencyAmount.fromRawAmount( lpTokenCurrency, estimatedSLP ?? "0" ) : undefined
-    const minToMintWithSlippage = lpTokenCurrency ? CurrencyAmount.fromRawAmount( lpTokenCurrency, calculateSlippageAmount( minToMint, allowedSlippage )[ 0 ] ) : undefined
+    const minToMint = lpToken ? CurrencyAmount.fromRawAmount( lpToken, estimatedSLP ?? "0" ) : undefined
+    const minToMintWithSlippage = lpToken ? CurrencyAmount.fromRawAmount( lpToken, calculateSlippageAmount( minToMint, allowedSlippage )[ 0 ] ) : undefined
     const parsedAmountsTotal = Number( sumCurrencyAmounts( parsedAmounts ) );
     const poolTokenPercentage = formatNumberPercentage( parsedAmountsTotal, poolTokensInfo.total + parsedAmountsTotal );
 
