@@ -64,16 +64,16 @@ const AmountInput = ( { state }: { state: MigrateState } ) => {
             </div>
             <div className="relative flex items-center w-full mb-4">
                 <Input.Numeric
-                    className="w-full p-3 rounded bg-dark-700 focus:ring focus:ring-pink"
+                    className="w-full p-3 rounded bg-dark-700 focus:ring focus:ring-blue"
                     value={ state.amount }
                     onUserInput={ ( val: string ) => state.setAmount( val ) }
                 />
                 <Button
                     variant="outlined"
-                    color="pink"
+                    color="blue"
                     size="xs"
                     onClick={ onPressMax }
-                    className="absolute right-4 focus:ring focus:ring-pink"
+                    className="absolute right-4 focus:ring focus:ring-blue"
                 >
                     { i18n._( t`MAX` ) }
                 </Button>
@@ -161,6 +161,8 @@ const MigrateButtons = ( { state, exchange }: { state: MigrateState; exchange: s
                         loading={ approval === ApprovalState.PENDING }
                         onClick={ approve }
                         disabled={ approval !== ApprovalState.NOT_APPROVED }
+                        color="blue"
+                        className='disabled:bg-blue-600 disabled:cursor-not-allowed'
                     >
                         { approval === ApprovalState.APPROVED ? i18n._( t`Approved` ) : i18n._( t`Approve` ) }
                     </Button>
@@ -170,6 +172,7 @@ const MigrateButtons = ( { state, exchange }: { state: MigrateState; exchange: s
                             loading={ state.isMigrationPending }
                             disabled={ noLiquidityTokens || state.isMigrationPending || !state.amount }
                             onClick={ onPress }
+                            color="gradient"
                         >
                             { i18n._( t`Migrate` ) }
                         </Button>
@@ -261,7 +264,7 @@ export default function Migrate () {
             </div>
 
             { !account ? (
-                <Web3Connect className="w-full !bg-dark-900 bg-gradient-to-r from-pink/80 hover:from-pink to-purple/80 hover:to-purple text-white h-[38px]" />
+                <Web3Connect className="w-full !bg-dark-900 bg-gradient-to-r from-blue/80 hover:from-blue to-purple/80 hover:to-purple text-white h-[38px]" />
             ) : (
                 <div className="p-4 space-y-4 rounded bg-dark-900">
                     { state.loading ? (

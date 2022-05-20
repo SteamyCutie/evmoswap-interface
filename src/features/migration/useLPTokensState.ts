@@ -60,7 +60,7 @@ const useLPTokensState = () => {
                     response?.data?.items?.filter( ( pool_token: any ) => pool_token.balance !== '0' ),
                 ] )
 
-                console.log( "aaaaa", { data } )
+                //console.log({ data } )
 
                 const lpTokens = data?.reduce( ( previousValue, [ dex, items ] ) => {
                     return [
