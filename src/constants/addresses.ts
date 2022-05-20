@@ -1,4 +1,5 @@
 import { ChainId } from '@evmoswap/core-sdk'
+import LPToken from 'app/features/migration/LPToken'
 
 type AddressMap = { [ chainId: number ]: string }
 
@@ -65,7 +66,7 @@ export const DASHBOARD_ADDRESS: AddressMap = {
 export const EVMOSWAP_ADDRESS: AddressMap = {
     [ ChainId.EVMOS ]: '0xf0a5b0fa1531C94754241911A2E6D94506336321',
     [ ChainId.EVMOS_TESTNET ]: '0x4d15569cDB9fD14687d5cf6FcE628f2792CD2Ea7',
-    
+
     [ ChainId.BSC_TESTNET ]: '0x6493F1BfE563A09485A3888617EDAf62f8A43dF0',
 }
 
@@ -117,8 +118,28 @@ export const PRIVATESALE_ADDRESS: AddressMap = {
     [ ChainId.BSC_TESTNET ]: '0xf3CAb862A2f696fa493db85749736411635fA273',
 }
 
-export const EVMOROLL_ADDRESS: AddressMap = {
-    [ ChainId.BSC_TESTNET ]: '0x9A87b976Cc1b95465C1FB91D1Fc23ac342B2030E',
+type AddressMapRoll = {
+
+    [ chainId: number ]: {
+        [ dexName in LPToken[ 'dex' ] ]?: string
+    }
+}
+
+export const EVMOROLL_ADDRESS: AddressMapRoll = {
+    [ ChainId.BSC_TESTNET ]: {
+        diffusion: '0x9A87b976Cc1b95465C1FB91D1Fc23ac342B2030E',
+        cronus: '0x9A87b976Cc1b95465C1FB91D1Fc23ac342B2030E'
+    },
+
+    [ ChainId.EVMOS ]: {
+        diffusion: '0x9A87b976Cc1b95465C1FB91D1Fc23ac342B2030E',
+        cronus: '0x9A87b976Cc1b95465C1FB91D1Fc23ac342B2030E'
+    },
+
+    [ ChainId.EVMOS_TESTNET ]: {
+        diffusion: '0x9A87b976Cc1b95465C1FB91D1Fc23ac342B2030E',
+        cronus: '0x9A87b976Cc1b95465C1FB91D1Fc23ac342B2030E'
+    },
 }
 
 export const MIGRATE_DASHBOARD_ADDRESS: AddressMap = {

@@ -170,7 +170,7 @@ function AppBar(): JSX.Element {
                             className="p-2 text-baseline text-primary hover:text-high-emphesis focus:text-high-emphesis md:p-3 whitespace-nowrap"
                           >
                             {' '}
-                            {i18n._(t`Private sale 🚀`)}
+                            {i18n._(t`Private sale`)}
                           </a>
                         </Link>
                       )}
@@ -183,11 +183,11 @@ function AppBar(): JSX.Element {
                     <div className="flex items-center w-auto mr-1 text-xs font-bold rounded shadow-sm cursor-pointer pointer-events-auto select-none bg-dark-800 text-primary hover:bg-dark-700 whitespace-nowrap sm:block">
                       <TokenStats token="EMO" />
                     </div>
-                    {library && library.provider.isMetaMask && (
+                    {/* {library && library.provider.isMetaMask && (
                       <div className="hidden sm:inline-block">
                         <Web3Network />
                       </div>
-                    )}
+                    )} */}
 
                     <div className="w-auto flex items-center rounded bg-dark-900 hover:bg-dark-800 p-0.5 whitespace-nowrap text-sm font-bold cursor-pointer select-none pointer-events-auto">
                       {account && chainId && userEthBalance && (

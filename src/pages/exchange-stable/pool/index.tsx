@@ -12,6 +12,7 @@ import { useLingui } from '@lingui/react'
 import { STABLE_POOLS } from 'app/constants/pools'
 import StablePool from 'app/features/exchange-stable/components/StablePool'
 import PoolsNav from 'app/features/exchange-stable/components/StablePoolsNav'
+import Empty from 'app/components/Empty'
 
 const alert = {
     title: "Stable AMM Liquidity Provider Rewards",
@@ -23,6 +24,7 @@ export default function StablePools () {
     const { i18n } = useLingui()
     const { account, chainId } = useActiveWeb3React()
     const pools = STABLE_POOLS[ chainId ];
+    const poolIds = Object.keys( pools );
 
     return (
         <Container id="pool-page" className="py-4 space-y-6 md:py-8 lg:py-12" maxWidth="2xl">
@@ -56,7 +58,12 @@ export default function StablePools () {
 
                 { !account && <Web3Connect size="lg" color="blue" className="w-full" /> }
                 {
-                    Object.keys( pools ).map( ( pAddress, index ) => (
+                    !poolIds.length && <Empty className="flex text-lg text-center text-low-emphesis">
+                        <div className="px-4 py-2">{ i18n._( t`No liquidity was found. ` ) }</div>
+                    </Empty>
+                }
+                {
+                    poolIds.map( ( pAddress, index ) => (
                         <StablePool key={ index } poolId={ pAddress } />
                     ) )
                 }

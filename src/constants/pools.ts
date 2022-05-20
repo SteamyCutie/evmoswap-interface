@@ -122,6 +122,9 @@ export const POOLS: AddressMap = {
     }
 };
 
+
+
+
 /**
  * Stable swap config
  */
@@ -169,38 +172,18 @@ type StableAddressMap = {
     };
 };
 
-// this is bsctest tokens
+//common stable tokens
 export const STABLE_POOLS_TOKENS = {
-    "DAI": {
-        address: "0x6456d6f7B224283f8B22F03347B58D8B6d975677",
-        name: "DAI Coin",
-        symbol: "DAI",
-        decimals: 18
-    },
-    "USDC": {
-        address: "0x9b5bb7F5BE680843Bcd3B54D4E5C6eE889c124Df",
-        name: "USD Coin",
-        symbol: "USDC",
-        decimals: 6
-    },
-    "USDT": {
-        address: "0x648D3d969760FDabc71ea9d59c020AD899237b32",
-        name: "Tether",
-        symbol: "USDT",
-        decimals: 6
-    },
-    "UST": {
-        address: "0xf8e00573a7e669e42F4bF022497bAfca527c403F",
-        name: "UST",
-        symbol: "UST",
-        decimals: 18
-    },
+    "DAI": { address: "", name: "DAI Coin", symbol: "DAI", decimals: 18 },
+    "USDC": { address: "", name: "USD Coin", symbol: "USDC", decimals: 6 },
+    "USDT": { address: "", name: "Tether", symbol: "USDT", decimals: 6 },
+    "UST": { address: "", name: "UST", symbol: "UST", decimals: 18 },
 }
 
-// this is bsctest tokens
-export const STABLE_POOLS_META_TOKENS = {
+//stable pools lp tokens 
+export const STABLE_POOLS_LP_TOKENS = {
     "3POOL": {
-        address: "0x6a6047cC45261FeaC3baEF19FD2b3f9a7B3b7463",
+        address: "",
         name: "3EMOS",
         symbol: "3Pool",
         decimals: 18,
@@ -211,7 +194,7 @@ export const STABLE_POOLS_META_TOKENS = {
         }
     },
     "UST3POOL": {
-        address: "0xa3747c559323e06418b176cf2e191766d6222029",
+        address: "",
         name: "UST 3Pool LP",
         symbol: "UST3Pool",
         decimals: 18,
@@ -223,117 +206,34 @@ export const STABLE_POOLS_META_TOKENS = {
     }
 }
 
-export const STABLE_POOLS: StableAddressMap = {
-    [ ChainId.EVMOS ]: {
-        // "0": {
-        //     pid: 0,
-        //     slug: "3pool",
-        //     name: "3Pool",
-        //     title: "USDC + DAI + USDT",
-        //     lpToken: {
-        //         address: "0x69C2fF0B85Bcc68B2f101a8241d25cD5084EbDD9",
-        //         name: "3EMOS",
-        //         symbol: "3Pool",
-        //         decimals: 18,
-        //         icon: {
-        //             src: "https://raw.githubusercontent.com/evmoswap/default-token-list/main/assets/icons/stable/stableswap_3pool.png",
-        //             height: 48,
-        //             width: 100
-        //         }
-        //     },
-        //     pooledTokens: [
-        //         {
-        //             address: "0x63743ACF2c7cfee65A5E356A4C4A005b586fC7AA",
-        //             name: "DAI Coin",
-        //             symbol: "DAI",
-        //             decimals: 18
-        //         },
-        //         {
-        //             address: "0x51e44FfaD5C2B122C8b635671FCC8139dc636E82",
-        //             name: "USD Coin",
-        //             symbol: "USDC",
-        //             decimals: 6
-        //         },
-        //         {
-        //             address: "0x7FF4a56B32ee13D7D4D405887E0eA37d61Ed919e",
-        //             name: "Tether",
-        //             symbol: "USDT",
-        //             decimals: 6
-        //         }
-        //     ]
-        // },
+//common pools to all chains. This is used to reduce entry repetition.
+const BASE_STABLE_POOLS = {
+    "0": {
+        pid: 0,
+        slug: "3pool",
+        name: "3Pool",
+        title: "USDC + DAI + USDT",
+        lpToken: STABLE_POOLS_LP_TOKENS[ "3POOL" ],
+        pooledTokens: [ STABLE_POOLS_TOKENS.DAI, STABLE_POOLS_TOKENS.USDC, STABLE_POOLS_TOKENS.USDT ]
     },
-
-    [ ChainId.EVMOS_TESTNET ]: {
-        "0": {
-            pid: 0,
-            slug: "3pool",
-            name: "3Pool",
-            title: "USDC + DAI + USDT",
-            lpToken: {
-                address: "0x4d15569cDB9fD14687d5cf6FcE628f2792CD2Ea7",
-                name: "3EMOS",
-                symbol: "3Pool",
-                decimals: 18,
-                icon: {
-                    src: "https://raw.githubusercontent.com/evmoswap/default-token-list/main/assets/icons/stable/stableswap_3pool.png",
-                    height: 48,
-                    width: 100
-                }
-            },
-            pooledTokens: [
-                {
-                    address: "0x7c4a1D38A755a7Ce5521260e874C009ad9e4Bf9c",
-                    name: "DAI Coin",
-                    symbol: "DAI",
-                    decimals: 18
-                },
-                {
-                    address: "0xae95d4890bf4471501E0066b6c6244E1CAaEe791",
-                    name: "USD Coin",
-                    symbol: "USDC",
-                    decimals: 6
-                },
-                {
-                    address: "0x397F8aBd481B7c00883fb70da2ea5Ae70999c37c",
-                    name: "Tether",
-                    symbol: "USDT",
-                    decimals: 6
-                }
-            ]
-        },
-    },
-
-    [ ChainId.BSC_TESTNET ]: {
-        "0": {
-            pid: 0,
-            slug: "3pool",
-            name: "3Pool",
-            title: "USDC + DAI + USDT",
-            lpToken: STABLE_POOLS_META_TOKENS[ "3POOL" ],
-            pooledTokens: [
-                STABLE_POOLS_TOKENS.DAI,
-                STABLE_POOLS_TOKENS.USDC,
-                STABLE_POOLS_TOKENS.USDT
-            ]
-        },
-        "1": {
-            pid: 1,
-            slug: "ust-3Pool",
-            name: "UST + 3Pool",
-            title: "UST + 3Pool",
-            lpToken: STABLE_POOLS_META_TOKENS[ "UST3POOL" ],
-            pooledTokens: [
-                STABLE_POOLS_TOKENS.UST,
-                STABLE_POOLS_TOKENS.DAI,
-                STABLE_POOLS_TOKENS.USDC,
-                STABLE_POOLS_TOKENS.USDT
-            ],
-            metaPooledTokens: [
-                STABLE_POOLS_TOKENS.UST,
-                STABLE_POOLS_META_TOKENS[ "3POOL" ]
-            ],
-            isMeta: true
-        }
+    "1": {
+        pid: 1,
+        slug: "ust-3Pool",
+        name: "UST + 3Pool",
+        title: "UST + 3Pool",
+        lpToken: STABLE_POOLS_LP_TOKENS[ "UST3POOL" ],
+        pooledTokens: [ STABLE_POOLS_TOKENS.UST, STABLE_POOLS_TOKENS.DAI, STABLE_POOLS_TOKENS.USDC, STABLE_POOLS_TOKENS.USDT ],
+        metaPooledTokens: [ STABLE_POOLS_TOKENS.UST, STABLE_POOLS_LP_TOKENS[ "3POOL" ] ],
+        isMeta: true
     }
+}
+
+
+//chains configuration for stable pools. Inherit and extend as neccessary
+export const STABLE_POOLS: StableAddressMap = {
+    [ ChainId.EVMOS ]: { "0": BASE_STABLE_POOLS[ "0" ] },
+
+    [ ChainId.EVMOS_TESTNET ]: { "0": BASE_STABLE_POOLS[ "0" ] },
+
+    [ ChainId.BSC_TESTNET ]: BASE_STABLE_POOLS
 };
