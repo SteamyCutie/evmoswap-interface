@@ -189,8 +189,8 @@ export function useStablePooledTokensInfo (
 
         if ( tokens )
             tokens.map( ( token, index ) => {
-                if ( token ) {
-                    const address = addressesResult?.[ index ]?.result?.[ 0 ]
+                const address = addressesResult?.[ index ]?.result?.[ 0 ]
+                if ( token && address ) {
                     const currency = new Token( chainId, address ?? token.address, token.decimals, token.symbol )
 
                     tempCurrencies[ index ] = currency

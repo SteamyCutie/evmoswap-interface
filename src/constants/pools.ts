@@ -169,34 +169,16 @@ type StableAddressMap = {
     };
 };
 
+//common stable tokens
 export const STABLE_POOLS_TOKENS = {
-    "DAI": {
-        address: "0x6456d6f7B224283f8B22F03347B58D8B6d975677",
-        name: "DAI Coin",
-        symbol: "DAI",
-        decimals: 18
-    },
-    "USDC": {
-        address: "0x9b5bb7F5BE680843Bcd3B54D4E5C6eE889c124Df",
-        name: "USD Coin",
-        symbol: "USDC",
-        decimals: 6
-    },
-    "USDT": {
-        address: "0x648D3d969760FDabc71ea9d59c020AD899237b32",
-        name: "Tether",
-        symbol: "USDT",
-        decimals: 6
-    },
-    "UST": {
-        address: "0xf8e00573a7e669e42F4bF022497bAfca527c403F",
-        name: "UST",
-        symbol: "UST",
-        decimals: 18
-    },
+    "DAI": { address: "", name: "DAI Coin", symbol: "DAI", decimals: 18 },
+    "USDC": { address: "", name: "USD Coin", symbol: "USDC", decimals: 6 },
+    "USDT": { address: "", name: "Tether", symbol: "USDT", decimals: 6 },
+    "UST": { address: "", name: "UST", symbol: "UST", decimals: 18 },
 }
 
-export const STABLE_POOLS_META_TOKENS = {
+//stable pools lp tokens 
+export const STABLE_POOLS_LP_TOKENS = {
     "3POOL": {
         address: "0x6a6047cC45261FeaC3baEF19FD2b3f9a7B3b7463",
         name: "3EMOS",
@@ -221,41 +203,34 @@ export const STABLE_POOLS_META_TOKENS = {
     }
 }
 
+//common pools to all chains. This is used to reduce entry repetition.
+const BASE_STABLE_POOLS = {
+    "0": {
+        pid: 0,
+        slug: "3pool",
+        name: "3Pool",
+        title: "USDC + DAI + USDT",
+        lpToken: STABLE_POOLS_LP_TOKENS[ "3POOL" ],
+        pooledTokens: [ STABLE_POOLS_TOKENS.DAI, STABLE_POOLS_TOKENS.USDC, STABLE_POOLS_TOKENS.USDT ]
+    },
+    "1": {
+        pid: 1,
+        slug: "ust-3Pool",
+        name: "UST + 3Pool",
+        title: "UST + 3Pool",
+        lpToken: STABLE_POOLS_LP_TOKENS[ "UST3POOL" ],
+        pooledTokens: [ STABLE_POOLS_TOKENS.UST, STABLE_POOLS_TOKENS.DAI, STABLE_POOLS_TOKENS.USDC, STABLE_POOLS_TOKENS.USDT ],
+        metaPooledTokens: [ STABLE_POOLS_TOKENS.UST, STABLE_POOLS_LP_TOKENS[ "3POOL" ] ],
+        isMeta: true
+    }
+}
+
+
+//chains configuration for stable pools. Inherit and extend as neccessary
 export const STABLE_POOLS: StableAddressMap = {
     [ ChainId.EVMOS ]: {},
 
-    [ ChainId.EVMOS_TESTNET ]: {},
+    [ ChainId.EVMOS_TESTNET ]: BASE_STABLE_POOLS,
 
-    [ ChainId.BSC_TESTNET ]: {
-        "0": {
-            pid: 0,
-            slug: "3pool",
-            name: "3Pool",
-            title: "USDC + DAI + USDT",
-            lpToken: STABLE_POOLS_META_TOKENS[ "3POOL" ],
-            pooledTokens: [
-                STABLE_POOLS_TOKENS.DAI,
-                STABLE_POOLS_TOKENS.USDC,
-                STABLE_POOLS_TOKENS.USDT
-            ]
-        },
-        "1": {
-            pid: 1,
-            slug: "ust-3Pool",
-            name: "UST + 3Pool",
-            title: "UST + 3Pool",
-            lpToken: STABLE_POOLS_META_TOKENS[ "UST3POOL" ],
-            pooledTokens: [
-                STABLE_POOLS_TOKENS.UST,
-                STABLE_POOLS_TOKENS.DAI,
-                STABLE_POOLS_TOKENS.USDC,
-                STABLE_POOLS_TOKENS.USDT
-            ],
-            metaPooledTokens: [
-                STABLE_POOLS_TOKENS.UST,
-                STABLE_POOLS_META_TOKENS[ "3POOL" ]
-            ],
-            isMeta: true
-        }
-    }
+    [ ChainId.BSC_TESTNET ]: BASE_STABLE_POOLS
 };
