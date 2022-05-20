@@ -7,7 +7,7 @@ import EVMOMETASWAP_ABI from 'app/constants/abis/evmo-meta-swap.json'
 import EVMOMETASWAP_DEPOSIT_ABI from 'app/constants/abis/evmo-meta-swap-deposit.json'
 import { EVMOMETASWAP_ADDRESS, EVMOMETASWAP_DEPOSIT_ADDRESS, EVMOSWAP_ADDRESS } from 'app/constants/addresses'
 import { StablePool, StablePoolInfo, StableTokenInfo, STABLE_POOLS } from 'app/constants/stables'
-import { calculateGasMargin, formatBalance, isAddress, shortenAddress, tryParseAmount } from 'app/functions'
+import { calculateGasMargin, currencyId, formatBalance, isAddress, shortenAddress, tryParseAmount } from 'app/functions'
 import { useApproveCallback, useContract } from 'app/hooks'
 import { useToken } from 'app/hooks/Tokens'
 import useTransactionDeadline from 'app/hooks/useTransactionDeadline'
@@ -300,10 +300,13 @@ export function useStableSwapCallback (
     const {
         independentField,
         typedValue,
-        [ Field.INPUT ]: { currencyId: inputCurrencyId },
-        [ Field.OUTPUT ]: { currencyId: outputCurrencyId },
+        [ Field.INPUT ]: { currencyId: inputCurrencyAddress },
+        [ Field.OUTPUT ]: { currencyId: outputCurrencyAddress },
     } = useSwapState()
     const isExactIn: boolean = independentField === Field.INPUT
+    const currencyIds = [ inputCurrencyAddress, outputCurrencyAddress ];
+
+    const [ inputCurrencyId, outputCurrencyId ] = isExactIn ? currencyIds : currencyIds.reverse()
 
     //get swap token and determine is stable swap
     const [ tokenFrom, tokenTo, tokenIndexFrom, tokenIndexTo ] = useMemo( () => {
@@ -339,7 +342,7 @@ export function useStableSwapCallback (
     //input amount parsed
     const inputToken = useToken( inputCurrencyId )
     const outputToken = useToken( outputCurrencyId )
-    const parsedInputAmount = tryParseAmount( typedValue, ( isExactIn ? inputToken : outputToken ) ?? undefined )
+    const parsedInputAmount = tryParseAmount( typedValue, ( inputToken ) ?? undefined )
 
     //get relevant token balances
     const relevantTokenBalances = useCurrencyBalances( account ?? undefined, [
@@ -347,8 +350,8 @@ export function useStableSwapCallback (
         outputToken ?? undefined,
     ] )
     const currencyBalances = {
-        [ Field.INPUT ]: relevantTokenBalances[ 0 ],
-        [ Field.OUTPUT ]: relevantTokenBalances[ 1 ],
+        [ Field.INPUT ]: relevantTokenBalances[ isExactIn ? 0 : 1 ],
+        [ Field.OUTPUT ]: relevantTokenBalances[ isExactIn ? 1 : 0 ],
     }
 
     //txn
@@ -368,8 +371,10 @@ export function useStableSwapCallback (
     ] )?.result?.[ 0 ]
 
     const parsedOutputAmount = swapOutputAmount ? CurrencyAmount.fromRawAmount( outputToken, swapOutputAmount ) : undefined
-
-    //console.log( parsedInputAmount?.toExact(), parsedOutputAmount?.toExact() )
+    console.log( tokenIndexFrom,
+        tokenIndexTo,
+        parsedInputAmount?.quotient?.toString(), inputToken?.address, outputToken?.address )
+    console.log( swapOutputAmount, outputToken?.decimals, parsedInputAmount?.toExact(), parsedOutputAmount?.toExact() )
 
     //create stable Trade
     const stableTrade = useStableTrade( parsedInputAmount, parsedOutputAmount, isExactIn )
@@ -475,7 +480,6 @@ export function useStableTrade (
     outputAmount?: CurrencyAmount<Token>,
     isExactIn?: Boolean
 ) {
-    const { chainId } = useWeb3React()
 
     const executionPrice =
         inputAmount && outputAmount
@@ -490,18 +494,23 @@ export function useStableTrade (
     //get token pool balance
     const inputReserve = useStableTokenReserve( inputAmount?.currency )
     const outputReserve = useStableTokenReserve( outputAmount?.currency )
+
     const canMakePair = inputReserve && outputReserve && !inputAmount?.currency?.equals( outputAmount?.currency )
     //create pair and route
     const pair = canMakePair ? new Pair( inputReserve, outputReserve ) : undefined
 
-    const route =
-        pair && inputAmount && outputAmount ? new Route( [ pair ], inputAmount.currency, outputAmount.currency ) : undefined
+    //const route =
+    //    pair && inputAmount && outputAmount ? new Route( [ pair ], inputAmount.currency, outputAmount.currency ) : undefined
+
+    const canMakeTrade = pair && inputAmount && outputAmount;
+    const defaultOption = { maxHops: 1, maxNumResults: 1 };
 
     //create a trade
-    const tradeVstable =
-        route && inputAmount
-            ? new Trade( route, inputAmount, isExactIn ? TradeType.EXACT_INPUT : TradeType.EXACT_OUTPUT )
-            : undefined
+    const tradeVstable = canMakeTrade ? (
+        isExactIn ?
+            Trade.bestTradeExactIn( [ pair ], inputAmount, outputAmount.currency, defaultOption )[ 0 ] :
+            Trade.bestTradeExactOut( [ pair ], inputAmount.currency, outputAmount, defaultOption )[ 0 ]
+    ) : undefined;
 
     //since we are using stable trade, needs to override the uniswap executionPrice base on stable swap output.
     //Trade executionPrice and other methods are readonly. Attempt to clone and override.
