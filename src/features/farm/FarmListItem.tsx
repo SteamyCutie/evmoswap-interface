@@ -66,7 +66,7 @@ const FarmListItem: FC<FarmListItem> = ( { farm, onClick } ) => {
                         {
                             currencies.map( ( token, index ) => (
                                 <span key={ index }>
-                                    { token.address === WNATIVE[ chainId ].address ? 'WEVMOS' : token.symbol }
+                                    { token?.address === WNATIVE[ chainId ].address ? 'WEVMOS' : token?.symbol }
                                     { index !== ( currencies.length - 1 ) && <span className="text-low-emphasis">/</span> }
                                 </span>
                             ) )
