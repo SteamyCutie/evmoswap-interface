@@ -1,11 +1,10 @@
-import { Currency, CurrencyAmount } from '@evmoswap/core-sdk'
+import { Currency, CurrencyAmount, Token } from '@evmoswap/core-sdk'
 
 import React from 'react'
 import { t } from '@lingui/macro'
 import { useLingui } from '@lingui/react'
 import { CurrencyLogo } from 'app/components/CurrencyLogo'
 import { classNames } from 'app/functions'
-import { StableLpTokenInfo } from 'app/constants/pools'
 import Button from 'app/components/Button'
 
 export function ConfirmAddStableModalBottom ( {
@@ -17,7 +16,7 @@ export function ConfirmAddStableModalBottom ( {
 }: {
     parsedAmounts: CurrencyAmount<Currency>[]
     onAdd: () => void
-    lpToken: StableLpTokenInfo
+    lpToken: Token
     estimatedSLP: CurrencyAmount<Currency>
     poolTokenPercentage: string
 } ) {
@@ -54,7 +53,7 @@ export function ConfirmAddStableModalBottom ( {
                 <div className='flex items-center justify-between mt-1 font-bold text-white'>
                     { estimatedSLP?.toFixed( 6 ) }&nbsp;
                     <div>
-                        { lpToken.symbol }
+                        { lpToken?.symbol }
                         &nbsp;{ i18n._( t`LP Token` ) }
                     </div>
                 </div>

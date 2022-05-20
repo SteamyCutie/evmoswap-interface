@@ -5,7 +5,7 @@ import Dots from 'app/components/Dots'
 import Empty from 'app/components/Empty'
 import QuestionHelper from 'app/components/QuestionHelper'
 import { RowBetween } from 'app/components/Row'
-import { StablePoolInfo } from 'app/constants/pools'
+import { StablePoolInfo } from 'app/constants/stables'
 import { classNames, formatNumber, formatNumberPercentage } from 'app/functions'
 import { useTotalSupply } from 'app/hooks/useTotalSupply'
 import { useActiveWeb3React } from 'app/services/web3'
@@ -21,9 +21,7 @@ const StablePoolPosition = ( { poolInfo, className = '' }: { poolInfo: StablePoo
     const isLoading = poolInfo?.isLoading
     const tokens = poolInfo?.pooledTokensInfo?.tokens
 
-    const lpToken = poolInfo?.lpToken
-    const lpAddress = lpToken ? lpToken.address : undefined;
-    const balance = useTokenBalance( account, lpAddress ? new Token( chainId, lpAddress, lpToken.decimals, lpToken.symbol ) : undefined );
+    const balance = useTokenBalance( account, poolInfo.lpToken );
 
     const totalLpSupply = useTotalSupply( balance?.currency )
 

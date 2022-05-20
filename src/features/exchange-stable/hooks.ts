@@ -6,7 +6,7 @@ import EVMOSWAP_ABI from 'app/constants/abis/evmo-swap.json'
 import EVMOMETASWAP_ABI from 'app/constants/abis/evmo-meta-swap.json'
 import EVMOMETASWAP_DEPOSIT_ABI from 'app/constants/abis/evmo-meta-swap-deposit.json'
 import { EVMOMETASWAP_ADDRESS, EVMOMETASWAP_DEPOSIT_ADDRESS, EVMOSWAP_ADDRESS } from 'app/constants/addresses'
-import { StablePool, StablePoolInfo, StableTokenInfo, STABLE_POOLS } from 'app/constants/pools'
+import { StablePool, StablePoolInfo, StableTokenInfo, STABLE_POOLS } from 'app/constants/stables'
 import { calculateGasMargin, formatBalance, isAddress, shortenAddress, tryParseAmount } from 'app/functions'
 import { useApproveCallback, useContract } from 'app/hooks'
 import { useToken } from 'app/hooks/Tokens'
@@ -89,12 +89,12 @@ export function useStablePoolFromRouter ( routeParams: string | string[] ): {
     }
 }
 
+
 // fetch pool info
 export function useStablePoolInfo ( poolId: string ): StablePoolInfo {
     const { chainId } = useWeb3React()
     const pool = STABLE_POOLS[ chainId ]?.[ poolId ]
 
-    const contract = useStablePoolContract( poolId )
     const resp = {
         ...pool,
         ...{
@@ -104,8 +104,33 @@ export function useStablePoolInfo ( poolId: string ): StablePoolInfo {
             a: 0,
             isLoading: true,
             pooledTokensInfo: undefined,
+            lpToken: undefined
         },
     }
+
+    const { swapStorage, virtualPrice, a } = useStablePoolStorage( poolId );
+
+    const lpToken = useToken( swapStorage?.lpToken )
+
+    if ( swapStorage && virtualPrice && a ) {
+        resp.a = a;
+        resp.swapFee = Number( formatBalance( swapStorage?.swapFee || '0', FEE_DECIMALS ) ) * 100
+        resp.virtualPrice = Number( formatBalance( virtualPrice || '0', lpToken?.decimals || 0 ) )
+        resp.adminFee = Number( formatBalance( swapStorage?.adminFee || '0', FEE_DECIMALS ) ) * 100
+        resp.isLoading = false;
+    }
+
+    resp.lpToken = lpToken;
+
+    resp.pooledTokensInfo = useStablePooledTokensInfo( poolId )
+
+    return resp
+}
+
+
+export function useStablePoolStorage ( poolId: string ): { swapStorage: any; virtualPrice: any; a: any } {
+
+    const contract = useStablePoolContract( poolId )
 
     const callsData = useMemo(
         () => [
@@ -118,26 +143,17 @@ export function useStablePoolInfo ( poolId: string ): StablePoolInfo {
 
     const results = useSingleContractMultipleMethods( contract, callsData )
 
-    if ( results && Array.isArray( results ) && results.length === callsData.length ) {
-        const [ { result: swapStorage }, { result: virtualPrice }, { result: a } ] = results
-        resp.a = a?.[ 0 ]
-        resp.swapFee = Number( formatBalance( swapStorage?.swapFee || '0', FEE_DECIMALS ) ) * 100
-        resp.virtualPrice = Number( formatBalance( virtualPrice?.[ 0 ] || '0', pool?.lpToken?.decimals || 0 ) )
-        resp.adminFee = Number( formatBalance( swapStorage?.adminFee || '0', FEE_DECIMALS ) ) * 100
+    const swapStorage = results?.[ 0 ]?.result;
+    const virtualPrice = results?.[ 1 ]?.result?.[ 0 ];
+    const a = results?.[ 2 ]?.result?.[ 0 ];
 
-        //update lp address with chain storage.
-        if ( swapStorage?.lpToken )
-            resp.lpToken.address = swapStorage?.lpToken
-
-        resp.isLoading = false
-    } else {
-        resp.isLoading = false
+    return {
+        swapStorage,
+        virtualPrice,
+        a
     }
-
-    resp.pooledTokensInfo = useStablePooledTokensInfo( poolId )
-
-    return resp
 }
+
 
 // fetch pool pooled tokens info
 export function useStablePooledTokensInfo (

@@ -9,10 +9,10 @@ import Web3Connect from '../../../components/Web3Connect'
 import { t } from '@lingui/macro'
 import { useActiveWeb3React } from '../../../services/web3'
 import { useLingui } from '@lingui/react'
-import { STABLE_POOLS } from 'app/constants/pools'
-import StablePool from 'app/features/exchange-stable/components/StablePool'
+import { STABLE_POOLS } from 'app/constants/stables'
 import PoolsNav from 'app/features/exchange-stable/components/StablePoolsNav'
 import Empty from 'app/components/Empty'
+import StablePoolItem from 'app/features/exchange-stable/components/StablePoolItem'
 
 const alert = {
     title: "Stable AMM Liquidity Provider Rewards",
@@ -64,7 +64,7 @@ export default function StablePools () {
                 }
                 {
                     poolIds.map( ( pAddress, index ) => (
-                        <StablePool key={ index } poolId={ pAddress } />
+                        <StablePoolItem key={ index } poolId={ pAddress } />
                     ) )
                 }
             </div>
