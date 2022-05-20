@@ -163,7 +163,8 @@ export interface StablePoolInfo extends StablePool {
         balances: CurrencyAmount<Token>[] | undefined //array of token balances
         total: number
         tokens: Token[] | undefined
-    }
+    },
+    lpTokenInstance: Token
 }
 
 type StableAddressMap = {
@@ -187,22 +188,12 @@ export const STABLE_POOLS_LP_TOKENS = {
         name: "3EMOS",
         symbol: "3Pool",
         decimals: 18,
-        icon: {
-            src: "https://raw.githubusercontent.com/evmoswap/default-token-list/main/assets/icons/stable/stableswap_3pool.png",
-            height: 48,
-            width: 100
-        }
     },
     "UST3POOL": {
         address: "",
         name: "UST 3Pool LP",
         symbol: "UST3Pool",
-        decimals: 18,
-        icon: {
-            src: "https://raw.githubusercontent.com/sushiswap/icons/master/token/usdt.jpg",
-            height: 48,
-            width: 100
-        }
+        decimals: 18
     }
 }
 

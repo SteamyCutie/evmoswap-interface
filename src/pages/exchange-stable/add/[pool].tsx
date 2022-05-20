@@ -1,7 +1,7 @@
 import { ApprovalState } from '../../../hooks/useApproveCallback'
 import { AutoRow, RowBetween } from '../../../components/Row'
 import { ButtonError } from '../../../components/Button'
-import { Currency, CurrencyAmount, Percent, Token, ZERO } from '@evmoswap/core-sdk'
+import { Currency, CurrencyAmount, Percent, ZERO } from '@evmoswap/core-sdk'
 import React, { useCallback, useMemo, useRef, useState } from 'react'
 import TransactionConfirmationModal, { ConfirmationModalContent } from '../../../modals/TransactionConfirmationModal'
 import { calculateGasMargin, calculateSlippageAmount } from '../../../functions/trade'
@@ -31,7 +31,7 @@ import ApproveToken from 'app/features/exchange-stable/components/ApproveToken'
 import { useCurrencyBalances } from 'app/state/wallet/hooks'
 import { formatNumberPercentage, tryParseAmount } from 'app/functions'
 import StablePositionCard from 'app/features/exchange-stable/components/StablePositionCard'
-import StablePoolInfo from 'app/features/exchange-stable/components/StablePoolItem'
+import StablePoolInfo from 'app/features/exchange-stable/components/StablePoolDetail'
 import { useReload } from 'app/hooks/useReload'
 import ConfirmAddStableModalBottom from 'app/features/exchange-stable/components/ConfirmAddStableModal'
 import { currencyAmountsToString, sumCurrencyAmounts } from 'app/features/exchange-stable/utils'
@@ -56,8 +56,7 @@ export default function Add () {
 
     //pool lp
     const lpToken = poolInfo?.lpToken
-    const lpTokenCurrency = lpToken && lpToken.address ? new Token( chainId, lpToken.address, lpToken.decimals, lpToken.symbol ) : undefined;
-
+    const lpTokenCurrency = poolInfo.lpTokenInstance
 
     //get user balances for each pooled tokens
     const balances = useCurrencyBalances( account ?? undefined, tokens )
@@ -442,7 +441,7 @@ export default function Add () {
                             />
 
 
-                            <StablePoolInfo poolId={ poolId } showHeader={ true } className="p-4" />
+                            <StablePoolInfo poolInfo={ poolInfo } showHeader={ true } className="p-4" />
                         </div>
                     </div>
                 </DoubleGlowShadow>

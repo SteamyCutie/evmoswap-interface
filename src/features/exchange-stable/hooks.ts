@@ -104,6 +104,7 @@ export function useStablePoolInfo ( poolId: string ): StablePoolInfo {
             a: 0,
             isLoading: true,
             pooledTokensInfo: undefined,
+            lpTokenInstance: undefined
         },
     }
 
@@ -126,8 +127,11 @@ export function useStablePoolInfo ( poolId: string ): StablePoolInfo {
         resp.adminFee = Number( formatBalance( swapStorage?.adminFee || '0', FEE_DECIMALS ) ) * 100
 
         //update lp address with chain storage.
-        if ( swapStorage?.lpToken )
+        if ( swapStorage?.lpToken ) {
             resp.lpToken.address = swapStorage?.lpToken
+            resp.lpTokenInstance = new Token( chainId, resp.lpToken.address, resp.lpToken.decimals, resp.lpToken.symbol )
+        }
+
 
         resp.isLoading = false
     } else {

@@ -49,8 +49,7 @@ export default function Add () {
     //pool lp
     const poolInfo = useStablePoolInfo( poolId );
     const lpToken = poolInfo?.lpToken;
-    const lpAddress = lpToken ? lpToken.address : undefined;
-    const balance = useTokenBalance( account, lpAddress ? new Token( chainId, lpAddress, lpToken.decimals, lpToken.symbol ) : undefined );
+    const balance = useTokenBalance( account, poolInfo.lpTokenInstance );
     const lpTokenCurrency = balance?.currency;
 
     //pool pooled Tokens details

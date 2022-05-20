@@ -1,103 +1,65 @@
-import { i18n } from "@lingui/core";
-import { t } from "@lingui/macro";
-import Dots from "app/components/Dots";
-import Empty from "app/components/Empty";
-import Logo from "app/components/Logo";
-import QuestionHelper from "app/components/QuestionHelper";
-import { RowBetween } from "app/components/Row";
-import { STABLE_POOLS } from "app/constants/pools";
-import { classNames, formatNumber, formatNumberPercentage, formatPercent } from "app/functions";
-import { useActiveWeb3React } from "app/services/web3";
-import { useStablePoolInfo } from "../hooks";
-import StablePoolPosition from "./StablePoolPosition";
+import React from 'react'
 
-const StablePoolItem = ( { poolId, showHeader = false, showPosition = false, className = '' }: { poolId: string, showHeader?: boolean, showPosition?: boolean, className?: string } ) => {
+import { useActiveWeb3React } from 'app/services/web3'
+import { STABLE_POOLS } from 'app/constants/pools'
+import { i18n } from '@lingui/core'
+import { t } from '@lingui/macro'
+import Button from 'app/components/Button'
+import { classNames } from 'app/functions'
+import Accordion from 'app/components/Accordion'
+import NavLink from 'app/components/NavLink'
+import { useStablePoolInfo } from '../hooks'
+import { CurrencyLogo } from 'app/components/CurrencyLogo'
+import StablePoolDetail from './StablePoolDetail'
+
+
+const StablePoolItem = ( { poolId }: { poolId: string } ) => {
 
     const { chainId } = useActiveWeb3React()
-
-    const pool = STABLE_POOLS[ chainId ]?.[ poolId ]
+    const pool = STABLE_POOLS[ chainId ][ poolId ]
     const poolInfo = useStablePoolInfo( poolId );
-    const poolTokensInfo = poolInfo.pooledTokensInfo;
-    const balances = poolTokensInfo.balances;
-    const virtualPrice = poolInfo.virtualPrice;
-    const isLoading = poolInfo.isLoading;
-    const swapFee = poolInfo.swapFee;
-    const adminFee = poolInfo.adminFee;
-    const totalTvl = Number( poolTokensInfo.total ) * Number( poolInfo.virtualPrice )
 
     return (
-        <>
-            { isLoading && <Empty><Dots>{ i18n._( t`Loading` ) }</Dots></Empty> }
-
-            { pool && <div className={ classNames( "grid gap-4 rounded bg-dark-800 text-high-emphesis", className ) }>
-
-                { showPosition && <StablePoolPosition poolInfo={ poolInfo } /> }
-
-                <div className="text-lg">{ i18n._( t`Pool Info` ) }</div>
-                { showHeader && <RowBetween>
+        <div className="rounded bg-dark-800">
+            <Accordion
+                className="flex bg-transparent justify-center items-center disabled:opacity-50 disabled:cursor-auto bg-opacity-90 hover:bg-opacity-100 rounded disabled:cursor-not-allowed focus:outline-none flex items-center justify-between w-full px-4 py-6 cursor-pointer bg-dark-800 hover:bg-dark-700 !bg-dark-700"
+                header={
                     <div className="flex items-center space-x-4">
-                        <Logo srcs={ [ pool.lpToken.icon.src ] } width={ pool.lpToken.icon.width } height={ pool.lpToken.icon.height } />
+                        <CurrencyLogo currency={ poolInfo.lpTokenInstance } />
                         <div className="flex flex-col text-left">
-                            <div className="text-lg sm:text-2xl font-bold text-white">{ pool.name }</div>
+                            <div className="text-lg sm:text-xl font-semibold">{ pool.name }</div>
+                            <div className="text-sm">{ pool.title }</div>
                         </div>
                     </div>
-                    <div className="flex flex-row text-left items-center space-x-2">
-                        <div className="text-lg">
-                            { formatNumber( totalTvl, true, false ) }
-                        </div>
-                        <div className="text-sm text-secondary hidden md:flex">{ i18n._( t`Total Liquidity` ) }</div>
-                    </div>
-
-                </RowBetween>
                 }
-
-                <div className="flex flex-col w-full p-3  space-y-2 text-sm rounded text-high-emphesis">
-                    { balances && balances.map( ( poolBalance, index ) => {
-                        const tvl = Number( poolBalance?.toExact() ) * virtualPrice;
-
-                        return ( <RowBetween key={ index }>
-                            <div>{ poolBalance?.currency?.symbol }</div>
-                            <div className="font-bold">
-                                { formatNumber( tvl, true, false, 4 ) }<span> ({ formatNumberPercentage( poolBalance?.toExact(), totalTvl ) })</span>
-                            </div>
-                        </RowBetween>
-                        )
-                    } ) }
-                    <div className="border-t dashed border-dark-800 pt-1"></div>
-                    <RowBetween>
-                        <span className="flex">
-                            <div>{ i18n._( t`Virtual Price` ) }</div>
-                            <div className="ml-1 flex">
-                                <QuestionHelper
-                                    text={ i18n._( t`Average dollar value of pool token.` ) }
-                                />
-                            </div>
-                        </span>
-                        <div className="font-bold">{ formatNumber( virtualPrice, false, false ) }</div>
-                    </RowBetween>
-                    <RowBetween>
-                        <span className="flex">
-                            <div>{ i18n._( t`Amplification coefficient` ) }</div>
-                            <div className="ml-1 flex">
-                                <QuestionHelper
-                                    text={ i18n._( t`Higher values help widen the range of low-slippages swaps, while lower values help keep the pool's composition balanced` ) }
-                                />
-                            </div>
-                        </span>
-                        <div className="font-bold">{ formatNumber( poolInfo.a, false, false ) }</div>
-                    </RowBetween>
-                    <RowBetween>
-                        <div>{ i18n._( t`Swap Fee` ) }</div>
-                        <div className="font-bold">{ formatPercent( swapFee ) }</div>
-                    </RowBetween>
-                    <RowBetween>
-                        <div>{ i18n._( t`Admin Fee` ) }</div>
-                        <div className="font-bold">{ formatPercent( adminFee ) } of { formatPercent( swapFee ) }</div>
-                    </RowBetween>
+                toggle={
+                    i18n._( t`Manage` )
+                }
+            >
+                <div className='p-4 space-y-4'>
+                    <StablePoolDetail poolInfo={ poolInfo } showPosition={ true } />
                 </div>
-            </div>
-            }
-        </>
+
+                {/** Action Buttons */ }
+                <div className={ classNames( 'grid gap-4', 'grid-cols-2' ) }>
+                    <NavLink href={ `/stable-pool/add/${pool.slug}` }>
+                        <Button
+                            id="add-pool-button"
+                            color="blue"
+                            className="grid items-center justify-center grid-flow-col gap-2 whitespace-nowrap"
+                        >
+                            { i18n._( t`Add` ) }
+                        </Button>
+                    </NavLink>
+                    <NavLink href={ `/stable-pool/remove/${pool.slug}` }>
+                        <Button id="add-pool-button" color="gray">
+                            { i18n._( t`Remove` ) }
+                        </Button>
+                    </NavLink>
+                </div>
+
+            </Accordion>
+        </div>
     )
 }
 
