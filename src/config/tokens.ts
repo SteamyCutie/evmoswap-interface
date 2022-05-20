@@ -9,7 +9,7 @@ export const ETHEREUM: { [key: string]: Token } = {
 }
 
 export const EVMOS: { [key: string]: Token } = {
-  DAI: new Token(ChainId.EVMOS, '0x63743ACF2c7cfee65A5E356A4C4A005b586fC7AA', 18, 'maDAI', 'Dai Stablecoin'),
+  DAI: new Token(ChainId.EVMOS, '0x63743ACF2c7cfee65A5E356A4C4A005b586fC7AA', 18, 'DAI', 'Dai Stablecoin'),
   USDC: new Token(ChainId.EVMOS, '0x51e44FfaD5C2B122C8b635671FCC8139dc636E82', 6, 'USDC', 'USD Coin'),
   USDT: new Token(ChainId.EVMOS, '0x7FF4a56B32ee13D7D4D405887E0eA37d61Ed919e', 6, 'USDT', 'Tether USD'),
   WBTC: new Token(ChainId.EVMOS, '0xF80699Dc594e00aE7bA200c7533a07C1604A106D', 8, 'WBTC', 'Wrapped Bitcoin'),

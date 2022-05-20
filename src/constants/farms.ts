@@ -62,7 +62,40 @@ export type AddressMap = {
 }
 
 export const FARMS: AddressMap = {
-    [ ChainId.EVMOS ]: {},
+    [ ChainId.EVMOS ]: {
+        '0x8a1Db0bdFa113Ba93F0Ef917e0CdA76875924E7d': {
+            id: 0,
+            pid: 1,
+            symbol: 'ELP',
+            name: 'EMO-EVMOS',
+            token0: { id: '0x181C262b973B22C307C646a67f64B76410D19b6B', name: 'EvmoSwap', symbol: 'EMO', decimals: 18 },
+            token1: { id: '0xD4949664cD82660AaE99bEdc034a0deA8A0bd517', name: 'WEVMOS Token', symbol: 'EVMOS', decimals: 18 },
+            isVote: false,
+            isZap: false,
+        },
+
+        '0x6d3be967f352f5509a3a5ac63ccd5ecb959c5631': {
+            id: 1,
+            pid: 2,
+            symbol: 'ELP',
+            name: 'EMO-USDC',
+            token0: { id: '0x181C262b973B22C307C646a67f64B76410D19b6B', name: 'EvmoSwap', symbol: 'EMO', decimals: 18 },
+            token1: { id: '0x51e44FfaD5C2B122C8b635671FCC8139dc636E82', name: 'USD Coin', symbol: 'USDC', decimals: 6 },
+            isVote: false,
+            isZap: false,
+        },
+
+        '0x6946d31978e0249950e4ae67e8a38aa5d3d4de13': {
+            id: 2,
+            pid: 3,
+            symbol: 'ELP',
+            name: 'USDC-EVMOS',
+            token0: { id: '0x51e44FfaD5C2B122C8b635671FCC8139dc636E82', name: 'USD Coin', symbol: 'USDC', decimals: 6 },
+            token1: { id: '0xD4949664cD82660AaE99bEdc034a0deA8A0bd517', name: 'WEVMOS Token', symbol: 'EVMOS', decimals: 18 },
+            isVote: false,
+            isZap: false,
+        },
+    },
 
     [ ChainId.EVMOS_TESTNET ]: {
         '0x9B28773f2B6c81Eb1818Ae4475C1A61cAaAD73EE': {
