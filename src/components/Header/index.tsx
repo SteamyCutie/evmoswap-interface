@@ -195,7 +195,11 @@ const AppBar = () => {
                     )}
 
                     <div className="flex w-auto text-sm font-bold transition-all rounded-2xl bg-gradient-to-r p-0.5 from-blue-special/80 to-pink-special/80">
-                      <div className="flex items-center justify-between h-full rounded-[14px] cursor-pointer pointer-events-auto select-none text-dark-primary dark:text-light-primary bg-light-primary/90 dark:bg-dark-primary/90 transition-all whitespace-nowrap">
+                      <div
+                        className={`flex items-center justify-between h-full rounded-[14px] cursor-pointer pointer-events-auto select-none text-dark-primary dark:text-light-primary transition-all whitespace-nowrap ${
+                          account ? ' bg-light-primary/90 dark:bg-dark-primary/90' : ''
+                        }`}
+                      >
                         {account && chainId && userEthBalance && (
                           <>
                             <div className="pl-4 pr-2 py-2 text-[16px] font-extrabold">

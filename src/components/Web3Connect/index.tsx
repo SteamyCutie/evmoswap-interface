@@ -18,13 +18,13 @@ const Web3Connect = ({
   const { error } = useWeb3React()
   return error ? (
     <div
-      className="flex items-center justify-center px-4 py-2 font-semibold text-white border rounded bg-opacity-80 border-red bg-red hover:bg-opacity-100"
+      className="flex items-center justify-center px-4 py-2 font-semibold text-white rounded-[14px] bg-opacity-80 bg-red hover:bg-opacity-100"
       onClick={toggleWalletModal}
     >
       <div className="mr-1">
         <Activity className="w-4 h-4" />
       </div>
-      {error instanceof UnsupportedChainIdError ? i18n._(t`You are on the wrong network`) : i18n._(t`Error`)}
+      {error instanceof UnsupportedChainIdError ? i18n._(t`Wrong Network`) : i18n._(t`Error`)}
     </div>
   ) : (
     <Button

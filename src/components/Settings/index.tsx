@@ -3,7 +3,7 @@ import React, { useRef, useState } from 'react'
 import { useExpertModeManager, useUserSingleHopOnly, useUserTransactionTTL } from '../../state/user/hooks'
 import { useModalOpen, useToggleSettingsMenu } from '../../state/application/hooks'
 
-import { AdjustmentsIcon } from '@heroicons/react/outline'
+import { CogIcon } from '@heroicons/react/outline'
 import { ApplicationModal } from '../../state/application/actions'
 import Button from '../Button'
 import Modal from '../Modal'
@@ -36,11 +36,11 @@ export default function SettingsTab({ placeholderSlippage }: { placeholderSlippa
   return (
     <div className="relative flex" ref={node}>
       <div
-        className="flex items-center justify-center w-8 h-8 rounded cursor-pointer"
+        className="flex items-center justify-center w-8 h-8 rounded cursor-pointer text-dark-primary hover:text-dark-primary/80 active:text-dark-primary dark:text-light-primary dark:hover:text-light-primary/80 dark:active:text-light-primary/80 transition-all"
         onClick={toggle}
         id="open-settings-dialog-button"
       >
-        <AdjustmentsIcon className="w-[26px] h-[26px] transform rotate-90" />
+        <CogIcon className="w-[26px] h-[26px] transform rotate-90 " />
       </div>
       {open && (
         <div className="absolute top-4 right-3 z-50 -mr-2.5 min-w-20 md:m-w-22 md:-mr-5 bg-dark-900 border-2 border-dark-800 rounded w-[21rem] shadow-lg">
