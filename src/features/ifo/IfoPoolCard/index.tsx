@@ -245,7 +245,11 @@ const IfoPoolCard: React.FC<IfoCardProps> = ({ poolId, ifo, publicIfoData, walle
   return (
     <div className="space-y-6 rounded-3xl bg-dark-800">
       {/* <div className="flex flex-row justify-between p-6 rounded-t item-center bg-dark-600"> */}
-      <div className={`flex flex-row justify-between px-6 py-4 items-center rounded-t-3xl item-center bg-gradient-to-b ${poolId === PoolIds.poolBasic ? "from-[#6c4999] to-[#6d4db2]" : "from-[#00707f] to-[#19778c]"}`}>
+      <div
+        className={`flex flex-row justify-between px-6 py-4 items-center rounded-t-3xl item-center bg-gradient-to-b ${
+          poolId === PoolIds.poolBasic ? 'from-[#6c4999] to-[#6d4db2]' : 'from-[#00707f] to-[#19778c]'
+        }`}
+      >
         <div className="flex flex-row items-center text-2xl font-bold text-high-emphesis">
           {config.title}
           {/* <QuestionHelper text={config.tooltip} /> */}
@@ -345,12 +349,12 @@ const IfoPoolCard: React.FC<IfoCardProps> = ({ poolId, ifo, publicIfoData, walle
             {!walletConnected
               ? i18n._(t`Connect Wallet`)
               : !allowClaim
-                ? i18n._(t`Claim is not allowed`)
-                : !input
-                  ? i18n._(t`Commit`)
-                  : insufficientFunds
-                    ? i18n._(t`Insufficient Balance`)
-                    : i18n._(t`Commit`)}
+              ? i18n._(t`Claim is not allowed`)
+              : !input
+              ? i18n._(t`Commit`)
+              : insufficientFunds
+              ? i18n._(t`Insufficient Balance`)
+              : i18n._(t`Commit`)}
           </Button>
         )}
 
@@ -359,15 +363,20 @@ const IfoPoolCard: React.FC<IfoCardProps> = ({ poolId, ifo, publicIfoData, walle
           now > publicIfoData.endTimeNum &&
           (userPoolCharacteristics.offeringAmountInToken.isGreaterThan(0) ||
             userPoolCharacteristics.refundingAmountInLP.isGreaterThan(0)) && (
-            <Button className="w-full mt-2" color="gradient" disabled={claimPendingTx} onClick={handleHarvestPool}>
-              {claimPendingTx ? <Dots>{i18n._(t`Claiming`)}</Dots> : i18n._(t`Claim`)}
-            </Button>
+            <>
+              <div>
+                {i18n._(t`UnClaimed`)}: {formatNumberScale(userPoolCharacteristics.offeringAmountInToken)}
+              </div>
+              <Button className="w-full mt-2" color="gradient" disabled={claimPendingTx} onClick={handleHarvestPool}>
+                {claimPendingTx ? <Dots>{i18n._(t`Claiming`)}</Dots> : i18n._(t`Claim`)}
+              </Button>
+            </>
           )}
       </div>
 
       {/* info */}
       <IfoCardDetails poolId={poolId} ifo={ifo} publicIfoData={publicIfoData} walletIfoData={walletIfoData} />
-    </div >
+    </div>
   )
 }
 
