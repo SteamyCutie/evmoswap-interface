@@ -29,7 +29,6 @@ import Typography from 'app/components/Typography'
 
 
 const COLUMN_CONTAINER = 'flex flex-col flex-grow gap-4'
-const INPUT_CHAR_LIMIT = 18
 
 const FarmListItemDetailsStable = ( { farm, onDismiss, handleDismiss } ) => {
 
@@ -60,10 +59,8 @@ const FarmListItemDetailsStable = ( { farm, onDismiss, handleDismiss } ) => {
     }, [ typedValue, balance, usingBalance, liquidityToken ] );
     const handleInput = ( v: string ) => {
 
-        if ( v.length <= INPUT_CHAR_LIMIT ) {
-            setUsingBalance( false )
-            setTypedValue( v )
-        }
+        setUsingBalance( false )
+        setTypedValue( v )
     }
 
 
