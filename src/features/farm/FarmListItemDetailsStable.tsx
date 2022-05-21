@@ -53,15 +53,10 @@ const FarmListItemDetailsStable = ( { farm, onDismiss, handleDismiss } ) => {
 
     //input 
     const [ typedValue, setTypedValue ] = useState( '' )
-    const [ usingBalance, setUsingBalance ] = useState( false )
     const parsedAmount = useMemo( () => {
-        return usingBalance ? balance : tryParseAmount( typedValue, liquidityToken );
-    }, [ typedValue, balance, usingBalance, liquidityToken ] );
-    const handleInput = ( v: string ) => {
-
-        setUsingBalance( false )
-        setTypedValue( v )
-    }
+        return tryParseAmount( typedValue, liquidityToken );
+    }, [ typedValue, balance, liquidityToken ] );
+    const handleInput = ( v: string ) => { setTypedValue( v ) }
 
 
     //om max input
