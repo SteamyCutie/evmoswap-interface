@@ -53,7 +53,7 @@ export default function Add () {
     const poolInfo = useStablePoolInfo( poolId )
     const poolTokensInfo = poolInfo.pooledTokensInfo;
     const poolTVL = Number( poolTokensInfo.total ) * Number( poolInfo.virtualPrice )
-    const tokens = poolTokensInfo.tokens || []
+    const tokens = poolTokensInfo.tokens
 
     //pool lp
     const lpToken = poolInfo.lpToken

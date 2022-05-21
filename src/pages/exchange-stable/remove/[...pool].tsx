@@ -54,7 +54,7 @@ export default function Add () {
     //pool pooled Tokens details
     const poolTokensInfo = poolInfo.pooledTokensInfo
     const poolBalances = poolTokensInfo?.balances;
-    const tokens = poolTokensInfo.tokens || []
+    const tokens = poolTokensInfo.tokens
 
 
 

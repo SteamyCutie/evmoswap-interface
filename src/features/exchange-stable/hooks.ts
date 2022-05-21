@@ -103,7 +103,11 @@ export function useStablePoolInfo ( poolId: string ): StablePoolInfo {
             virtualPrice: 0,
             a: 0,
             isLoading: true,
-            pooledTokensInfo: undefined,
+            pooledTokensInfo: {
+                balances: [],
+                total: 0,
+                tokens: []
+            },
             lpToken: undefined
         },
     }
