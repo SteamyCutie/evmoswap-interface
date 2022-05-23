@@ -302,7 +302,7 @@ export default function Boostv3 () {
                 {/** Top action cards */ }
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 md:gap-4 lg:gap-6 mt-4 md:grid-cols-3">
 
-                    <RewardCards
+                    <BoostRewardCard
                         title={ i18n._( t`Vesting` ) }
                         icon={ <InformationCircleIcon className='ml-1 w-4 h-4' /> }
                         value={ `${totalActiveVesting?.toFixed( 2 )} ${token.symbol}` }
@@ -321,8 +321,8 @@ export default function Boostv3 () {
                                 </Button>
                             }
                         </div>
-                    </RewardCards>
-                    <RewardCards
+                    </BoostRewardCard>
+                    <BoostRewardCard
                         title={ i18n._( t`Vest Complete` ) }
                         value={ `${totalCompletedVesting?.toFixed( 2 )} ${token.symbol}` }
                     >
@@ -337,8 +337,8 @@ export default function Boostv3 () {
                                 { withdrawing && activeVestingRow === -2 ? <Dots>{ i18n._( t`Claiming` ) } </Dots> : i18n._( t`Claim Rewards` ) }
                             </Button>
                         }
-                    </RewardCards>
-                    <RewardCards
+                    </BoostRewardCard>
+                    <BoostRewardCard
                         title={ i18n._( t`Locker Extra Rewards` ) }
                         value={ `${lockerExtraRewards.toFixed( 2 )} ${'EVMOS'}` }
                     >
@@ -353,7 +353,7 @@ export default function Boostv3 () {
                                 { pendingTx ? <Dots>{ i18n._( t`Claiming` ) } </Dots> : i18n._( t`Claim Rewards` ) }
                             </Button>
                         }
-                    </RewardCards>
+                    </BoostRewardCard>
 
                 </div>
 
@@ -652,7 +652,7 @@ export default function Boostv3 () {
                             <h3 className="text-medium font-bold text-white">{ i18n._( t`Locking demonstrates a commitment to the long-term vision of EvmoSwap` ) }</h3>
                             <p className='my-4 text-sm leading-6'>{ i18n._( t`Lock your ${token.symbol} and get Boost Power to increase your Yield farm earnings and participate in protocol Governance` ) }</p>
                         </div>
-                        
+
 
                     </div>
                 </div>
@@ -674,7 +674,7 @@ interface StatButtonProps {
     value: string,
     icon?: ReactNode
 }
-const RewardCards = ( props: RewardCardProps ) => {
+const BoostRewardCard = ( props: RewardCardProps ) => {
     const { children, title, value, icon = '', className = '' } = props;
 
     return (
