@@ -2,18 +2,15 @@
 import { useLingui } from '@lingui/react'
 import { getAddress } from '@ethersproject/address'
 import { CurrencyLogoArray, CurrencyLogo } from 'app/components/CurrencyLogo'
-// import QuestionHelper from 'app/components/QuestionHelper'
 import Typography from 'app/components/Typography'
-import { classNames, formatNumber, formatPercent, formatBalance } from 'app/functions'
+import { classNames, formatNumber, formatPercent } from 'app/functions'
 import { useCurrency } from 'app/hooks/Tokens'
 import React, { FC, ReactNode, useMemo } from 'react'
 import { LockClosedIcon } from '@heroicons/react/solid'
 import { WNATIVE, Token } from '@evmoswap/core-sdk'
 import { useActiveWeb3React } from '../../services/web3'
-import { EvmoSwap } from 'config/tokens'
-import { usePendingReward } from 'app/features/farm/hooks'
+import { useFarmPendingRewardsAmount } from 'app/features/farm/hooks'
 import { useUserInfo } from 'features/farm/hooks'
-import FarmIncentiveRewards from './FarmIncentiveRewards'
 
 interface FarmListItem {
     farm: any
@@ -31,8 +28,7 @@ export const TABLE_TBODY_TD_CLASSNAME = ( i, length ) =>
 
 // @ts-ignore TYPE NEEDS FIXING
 const FarmListItem: FC<FarmListItem> = ( { farm, onClick } ) => {
-    const { i18n } = useLingui()
-    const { account, chainId } = useActiveWeb3React()
+    const { chainId } = useActiveWeb3React()
     const token0 = useCurrency( farm.token0.id ) ?? undefined
     const token1 = useCurrency( farm.token1.id ) ?? undefined
     const tokens = farm.tokens;
@@ -43,10 +39,8 @@ const FarmListItem: FC<FarmListItem> = ( { farm, onClick } ) => {
         } );
     }, [ tokens, chainId, token0, token1 ] )
 
-    const pendingReward = usePendingReward( farm )
-    const rewardToken = useCurrency( pendingReward?.tokens[ 0 ] )
-    const rewardAmounts = formatBalance( pendingReward?.amounts[ 0 ] ? pendingReward?.amounts[ 0 ] : 0 )
-    const nativeToken = useCurrency( EvmoSwap[ chainId ].address )
+    const pendingRewards = useFarmPendingRewardsAmount( farm )
+    console.log( pendingRewards )
     const liquidityToken = new Token(
         // @ts-ignore TYPE NEEDS FIXING
         chainId,
@@ -76,11 +70,14 @@ const FarmListItem: FC<FarmListItem> = ( { farm, onClick } ) => {
             </div>
             <div className={ TABLE_TBODY_TD_CLASSNAME( 1, 6 ) }>
                 <div className='flex flex-col items-start justify-start'>
-                    <div className="flex items-center gap-2">
-                        <CurrencyLogo currency={ nativeToken } size={ 20 } />
-                        <div>{ `${Number( rewardAmounts ).toFixed( 2 )} ${rewardToken?.symbol}` }</div>
-                    </div>
-                    <FarmIncentiveRewards incentives={ farm.incentives } decimals={ 2 } />
+                    {
+                        pendingRewards.map( ( reward, index ) => (
+                            <div className="flex items-center gap-2" key={ index }>
+                                <CurrencyLogo currency={ reward?.currency } size={ 20 } />
+                                <div>{ `${reward?.toFixed( 2 )} ${reward?.currency?.symbol}` }</div>
+                            </div>
+                        ) )
+                    }
                 </div>
             </div>
             <div className={ TABLE_TBODY_TD_CLASSNAME( 2, 6 ) }>

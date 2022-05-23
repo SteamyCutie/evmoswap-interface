@@ -1,6 +1,6 @@
 import { ChevronDownIcon, ChevronUpIcon } from '@heroicons/react/outline'
-import { CurrencyAmount, JSBI, Pair, Percent, Token } from '@evmoswap/core-sdk'
-import React, { useEffect, useState } from 'react'
+import { Currency, CurrencyAmount, JSBI, Pair, Percent, Token } from '@evmoswap/core-sdk'
+import React, { useState } from 'react'
 import { currencyId, unwrappedToken } from '../../functions/currency'
 import { AutoColumn } from '../Column'
 import { BIG_INT_ZERO } from '../../constants'
@@ -18,11 +18,9 @@ import { useRouter } from 'next/router'
 import { useTokenBalance } from '../../state/wallet/hooks'
 import { useTotalSupply } from '../../hooks/useTotalSupply'
 import { useCurrency } from 'app/hooks/Tokens'
-import { usePendingReward } from 'app/features/farm/hooks'
 import { EvmoSwap } from 'config/tokens'
 import { useUserInfo } from '../../features/farm/hooks'
 import { getAddress } from '@ethersproject/address'
-import FarmIncentiveRewards from 'app/features/farm/FarmIncentiveRewards'
 
 interface PositionCardProps {
     pair: Pair
@@ -365,7 +363,7 @@ export function PositionCard ( { pair, farm, showUnwrapped = false, border }: Po
     )
 }
 
-export function RewardCard ( { reward, incentives } ) {
+export function RewardCard ( { reward } ) {
     const { chainId } = useActiveWeb3React()
     const NATIVE = useCurrency( EvmoSwap[ chainId ].address )
     const rewardToken = useCurrency( reward?.tokens[ 0 ] )
@@ -382,7 +380,28 @@ export function RewardCard ( { reward, incentives } ) {
                         <CurrencyLogo currency={ NATIVE } size={ 20 } />
                         <div>{ `${Number( rewardAmounts ).toString()} ${rewardToken?.symbol}` }</div>
                     </div>
-                    <FarmIncentiveRewards incentives={ incentives } />
+                </AutoColumn>
+            </div>
+        </>
+    )
+}
+
+export function MultiRewardsCard ( { rewards }: { rewards: CurrencyAmount<Token | Currency>[] } ) {
+    return (
+        <>
+            <div className="w-full p-0 text-sm rounded">
+                <AutoColumn gap={ 'md' }>
+                    <div className="flex justify-between">
+                        <div>Your Rewards</div>
+                    </div>
+                    {
+                        rewards.map( ( reward, index ) => (
+                            <div className="flex items-center gap-2" key={ index }>
+                                <CurrencyLogo currency={ reward.currency } size={ 20 } />
+                                <div>{ `${reward?.toExact()} ${reward?.currency?.symbol}` }</div>
+                            </div>
+                        ) )
+                    }
                 </AutoColumn>
             </div>
         </>

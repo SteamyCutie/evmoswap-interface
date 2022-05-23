@@ -4,15 +4,14 @@ import Button from 'app/components/Button'
 import HeadlessUiModal from 'app/components/Modal/HeadlessUIModal'
 import { useCurrency } from '../../hooks/Tokens'
 import { useTransactionAdder } from 'app/state/transactions/hooks'
-import { useRouter } from 'next/router'
 import React, { useState } from 'react'
 import useMasterChef from './useMasterChef'
-import { PositionCard, RewardCard } from 'app/components/PositionCard'
+import { PositionCard, MultiRewardsCard } from 'app/components/PositionCard'
 import { useDerivedMintInfo } from 'app/state/mint/hooks'
 import Dots from 'app/components/Dots'
-import { usePendingReward } from 'app/features/farm/hooks'
+import { useFarmPendingRewardsAmount } from 'app/features/farm/hooks'
 import { FarmType } from 'app/constants/farms'
-import { formatBalance } from 'app/functions'
+import { sumCurrencyAmounts } from '../exchange-stable/utils'
 
 // @ts-ignore TYPE NEEDS FIXING
 const InvestmentDetails = ( { farm, handleDismiss } ) => {
@@ -27,16 +26,16 @@ const InvestmentDetails = ( { farm, handleDismiss } ) => {
 
     const { pair } = useDerivedMintInfo( token0 ?? undefined, token1 ?? undefined )
 
-    const pendingReward = usePendingReward( farm )
-    const canHarvest = Number( pendingReward?.amounts[ 0 ] ) > 0
+    const pendingRewards = useFarmPendingRewardsAmount( farm )
+    const canHarvest = Number( sumCurrencyAmounts( pendingRewards ) ) > 0
 
     const isStableFarm = farm.farmType === FarmType.STABLE;
 
     async function onHarvest () {
         setPendingTx( true )
         try {
-            const rewardAmount = formatBalance( pendingReward?.amounts[ 0 ] ? pendingReward?.amounts[ 0 ] : 0, undefined, 4 )
-            const tokensSummary = farm?.incentives?.length ? 'all rewards' : `${rewardAmount} EMO`;
+
+            const tokensSummary = pendingRewards?.length > 1 ? 'all rewards' : `${pendingRewards?.[ 0 ].toFixed( 4 )} ${pendingRewards?.[ 0 ]?.currency?.symbol}`;
 
             const tx = await harvest( farm.pid )
             addTransaction( tx, {
@@ -57,7 +56,7 @@ const InvestmentDetails = ( { farm, handleDismiss } ) => {
             </HeadlessUiModal.BorderedContent>
             }
             <HeadlessUiModal.BorderedContent className="flex flex-col gap-2 bg-dark-1000/40">
-                <RewardCard reward={ pendingReward } incentives={ farm.incentives } />
+                <MultiRewardsCard rewards={ pendingRewards } />
             </HeadlessUiModal.BorderedContent>
             <Button color={ canHarvest ? 'blue' : 'gray' } disabled={ pendingTx || !canHarvest } onClick={ onHarvest }>
                 { canHarvest ? pendingTx ? <Dots>{ i18n._( t`Harvesting` ) }</Dots> : i18n._( t`Harvest Rewards` ) : i18n._( t`No rewards yet` ) }

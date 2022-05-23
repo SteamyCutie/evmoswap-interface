@@ -3,9 +3,15 @@ import { Contract } from '@ethersproject/contracts'
 import { useActiveWeb3React } from 'app/services/web3'
 import { BigNumber } from '@ethersproject/bignumber'
 import { ChainId, CurrencyAmount, JSBI } from '@sushiswap/core-sdk'
-import { useContract, useDashboardContract, useMasterChefContract, useSimpleIncentiveContract } from 'app/hooks/useContract'
-import { NEVER_RELOAD, useSingleCallResult } from 'app/state/multicall/hooks'
+import { SIMPLE_INCENTIVE_CONTROLLER_INTERFACE, useContract, useDashboardContract, useMasterChefContract, useSimpleIncentiveContract } from 'app/hooks/useContract'
+import { NEVER_RELOAD, useMultipleContractSingleData, useSingleCallResult } from 'app/state/multicall/hooks'
 import { useCurrency, useToken } from 'app/hooks/Tokens'
+import SIMPLE_INCENTIVE_CONTROLLER_ABI from 'app/constants/abis/simple-incentives-controller.json'
+import { Interface } from '@ethersproject/abi'
+import { Token } from '@evmoswap/core-sdk'
+import ERC20_INTERFACE from 'app/constants/abis/erc20'
+import { EMOSPlaceholder } from '../boost/hooks/balances'
+import { EvmoSwap } from 'app/config/tokens'
 
 // @ts-ignore TYPE NEEDS FIXING
 export function useUserInfo ( farm, token ) {
@@ -31,21 +37,48 @@ export function useUserInfo ( farm, token ) {
     }
 }
 
-export function usePendingReward ( farm ) {
-    const { account } = useActiveWeb3React()
+export function useFarmPendingRewardsAmount ( farm ) {
+    const { account, chainId } = useActiveWeb3React()
     const contract = useMasterChefContract()
-    const args = [ String( farm.pid ), String( account ) ]
-    const [ reward, setReward ] = useState<any>()
-    const getReward = async () => {
-        setReward( await contract.pendingTokens( ...args ) )
-    }
-    useEffect( () => {
-        getReward()
-    }, [] )
 
-    return reward
+    let tokenAddresses = [];
+    let amountsRaw = [];
+
+    //base rewards from masterchef
+    const baseRewards = useSingleCallResult( contract, 'pendingTokens', [ String( farm.pid ), String( account ) ] )?.result;
+    if ( baseRewards?.tokens && baseRewards?.amounts )
+        baseRewards.tokens.map( ( token, index ) => {
+            tokenAddresses.push( token );
+            amountsRaw.push( baseRewards?.amounts[ index ] )
+        } )
+
+    /**
+     * double rewards /incentives i.e farm.incentives
+     * @TODO remove segment
+     */
+    //const tokenAddressesResult = useMultipleContractSingleData( farm.incentives, SIMPLE_INCENTIVE_CONTROLLER_INTERFACE, 'rewardToken' )
+    //const rewardsResult = useMultipleContractSingleData( farm.incentives, SIMPLE_INCENTIVE_CONTROLLER_INTERFACE, 'pendingTokens', [ account ] )
+    //map results
+    //amountsRaw = amountsRaw.concat( rewardsResult.map( ( reward ) => reward?.result?.[ 0 ] ) );
+    //tokenAddresses = tokenAddresses.concat( tokenAddressesResult.map( ( t ) => t?.result?.[ 0 ] ) );
+
+    //get tokens info
+    const symbolsResult = useMultipleContractSingleData( tokenAddresses, ERC20_INTERFACE, 'symbol' )
+    const decimalsResult = useMultipleContractSingleData( tokenAddresses, ERC20_INTERFACE, 'decimals' )
+    const symbols = symbolsResult.map( ( s ) => s?.result?.[ 0 ] );
+    const decimals = decimalsResult.map( ( d ) => d?.result?.[ 0 ] );
+
+    //create each token instance.
+    const tokens = useMemo( () => {
+        if ( decimals && symbols && symbols.length === decimals.length )
+            return decimals.map( ( decimal, i ) => new Token( chainId, tokenAddresses[ i ], decimal, symbols[ i ] ) )
+    }, [ decimals, symbols ] );
+
+    //make amounts
+    const amounts = tokens.map( ( token, i ) => token ? CurrencyAmount.fromRawAmount( token, amountsRaw[ i ] || "0" ) : null );
+
+    return amounts;
 }
-
 
 export function useIncentive ( incentiveAddress: string ) {
     const { account } = useActiveWeb3React()
@@ -60,6 +93,7 @@ export function useIncentive ( incentiveAddress: string ) {
         rewardAmount
     }
 }
+
 
 export const useEmoUsdcPrice = (): BigNumber | undefined => {
     const dashboard = useDashboardContract()
