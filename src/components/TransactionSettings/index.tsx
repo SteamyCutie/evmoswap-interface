@@ -90,17 +90,17 @@ export default function TransactionSettings({ placeholderSlippage }: Transaction
     <div className="grid gap-4">
       <div className="grid gap-2">
         <div className="flex items-center">
-          <Typography variant="sm" className="text-high-emphesis">
+          <Typography variant="xs" className="text-dark-primary dark:text-light-primary transition-all">
             {i18n._(t`Slippage tolerance`)}
           </Typography>
 
           <QuestionHelper
             text={i18n._(
-              t`Your transaction will revert 23if the price changes unfavorably by more than this percentage.`
+              t`Your transaction will revert 23 if the price changes unfavorably by more than this percentage.`
             )}
           />
         </div>
-        <div className="flex items-center space-x-2">
+        <div className="flex items-center justify-between gap-2">
           <div
             className={classNames(
               !!slippageError
@@ -108,20 +108,24 @@ export default function TransactionSettings({ placeholderSlippage }: Transaction
                 : tooLow || tooHigh
                 ? 'border-yellow'
                 : userSlippageTolerance !== 'auto'
-                ? 'border-blue'
+                ? 'border-blue-special'
                 : 'border-transparent',
-              'border p-2 rounded bg-dark-800'
+              'border p-2 rounded bg-[#EFEFFB] dark:bg-[rgba(38,34,48,0.35)] transition-all'
             )}
             tabIndex={-1}
           >
-            <div className="flex items-center justify-between gap-1">
+            <div className="flex items-center justify-between gap-1 transition-all text-dark-primary dark:text-white">
               {tooLow || tooHigh ? (
                 <span className="hidden sm:inline text-yellow" role="img" aria-label="warning">
                   ⚠️
                 </span>
               ) : null}
               <input
-                className={classNames(slippageError ? 'text-red' : '', 'bg-transparent placeholder-low-emphesis')}
+                className={classNames(
+                  slippageError ? 'text-red' : '',
+                  'bg-transparent placeholder-low-emphesis transition-all',
+                  tooLow || tooHigh ? 'w-20' : 'w-24'
+                )}
                 placeholder={placeholderSlippage?.toFixed(2)}
                 value={
                   slippageInput.length > 0
@@ -142,7 +146,7 @@ export default function TransactionSettings({ placeholderSlippage }: Transaction
           </div>
           <Button
             size="sm"
-            color={userSlippageTolerance === 'auto' ? 'blue' : 'gray'}
+            color={userSlippageTolerance === 'auto' ? 'blue-special' : 'gray'}
             variant={userSlippageTolerance === 'auto' ? 'filled' : 'outlined'}
             onClick={() => {
               parseSlippageInput('')
@@ -157,7 +161,7 @@ export default function TransactionSettings({ placeholderSlippage }: Transaction
               slippageError === SlippageError.InvalidInput ? 'text-red' : 'text-yellow',
               'font-medium flex items-center space-x-2'
             )}
-            variant="sm"
+            variant="xs"
           >
             <div>
               {slippageError === SlippageError.InvalidInput
@@ -172,7 +176,7 @@ export default function TransactionSettings({ placeholderSlippage }: Transaction
 
       <div className="grid gap-2">
         <div className="flex items-center">
-          <Typography variant="sm" className="text-high-emphesis">
+          <Typography variant="xs" className="text-dark-primary dark:text-light-primary transition-all">
             {i18n._(t`Transaction deadline`)}
           </Typography>
 
@@ -180,12 +184,15 @@ export default function TransactionSettings({ placeholderSlippage }: Transaction
         </div>
         <div className="flex items-center">
           <div
-            className="p-2 rounded bg-dark-800 min-w-[82px] max-w-[102px]"
+            className="p-2 rounded bg-[#EFEFFB] dark:bg-[rgba(38,34,48,0.35)] transition-all min-w-[144px] max-w-[164px] flex"
             style={{ maxWidth: '40px', marginRight: '8px' }}
             tabIndex={-1}
           >
             <input
-              className={classNames(deadlineError ? 'text-red' : '', 'bg-transparent placeholder-low-emphesis')}
+              className={classNames(
+                deadlineError ? 'text-red' : 'text-dark-primary dark:text-white',
+                'bg-transparent placeholder-low-emphesis transition-all min-w-[50px] max-w-[72px] '
+              )}
               placeholder={(DEFAULT_DEADLINE_FROM_NOW / 60).toString()}
               value={
                 deadlineInput.length > 0
@@ -201,8 +208,10 @@ export default function TransactionSettings({ placeholderSlippage }: Transaction
               }}
               color={deadlineError ? 'red' : ''}
             />
+            <Typography variant="xs" className="text-dark-primary dark:text-light-primary transition-all text-base">
+              {i18n._(t`minutes`)}
+            </Typography>
           </div>
-          <Typography variant="sm">{i18n._(t`minutes`)}</Typography>
         </div>
       </div>
     </div>

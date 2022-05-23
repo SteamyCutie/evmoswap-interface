@@ -43,21 +43,21 @@ export default function SettingsTab({ placeholderSlippage }: { placeholderSlippa
         <CogIcon className="w-[26px] h-[26px] transform rotate-90 " />
       </div>
       {open && (
-        <div className="absolute top-4 right-3 z-50 -mr-2.5 min-w-20 md:m-w-22 md:-mr-5 bg-dark-900 border-2 border-dark-800 rounded w-[21rem] shadow-lg">
+        <div className="absolute top-4 right-3 z-50 -mr-2.5 min-w-20 md:m-w-22 md:-mr-5 bg-white dark:bg-dark-primary border-2 border-[#D7D7FF] dark:border-[#2D2C2C] rounded-3xl w-64 shadow-lg">
           <div className="p-4 space-y-2">
-            <Typography weight={700} className="text-high-emphesis">
+            <Typography className="text-dark-primary dark:text-light-primary pb-2 font-bold border-b-2 border-b-dark-primary/20 dark:border-b-light-primary/20 transition-all">
               {i18n._(t`Transaction Settings`)}
             </Typography>
 
             <TransactionSettings placeholderSlippage={placeholderSlippage} />
 
-            <Typography className="text-high-emphesis" weight={700}>
+            <Typography className="text-dark-primary dark:text-light-primary pb-2 font-bold border-b-2 border-b-dark-primary/20 dark:border-b-light-primary/20 transition-all pt-4">
               {i18n._(t`Interface Settings`)}
             </Typography>
 
             <div className="flex items-center justify-between">
               <div className="flex items-center">
-                <Typography variant="sm" className="text-primary">
+                <Typography variant="xs" className="text-dark-primary dark:text-light-primary transition-all">
                   {i18n._(t`Toggle Expert Mode`)}
                 </Typography>
                 <QuestionHelper
@@ -82,7 +82,7 @@ export default function SettingsTab({ placeholderSlippage }: { placeholderSlippa
             </div>
             <div className="flex items-center justify-between">
               <div className="flex items-center">
-                <Typography variant="sm" className="text-primary">
+                <Typography variant="xs" className="text-dark-primary dark:text-light-primary transition-all">
                   {i18n._(t`Disable Multihops`)}
                 </Typography>
                 <QuestionHelper text={i18n._(t`Restricts swaps to direct pairs only.`)} />
@@ -100,7 +100,7 @@ export default function SettingsTab({ placeholderSlippage }: { placeholderSlippa
       <Modal isOpen={showConfirmation} onDismiss={() => setShowConfirmation(false)}>
         <div className="space-y-4">
           <ModalHeader title={i18n._(t`Are you sure?`)} onClose={() => setShowConfirmation(false)} />
-          <Typography variant="lg">
+          <Typography variant="base">
             {i18n._(t`Expert mode turns off the confirm transaction prompt and allows high slippage trades
                                 that often result in bad rates and lost funds.`)}
           </Typography>
@@ -119,7 +119,7 @@ export default function SettingsTab({ placeholderSlippage }: { placeholderSlippa
               setShowConfirmation(false)
             }}
           >
-            <Typography variant="lg" id="confirm-expert-mode">
+            <Typography variant="sm" id="confirm-expert-mode">
               {i18n._(t`Turn On Expert Mode`)}
             </Typography>
           </Button>

@@ -26,12 +26,15 @@ const QuestionHelper: FC<{ text?: any }> = ({ children, text }) => {
   return (
     <Tooltip text={text} show={show}>
       <div
-        className="flex items-center justify-center outline-none cursor-help hover:text-primary"
+        className="flex items-center justify-center outline-none cursor-help"
         onClick={open}
         onMouseEnter={open}
         onMouseLeave={close}
       >
-        <SolidQuestionMarkCircleIcon width={16} height={16} />
+        {/* <SolidQuestionMarkCircleIcon width={16} height={16} className="bg-light-primary dark:bg-dark-primary text-dark-primary dark:text-light-primary" /> */}
+        <div className="w-4 h-4 m-1 bg-[#EFEFFB] hover:bg-[#EFEFFB]/30 text-dark-primary dark:bg-[#262230] dark:hover:bg-[#262230]/30 dark:text-white rounded-full justify-center items-center text-[8px] flex font-extrabold transition-all">
+          ?
+        </div>
       </div>
     </Tooltip>
   )
