@@ -88,6 +88,7 @@ import {
     TREASURY_ADDRESS,
 } from '../constants/addresses'
 import LPToken from 'app/features/migration/LPToken'
+import { Interface } from '@ethersproject/abi'
 
 const UNI_FACTORY_ADDRESS = '0x5C69bEe701ef814a2B6a3EDD4B1652CB9cc5aA6f'
 
@@ -324,6 +325,7 @@ export function useTreasuryContract ( withSignerIfPossible?: boolean ): Contract
     return useContract( TREASURY_ADDRESS[ chainId ], TREASURY_ABI, withSignerIfPossible )
 }
 
+export const SIMPLE_INCENTIVE_CONTROLLER_INTERFACE = new Interface( SIMPLE_INCENTIVE_CONTROLLER_ABI );
 export function useSimpleIncentiveContract ( address?: string, withSignerIfPossible?: boolean ): Contract | null {
     return useContract( address, SIMPLE_INCENTIVE_CONTROLLER_ABI, withSignerIfPossible )
 }
