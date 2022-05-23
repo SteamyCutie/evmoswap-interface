@@ -27,6 +27,7 @@ import useVotingEscrow from 'app/features/boost/hooks/useVotingEscrow'
 import { useFeeDistributor } from 'app/features/boost/hooks/useFeeDistributor'
 import { timestampToDate } from 'app/features/boost/functions'
 import { EMOSPlaceholder, useFarmsReward, useLockedBalance, useLockerExtraRewards, useRewardsBalance, useStakingBalance } from 'app/features/boost/hooks/balances'
+import useCurrentBlockTimestamp from 'app/hooks/useCurrentBlockTimestamp'
 
 type VestingRow = {
     unlockTime: string, amount: CurrencyAmount<Currency>, expired: boolean, penaltyAmount: BigNumber;
@@ -110,12 +111,15 @@ export default function Boostv3 () {
 
     const [ week, setWeek ] = useState( '' )
     const [ lockPeriod, setLockPeriod ] = useState( LOCK_PERIODS[ 0 ] );
+    const currentBlockTime = useCurrentBlockTimestamp();
+    const blockTimestamp = currentBlockTime ? currentBlockTime.mul( 1000 ).toNumber() : Date.now();
+
     const lockDays = Number( week ? week : lockPeriod.week ) * 7
-    const newLockTime = Math.floor( getUnixTime( addDays( Date.now(), lockDays ) ) / SECS_IN_WEEK ) * SECS_IN_WEEK;
+    const newLockTime = Math.floor( getUnixTime( addDays( blockTimestamp, lockDays ) ) / SECS_IN_WEEK ) * SECS_IN_WEEK;
     const maxedLockedPeriod = ( Number( week ) === MAX_WEEK || lockPeriod.week === MAX_WEEK ) && newLockTime === lockEnd;
 
     const lockTimeBtnDisabled = pendingLock || newLockTime <= lockEnd || maxedLockedPeriod;
-    const lockExpired = lockEnd && getUnixTime( Date.now() ) >= lockEnd;
+    const lockExpired = lockEnd && getUnixTime( blockTimestamp ) >= lockEnd;
     const amountBtnDisabled = pendingLock || !input || insufficientFunds || waitingApproval;
     const lockBtnDisabled = pendingLock || !input || waitingApproval;
     const [ activeVestingRow, setActiveVestingRow ] = useState<number | undefined>( 0 );
@@ -363,7 +367,7 @@ export default function Boostv3 () {
                         <p className='text-white'>{ i18n._( `Vests are grouped by week` ) }</p>
                         <p className='text-white my-3'>
                             { i18n._( `Next vesting group starts on` ) }
-                            <span className='font-black'>{ format( addDays( Date.now(), DAYS_IN_WEEK ), " dd MMM yyyy 'at' hh:mm aaaaa'm' " ) }</span>
+                            <span className='font-black'>{ format( addDays( blockTimestamp, DAYS_IN_WEEK ), " dd MMM yyyy 'at' hh:mm aaaaa'm' " ) }</span>
                         </p>
                         <p className='text-sm'>{ i18n._( `Invest in Vaults and Claim the rewards to add them to the closest starting vesting group` ) }</p>
 
