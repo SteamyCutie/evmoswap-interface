@@ -12,8 +12,7 @@ import { useDerivedMintInfo } from 'app/state/mint/hooks'
 import Dots from 'app/components/Dots'
 import { usePendingReward } from 'app/features/farm/hooks'
 import { FarmType } from 'app/constants/farms'
-import FarmIncentiveAmount from './FarmIncentiveAmount'
-import FarmIncentiveRewards from './FarmIncentiveRewards'
+import { formatBalance } from 'app/functions'
 
 // @ts-ignore TYPE NEEDS FIXING
 const InvestmentDetails = ( { farm, handleDismiss } ) => {
@@ -36,8 +35,10 @@ const InvestmentDetails = ( { farm, handleDismiss } ) => {
     async function onHarvest () {
         setPendingTx( true )
         try {
+            const rewardAmount = formatBalance( pendingReward?.amounts[ 0 ] ? pendingReward?.amounts[ 0 ] : 0, undefined, 4 )
+            const tokensSummary = farm?.incentives?.length ? 'all rewards' : `${rewardAmount} EMO`;
+
             const tx = await harvest( farm.pid )
-            const tokensSummary = isStableFarm ? farm.name : `${farm.token0.name}/${farm.token1.name}`;
             addTransaction( tx, {
                 summary: i18n._( t`Harvest ${tokensSummary}` ),
             } )
