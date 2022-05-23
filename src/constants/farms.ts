@@ -27,7 +27,6 @@ export type PairInfo = {
     isVote?: boolean
     isZap?: boolean
     farmType?: FarmType,
-    incentives?: string[],
 }
 
 export type FarmPairInfo = {
@@ -182,9 +181,6 @@ export const FARMS: AddressMap = {
             isVote: true,
             isZap: false,
             farmType: FarmType.DOUBLE,
-            incentives: [
-                "0x3570A0800874a78607DD31Fac18495A2e50A68C1",
-            ]
         },
 
         '0x1658E34386Cc5Ec3B703a34567790d95F1C94cCb': {

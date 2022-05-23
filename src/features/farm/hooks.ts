@@ -52,16 +52,6 @@ export function useFarmPendingRewardsAmount ( farm ) {
             amountsRaw.push( baseRewards?.amounts[ index ] )
         } )
 
-    /**
-     * double rewards /incentives i.e farm.incentives
-     * @TODO remove segment
-     */
-    //const tokenAddressesResult = useMultipleContractSingleData( farm.incentives, SIMPLE_INCENTIVE_CONTROLLER_INTERFACE, 'rewardToken' )
-    //const rewardsResult = useMultipleContractSingleData( farm.incentives, SIMPLE_INCENTIVE_CONTROLLER_INTERFACE, 'pendingTokens', [ account ] )
-    //map results
-    //amountsRaw = amountsRaw.concat( rewardsResult.map( ( reward ) => reward?.result?.[ 0 ] ) );
-    //tokenAddresses = tokenAddresses.concat( tokenAddressesResult.map( ( t ) => t?.result?.[ 0 ] ) );
-
     //get tokens info
     const symbolsResult = useMultipleContractSingleData( tokenAddresses, ERC20_INTERFACE, 'symbol' )
     const decimalsResult = useMultipleContractSingleData( tokenAddresses, ERC20_INTERFACE, 'decimals' )
