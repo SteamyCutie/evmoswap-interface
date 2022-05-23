@@ -151,7 +151,7 @@ const MigrateButtons = ( { state, exchange }: { state: MigrateState; exchange: s
     return (
         <div className="space-y-4">
             { insufficientAmount ? (
-                <div className="text-sm text-primary">{ i18n._( t`Insufficient Balance` ) }</div>
+                <div className="text-sm text-primary text-center">{ i18n._( t`Insufficient Balance` ) }</div>
             ) : state.loading ? (
                 <Dots>{ i18n._( t`Loading` ) }</Dots>
             ) : (
@@ -181,7 +181,7 @@ const MigrateButtons = ( { state, exchange }: { state: MigrateState; exchange: s
             ) }
 
             { error.message && error.code !== 4001 && (
-                <div className="font-medium text-center text-red">{ error.message }</div>
+                <div className="font-medium text-center text-red text-center">{ error.message }</div>
             ) }
             <div className="text-sm text-center text-low-emphesis">
                 { i18n._(

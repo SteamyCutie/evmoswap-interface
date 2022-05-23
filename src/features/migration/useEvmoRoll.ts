@@ -20,7 +20,7 @@ const useEvmoRoll = ( dex: LPToken[ 'dex' ] ) => {
             if ( emoRoll ) {
                 const deadline = Math.floor( new Date().getTime() / 1000 ) + ttl
                 const args = [ lpToken.tokenA.address, lpToken.tokenB.address, amount, Zero, Zero, deadline ]
-
+                console.log( args )
                 const gasLimit = await emoRoll.estimateGas.migrate( ...args )
                 const tx = emoRoll.migrate( ...args, {
                     gasLimit: gasLimit.mul( 120 ).div( 100 ),
