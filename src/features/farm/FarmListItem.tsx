@@ -1,5 +1,4 @@
 // import { t } from '@lingui/macro'
-import { useLingui } from '@lingui/react'
 import { getAddress } from '@ethersproject/address'
 import { CurrencyLogoArray, CurrencyLogo } from 'app/components/CurrencyLogo'
 import Typography from 'app/components/Typography'
@@ -40,7 +39,7 @@ const FarmListItem: FC<FarmListItem> = ( { farm, onClick } ) => {
     }, [ tokens, chainId, token0, token1 ] )
 
     const pendingRewards = useFarmPendingRewardsAmount( farm )
-    console.log( pendingRewards )
+
     const liquidityToken = new Token(
         // @ts-ignore TYPE NEEDS FIXING
         chainId,

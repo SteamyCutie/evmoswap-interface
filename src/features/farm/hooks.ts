@@ -1,17 +1,13 @@
-import { useEffect, useState, Dispatch, useCallback, useMemo } from 'react'
+import { useEffect, useState, Dispatch, useMemo } from 'react'
 import { Contract } from '@ethersproject/contracts'
 import { useActiveWeb3React } from 'app/services/web3'
 import { BigNumber } from '@ethersproject/bignumber'
-import { ChainId, CurrencyAmount, JSBI } from '@sushiswap/core-sdk'
-import { SIMPLE_INCENTIVE_CONTROLLER_INTERFACE, useContract, useDashboardContract, useMasterChefContract, useSimpleIncentiveContract } from 'app/hooks/useContract'
+import { CurrencyAmount, JSBI } from '@sushiswap/core-sdk'
+import { useDashboardContract, useMasterChefContract, useSimpleIncentiveContract } from 'app/hooks/useContract'
 import { NEVER_RELOAD, useMultipleContractSingleData, useSingleCallResult } from 'app/state/multicall/hooks'
 import { useCurrency, useToken } from 'app/hooks/Tokens'
-import SIMPLE_INCENTIVE_CONTROLLER_ABI from 'app/constants/abis/simple-incentives-controller.json'
-import { Interface } from '@ethersproject/abi'
 import { Token } from '@evmoswap/core-sdk'
 import ERC20_INTERFACE from 'app/constants/abis/erc20'
-import { EMOSPlaceholder } from '../boost/hooks/balances'
-import { EvmoSwap } from 'app/config/tokens'
 
 // @ts-ignore TYPE NEEDS FIXING
 export function useUserInfo ( farm, token ) {
@@ -68,20 +64,6 @@ export function useFarmPendingRewardsAmount ( farm ) {
     const amounts = tokens.map( ( token, i ) => token ? CurrencyAmount.fromRawAmount( token, amountsRaw[ i ] || "0" ) : null );
 
     return amounts;
-}
-
-export function useIncentive ( incentiveAddress: string ) {
-    const { account } = useActiveWeb3React()
-    const contract = useSimpleIncentiveContract( incentiveAddress );
-    const tokenAddress = useSingleCallResult( contract, 'rewardToken' )?.result?.[ 0 ];
-    const rewardToken = useCurrency( tokenAddress );
-    const pendingReward = useSingleCallResult( contract, 'pendingTokens', [ account ] )?.result?.[ 0 ];
-    const rewardAmount = rewardToken && pendingReward ? CurrencyAmount.fromRawAmount( rewardToken, pendingReward ) : null;
-    return {
-        rewardToken,
-        pendingReward,
-        rewardAmount
-    }
 }
 
 
