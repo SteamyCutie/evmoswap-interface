@@ -438,7 +438,7 @@ export default function Boostv3 () {
                         <div className="bg-dark-900 h-full bg-opacity-80 rounded-b">
 
                             <div className="flex flex-row items-center justify-between w-full p-6 bg-dark-800 text-lg rounded-t text-high-emphesis font-black">
-                                <div className="">{ i18n._( t`Stakig & Lock ${token.symbol}` ) }</div>
+                                <div className="">{ i18n._( t`Staking & Lock ${token.symbol}` ) }</div>
                                 <div>{ i18n._( t`APR` ) } { formatPercent( APR ) }</div>
                             </div>
 
