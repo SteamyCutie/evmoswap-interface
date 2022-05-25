@@ -12,6 +12,7 @@ import Dots from 'app/components/Dots'
 import { useFarmPendingRewardsAmount } from 'app/features/farm/hooks'
 import { FarmType } from 'app/constants/farms'
 import { sumCurrencyAmounts } from '../exchange-stable/utils'
+import Alert from 'app/components/Alert'
 
 // @ts-ignore TYPE NEEDS FIXING
 const InvestmentDetails = ( { farm, handleDismiss } ) => {
@@ -58,6 +59,12 @@ const InvestmentDetails = ( { farm, handleDismiss } ) => {
             <HeadlessUiModal.BorderedContent className="flex flex-col gap-2 bg-dark-1000/40">
                 <MultiRewardsCard rewards={ pendingRewards } />
             </HeadlessUiModal.BorderedContent>
+            <Alert
+                title={ '' }
+                message={ <span className='text-sm'>{ i18n._( t`Harvested EMO rewards will have a 30-day vesting period` ) }</span> }
+                type="information"
+                className='py-3 md:py-3 md:pl-4 md:pr-4'
+            />
             <Button color={ canHarvest ? 'blue' : 'gray' } disabled={ pendingTx || !canHarvest } onClick={ onHarvest }>
                 { canHarvest ? pendingTx ? <Dots>{ i18n._( t`Harvesting` ) }</Dots> : i18n._( t`Harvest Rewards` ) : i18n._( t`No rewards yet` ) }
             </Button>
