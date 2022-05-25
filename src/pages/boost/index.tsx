@@ -28,6 +28,7 @@ import { useFeeDistributor } from 'app/features/boost/hooks/useFeeDistributor'
 import { timestampToDate } from 'app/features/boost/functions'
 import { EMOSPlaceholder, useFarmsReward, useLockedBalance, useLockerExtraRewards, useRewardsBalance, useStakingBalance } from 'app/features/boost/hooks/balances'
 import useCurrentBlockTimestamp from 'app/hooks/useCurrentBlockTimestamp'
+import QuestionHelper from 'app/components/QuestionHelper'
 
 type VestingRow = {
     unlockTime: string, amount: CurrencyAmount<Currency>, expired: boolean, penaltyAmount: BigNumber;
@@ -624,7 +625,7 @@ export default function Boostv3 () {
                         <div className="grid grid-cols-2 gap-2 mt-2">
 
                             <StatButton
-                                title={ i18n._( t`Total Locked` ) }
+                                title={ <div className='flex'>{ i18n._( t`Total Locked` ) } <QuestionHelper text={ i18n._( t`veEMO Total Supply: ${formatNumberScale( formatBalance( veEmosSupply || 0 ) )}` ) } /></div> }
                                 value={
                                     `
                                     ${formatNumberScale(
@@ -674,7 +675,7 @@ interface RewardCardProps {
 }
 
 interface StatButtonProps {
-    title: string,
+    title: string | ReactNode,
     value: string,
     icon?: ReactNode
 }
