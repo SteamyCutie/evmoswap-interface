@@ -38,12 +38,12 @@ const ExchangeHeader: FC<ExchangeHeaderProps> = ({ input, output, allowedSlippag
   const navLinkStyle =
     'font-bold rounded-lg bg-blue-special text-light-primary hover:text-light-primary/80 dark:text-light-primary dark:hover:text-light-primary/80 transition-all'
   const navTextStyle =
-    'flex items-center justify-center px-4 text-base font-medium text-center rounded-lg text-dark-primary hover:text-dark-primary/80 dark:text-light-primary dark:hover:text-light-primary/80 transition-all'
+    'flex items-center justify-center px-4 text-base font-medium text-center rounded-lg transition-all'
 
   return (
     <div className="flex items-center justify-between mb-4 space-x-3">
       {showNavs && (
-        <div className="grid grid-cols-2 rounded-2xl p-2 bg-light-primary dark:bg-dark-primary transition-all h-14">
+        <div className="grid grid-cols-2 p-2 transition-all rounded-2xl bg-light-primary dark:bg-dark-primary text-dark-primary hover:text-dark-primary/80 dark:text-light-primary dark:hover:text-light-primary/80 h-14">
           <NavLink
             activeClassName={navLinkStyle}
             href={{
@@ -100,11 +100,11 @@ const ExchangeHeader: FC<ExchangeHeaderProps> = ({ input, output, allowedSlippag
             href={'https://app.multichain.org/#/router'}
             target="_blank"
             rel="noreferrer"
-            className="relative text-blue flex items-center w-full h-full px-4 rounded bg-dark-800 hover:bg-dark-700"
+            className="relative flex items-center w-full h-full px-4 rounded text-blue bg-dark-800 hover:bg-dark-700"
           >
             Bridge
           </a> */}
-          <div className="relative flex items-center w-full h-full rounded p-2">
+          <div className="relative flex items-center w-full h-full p-2 rounded">
             <Settings placeholderSlippage={allowedSlippage} />
           </div>
         </div>

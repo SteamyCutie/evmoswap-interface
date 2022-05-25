@@ -21,10 +21,10 @@ export default function Toggle({ id, isActive, toggle }: ToggleProps) {
       <span className="sr-only">Use setting</span>
       <span
         className={classNames(
-          'pointer-events-none relative h-[21px] w-[33px] flex text-[12px] items-center justify-center rounded-md bg-white dark:bg-dark-primary transform ring-0 transition ease-in-out duration-200',
+          'pointer-events-none relative h-[21px] w-[33px] flex text-[12px] items-center justify-center rounded-md transform ring-0 transition ease-in-out duration-200',
           isActive
             ? 'bg-blue-special dark:bg-blue-special text-white dark:text-white translate-x-[33px]'
-            : 'translate-x-0 text-dark-primary dark:text-white'
+            : 'translate-x-0 text-dark-primary dark:text-white bg-white dark:bg-dark-primary '
         )}
       >
         <span
