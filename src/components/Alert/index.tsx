@@ -94,7 +94,7 @@ export default function Alert({
       <div className="flex items-center">
         {showIcon && <div className="flex-shrink-0">{icon}</div>}
         <div className={!showIcon ? 'ml-0' : 'ml-3'}>
-          <p className="text-sm md:text-base">{message}</p>
+          <p className="text-sm transition-all md:text-base text-dark-primary dark:text-light-primary">{message}</p>
         </div>
       </div>
       {dismissable && (
@@ -102,7 +102,7 @@ export default function Alert({
           <button
             type="button"
             onClick={() => setShow(!show)}
-            className="inline-flex opacity-80 hover:opacity-100 focused:opacity-100 rounded p-1.5 text-primary hover:text-high-emphesis focus:text-high-emphesis focus:outline-none focus:ring focus:ring-offset focus:ring-offset-purple focus:ring-purple"
+            className="inline-flex opacity-80 hover:opacity-100 focused:opacity-100 rounded-full p-1.5 text-dark-primary dark:text-light-primary transition-all hover:text-dark-primary/80 dark:hover:text-light-primary/80 focus:outline-none focus:ring focus:ring-offset focus:ring-offset-purple focus:ring-purple"
           >
             <span className="sr-only">Dismiss</span>
             <XIcon className="w-5 h-5" aria-hidden="true" />

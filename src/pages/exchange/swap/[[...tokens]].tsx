@@ -53,6 +53,7 @@ import Banner from '../../../components/Banner'
 import { useStableSwapCallback } from 'app/features/exchange-stable/hooks'
 import TradingMode, { TRADING_MODE } from 'app/features/exchange-stable/components/TradingMode'
 import _ from 'lodash'
+import { SwitchVerticalIcon } from '@heroicons/react/outline'
 
 const Swap = () => {
   const { i18n } = useLingui()
@@ -466,47 +467,51 @@ const Swap = () => {
               showCommonBases={true}
               id="swap-currency-input"
             />
-            <AutoColumn justify="space-between" className="py-3">
+            <AutoColumn
+              justify="space-between"
+              className={classNames(isExpertMode ? '-mt-3 -mb-3' : '-mt-4 -mb-7', 'transition-all pl-2')}
+            >
               <div
-                className={classNames(isExpertMode ? 'justify-between' : 'flex-start', 'px-4 flex-wrap w-full flex')}
+                className={classNames(
+                  isExpertMode ? 'justify-between' : 'justify-center',
+                  'px-4 flex-wrap w-full flex'
+                )}
               >
                 <button
-                  className="z-10 rounded-full"
+                  className="z-10 rounded-3xl"
                   onClick={() => {
                     setApprovalSubmitted(false) // reset 2 step UI for approvals
                     onSwitchTokens()
                   }}
                 >
-                  <div className="rounded-full bg-dark-900 p-3px">
+                  <div className="p-1.5 rounded-[18px] bg-light-bg dark:bg-dark-bg">
                     <div
-                      className="p-3 rounded-full bg-dark-800 hover:bg-dark-700"
-                      onMouseEnter={() => setAnimateSwapArrows(true)}
-                      onMouseLeave={() => setAnimateSwapArrows(false)}
+                      className="p-3 transition-all bg-white rounded-[14px] hover:bg-white/80 dark:bg-dark-primary dark:hover:bg-dark-primary/80 text-dark-bg dark:text-light-bg"
+                      // onMouseEnter={() => setAnimateSwapArrows(true)}
+                      // onMouseLeave={() => setAnimateSwapArrows(false)}
                     >
-                      <Lottie
+                      <SwitchVerticalIcon width={18} height={18} />
+                      {/* <Lottie
                         animationData={swapArrowsAnimationData}
                         autoplay={animateSwapArrows}
                         loop={false}
                         style={{ width: 32, height: 32 }}
-                      />
+                      /> */}
                     </div>
                   </div>
                 </button>
                 {isExpertMode ? (
-                  recipient === null && !showWrap ? (
-                    <Button variant="link" size="none" id="add-recipient-button" onClick={() => onChangeRecipient('')}>
-                      + Add recipient (optional)
-                    </Button>
-                  ) : (
-                    <Button
-                      variant="link"
-                      size="none"
-                      id="remove-recipient-button"
-                      onClick={() => onChangeRecipient(null)}
-                    >
-                      - {i18n._(t`Remove recipient`)}
-                    </Button>
-                  )
+                  <div className="flex items-center transition-all text-dark-bg dark:text-light-bg hover:text-dark-bg/80 dark:hover:text-light-bg/80">
+                    {recipient === null && !showWrap ? (
+                      <Button size="xs" id="add-recipient-button" onClick={() => onChangeRecipient('')}>
+                        + Add recipient (optional)
+                      </Button>
+                    ) : (
+                      <Button size="xs" id="remove-recipient-button" onClick={() => onChangeRecipient(null)}>
+                        - {i18n._(t`Remove recipient`)}
+                      </Button>
+                    )}
+                  </div>
                 ) : null}
               </div>
             </AutoColumn>
@@ -527,18 +532,14 @@ const Swap = () => {
                 id="swap-currency-output"
               />
               {Boolean(trade) && (
-                <div className="p-1 -mt-2 transition-all bg-white cursor-pointer rounded-b-md dark:bg-dark-primary">
-                  <div className="bg-dark-900">
-                    <TradePrice
-                      price={trade?.executionPrice}
-                      showInverted={showInverted}
-                      setShowInverted={setShowInverted}
-                      className=""
-                    />
-                    <div className="w-full px-5 py-1 my-2">
-                      <TradingMode mode={tradingMode} />
-                    </div>
-                  </div>
+                <div className="grid p-5 mt-2 gap-2 transition-all bg-white cursor-pointer dark:bg-dark-primary border-2 border-[#D7D7FF] dark:border-[#2D2C2C] rounded-xl">
+                  <TradePrice
+                    price={trade?.executionPrice}
+                    showInverted={showInverted}
+                    setShowInverted={setShowInverted}
+                    className=""
+                  />
+                  <TradingMode mode={tradingMode} />
                 </div>
               )}
             </div>
@@ -552,6 +553,7 @@ const Swap = () => {
                   type="warning"
                   dismissable={false}
                   showIcon
+                  className="p-4 md:p-4 md:pl-4 md:pr-6"
                   message={i18n._(
                     t`Please note that the recipient address is different from the connected wallet address.`
                   )}
@@ -582,7 +584,7 @@ const Swap = () => {
                 {i18n._(t`Unsupported Asset`)}
               </Button>
             ) : !account ? (
-              <Web3Connect size="lg" color="blue" className="w-full" />
+              <Web3Connect size="lg" className="w-full" />
             ) : showWrap ? (
               <Button color="blue" size="lg" disabled={Boolean(wrapInputError)} onClick={onWrap}>
                 {wrapInputError ??
@@ -593,7 +595,7 @@ const Swap = () => {
                     : null)}
               </Button>
             ) : routeNotFound && userHasSpecifiedInputOutput ? (
-              <div style={{ textAlign: 'center' }}>
+              <div className="grid justify-center text-sm text-center text-dark-primary dark:text-light-primary">
                 <div className="mb-1">{i18n._(t`Insufficient liquidity for this trade`)}</div>
                 {singleHopOnly && <div className="mb-1">{i18n._(t`Try enabling multi-hop trades`)}</div>}
               </div>

@@ -150,7 +150,7 @@ export default function CurrencyInputPanel({
             </button>
             {currencyPrice && (
               <div className="text-[#303030] dark:text-[#868686] transition-all">
-                {i18n._(t`~ $`)} {currencyPrice?.valueInUSD?.toFixed(18)}
+                {i18n._(t`~ $`)} {Number(currencyPrice?.valueInUSD?.toFixed(18)).toFixed(4)}
               </div>
             )}
           </div>
@@ -167,20 +167,11 @@ export default function CurrencyInputPanel({
         {!hideInput && (
           <div
             className={classNames(
-              'flex items-center w-full space-x-3 focus:bg-dark-700 p-3 bg-light-bg dark:bg-dark-bg rounded-md transition-all'
+              'flex items-center w-full space-x-3 focus:bg-dark-700 px-5 py-3 bg-light-bg dark:bg-dark-bg text-dark-primary dark:text-white placeholder-[#4B4B4B] rounded-md transition-all'
               // showMaxButton && selectedCurrencyBalance && 'px-3'
             )}
           >
             <>
-              {showMaxButton && selectedCurrencyBalance && (
-                <Button
-                  onClick={onMax}
-                  size="xs"
-                  className="text-xs font-medium bg-transparent border rounded-full hover:bg-primary border-low-emphesis text-secondary whitespace-nowrap"
-                >
-                  {i18n._(t`Max`)}
-                </Button>
-              )}
               <Input.Numeric
                 id="token-amount-input"
                 value={value}
@@ -188,16 +179,23 @@ export default function CurrencyInputPanel({
                   onUserInput(val)
                 }}
               />
+              {showMaxButton && selectedCurrencyBalance && (
+                <Button
+                  onClick={onMax}
+                  size="xs"
+                  className="text-xs font-bold transition-all bg-transparent rounded-full text-blue-special hover:text-blue-special/80 whitespace-nowrap"
+                >
+                  {i18n._(t`Max`)}
+                </Button>
+              )}
               {!hideBalance && currency && selectedCurrencyBalance ? (
                 <div className="flex flex-col">
                   <div onClick={onMax} className="text-xs font-medium text-right cursor-pointer text-low-emphesis">
-                    {renderBalance ? (
-                      renderBalance(selectedCurrencyBalance)
-                    ) : (
-                      <>
-                        {i18n._(t`Balance:`)} {formatCurrencyAmount(selectedCurrencyBalance, 4)} {currency.symbol}
-                      </>
-                    )}
+                    {
+                      <div className="text-[#303030] dark:text-[#868686] transition-all">
+                        {i18n._(t`~ $`)} {Number(currencyPrice?.valueInUSD?.toFixed(18) * Number(value)).toFixed(4)}
+                      </div>
+                    }
                   </div>
                   <FiatValue fiatValue={fiatValue} priceImpact={priceImpact} />
                 </div>

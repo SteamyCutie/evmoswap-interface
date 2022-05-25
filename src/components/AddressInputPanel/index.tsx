@@ -15,32 +15,35 @@ const AddressInputPanel: FC<AddressInputPanelProps> = ({ id, value, onChange }) 
   const { i18n } = useLingui()
   const { address, loading } = useENS(value)
 
-  const handleInput = useCallback(
-    (event) => {
-      const input = event.target.value
-      const withoutSpaces = input.replace(/\s+/g, '')
-      onChange(withoutSpaces)
-    },
-    [onChange]
-  )
+  const handleInput = (inputVar: any) => {
+    console.log(inputVar)
+    const input = inputVar
+    const withoutSpaces = input.replace(/\s+/g, '')
+    onChange(withoutSpaces)
+  }
 
   const error = Boolean(value.length > 0 && !loading && !address)
 
   return (
     <div
-      className={`flex flex-row bg-dark-800 rounded items-center h-[68px] ${
-        error ? 'border border-red border-opacity-50' : ''
+      className={`flex flex-row bg-white dark:bg-dark-primary text-dark-primary dark:text-light-primary rounded-xl items-center transition-all text-sm my-3 border border-red ${
+        error ? 'border-opacity-50' : 'border-opacity-0 '
       }`}
       id={id}
     >
-      <div className="flex justify-between w-full px-5 sm:w-2/5">
-        <span className="text-[18px] text-primary">{i18n._(t`Send to:`)}</span>
-        <span className="text-sm underline cursor-pointer text-blue" onClick={() => onChange(null)}>
+      <div className="flex items-center justify-between w-full px-5 sm:w-2/5">
+        <span className="">{i18n._(t`Send to:`)}</span>
+        <span className="text-xs underline cursor-pointer text-blue-special" onClick={() => onChange(null)}>
           {i18n._(t`Remove`)}
         </span>
       </div>
-      <div className="flex w-full h-full border-2 rounded-r sm:w-3/5 border-dark-800">
-        <Input.Address onUserInput={handleInput} value={value} />
+      <div className="flex w-full h-full m-0.5 text-sm sm:w-3/5">
+        <Input.Address
+          onUserInput={handleInput}
+          value={value}
+          fontSize="14px"
+          className="flex w-full h-full p-3 font-bold transition-all rounded-r bg-light-bg dark:bg-dark-bg overflow-ellipsis recipient-address-input placeholder-low-emphesis"
+        />
       </div>
     </div>
   )

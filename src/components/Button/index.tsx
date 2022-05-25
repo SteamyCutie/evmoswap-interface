@@ -15,7 +15,7 @@ const FILLED = {
   blue: 'bg-blue bg-opacity-90 w-full rounded text-high-emphesis hover:bg-opacity-100 disabled:bg-opacity-90',
   'blue-special': 'bg-blue-special bg-opacity-90 w-full text-light-primary hover:bg-opacity-100 disabled:bg-opacity-90',
   pink: 'bg-gradient-to-r from-pink to-opaque-pink w-full rounded text-high-emphesis opacity-90 hover:opacity-100 disabled:bg-opacity-90',
-  gray: 'border rounded shadow-sm focus:ring-2 focus:ring-offset-2 bg-dark-700 bg-opacity-90 w-full text-primary border-dark-900 hover:bg-opacity-100 focus:ring-offset-dark-700 focus:ring-dark-900 disabled:bg-opacity-90',
+  gray: 'rounded shadow-sm focus:ring-2 focus:ring-offset-2 bg-opacity-90 w-full bg-[#A1A1A1] dark:bg-[#4B4B4B] text-dark-primary dark:text-light-primary hover:bg-opacity-100 focus:ring-offset-dark-700 focus:ring-dark-900 disabled:bg-opacity-90',
   green: 'bg-green bg-opacity-90 w-full rounded text-high-emphesis hover:bg-opacity-100 disabled:bg-opacity-90',
   gradient:
     'w-full text-high-emphesis bg-gradient-to-r from-blue-special to-pink-special opacity-90 hover:opacity-100 disabled:bg-opacity-90',
@@ -103,7 +103,7 @@ export const ButtonConfirmed = ({
       />
     )
   } else {
-    return <Button color={disabled ? 'gray' : 'blue'} size="lg" disabled={disabled} {...rest} />
+    return <Button color={disabled ? 'gray' : 'gradient'} size="lg" disabled={disabled} {...rest} />
   }
 }
 
@@ -118,6 +118,6 @@ export const ButtonError = ({
   if (error) {
     return <Button color="red" size="lg" disabled={disabled} {...rest} />
   } else {
-    return <Button color={disabled ? 'gray' : 'blue'} disabled={disabled} size="lg" {...rest} />
+    return <Button color={disabled ? 'gray' : 'gradient'} disabled={disabled} size="lg" {...rest} />
   }
 }

@@ -5,6 +5,7 @@ import Typography from '../../components/Typography'
 import { classNames } from '../../functions'
 import { t } from '@lingui/macro'
 import { useLingui } from '@lingui/react'
+import { SwitchHorizontalIcon } from '@heroicons/react/outline'
 
 interface TradePriceProps {
   price: Price<Currency, Currency>
@@ -37,31 +38,21 @@ export default function TradePrice({ price, showInverted, setShowInverted, class
       onClick={flipPrice}
       title={text}
       className={classNames(
-        'flex justify-between w-full px-5 py-1 cursor-pointer rounded-b-md text-secondary hover:text-primary',
+        'flex justify-between items-center w-full cursor-pointer rounded-md text-dark-primary hover:text-dark-primary/80 dark:text-light-primary dark:hover:text-light-primary/80 transition-all',
         className
       )}
     >
       <Typography variant="sm" className="select-none">
-        {i18n._(t`Exchange Rate`)}
+        {i18n._(t`Rate`)}
       </Typography>
       <div className="flex items-center space-x-4">
-        <Typography variant="sm" className="select-none">
+        <Typography variant="sm" className="font-extrabold select-none">
           {text}
         </Typography>
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          className="w-4 h-4"
-          fill="none"
-          viewBox="0 0 24 24"
-          stroke="currentColor"
-        >
-          <path
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            strokeWidth="2"
-            d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4"
-          />
+        <svg width="2" height="12" viewBox="0 0 2 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <line x1="0.5" x2="0.5" y2="12" stroke="currentColor" />
         </svg>
+        <SwitchHorizontalIcon width={18} height={18} />
       </div>
     </div>
   )
