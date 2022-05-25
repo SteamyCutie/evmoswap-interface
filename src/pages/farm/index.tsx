@@ -11,6 +11,7 @@ import React, { useState } from 'react'
 import useFarms from 'app/features/farm/useFarms'
 import NavLink from 'app/components/NavLink'
 import SearchPools from 'app/components/SearchPools'
+import Head from 'next/head'
 
 const tabStyle = 'flex justify-center items-center h-full w-full rounded-lg cursor-pointer text-sm md:text-base'
 const activeTabStyle = `${tabStyle} text-high-emphasis font-bold bg-dark-900`
@@ -59,6 +60,14 @@ export default function Farms (): JSX.Element {
 
     return (
         <>
+            <Head>
+                <title>{ i18n._( t`Farm | EvmoSwap` ) }</title>
+                <meta
+                    key="description"
+                    name="description"
+                    content={ i18n._( t`Earn fees and rewards by depositing and staking your tokens to the platform.` ) }
+                />
+            </Head>
             <TridentHeader className="sm:!flex-row justify-between items-center" pattern="bg-bubble">
                 <div>
                     <Typography variant="h2" className="text-high-emphesis" weight={ 700 }>
