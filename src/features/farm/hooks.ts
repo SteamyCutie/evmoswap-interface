@@ -57,13 +57,13 @@ export function useFarmPendingRewardsAmount ( farm ) {
     //create each token instance.
     const tokens = useMemo( () => {
         if ( decimals && symbols && symbols.length === decimals.length )
-            return decimals.map( ( decimal, i ) => new Token( chainId, tokenAddresses[ i ], decimal, symbols[ i ] ) )
+            return decimals.filter( Boolean ).map( ( decimal, i ) => new Token( chainId, tokenAddresses[ i ], decimal, symbols[ i ] ) )
     }, [ decimals, symbols ] );
 
     //make amounts
-    const amounts = tokens.map( ( token, i ) => token ? CurrencyAmount.fromRawAmount( token, amountsRaw[ i ] || "0" ) : null );
+    const amounts = tokens?.map( ( token, i ) => token ? CurrencyAmount.fromRawAmount( token, amountsRaw[ i ] || "0" ) : null );
 
-    return amounts;
+    return amounts || [];
 }
 
 
