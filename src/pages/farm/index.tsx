@@ -44,7 +44,7 @@ export default function Farms (): JSX.Element {
         all: ( farm ) => farm.multiplier !== 0,
         stable: ( farm ) => farm.farmType == 'stable',
         double: ( farm ) => farm.farmType == 'double',
-        inactive: ( farm ) => farm.multiplier == 0,
+        inactive: ( farm ) => farm.multiplier == 0 || farm.migrate,
     }
 
     const datas = query?.farms.filter( ( farm ) => {
