@@ -19,25 +19,25 @@ interface ProgressCirclesProps {
 export default function ProgressCircles({ steps, disabled = false, ...rest }: ProgressCirclesProps) {
   return (
     <div className="flex justify-center" {...rest}>
-      <div className="flex justify-between w-1/2">
+      <div className="flex justify-between w-1/2 text-white">
         {steps.map((step, i) => {
           return (
             <div className="flex items-center w-full" key={i}>
               <div
                 className={classNames(
-                  step ? 'bg-green' : 'bg-pink',
-                  (disabled || (!steps[i - 1] && i !== 0)) && 'bg-dark-800',
-                  'min-w-5 min-h-5 rounded-full flex justify-center items-center text-xs'
+                  step ? 'bg-green-special' : 'bg-pink-special',
+                  (disabled || (!steps[i - 1] && i !== 0)) && 'bg-pink-special',
+                  'min-w-5 min-h-5 rounded-full flex justify-center items-center text-xs transition-all'
                 )}
               >
                 {step ? '✓' : i + 1}
               </div>
               <div
                 className={classNames(
-                  disabled && 'bg-dark-1000',
-                  step && 'bg-gradient-to-r from-green to-pink',
-                  steps[i - 1] ? 'bg-gradient-to-r from-pink to-dark-1000' : 'bg-dark-900',
-                  'w-full h-0.5 opacity-60'
+                  disabled && 'bg-light-bg dark:bg-dark-bg',
+                  step && 'bg-gradient-to-r from-green-special to-pink-special',
+                  steps[i - 1] ? 'bg-gradient-to-r from-pink-special to-green-special' : 'bg-green-special',
+                  'w-full h-0.5 opacity-60 transition-all'
                 )}
               />
               {/* <Connector prevConfirmed={step} disabled={disabled} /> */}
@@ -46,8 +46,8 @@ export default function ProgressCircles({ steps, disabled = false, ...rest }: Pr
         })}
         <div
           className={classNames(
-            (disabled || !steps[steps.length - 1]) && 'bg-dark-800',
-            'min-w-5 min-h-5 rounded-full flex justify-center items-center text-xs'
+            (disabled || !steps[steps.length - 1]) && 'bg-light-bg dark:bg-dark-bg',
+            'min-w-5 min-h-5 rounded-full flex justify-center bg-pink-special/50 items-center text-xs'
           )}
         >
           {steps.length + 1}

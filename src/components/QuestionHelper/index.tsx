@@ -32,7 +32,7 @@ const QuestionHelper: FC<{ text?: any }> = ({ children, text }) => {
         onMouseLeave={close}
       >
         {/* <SolidQuestionMarkCircleIcon width={16} height={16} className="bg-light-primary dark:bg-dark-primary text-dark-primary dark:text-light-primary" /> */}
-        <div className="w-4 h-4 m-1 bg-[#EFEFFB] hover:bg-[#EFEFFB]/30 text-dark-primary dark:bg-[#262230] dark:hover:bg-[#262230]/30 dark:text-white rounded-full justify-center items-center text-[8px] flex font-extrabold transition-all">
+        <div className="w-4 h-4 m-1 bg-light-bg hover:bg-light-bg/30 text-dark-primary dark:bg-dark-bg dark:hover:bg-dark-bg/30 dark:text-white rounded-full justify-center items-center text-[8px] flex font-extrabold transition-all">
           ?
         </div>
       </div>
