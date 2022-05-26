@@ -3,6 +3,14 @@ import LPToken from 'app/features/migration/LPToken'
 
 type AddressMap = { [ chainId: number ]: string }
 
+// * this is the new contract addresses
+// reusing "VotingEscrow" at 0x6cA9DeE59FF631a9eE434eC16084F4a296f3e1ff
+// reusing "FeeDistributor" at 0xEb048e4955e22F78F111143208175D461dfe9731
+// reusing "MultiFeeDistribution" at 0xfa77099e581Ae71C838E75f0f19D166157943b99
+// reusing "MasterChef" at 0xf77CBdeaF930Bec07A794bCABede5eAF7818DAaA
+// reusing "RewardPool" at 0xeA0a0e1aB5Be3679b1C50656DbF0925E7b4DfaA0
+// reusing "Dashboard" at 0x48322B7dd8F6E50af6aDDD3cb3001e042bDb8B3B
+
 // masterChef
 export const MASTERCHEF_ADDRESS: AddressMap = {
     [ ChainId.EVMOS ]: '0x96DbaF70d53C5214Bf1981B1671c58D2F5D38d9a',
