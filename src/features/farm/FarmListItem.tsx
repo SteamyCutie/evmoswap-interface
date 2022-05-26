@@ -65,12 +65,6 @@ const FarmListItem: FC<FarmListItem> = ( { farm, onClick } ) => {
                             ) )
                         }
                     </Typography>
-                    {
-                        farm.migrate &&
-                        <Typography variant='xs' className="text-yellow border border-yellow rounded px-1.5">
-                            Legacy
-                        </Typography>
-                    }
                 </div>
             </div>
             <div className={ TABLE_TBODY_TD_CLASSNAME( 1, 6 ) }>
