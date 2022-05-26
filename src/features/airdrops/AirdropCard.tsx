@@ -11,8 +11,6 @@ import { formatNumber as formatBalanceNumber } from 'app/functions/formatBalance
 import { ZERO } from '@evmoswap/core-sdk'
 import { contractErrorToUserReadableMessage } from '../exchange-stable/utils'
 import Alert from 'app/components/Alert'
-import { addSeconds, isFuture } from 'date-fns'
-import { timestampToDate } from '../boost/functions'
 
 export default function AirdropCard ( { airdrop, evmoPrice, className = '' }: { airdrop: Airdrop, evmoPrice: number, className?: string } ): JSX.Element {
 
@@ -26,8 +24,6 @@ export default function AirdropCard ( { airdrop, evmoPrice, className = '' }: { 
         collectData
     } = useAirdrop( airdrop );
 
-    const timeToUnlock = addSeconds( Number( collectData.collectedTime ) * 1000, Number( collectData.releaseDuration ) );
-    const vestExpired = !isFuture( timeToUnlock );
     const canClaim = isLinear ? collectData.vestClaimable?.greaterThan( ZERO ) : isNotClaimed;
 
     const [ pending, setPending ] = useState( false );
@@ -43,10 +39,8 @@ export default function AirdropCard ( { airdrop, evmoPrice, className = '' }: { 
             setError( '' );
 
         try {
-            if ( isLinear ) {
-                if ( vestExpired )
-                    await callbacks.vestClaim();
-            }
+            if ( isLinear )
+                await callbacks.vestClaim();
             else
                 await callbacks.claimCallback();
         } catch ( error ) {
@@ -144,25 +138,16 @@ export default function AirdropCard ( { airdrop, evmoPrice, className = '' }: { 
                                 </Button>
                             }
 
-                            {
-                                !vestExpired &&
-                                <Button className='disabled:cursor-not-allowed' color='gray' disabled={ true }>
-                                    { i18n._( t`Will unlock ${timestampToDate( timeToUnlock.getTime(), false )}` ) }
-                                </Button>
-                            }
-                            {
-                                vestExpired &&
-                                <Button
-                                    onClick={ handleClaim }
-                                    loading={ pending }
-                                    className={ classNames( 'disabled:cursor-not-allowed', canClaim ? 'bg-blue-600' : '' ) }
-                                    color={ !vestExpired ? 'gray' : 'blue' }
-                                    disabled={ !canClaim || pending }>
-                                    {
-                                        i18n._( t`${canClaim ? 'Claim' : 'Claimed!'}` )
-                                    }
-                                </Button>
-                            }
+                            <Button
+                                onClick={ handleClaim }
+                                loading={ pending }
+                                className={ classNames( 'disabled:cursor-not-allowed', canClaim ? 'bg-blue-600' : '' ) }
+                                color={ !canClaim ? 'gray' : 'blue' }
+                                disabled={ !canClaim || pending }>
+                                {
+                                    i18n._( t`${canClaim ? 'Claim' : 'Claimed!'}` )
+                                }
+                            </Button>
                         </>
                     }
 
