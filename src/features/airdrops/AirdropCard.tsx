@@ -11,6 +11,8 @@ import { formatNumber as formatBalanceNumber } from 'app/functions/formatBalance
 import { ZERO } from '@evmoswap/core-sdk'
 import { contractErrorToUserReadableMessage } from '../exchange-stable/utils'
 import Alert from 'app/components/Alert'
+import { addSeconds, isFuture } from 'date-fns'
+import { timestampToDate } from '../boost/functions'
 
 export default function AirdropCard ( { airdrop, evmoPrice, className = '' }: { airdrop: Airdrop, evmoPrice: number, className?: string } ): JSX.Element {
 
@@ -24,6 +26,8 @@ export default function AirdropCard ( { airdrop, evmoPrice, className = '' }: { 
         collectData
     } = useAirdrop( airdrop );
 
+    const timeToUnlock = addSeconds( Number( collectData.collectedTime ) * 1000, Number( collectData.releaseDuration ) );
+    const vestExpired = !isFuture( timeToUnlock );
     const canClaim = isLinear ? collectData.vestClaimable?.greaterThan( ZERO ) : isNotClaimed;
 
     const [ pending, setPending ] = useState( false );
@@ -39,8 +43,10 @@ export default function AirdropCard ( { airdrop, evmoPrice, className = '' }: { 
             setError( '' );
 
         try {
-            if ( isLinear )
-                await callbacks.vestClaim();
+            if ( isLinear ) {
+                if ( vestExpired )
+                    await callbacks.vestClaim();
+            }
             else
                 await callbacks.claimCallback();
         } catch ( error ) {
@@ -112,38 +118,67 @@ export default function AirdropCard ( { airdrop, evmoPrice, className = '' }: { 
 
                 {/** Action button */ }
                 <div className="flex flex-col md:flex-row space-y-4 md:space-x-4 md:space-y-0">
-                    {
-                        !claimableAmount.greaterThan( ZERO ) ?
-                            <Button
-                                className='disabled:cursor-not-allowed'
-                                color={ 'gray' }
-                                disabled={ true }>
-                                { i18n._( t`You are not elegible` ) }
-                            </Button>
-                            :
-                            <>
-                                { isLinear &&
-                                    <Button
-                                        loading={ pendingCollect }
-                                        onClick={ handleCollect }
-                                        className={ classNames( 'disabled:cursor-not-allowed', canCollect ? 'bg-blue-600' : '' ) }
-                                        color={ !canCollect ? 'gray' : 'blue' }
-                                        disabled={ !canCollect || pendingCollect }>
-                                        { i18n._( t`Collect` ) }
-                                    </Button>
-                                }
 
+                    {
+                        /** Not elegible button */
+                        !claimableAmount.greaterThan( ZERO ) &&
+                        <Button
+                            className='disabled:cursor-not-allowed'
+                            color={ 'gray' }
+                            disabled={ true }>
+                            { i18n._( t`You are not elegible` ) }
+                        </Button>
+                    }
+
+
+                    { /** linear action buttons */
+                        claimableAmount.greaterThan( ZERO ) && isLinear && <>
+                            { canCollect &&
+                                <Button
+                                    loading={ pendingCollect }
+                                    onClick={ handleCollect }
+                                    className={ classNames( 'disabled:cursor-not-allowed', canCollect ? 'bg-blue-600' : '' ) }
+                                    color={ !canCollect ? 'gray' : 'blue' }
+                                    disabled={ !canCollect || pendingCollect }>
+                                    { i18n._( t`Collect` ) }
+                                </Button>
+                            }
+
+                            {
+                                !vestExpired &&
+                                <Button className='disabled:cursor-not-allowed' color='gray' disabled={ true }>
+                                    { i18n._( t`Will unlock ${timestampToDate( timeToUnlock.getTime(), false )}` ) }
+                                </Button>
+                            }
+                            {
+                                vestExpired &&
                                 <Button
                                     onClick={ handleClaim }
                                     loading={ pending }
                                     className={ classNames( 'disabled:cursor-not-allowed', canClaim ? 'bg-blue-600' : '' ) }
-                                    color={ !canClaim ? 'gray' : 'blue' }
+                                    color={ !vestExpired ? 'gray' : 'blue' }
                                     disabled={ !canClaim || pending }>
                                     {
                                         i18n._( t`${canClaim ? 'Claim' : 'Claimed!'}` )
                                     }
                                 </Button>
-                            </>
+                            }
+                        </>
+                    }
+
+                    {
+                        /** once action buttons */
+                        claimableAmount.greaterThan( ZERO ) && !isLinear &&
+                        <Button
+                            onClick={ handleClaim }
+                            loading={ pending }
+                            className={ classNames( 'disabled:cursor-not-allowed', canClaim ? 'bg-blue-600' : '' ) }
+                            color={ !canClaim ? 'gray' : 'blue' }
+                            disabled={ !canClaim || pending }>
+                            {
+                                i18n._( t`${canClaim ? 'Claim' : 'Claimed!'}` )
+                            }
+                        </Button>
                     }
 
                 </div>
