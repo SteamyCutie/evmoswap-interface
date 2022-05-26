@@ -16,16 +16,16 @@ const Web3Network = () => {
 
   return (
     <div
-      className="flex items-center text-sm font-bold transition-all bg-transparent rounded cursor-pointer pointer-events-auto select-none hover:bg-dark-primary/10 dark:hover:bg-light-primary/5 whitespace-nowrap"
+      className="flex items-center text-sm font-bold transition-all bg-transparent rounded-2xl cursor-pointer pointer-events-auto select-none hover:bg-dark-primary/10 dark:hover:bg-light-primary/5 whitespace-nowrap"
       onClick={() => toggleNetworkModal()}
     >
       {ChainId.EVMOS === chainId ? (
-        <div className="grid items-center grid-flow-col px-3 py-2 space-x-2 text-sm rounded-lg pointer-events-auto auto-cols-max hover:bg-dark-primary/10 text-dark-primary/80 dark:text-light-primary/80">
+        <div className="grid items-center grid-flow-col px-3 py-2 space-x-2 text-sm rounded-2xl pointer-events-auto auto-cols-max hover:bg-dark-primary/10 text-dark-primary/80 dark:text-light-primary/80">
           <Image src={NETWORK_ICON[chainId]} alt="Switch Network" className="rounded-md" width="22px" height="22px" />
           <div className="text-primary">{NETWORK_LABEL[chainId]}</div>
         </div>
       ) : (
-        <div className="grid items-center grid-flow-col px-3 py-2 space-x-2 text-sm rounded-lg pointer-events-auto auto-cols-max bg-blue-special/50">
+        <div className="grid items-center grid-flow-col px-3 py-2 space-x-2 text-sm rounded-2xl pointer-events-auto auto-cols-max bg-blue-special/50">
           <Image src={NETWORK_ICON[chainId]} alt="Switch Network" className="rounded-md" width="22px" height="22px" />
           <div className="text-white">{NETWORK_LABEL[chainId]}</div>
         </div>

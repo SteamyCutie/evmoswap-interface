@@ -26,7 +26,7 @@ const TokenStatusInner = ({ token, price }) => {
   const toggleModal = useTokenStatsModalToggle()
   return (
     <div
-      className="flex items-center px-2 py-2 text-sm transition-all bg-transparent rounded-lg text-dark-primary/80 dark:text-light-primary/80"
+      className="flex items-center px-2 py-2 text-sm transition-all bg-transparent rounded-2xl text-dark-primary/80 dark:text-light-primary/80"
       onClick={toggleModal}
     >
       {token.icon && (
@@ -36,10 +36,10 @@ const TokenStatusInner = ({ token, price }) => {
           width="24px"
           height="24px"
           objectFit="contain"
-          className="rounded-md"
+          className="rounded-full"
         />
       )}
-      <div className="px-1 transition-all text-dark-primary/80 dark:text-light-primary/80">
+      <div className="pl-2 pr-1 font-extrabold transition-all text-dark-primary/80 dark:text-light-primary/80">
         {formatNumberScale(price, true)}
       </div>
     </div>

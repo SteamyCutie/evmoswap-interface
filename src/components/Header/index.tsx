@@ -185,7 +185,7 @@ const AppBar = () => {
 
                 <div className="fixed bottom-0 left-0 z-20 flex flex-row items-center justify-center w-full p-4 transition-all lg:w-auto bg-light-primary/30 dark:bg-dark-primary/50 backdrop-blur-lg lg:backdrop-filter-none lg:relative lg:p-0 lg:bg-transparent lg:dark:bg-transparent">
                   <div className="flex items-center justify-center w-full gap-4 sm:justify-end">
-                    <div className="flex items-center w-auto mr-1 text-xs font-bold transition-all bg-transparent rounded cursor-pointer pointer-events-auto select-none hover:bg-dark-primary/10 text-primary dark:hover:bg-light-primary/5 whitespace-nowrap sm:block">
+                    <div className="flex items-center w-auto mr-1 text-xs font-bold transition-all bg-transparent rounded-2xl cursor-pointer pointer-events-auto select-none hover:bg-dark-primary/10 text-primary dark:hover:bg-light-primary/5 whitespace-nowrap sm:block">
                       <TokenStats token="EMO" />
                     </div>
                     {library && library.provider.isMetaMask && (
@@ -196,13 +196,13 @@ const AppBar = () => {
 
                     <div className="flex w-auto text-sm font-bold transition-all rounded-2xl bg-gradient-to-r p-0.5 from-blue-special/80 to-pink-special/80">
                       <div
-                        className={`flex items-center justify-between h-full rounded-[14px] cursor-pointer pointer-events-auto select-none text-dark-primary dark:text-light-primary transition-all whitespace-nowrap ${
+                        className={`flex items-center justify-between h-full rounded-1.5xl cursor-pointer pointer-events-auto select-none text-dark-primary dark:text-light-primary transition-all whitespace-nowrap ${
                           account ? ' bg-light-primary/90 dark:bg-dark-primary/90' : ''
                         }`}
                       >
                         {account && chainId && userEthBalance && (
                           <>
-                            <div className="pl-4 pr-2 py-2 text-[16px] font-extrabold">
+                            <div className="pl-4 pr-2 py-2 text-base font-extrabold">
                               {userEthBalance?.toSignificant(4)} {NATIVE[chainId].symbol}
                             </div>
                           </>
