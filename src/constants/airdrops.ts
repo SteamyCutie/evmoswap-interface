@@ -12,6 +12,7 @@ export type Airdrop = {
     address: { [ chainId: number ]: string }
     type: AirdropType
     mappingSource: string
+    startStatus?: boolean
 }
 
 export const airdrops: Airdrop[] = [

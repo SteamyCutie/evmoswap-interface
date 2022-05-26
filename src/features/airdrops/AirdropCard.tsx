@@ -110,34 +110,55 @@ export default function AirdropCard ( { airdrop, evmoPrice, className = '' }: { 
                     error && <Alert type='error' title='' message={ error } className='my-4 py-3 md:py-3 md:pl-4 md:pr-4' />
                 }
 
+                {
+                    !airdrop.startStatus && <Alert type='information' title='' message={ i18n._( t`Not yet started` ) } className='my-4 py-3 md:py-3 md:pl-4 md:pr-4' />
+                }
+
                 {/** Action button */ }
-                <div className="flex flex-col md:flex-row space-y-4 md:space-x-4 md:space-y-0">
+                {
+                    airdrop.startStatus === true && <div className="flex flex-col md:flex-row space-y-4 md:space-x-4 md:space-y-0">
 
-                    {
-                        /** Not elegible button */
-                        !claimableAmount.greaterThan( ZERO ) &&
-                        <Button
-                            className='disabled:cursor-not-allowed'
-                            color={ 'gray' }
-                            disabled={ true }>
-                            { i18n._( t`You are not elegible` ) }
-                        </Button>
-                    }
+                        {
+                            /** Not elegible button */
+                            !claimableAmount.greaterThan( ZERO ) &&
+                            <Button
+                                className='disabled:cursor-not-allowed'
+                                color={ 'gray' }
+                                disabled={ true }>
+                                { i18n._( t`You are not elegible` ) }
+                            </Button>
+                        }
 
 
-                    { /** linear action buttons */
-                        claimableAmount.greaterThan( ZERO ) && isLinear && <>
-                            { canCollect &&
+                        { /** linear action buttons */
+                            claimableAmount.greaterThan( ZERO ) && isLinear && <>
+                                { canCollect &&
+                                    <Button
+                                        loading={ pendingCollect }
+                                        onClick={ handleCollect }
+                                        className={ classNames( 'disabled:cursor-not-allowed', canCollect ? 'bg-blue-600' : '' ) }
+                                        color={ !canCollect ? 'gray' : 'blue' }
+                                        disabled={ !canCollect || pendingCollect }>
+                                        { i18n._( t`Collect` ) }
+                                    </Button>
+                                }
+
                                 <Button
-                                    loading={ pendingCollect }
-                                    onClick={ handleCollect }
-                                    className={ classNames( 'disabled:cursor-not-allowed', canCollect ? 'bg-blue-600' : '' ) }
-                                    color={ !canCollect ? 'gray' : 'blue' }
-                                    disabled={ !canCollect || pendingCollect }>
-                                    { i18n._( t`Collect` ) }
+                                    onClick={ handleClaim }
+                                    loading={ pending }
+                                    className={ classNames( 'disabled:cursor-not-allowed', canClaim ? 'bg-blue-600' : '' ) }
+                                    color={ !canClaim ? 'gray' : 'blue' }
+                                    disabled={ !canClaim || pending }>
+                                    {
+                                        i18n._( t`${canClaim ? 'Claim' : 'Claimed!'}` )
+                                    }
                                 </Button>
-                            }
+                            </>
+                        }
 
+                        {
+                            /** once action buttons */
+                            claimableAmount.greaterThan( ZERO ) && !isLinear &&
                             <Button
                                 onClick={ handleClaim }
                                 loading={ pending }
@@ -148,25 +169,10 @@ export default function AirdropCard ( { airdrop, evmoPrice, className = '' }: { 
                                     i18n._( t`${canClaim ? 'Claim' : 'Claimed!'}` )
                                 }
                             </Button>
-                        </>
-                    }
+                        }
 
-                    {
-                        /** once action buttons */
-                        claimableAmount.greaterThan( ZERO ) && !isLinear &&
-                        <Button
-                            onClick={ handleClaim }
-                            loading={ pending }
-                            className={ classNames( 'disabled:cursor-not-allowed', canClaim ? 'bg-blue-600' : '' ) }
-                            color={ !canClaim ? 'gray' : 'blue' }
-                            disabled={ !canClaim || pending }>
-                            {
-                                i18n._( t`${canClaim ? 'Claim' : 'Claimed!'}` )
-                            }
-                        </Button>
-                    }
-
-                </div>
+                    </div>
+                }
             </div>
         </div>
     )
