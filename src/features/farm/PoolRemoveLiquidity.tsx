@@ -344,6 +344,8 @@ const PoolWithdraw = ({ currencyA, currencyB, header, handleDismiss }) => {
             action: 'Remove',
             label: [currencyA?.symbol, currencyB?.symbol].join('/'),
           })
+
+          setInnerLiquidityPercentage('')
         })
         .catch((error: Error) => {
           setAttemptingTxn(false)
