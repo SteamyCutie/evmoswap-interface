@@ -106,17 +106,19 @@ export default function AirdropCard ( { airdrop, evmoPrice, className = '' }: { 
                 }
             </div>
             <div className='footer p-6'>
+
                 {
                     error && <Alert type='error' title='' message={ error } className='my-4 py-3 md:py-3 md:pl-4 md:pr-4' />
                 }
 
                 {
-                    !airdrop.startStatus && <Alert type='information' title='' message={ i18n._( t`Not yet started` ) } className='my-4 py-3 md:py-3 md:pl-4 md:pr-4' />
+                    !airdrop.startStatus && <Alert type='information' title='' message={ i18n._( t`Not yet started` ) } className='my-2 py-3 md:py-3 md:pl-4 md:pr-4 text-center' dismissable={ false } />
                 }
 
-                {/** Action button */ }
-                {
-                    airdrop.startStatus === true && <div className="flex flex-col md:flex-row space-y-4 md:space-x-4 md:space-y-0">
+
+                {/** Action button */
+                    airdrop.startStatus === true &&
+                    <div className="flex flex-col md:flex-row space-y-4 md:space-x-4 md:space-y-0">
 
                         {
                             /** Not elegible button */
