@@ -4,7 +4,7 @@ import ReactGA from 'react-ga'
 import { classNames } from '../../functions'
 
 const COLOR = {
-  default: 'text-primary hover:text-high-emphesis focus:text-high-emphesis',
+  default: 'text-dark-primary dark:text-light-primary opacity-80 hover:opacity-100',
   blue: 'text-blue opacity-80 hover:opacity-100',
   'blue-special': 'text-blue-special opacity-80 hover:opacity-100',
 }

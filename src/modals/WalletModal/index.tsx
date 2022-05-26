@@ -224,19 +224,20 @@ export default function WalletModal({
             onClose={toggleWalletModal}
           />
           <div>
-            {error instanceof UnsupportedChainIdError ? (
-              <h5>{i18n._(t`Please connect to the appropriate Evmos network.`)}</h5>
-            ) : (
-              i18n._(t`Error connecting. Try refreshing the page.`)
-            )}
+            {error instanceof UnsupportedChainIdError
+              ? i18n._(t`Please connect to the appropriate Evmos network.`)
+              : i18n._(t`Error connecting. Try refreshing the page.`)}
             <div style={{ marginTop: '1rem' }} />
             <div className="grid grid-flow-row-dense grid-cols-1 gap-5 overflow-y-auto md:grid-cols-2">
               {/* {[ChainId.EVMOS, ChainId.EVMOS_TESTNET].map((key: ChainId, i: number) => { */}
               {[ChainId.EVMOS, ChainId.EVMOS_TESTNET].map((key: ChainId, i: number) => {
                 if (chainId === key) {
                   return (
-                    <button key={i} className="w-full col-span-1 p-px rounded bg-gradient-to-r from-blue to-pink">
-                      <div className="flex items-center w-full h-full p-3 space-x-3 rounded bg-dark-1000">
+                    <button
+                      key={i}
+                      className="w-full col-span-1 p-px rounded-2.5xl bg-gradient-to-r from-blue-special to-pink-special"
+                    >
+                      <div className="flex items-center w-full h-full px-3 py-2 space-x-3 rounded-2.5xl bg-light-bg/90 dark:bg-dark-bg/90 transition-all">
                         <Image
                           src={NETWORK_ICON[key]}
                           alt={`Switch to ${NETWORK_LABEL[key]} Network`}
@@ -244,7 +245,7 @@ export default function WalletModal({
                           width="32px"
                           height="32px"
                         />
-                        <div className="font-bold text-primary">{NETWORK_LABEL[key]}</div>
+                        <div className="font-extrabold text-primary text-base">{NETWORK_LABEL[key]}</div>
                       </div>
                     </button>
                   )
@@ -271,7 +272,7 @@ export default function WalletModal({
                         console.log('Failed to switch to the network')
                       }
                     }}
-                    className="flex items-center w-full col-span-1 p-3 space-x-3 rounded cursor-pointer bg-dark-800 hover:bg-dark-700"
+                    className="flex items-center w-full col-span-1 px-3 py-2 space-x-3 rounded-2.5xl cursor-pointer border border-dark-primary/10 dark:border-light-primary/10 bg-light-bg dark:bg-dark-bg hover:bg-light-bg/80 dark:hover:bg-dark-bg/80 transition-all"
                   >
                     <Image
                       src={NETWORK_ICON[key]}
@@ -280,7 +281,7 @@ export default function WalletModal({
                       width="32px"
                       height="32px"
                     />
-                    <div className="font-bold text-primary">{NETWORK_LABEL[key]}</div>
+                    <div className="font-extrabold text-primary text-base">{NETWORK_LABEL[key]}</div>
                   </button>
                 )
               })}
@@ -334,9 +335,9 @@ export default function WalletModal({
             <div className="flex flex-col space-y-5 overflow-y-auto">{getOptions()}</div>
           )}
           {walletView !== WALLET_VIEWS.PENDING && (
-            <div className="flex flex-col text-center">
+            <div className="flex flex-col text-center text-base">
               <div className="text-secondary">{i18n._(t`New to Ethereum?`)}</div>
-              <ExternalLink href="https://ethereum.org/wallets/" color="blue">
+              <ExternalLink href="https://ethereum.org/wallets/" color="blue-special">
                 {i18n._(t`Learn more about wallets`)}
               </ExternalLink>
             </div>

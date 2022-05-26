@@ -66,12 +66,14 @@ export default function TokenStatsModal({ token, price }: { token: any; price: a
               <div className="flex items-center justify-between gap-2 space-x-3">
                 {token?.address && (
                   <ExternalLink
-                    color="blue"
+                    color="blue-special"
                     // startIcon={<LinkIcon size={16} />}
                     href={getExplorerLink(chainId, token['address'][chainId], 'address')}
                     className="outline-none"
                   >
-                    <Typography variant="sm">{i18n._(t`View Contract`)}</Typography>
+                    <Typography variant="base" weight={700}>
+                      {i18n._(t`View Contract`)}
+                    </Typography>
                   </ExternalLink>
                 )}
               </div>

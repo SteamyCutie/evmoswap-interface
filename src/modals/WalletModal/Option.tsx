@@ -27,8 +27,10 @@ export default function Option({
   const content = (
     <div
       onClick={onClick}
-      className={`flex items-center justify-between w-full p-3 rounded cursor-pointer ${
-        !active ? 'bg-dark-800 hover:bg-dark-700' : 'bg-dark-1000'
+      className={`flex items-center justify-between w-full px-5 py-3 rounded-2.5xl cursor-pointer transition-all ${
+        !active
+          ? 'bg-light-primary/90 hover:bg-light-primary dark:bg-dark-primary/90 dark:hover:bg-dark-primary'
+          : 'bg-light-primary/80 hover:bg-light-primary/90 dark:bg-dark-primary/80 dark:hover:bg-dark-primary/90'
       }`}
     >
       <div>
@@ -45,5 +47,9 @@ export default function Option({
     return <a href={link}>{content}</a>
   }
 
-  return !active ? content : <div className="w-full p-px rounded bg-gradient-to-r from-blue to-red">{content}</div>
+  return !active ? (
+    content
+  ) : (
+    <div className="w-full p-px rounded-2.5xl bg-gradient-to-r from-blue-special to-pink-special">{content}</div>
+  )
 }
