@@ -39,6 +39,7 @@ import LIMIT_ORDER_HELPER_ABI from '../constants/abis/limit-order-helper.json'
 import MAKER_ABI from '../constants/abis/maker.json'
 import MASTERCHEF_ABI from '../constants/abis/masterchef.json'
 import MERKLE_DISTRIBUTOR_ABI from '../constants/abis/merkle-distributor.json'
+import VEST_MERKLE_DISTRIBUTOR_ABI from '../constants/abis/vest-merkle-distributor.json'
 import MULTICALL2_ABI from '../constants/abis/multicall2.json'
 import ROUTER_ABI from '../constants/abis/router.json'
 import SUSHI_ABI from '../constants/abis/sushi.json'
@@ -328,4 +329,8 @@ export function useTreasuryContract ( withSignerIfPossible?: boolean ): Contract
 export const SIMPLE_INCENTIVE_CONTROLLER_INTERFACE = new Interface( SIMPLE_INCENTIVE_CONTROLLER_ABI );
 export function useSimpleIncentiveContract ( address?: string, withSignerIfPossible?: boolean ): Contract | null {
     return useContract( address, SIMPLE_INCENTIVE_CONTROLLER_ABI, withSignerIfPossible )
+}
+
+export function useAirdropContract ( address: string | undefined, isLinear?: boolean, withSignerIfPossible?: boolean ): Contract | null {
+    return useContract( address, isLinear ? VEST_MERKLE_DISTRIBUTOR_ABI : MERKLE_DISTRIBUTOR_ABI, withSignerIfPossible )
 }
