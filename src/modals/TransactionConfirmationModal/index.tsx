@@ -1,4 +1,4 @@
-import { AlertTriangle, ArrowUpCircle, CheckCircle } from 'react-feather'
+import { AlertTriangle } from 'react-feather'
 import { ChainId, Currency } from '@evmoswap/core-sdk'
 import React, { FC } from 'react'
 import { Trans, t } from '@lingui/macro'
@@ -12,10 +12,12 @@ import Modal from '../../components/Modal'
 import ModalHeader from '../../components/ModalHeader'
 import { RowFixed } from '../../components/Row'
 import { getExplorerLink } from '../../functions/explorer'
-import loadingRollingCircle from '../../animation/loading-rolling-circle.json'
+import loadingRollingCircleDark from '../../animation/loading-rolling-circle-dark.json'
+import loadingRollingCircleLight from '../../animation/loading-rolling-circle-light.json'
 import { useActiveWeb3React } from '../../services/web3'
 import useAddTokenToMetaMask from '../../hooks/useAddTokenToMetaMask'
 import { useLingui } from '@lingui/react'
+import { CheckIcon } from '@heroicons/react/outline'
 
 interface ConfirmationPendingContentProps {
   onDismiss: () => void
@@ -30,10 +32,11 @@ export const ConfirmationPendingContent: FC<ConfirmationPendingContentProps> = (
         <CloseIcon onClick={onDismiss} />
       </div>
       <div className="w-24 pb-4 m-auto">
-        <Lottie animationData={loadingRollingCircle} autoplay loop />
+        <Lottie animationData={loadingRollingCircleLight} className="flex dark:hidden" autoplay loop />
+        <Lottie animationData={loadingRollingCircleDark} className="hidden dark:flex" autoplay loop />
       </div>
       <div className="flex flex-col items-center justify-center gap-3">
-        <div className="text-xl font-bold text-high-emphesis">{i18n._(t`Waiting for Confirmation`)}</div>
+        <div className="text-lg font-extrabold text-primary">{i18n._(t`Waiting for Confirmation`)}</div>
         <div className="font-bold">{pendingText}</div>
         <div className="text-sm font-bold text-secondary">{i18n._(t`Confirm this transaction in your wallet`)}</div>
       </div>
@@ -64,17 +67,22 @@ export const TransactionSubmittedContent: FC<TransactionSubmittedContentProps> =
         <CloseIcon onClick={onDismiss} />
       </div>
       <div className="w-24 pb-4 m-auto">
-        <ArrowUpCircle strokeWidth={0.5} size={90} className="text-blue" />
+        <CheckIcon
+          strokeWidth={2}
+          width={80}
+          height={80}
+          className="text-green-special border-4 border-green-special rounded-2xl p-2"
+        />
       </div>
       <div className="flex flex-col items-center justify-center gap-1">
-        <div className="text-xl font-bold">{i18n._(t`Transaction Submitted`)}</div>
+        <div className="text-lg font-bold">{i18n._(t`Transaction Submitted`)}</div>
         {chainId && hash && (
           <ExternalLink href={getExplorerLink(chainId, hash, 'transaction')}>
-            <div className="font-bold text-blue">View on explorer</div>
+            <div className="font-bold text-blue-special">View on explorer</div>
           </ExternalLink>
         )}
         {currencyToAdd && library?.provider?.isMetaMask && (
-          <Button color="gradient" onClick={addToken} className="w-auto mt-4">
+          <Button color="gradient" onClick={addToken} className="w-auto mt-4 px-8 font-extrabold">
             {!success ? (
               <RowFixed className="mx-auto space-x-2">
                 <span>{i18n._(t`Add ${currencyToAdd.symbol} to MetaMask`)}</span>
@@ -83,18 +91,18 @@ export const TransactionSubmittedContent: FC<TransactionSubmittedContentProps> =
                   alt={i18n._(t`Add ${currencyToAdd.symbol} to MetaMask`)}
                   width={24}
                   height={24}
-                  className="ml-1"
+                  className="ml-1 rounded-none"
                 />
               </RowFixed>
             ) : (
               <RowFixed>
-                {i18n._(t`Added`)} {currencyToAdd.symbol}
+                {currencyToAdd.symbol} {i18n._(t`added`)}
                 {/* <CheckCircle className="ml-1.5 text-2xl text-green" size="16px" /> */}
               </RowFixed>
             )}
           </Button>
         )}
-        {/* <Button color="gradient" onClick={onDismiss} style={{ margin: '20px 0 0 0' }}>
+        {/* <Button color="gradient" className="font-extrabold" onClick={onDismiss} style={{ margin: '20px 0 0 0' }}>
           Close
         </Button> */}
       </div>
@@ -136,7 +144,7 @@ export const TransactionErrorContent: FC<TransactionErrorContentProps> = ({ mess
     <div className="grid gap-6">
       <div>
         <div className="flex justify-between">
-          <div className="text-lg font-medium text-high-emphesis">{i18n._(t`Error`)}</div>
+          <div className="text-base font-extrabold text-primary">{i18n._(t`Error`)}</div>
           <CloseIcon onClick={onDismiss} />
         </div>
         <div className="flex flex-col items-center justify-center gap-3">
@@ -145,7 +153,7 @@ export const TransactionErrorContent: FC<TransactionErrorContentProps> = ({ mess
         </div>
       </div>
       <div>
-        <Button color="gradient" size="lg" onClick={onDismiss}>
+        <Button color="gradient" size="lg" className="font-extrabold" onClick={onDismiss}>
           Dismiss
         </Button>
       </div>
@@ -180,14 +188,18 @@ const TransactionConfirmationModal: FC<ConfirmationModalProps> = ({
   return (
     <Modal isOpen={isOpen} onDismiss={onDismiss} maxHeight={90}>
       {attemptingTxn ? (
-        <ConfirmationPendingContent onDismiss={onDismiss} pendingText={pendingText} />
-      ) : hash ? (
-        <TransactionSubmittedContent
-          chainId={chainId}
-          hash={hash}
-          onDismiss={onDismiss}
-          currencyToAdd={currencyToAdd}
-        />
+        <div className="mb-6">
+          <ConfirmationPendingContent onDismiss={onDismiss} pendingText={pendingText} />
+        </div>
+      ) : !hash ? (
+        <div className="mb-6">
+          <TransactionSubmittedContent
+            chainId={chainId}
+            hash={hash}
+            onDismiss={onDismiss}
+            currencyToAdd={currencyToAdd}
+          />
+        </div>
       ) : (
         content()
       )}
