@@ -32,10 +32,10 @@ export function AdvancedSwapDetails({ trade, allowedSlippage }: AdvancedSwapDeta
   }, [trade])
 
   return !trade ? null : (
-    <div className="flex flex-col space-y-2">
+    <div className="grid gap-3">
       <div className="flex flex-row items-center justify-between">
         <span className="flex items-center">
-          <div className="text-sm text-secondary">{i18n._(t`Route`)}</div>
+          <div className="text-sm text-dark-primary dark:text-light-primary transition-all">{i18n._(t`Route`)}</div>
           <QuestionHelper text={i18n._(t`Routing through these tokens resulted in the best price for your trade.`)} />
         </span>
         <SwapRoute trade={trade} />
@@ -43,7 +43,7 @@ export function AdvancedSwapDetails({ trade, allowedSlippage }: AdvancedSwapDeta
 
       <RowBetween>
         <RowFixed>
-          <div className="text-sm text-secondary">
+          <div className="text-sm text-dark-primary dark:text-light-primary transition-all">
             {trade.tradeType === TradeType.EXACT_INPUT ? i18n._(t`Minimum received`) : i18n._(t`Maximum sent`)}
           </div>
           <QuestionHelper
@@ -53,7 +53,7 @@ export function AdvancedSwapDetails({ trade, allowedSlippage }: AdvancedSwapDeta
           />
         </RowFixed>
         <RowFixed>
-          <div className="text-sm font-bold text-high-emphesis">
+          <div className="text-sm font-bold text-dark-primary dark:text-light-primary transition-all">
             {trade.tradeType === TradeType.EXACT_INPUT
               ? `${trade.minimumAmountOut(allowedSlippage).toSignificant(6)} ${trade.outputAmount.currency.symbol}`
               : `${trade.maximumAmountIn(allowedSlippage).toSignificant(6)} ${trade.inputAmount.currency.symbol}`}
@@ -62,7 +62,9 @@ export function AdvancedSwapDetails({ trade, allowedSlippage }: AdvancedSwapDeta
       </RowBetween>
       <RowBetween>
         <RowFixed>
-          <div className="text-sm text-secondary">{i18n._(t`Price Impact`)}</div>
+          <div className="text-sm text-dark-primary dark:text-light-primary transition-all">
+            {i18n._(t`Price Impact`)}
+          </div>
           <QuestionHelper
             text={i18n._(t`The difference between the market price and estimated price due to trade size.`)}
           />
@@ -72,12 +74,14 @@ export function AdvancedSwapDetails({ trade, allowedSlippage }: AdvancedSwapDeta
 
       <RowBetween>
         <RowFixed>
-          <div className="text-sm text-secondary">{i18n._(t`Liquidity Provider Fee`)}</div>
+          <div className="text-sm text-dark-primary dark:text-light-primary transition-all">
+            {i18n._(t`Liquidity Provider Fee`)}
+          </div>
           <QuestionHelper
             text={i18n._(t`A portion of each trade (0.25%) goes to liquidity providers as a protocol incentive.`)}
           />
         </RowFixed>
-        <div className="text-sm font-bold text-high-emphesis">
+        <div className="text-sm font-bold text-dark-primary dark:text-light-primary transition-all">
           {realizedLPFee
             ? `${realizedLPFee.divide(6).multiply(5).toSignificant(4)} ${realizedLPFee.currency.symbol}`
             : '-'}
@@ -86,22 +90,26 @@ export function AdvancedSwapDetails({ trade, allowedSlippage }: AdvancedSwapDeta
 
       {/* <RowBetween>
         <RowFixed>
-          <div className="text-sm text-secondary">{i18n._(t`XEMO Fee`)}</div>
+          <div className="text-sm text-dark-primary dark:text-light-primary transition-all">{i18n._(t`XEMO Fee`)}</div>
           <QuestionHelper
             text={i18n._(t`A portion of each trade (0.05%) goes to XEMO holders as a protocol incentive.`)}
           />
         </RowFixed>
-        <div className="text-sm font-bold text-high-emphesis">
+        <div className="text-sm font-bold text-dark-primary dark:text-light-primary transition-all">
           {realizedLPFee ? `${realizedLPFee.divide(6).toSignificant(4)} ${realizedLPFee.currency.symbol}` : '-'}
         </div>
       </RowBetween> */}
 
       <RowBetween>
         <RowFixed>
-          <div className="text-sm text-secondary">{i18n._(t`Slippage tolerance`)}</div>
+          <div className="text-sm text-dark-primary dark:text-light-primary transition-all">
+            {i18n._(t`Slippage tolerance`)}
+          </div>
           <QuestionHelper text={i18n._(t`Slippage tolerance...`)} />
         </RowFixed>
-        <div className="text-sm font-bold text-high-emphesis">{allowedSlippage.toFixed(2)}%</div>
+        <div className="text-sm font-bold text-dark-primary dark:text-light-primary transition-all">
+          {allowedSlippage.toFixed(2)} %
+        </div>
       </RowBetween>
     </div>
   )

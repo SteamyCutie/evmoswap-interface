@@ -26,11 +26,11 @@ export default function TradingMode({ mode }: { mode: TRADING_MODE }) {
       </RowFixed>
       <RowFixed>
         {isStandard && (
-          <div className="text-sm font-medium cursor-help rounded-lg px-2.5 py-0.5 bg-light-bg dark:bg-dark-bg transition-all flex items-center flex-inline space-x-2">
+          <div className="text-sm font-medium cursor-help rounded-lg px-2.5 py-1.5 bg-light-bg dark:bg-dark-bg transition-all flex items-center flex-inline space-x-2">
             <QuestionHelper text={i18n._(t`Standard AMM, most efficient for trading assets with uncorrelated values`)}>
               <div className="flex items-center justify-center space-x-2 outline-none">
-                <span className="w-3 h-3 rounded-full bg-pink"></span>
-                <span className="text-xs transition-all text-dark-primary dark:text-light-primary">
+                <span className="w-3 h-3 rounded-full bg-pink-strong"></span>
+                <span className="text-xs font-extrabold transition-all text-dark-primary dark:text-light-primary">
                   {i18n._(t`Standard AMM`)}
                 </span>
               </div>
@@ -38,11 +38,13 @@ export default function TradingMode({ mode }: { mode: TRADING_MODE }) {
           </div>
         )}
         {isStable && (
-          <div className="text-sm font-medium cursor-help rounded-lg px-2.5 py-0.5 bg-dark-700 flex items-center flex-inline space-x-2">
+          <div className="text-sm font-medium cursor-help rounded-lg px-2.5 py-1.5 bg-light-bg dark:bg-dark-bg transition-all flex items-center flex-inline space-x-2">
             <QuestionHelper text={i18n._(t`Stable AMM, best for trading assets with correlated values`)}>
               <div className="flex items-center justify-center space-x-2 outline-none">
                 <span className="w-3 h-3 rounded-full bg-yellow"></span>
-                <span className="text-gray-300 mt-0.5">{i18n._(t`Stable AMM`)}</span>
+                <span className="text-xs font-extrabold text-dark-primary dark:text-light-primary mt-0.5 transition-all">
+                  {i18n._(t`Stable AMM`)}
+                </span>
               </div>
             </QuestionHelper>
           </div>

@@ -114,14 +114,14 @@ export const IfoCurrentCard = ({
         <div className="w-full rounded rounded-t-none bg-dark-900">
           {publicIfoData.status === 'finished' && (
             <div className="flex-row items-center w-full overflow-hidden">
-              <div className="flex rounded-[50%] w-[100%] translate-y-[-50%] scale-150 bg-[#372f47] h-[100px] justify-center items-end pb-4 md:pb-3 text-[12px] md:text-[16px] font-extrabold text-white/70">
+              <div className="flex rounded-[50%] w-[100%] translate-y-[-50%] scale-150 bg-[#372f47] h-[100px] justify-center items-end pb-4 md:pb-3 text-sm md:text-[16px] font-extrabold text-white/70">
                 Sale Finished!
               </div>
             </div>
           )}
           {publicIfoData.status === 'coming_soon' && (
             <div className="flex-row items-center w-full overflow-hidden">
-              <div className="flex rounded-[50%] w-[100%] translate-y-[-50%] scale-150 bg-dark-800 h-[100px] justify-center items-end pb-4 md:pb-3 text-[12px] md:text-[16px] font-extrabold text-white/70">
+              <div className="flex rounded-[50%] w-[100%] translate-y-[-50%] scale-150 bg-dark-800 h-[100px] justify-center items-end pb-4 md:pb-3 text-sm md:text-[16px] font-extrabold text-white/70">
                 {Math.floor(startTime / 1000 / 3600 / 24)} days {Math.floor(((startTime / 1000) % (3600 * 24)) / 3600)}{' '}
                 hours {Math.floor(((startTime / 1000) % 3600) / 60)} minutes {Math.floor((startTime / 1000) % 60)}{' '}
                 seconds
@@ -130,7 +130,7 @@ export const IfoCurrentCard = ({
           )}
           {publicIfoData.status === 'live' && (
             <div className="flex-row items-center w-full overflow-hidden">
-              <div className="flex rounded-[50%] w-[100%] translate-y-[-50%] scale-150 bg-opaque-blue h-[100px] justify-center items-end pb-4 md:pb-3 text-[12px] md:text-[16px] font-extrabold text-white/70">
+              <div className="flex rounded-[50%] w-[100%] translate-y-[-50%] scale-150 bg-opaque-blue h-[100px] justify-center items-end pb-4 md:pb-3 text-sm md:text-[16px] font-extrabold text-white/70">
                 {Math.floor(endTime / 1000 / 3600 / 24)} days {Math.floor(((endTime / 1000) % (3600 * 24)) / 3600)}{' '}
                 hours {Math.floor(((endTime / 1000) % 3600) / 60)} minutes {Math.floor((endTime / 1000) % 60)} seconds
               </div>
@@ -286,7 +286,7 @@ export const IfoCurrentCard = ({
                 </a>
               )}
             </div>
-            <div className="text-justify text-[12px] text-gray-400">{ifo.description}</div>
+            <div className="text-justify text-sm text-gray-400">{ifo.description}</div>
           </div>
         </div>
       )}

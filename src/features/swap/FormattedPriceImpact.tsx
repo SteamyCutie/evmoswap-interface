@@ -4,8 +4,8 @@ import React from 'react'
 import { warningSeverity } from '../../functions/prices'
 
 const SEVERITY = {
-  0: 'text-green',
-  1: 'text-high-emphesis',
+  0: 'text-green-special',
+  1: 'text-dark-primary dark:text-light-primary',
   2: 'text-yellow',
   3: 'text-red',
   4: 'text-red',
@@ -13,8 +13,8 @@ const SEVERITY = {
 
 export default function FormattedPriceImpact({ priceImpact }: { priceImpact?: Percent }) {
   return (
-    <div className={`text-sm font-bold ${SEVERITY[warningSeverity(priceImpact)]}`}>
-      {priceImpact ? `${priceImpact.multiply(-1).toFixed(2)}%` : '-'}
+    <div className={`text-sm font-extrabold transition-all ${SEVERITY[warningSeverity(priceImpact)]}`}>
+      {priceImpact ? `${priceImpact.multiply(-1).toFixed(2)} %` : '-'}
     </div>
   )
 }

@@ -19,7 +19,7 @@ export default function SwapModalFooter({
 }) {
   const { i18n } = useLingui()
   return (
-    <div className="p-6 mt-0 -m-6 rounded bg-dark-800">
+    <div className="p-6 mt-0 -m-6">
       {/* <div className="grid gap-1 pb-6">
         <div className="flex items-center justify-between">
           <div className="text-sm text-secondary">{i18n._(t`Price`)}</div>
@@ -95,7 +95,7 @@ export default function SwapModalFooter({
         onClick={onConfirm}
         disabled={disabledConfirm}
         id="confirm-swap-or-send"
-        className="text-xl font-semibold"
+        className="text-sm font-extrabold"
       >
         {i18n._(t`Confirm Swap`)}
       </ButtonError>

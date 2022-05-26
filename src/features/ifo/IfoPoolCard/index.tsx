@@ -245,26 +245,30 @@ const IfoPoolCard: React.FC<IfoCardProps> = ({ poolId, ifo, publicIfoData, walle
   return (
     <div className="space-y-6 rounded-3xl bg-dark-800">
       {/* <div className="flex flex-row justify-between p-6 rounded-t item-center bg-dark-600"> */}
-      <div className={`flex flex-row justify-between px-6 py-4 items-center rounded-t-3xl item-center bg-gradient-to-b ${poolId === PoolIds.poolBasic ? "from-[#6c4999] to-[#6d4db2]" : "from-[#00707f] to-[#19778c]"}`}>
+      <div
+        className={`flex flex-row justify-between px-6 py-4 items-center rounded-t-3xl item-center bg-gradient-to-b ${
+          poolId === PoolIds.poolBasic ? 'from-[#6c4999] to-[#6d4db2]' : 'from-[#00707f] to-[#19778c]'
+        }`}
+      >
         <div className="flex flex-row items-center text-2xl font-bold text-high-emphesis">
           {config.title}
           {/* <QuestionHelper text={config.tooltip} /> */}
         </div>
 
         {status === 'coming_soon' && (
-          <div className="bg-gray-700 bg-opacity-60 text-white opacity-60 h-[24px] pr-3 whitespace-nowrap inline-flex rounded-[12px] pl-3 font-bold text-xs items-center justify-center">
+          <div className="bg-gray-700 bg-opacity-60 text-white opacity-60 h-[24px] pr-3 whitespace-nowrap inline-flex rounded-sm pl-3 font-bold text-xs items-center justify-center">
             Upcoming
           </div>
         )}
 
         {status === 'live' && (
-          <div className="bg-gray-700 bg-opacity-60 text-green h-[24px] pr-3 whitespace-nowrap inline-flex rounded-[12px] pl-3 font-bold text-xs items-center justify-center">
+          <div className="bg-gray-700 bg-opacity-60 text-green h-[24px] pr-3 whitespace-nowrap inline-flex rounded-sm pl-3 font-bold text-xs items-center justify-center">
             Live
           </div>
         )}
 
         {status === 'finished' && (
-          <div className="bg-gray-600 bg-opacity-60 text-yellow  h-[24px] pr-3 whitespace-nowrap inline-flex rounded-[12px] pl-3 font-bold text-xs items-center justify-center">
+          <div className="bg-gray-600 bg-opacity-60 text-yellow  h-[24px] pr-3 whitespace-nowrap inline-flex rounded-sm pl-3 font-bold text-xs items-center justify-center">
             Finished
           </div>
         )}
@@ -345,12 +349,12 @@ const IfoPoolCard: React.FC<IfoCardProps> = ({ poolId, ifo, publicIfoData, walle
             {!walletConnected
               ? i18n._(t`Connect Wallet`)
               : !allowClaim
-                ? i18n._(t`Claim is not allowed`)
-                : !input
-                  ? i18n._(t`Commit`)
-                  : insufficientFunds
-                    ? i18n._(t`Insufficient Balance`)
-                    : i18n._(t`Commit`)}
+              ? i18n._(t`Claim is not allowed`)
+              : !input
+              ? i18n._(t`Commit`)
+              : insufficientFunds
+              ? i18n._(t`Insufficient Balance`)
+              : i18n._(t`Commit`)}
           </Button>
         )}
 
@@ -368,7 +372,7 @@ const IfoPoolCard: React.FC<IfoCardProps> = ({ poolId, ifo, publicIfoData, walle
 
       {/* info */}
       <IfoCardDetails poolId={poolId} ifo={ifo} publicIfoData={publicIfoData} walletIfoData={walletIfoData} />
-    </div >
+    </div>
   )
 }
 

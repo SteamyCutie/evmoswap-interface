@@ -138,7 +138,7 @@ const IfoCardData: React.FC<Props> = ({ ifo }) => {
                       <QuestionHelper text="Every person can only commit a limited amount, but may expect a higher return per token committed." />
                     </div>
                   </div>
-                  <div className="bg-gray-700/80 text-yellow h-[24px] pr-3 whitespace-nowrap inline-flex rounded-[12px] pl-3 font-bold text-xs items-center justify-center">
+                  <div className="bg-gray-700/80 text-yellow h-[24px] pr-3 whitespace-nowrap inline-flex rounded-sm pl-3 font-bold text-xs items-center justify-center">
                     Finished
                   </div>
                 </div>
@@ -210,7 +210,7 @@ const IfoCardData: React.FC<Props> = ({ ifo }) => {
                       <QuestionHelper text="Every person can only commit a limited amount, but may expect a higher return per token committed." />
                     </div>
                   </div>
-                  <div className="bg-gray-700/80 text-yellow h-[24px] pr-3 whitespace-nowrap inline-flex rounded-[12px] pl-3 font-bold text-xs items-center justify-center">
+                  <div className="bg-gray-700/80 text-yellow h-[24px] pr-3 whitespace-nowrap inline-flex rounded-sm pl-3 font-bold text-xs items-center justify-center">
                     Finished
                   </div>
                 </div>
@@ -329,7 +329,7 @@ const IfoCardData: React.FC<Props> = ({ ifo }) => {
                   </a>
                 )}
               </div>
-              <div className="text-justify text-[12px] text-gray-400">{ifo.description}</div>
+              <div className="text-justify text-sm text-gray-400">{ifo.description}</div>
             </div>
           </div>
         </div>

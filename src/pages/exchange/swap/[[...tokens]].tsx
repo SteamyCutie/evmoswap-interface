@@ -640,6 +640,7 @@ const Swap = () => {
                       !isValid || approvalState !== ApprovalState.APPROVED || (priceImpactSeverity > 3 && !isExpertMode)
                     }
                     error={isValid && priceImpactSeverity > 2}
+                    className="text-sm font-extrabold transition-all"
                   >
                     {priceImpactSeverity > 3 && !isExpertMode
                       ? i18n._(t`Price Impact High`)
@@ -667,6 +668,7 @@ const Swap = () => {
                 id="swap-button"
                 disabled={!isValid || (priceImpactSeverity > 3 && !isExpertMode) || !!swapCallbackError}
                 error={isValid && priceImpactSeverity > 2 && !swapCallbackError}
+                className="text-sm font-extrabold transition-all"
               >
                 {swapInputError
                   ? swapInputError

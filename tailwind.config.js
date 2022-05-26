@@ -43,7 +43,9 @@ module.exports = {
         'blue-600': '#418AE8',
         pink: '#f338c3',
         'pink-special': '#FF06D7E1',
+        'pink-strong': '#B102AA',
         green: '#7cff6b',
+        'green-special': '#26A17B',
         red: '#ff3838',
         'red-600': '#EA5858',
         yellow: '#ffd166',
@@ -91,6 +93,14 @@ module.exports = {
         sans: ['Montserrat', 'DM Sans', ...defaultTheme.fontFamily.sans],
       },
       fontSize: {
+        sm: [
+          '12px',
+          {
+            letterSpacing: '0',
+            lineHeight: '14.63px',
+            fontWeight: 400,
+          },
+        ],
         base: [
           '14px',
           {
@@ -107,10 +117,19 @@ module.exports = {
             fontWeight: 700,
           },
         ],
+        slg: [
+          '16px',
+          {
+            letterSpacing: '0',
+            lineHeight: '20.4px',
+            fontWeight: 400,
+          },
+        ],
       },
       borderRadius: {
         none: '0',
         px: '1px',
+        '2.5xl': '20px',
         DEFAULT: '0.625rem',
       },
       boxShadow: {

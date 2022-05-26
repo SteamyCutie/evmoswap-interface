@@ -32,7 +32,7 @@ export const IfoFinishedCard = ({
                 Base Sale
                 <QuestionHelper text="Every person can only commit a limited amount, but may expect a higher return per token committed." />
               </div>
-              <div className="bg-gray-700 text-pink h-[24px] pr-3 whitespace-nowrap inline-flex rounded-[12px] pl-3 font-bold text-xs items-center justify-center">
+              <div className="bg-gray-700 text-pink h-[24px] pr-3 whitespace-nowrap inline-flex rounded-sm pl-3 font-bold text-xs items-center justify-center">
                 Finished
               </div>
             </div>
@@ -100,7 +100,7 @@ export const IfoFinishedCard = ({
                 Unlimited Sale
                 <QuestionHelper text="Every person can only commit a limited amount, but may expect a higher return per token committed." />
               </div>
-              <div className="bg-gray-700 text-pink h-[24px] pr-3 whitespace-nowrap inline-flex rounded-[12px] pl-3 font-bold text-xs items-center justify-center">
+              <div className="bg-gray-700 text-pink h-[24px] pr-3 whitespace-nowrap inline-flex rounded-sm pl-3 font-bold text-xs items-center justify-center">
                 Finished
               </div>
             </div>
