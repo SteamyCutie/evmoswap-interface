@@ -29,7 +29,7 @@ export default function Airdrops (): JSX.Element {
                     { i18n._( t`EMO Airdrops` ) }
                 </Typography>
             </TridentHeader>
-            <TridentBody>
+            <TridentBody className='z-[0] lg:pt-6'>
                 <div className="grid md:grid-cols-2 w-full gap-6">
                     {
                         airdrops.map( ( airdrop, index ) => (

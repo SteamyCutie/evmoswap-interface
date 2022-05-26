@@ -12,7 +12,7 @@ import { ZERO } from '@evmoswap/core-sdk'
 import { contractErrorToUserReadableMessage } from '../exchange-stable/utils'
 import Alert from 'app/components/Alert'
 
-export default function AirdropCard ( { airdrop, evmoPrice, className }: { airdrop: Airdrop, evmoPrice: number, className?: string } ): JSX.Element {
+export default function AirdropCard ( { airdrop, evmoPrice, className = '' }: { airdrop: Airdrop, evmoPrice: number, className?: string } ): JSX.Element {
 
     const { i18n } = useLingui()
     const isLinear = airdrop.type == AirdropType.LINEAR;
@@ -73,7 +73,7 @@ export default function AirdropCard ( { airdrop, evmoPrice, className }: { airdr
 
     return (
 
-        <div className={ `flex flex-col  bg-dark-900 bg-opacity-80 rounded-b${className}` }>
+        <div className={ classNames( 'flex flex-col  bg-dark-900 bg-opacity-80 rounded-b', className ) }>
             <div className="flex flex-row items-center justify-between w-full p-6 bg-dark-800 text-lg rounded-t text-high-emphesis font-black">
                 { i18n._( t`${airdrop.title}` ) }
             </div>
