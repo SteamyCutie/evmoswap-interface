@@ -32,10 +32,10 @@ export default function TokenStatsModal({ token, price }: { token: any; price: a
 
   function getSummaryLine(title, value) {
     return (
-      <div className="flex flex-col w-full gap-2 px-3 py-1 rounded bg-dark-800">
-        <div className="flex items-center justify-between">
+      <div className="flex flex-col w-full gap-2 px-5 py-3 rounded-md bg-light-bg dark:bg-dark-bg transition-all">
+        <div className="flex items-center justify-between font-extrabold">
           {title}
-          <Typography variant="sm" className="flex items-center font-bold py-0.5">
+          <Typography variant="sm" className="flex items-center font-extrabold py-0.5">
             {value}
           </Typography>
         </div>
@@ -48,26 +48,26 @@ export default function TokenStatsModal({ token, price }: { token: any; price: a
       <div className="space-y-6">
         <div className="space-y-2">
           <ModalHeader title={token['name']} onClose={toggleWalletModal} />
-          <div className="flex flex-row w-full py-4">
+          <div className="flex flex-row space-x-4 w-full bg-light-bg/50 dark:bg-dark-bg/50 transition-all px-5 py-4 rounded-md">
             {token.icon && (
               <Image
                 src={token['icon']}
                 alt={token['name']}
-                width="64px"
-                height="64px"
+                width={42}
+                height={42}
                 objectFit="contain"
                 className="items-center"
               />
             )}
             <div className="flex flex-col flex-1">
               <div className="flex flex-row">
-                <div className="text-2xl text-primary">{token['symbol']}</div>
+                <div className="text-xl text-primary font-extrabold transition-all">{token['symbol']}</div>
               </div>
               <div className="flex items-center justify-between gap-2 space-x-3">
                 {token?.address && (
                   <ExternalLink
                     color="blue"
-                    startIcon={<LinkIcon size={16} />}
+                    // startIcon={<LinkIcon size={16} />}
                     href={getExplorerLink(chainId, token['address'][chainId], 'address')}
                     className="outline-none"
                   >
@@ -77,7 +77,7 @@ export default function TokenStatsModal({ token, price }: { token: any; price: a
               </div>
             </div>
             <div className="flex items-center text-primary text-bold">
-              <div className="ml-2 text-2xl text-primary">{`${emoPrice}`}</div>
+              <div className="ml-2 text-xl text-primary font-extrabold transition-all">{`${emoPrice}`}</div>
             </div>
           </div>
         </div>
@@ -85,7 +85,7 @@ export default function TokenStatsModal({ token, price }: { token: any; price: a
           <div className="flex items-center justify-between">
             <Typography weight={700}>{i18n._(t`Supply & Market Cap`)}</Typography>
           </div>
-          <div className="flex flex-col gap-1 -m-1 flex-nowrap">
+          <div className="flex flex-col gap-1.5 -m-1 flex-nowrap">
             {getSummaryLine(
               <Typography variant="sm" className="flex items-center py-0.5">
                 {i18n._(t`Total Supply`)}

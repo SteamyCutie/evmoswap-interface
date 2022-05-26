@@ -5,7 +5,8 @@ import { classNames } from '../../functions'
 
 const COLOR = {
   default: 'text-primary hover:text-high-emphesis focus:text-high-emphesis',
-  blue: 'text-blue opacity-80 hover:opacity-100 focus:opacity-100',
+  blue: 'text-blue opacity-80 hover:opacity-100',
+  'blue-special': 'text-blue-special opacity-80 hover:opacity-100',
 }
 
 interface ExternalLinkProps extends Omit<HTMLProps<HTMLAnchorElement>, 'as' | 'ref' | 'onClick'> {
@@ -50,7 +51,7 @@ const ExternalLink: FC<ExternalLinkProps> = ({
       href={href}
       onClick={handleClick}
       className={classNames(
-        'text-baseline whitespace-nowrap',
+        'text-baseline whitespace-nowrap transition-all font-extrabold',
         COLOR[color],
         (startIcon || endIcon) && 'space-x-1 flex items-center justify-center',
         className
