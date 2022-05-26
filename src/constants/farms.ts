@@ -167,7 +167,8 @@ export const FARMS: AddressMap = {
             name: 'EMO-BNB',
             token0: { id: '0xd41223b4Ed7e68275D3C567c237217Fbb2575568', name: 'EvmoSwap', symbol: 'EMO', decimals: 18 },
             token1: { id: '0xab0D0540b724D7A1BCF64A651fc245BEDb11C091', name: 'WBNB Token', symbol: 'BNB', decimals: 18 },
-            isVote: true,
+            migrate: true,
+            isVote: false,
             isZap: false,
         },
 
@@ -178,6 +179,7 @@ export const FARMS: AddressMap = {
             name: 'EMO-USDC',
             token0: { id: '0x9b5bb7F5BE680843Bcd3B54D4E5C6eE889c124Df', name: 'USD Coin', symbol: 'USDC', decimals: 6 },
             token1: { id: '0xd41223b4Ed7e68275D3C567c237217Fbb2575568', name: 'EvmoSwap', symbol: 'EMO', decimals: 18 },
+            migrate: true,
             isVote: true,
             isZap: false,
             farmType: FarmType.DOUBLE,
