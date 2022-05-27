@@ -306,7 +306,7 @@ export default function Boostv3 () {
             <div className="flex flex-col justify-start flex-grow w-full h-full px-4 md:px-6 py-4 space-y-6">
                 <Typography variant="base" color="red" className="text-red" weight={ 400 }>
                     Emergency Withdraw your locked EMOs<br/>
-                    1. Please go to <a className='text-yellow' href="https://legacy.evmoswap.org/veEMO" target="_blank" rel="noreferrer">https://legacy.evmoswap.org/veEMO</a>, Emergency Withdraw your EMOs.<br/>
+                    1. Please go to <a className='text-yellow' href="https://legacy.evmoswap.org/veEMO" target="_blank" rel="noreferrer">https://legacy.evmoswap.org/veEMO</a>, First Harvest lock rewards, then Emergency Withdraw your EMOs.<br/>
                     2. Then re-lock your EMOs again on this page.
                 </Typography>
                 {/** Top action cards */ }
