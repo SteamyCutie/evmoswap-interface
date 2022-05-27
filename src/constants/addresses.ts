@@ -3,17 +3,9 @@ import LPToken from 'app/features/migration/LPToken'
 
 type AddressMap = { [ chainId: number ]: string }
 
-// * this is the new contract addresses
-// reusing "VotingEscrow" at 0x6cA9DeE59FF631a9eE434eC16084F4a296f3e1ff
-// reusing "FeeDistributor" at 0xEb048e4955e22F78F111143208175D461dfe9731
-// reusing "MultiFeeDistribution" at 0xfa77099e581Ae71C838E75f0f19D166157943b99
-// reusing "MasterChef" at 0xf77CBdeaF930Bec07A794bCABede5eAF7818DAaA
-// reusing "RewardPool" at 0xeA0a0e1aB5Be3679b1C50656DbF0925E7b4DfaA0
-// reusing "Dashboard" at 0x48322B7dd8F6E50af6aDDD3cb3001e042bDb8B3B
-
 // masterChef
 export const MASTERCHEF_ADDRESS: AddressMap = {
-    [ ChainId.EVMOS ]: '0x96DbaF70d53C5214Bf1981B1671c58D2F5D38d9a',
+    [ ChainId.EVMOS ]: '0x8C1196601dd52998fa84b28b2F8DBADd3B3C9Df0',
     [ ChainId.EVMOS_TESTNET ]: '0x32233333229aAd6f58807eAeb34616F0D2C5808F',
 
     [ ChainId.BSC_TESTNET ]: '0xD3930575cf356f5cba89DD7Cdb06668e6C00F4a9',
@@ -21,14 +13,14 @@ export const MASTERCHEF_ADDRESS: AddressMap = {
 
 // boost
 export const VOTING_ESCROW_ADDRESS: AddressMap = {
-    [ ChainId.EVMOS ]: '0xADBDFf69C49a794cbe7B26164573FBB0F3d53b16',
+    [ ChainId.EVMOS ]: '0xb5B9E3FEFb86255E6a7e04Fd8e2fc98757a4aA4f',
     [ ChainId.EVMOS_TESTNET ]: '0xFF8ebFbA27E35c34923784DF0669aB727394A2b7',
 
     [ ChainId.BSC_TESTNET ]: '0x371F03EfC2c8EcC94e4B230425719e330879A7BD',
 }
 
 export const REWARD_POOL_ADDRESS: AddressMap = {
-    [ ChainId.EVMOS ]: '0xD01e70333f6308620C4A4B6CcB85Ff50c63a299c',
+    [ ChainId.EVMOS ]: '0xc4aa547E4141f78b9bb6F338507Ff84aE67D7c2c',
     [ ChainId.EVMOS_TESTNET ]: '0xAfE13a77f7e8fA5f932F19fc775E5431815464a5',
 
     [ ChainId.BSC_TESTNET ]: '0xC5fC6cC99f0Ca15c2E4778BF2b070baBe3327868',
@@ -36,19 +28,27 @@ export const REWARD_POOL_ADDRESS: AddressMap = {
 
 // multistaking
 export const MULTI_FEE_DISTRIBUTION_ADDRESSES: AddressMap = {
-    [ ChainId.EVMOS ]: '0xb5bD2166F9eB0D164EDCE298F5f86b4c97A55D76',
+    [ ChainId.EVMOS ]: '0x1F674ad24ab92779Dd49a2098b9fa14159A0309B',
     [ ChainId.EVMOS_TESTNET ]: '0x184d100d1CbcC3A85A98BA9d17946E38953990B5',
 
     [ ChainId.BSC_TESTNET ]: '0xAd959ccc60e84df3F5A7Bd03Cad7868f57C8aE02',
 }
 
 export const FEE_DISTRIBUTOR_ADDRESSES: AddressMap = {
-    [ ChainId.EVMOS ]: '0x9426C4005243a9bAAf5e68f5f8F2A7B76966E940',
+    [ ChainId.EVMOS ]: '0x05Ab3347866eD6006AB9Cd0Bcd9809A7c67ceBA7',
     [ ChainId.EVMOS_TESTNET ]: '0x6ceF1AF75fbB1F86240e219b6449193d8C7B5b0A',
 
     [ ChainId.BSC_TESTNET ]: '0xAc9127d883a03CB0B082D9753c1441210f59b89D',
 }
 
+export const DASHBOARD_ADDRESS: AddressMap = {
+    [ ChainId.EVMOS ]: '0x571E0a5a6AdF12bAFC4CE7aC37285E6C0D34FF11',
+    [ ChainId.EVMOS_TESTNET ]: '0xe2D1B5C7576A9691aD7c6c1F988557681B04B9Ae',
+
+    [ ChainId.BSC_TESTNET ]: '0x790E5EE47ff3AEF2B906155e39CE5C16390e1E0B',
+}
+
+// gemo
 export const GEMO_ADDRESS: AddressMap = {
     [ ChainId.EVMOS ]: '0x1B07efe61701770440d395e2666B91392e6B4A04',
     [ ChainId.EVMOS_TESTNET ]: '0xa002D878aaf42b2D7370eB7A371091162328D6e5',
@@ -61,13 +61,6 @@ export const TREASURY_ADDRESS: AddressMap = {
     [ ChainId.EVMOS_TESTNET ]: '0x4de1B99a508c3569C47807bb3e6C7fb41D4F2a50',
 
     [ ChainId.BSC_TESTNET ]: '0x0829D857Ec0c07fD9F7EbE7503b0bdbfE0e3d66F',
-}
-
-export const DASHBOARD_ADDRESS: AddressMap = {
-    [ ChainId.EVMOS ]: '0x7F18D0d34C63b1690f9b11E37F9b1f246ea5A75e',
-    [ ChainId.EVMOS_TESTNET ]: '0xe2D1B5C7576A9691aD7c6c1F988557681B04B9Ae',
-
-    [ ChainId.BSC_TESTNET ]: '0x790E5EE47ff3AEF2B906155e39CE5C16390e1E0B',
 }
 
 // stable coin pool

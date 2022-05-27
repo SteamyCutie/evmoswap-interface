@@ -29,6 +29,7 @@ import { timestampToDate } from 'app/features/boost/functions'
 import { EMOSPlaceholder, useFarmsReward, useLockedBalance, useLockerExtraRewards, useRewardsBalance, useStakingBalance } from 'app/features/boost/hooks/balances'
 import useCurrentBlockTimestamp from 'app/hooks/useCurrentBlockTimestamp'
 import QuestionHelper from 'app/components/QuestionHelper'
+import Typography from 'app/components/Typography'
 
 type VestingRow = {
     unlockTime: string, amount: CurrencyAmount<Currency>, expired: boolean, penaltyAmount: BigNumber;
@@ -303,7 +304,11 @@ export default function Boostv3 () {
                 <meta key="description" name="description" content="Boost EvmoSwap" />
             </Head>
             <div className="flex flex-col justify-start flex-grow w-full h-full px-4 md:px-6 py-4 space-y-6">
-
+                <Typography variant="base" color="red" className="text-red" weight={ 400 }>
+                    Emergency Withdraw your locked EMOs<br/>
+                    1. Please go to <a className='text-yellow' href="https://legacy.evmoswap.org/veEMO" target="_blank" rel="noreferrer">https://legacy.evmoswap.org/veEMO</a>, Emergency Withdraw your EMOs.<br/>
+                    2. Then re-lock your EMOs again on this page.
+                </Typography>
                 {/** Top action cards */ }
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 md:gap-4 lg:gap-6 mt-4 md:grid-cols-3">
 
@@ -313,6 +318,7 @@ export default function Boostv3 () {
                         value={ `${totalActiveVesting?.toFixed( 2 )} ${token.symbol}` }
                     >
                         <div>
+                        
                             <p className='my-2'><small>+ { CurrencyAmount.fromRawAmount( token, pendingFarmsRewards.toString() ).toFixed( 2 ) } { token.symbol } { i18n._( t`waiting to be vested` ) }</small></p>
                             {
                                 !account ? (
