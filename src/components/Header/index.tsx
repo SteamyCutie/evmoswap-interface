@@ -174,6 +174,18 @@ function AppBar(): JSX.Element {
                           </a>
                         </Link>
                       )}
+
+                      {chainId && featureEnabled(Feature.AIRDROP, chainId) && (
+                        <Link href={'/airdrops'}>
+                          <a
+                            id={`airdrops-nav-link`}
+                            className="p-2 text-baseline text-primary hover:text-high-emphesis focus:text-high-emphesis md:p-3 whitespace-nowrap"
+                          >
+                            {' '}
+                            {i18n._(t`Airdrop`)}
+                          </a>
+                        </Link>
+                      )}
                     </div>
                   </div>
                 </div>
@@ -341,6 +353,17 @@ function AppBar(): JSX.Element {
                     >
                       {' '}
                       {i18n._(t`Private sale`)}
+                    </a>
+                  </Link>
+                )}
+                {chainId && featureEnabled(Feature.AIRDROP, chainId) && (
+                  <Link href={'/airdrops'}>
+                    <a
+                      id={`airdrops-nav-link`}
+                      className="p-2 text-baseline text-primary hover:text-high-emphesis focus:text-high-emphesis md:p-3 whitespace-nowrap"
+                    >
+                      {' '}
+                      {i18n._(t`Airdrop`)}
                     </a>
                   </Link>
                 )}
