@@ -39,10 +39,10 @@ module.exports = {
       colors: {
         purple: '#a755dd',
         blue: '#2172e5', // 0993ec
-        'blue-special': '#4308EC',
+        'blue-special': '#0085FF',
         'blue-600': '#418AE8',
         pink: '#f338c3',
-        'pink-special': '#FF06D7E1',
+        'pink-special': '#FE3DD4E1',
         'pink-strong': '#B102AA',
         green: '#7cff6b',
         'green-special': '#26A17B',
