@@ -71,7 +71,7 @@ export const TransactionSubmittedContent: FC<TransactionSubmittedContentProps> =
           strokeWidth={2}
           width={80}
           height={80}
-          className="text-green-special border-4 border-green-special rounded-2xl p-2"
+          className="p-2 border-4 text-green-special border-green-special rounded-2xl"
         />
       </div>
       <div className="flex flex-col items-center justify-center gap-1">
@@ -82,7 +82,7 @@ export const TransactionSubmittedContent: FC<TransactionSubmittedContentProps> =
           </ExternalLink>
         )}
         {currencyToAdd && library?.provider?.isMetaMask && (
-          <Button color="gradient" onClick={addToken} className="w-auto mt-4 px-8 font-extrabold">
+          <Button color="gradient" onClick={addToken} className="w-auto px-8 mt-4 font-extrabold">
             {!success ? (
               <RowFixed className="mx-auto space-x-2">
                 <span>{i18n._(t`Add ${currencyToAdd.symbol} to MetaMask`)}</span>
@@ -191,7 +191,7 @@ const TransactionConfirmationModal: FC<ConfirmationModalProps> = ({
         <div className="mb-6">
           <ConfirmationPendingContent onDismiss={onDismiss} pendingText={pendingText} />
         </div>
-      ) : !hash ? (
+      ) : hash ? (
         <div className="mb-6">
           <TransactionSubmittedContent
             chainId={chainId}

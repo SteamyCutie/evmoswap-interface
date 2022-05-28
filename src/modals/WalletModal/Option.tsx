@@ -29,8 +29,8 @@ export default function Option({
       onClick={onClick}
       className={`flex items-center justify-between w-full px-5 py-3 rounded-2.5xl cursor-pointer transition-all ${
         !active
-          ? 'bg-light-primary/90 hover:bg-light-primary dark:bg-dark-primary/90 dark:hover:bg-dark-primary'
-          : 'bg-light-primary/80 hover:bg-light-primary/90 dark:bg-dark-primary/80 dark:hover:bg-dark-primary/90'
+          ? 'bg-light-bg/70 hover:bg-light-bg dark:bg-dark-bg/70 dark:hover:bg-dark-bg'
+          : 'bg-light-bg/60 hover:bg-light-bg/90 dark:bg-dark-bg/60 dark:hover:bg-dark-bg/90'
       }`}
     >
       <div>

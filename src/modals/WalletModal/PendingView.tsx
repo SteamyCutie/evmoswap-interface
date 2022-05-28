@@ -20,7 +20,7 @@ export default function PendingView({
 
   return (
     <div>
-      <div className="p-4 mb-5">
+      <div className="flex justify-center p-2 mb-5">
         <div>
           {error ? (
             <div>
