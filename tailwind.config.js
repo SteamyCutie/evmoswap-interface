@@ -84,9 +84,11 @@ module.exports = {
         'tahiti-gold': '#F5841F',
         'dark-primary': '#121212',
         'dark-bg': '#1A1A1A',
+        'dark-stroke': '#222222',
         dark: '#0F0F0F',
         'light-primary': '#FFFFFF',
         'light-bg': '#EFEFFB',
+        'light-stroke': '#D7D7FF',
         light: '#FBFBFB',
       },
       lineHeight: {
@@ -99,8 +101,8 @@ module.exports = {
         sm: [
           '12px',
           {
-            letterSpacing: '0',
-            lineHeight: '14.63px',
+            letterSpacing: '0.5px',
+            lineHeight: '16.63px',
             fontWeight: 400,
           },
         ],

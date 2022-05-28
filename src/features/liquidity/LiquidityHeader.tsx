@@ -5,26 +5,23 @@ import { useActiveWeb3React } from '../../services/web3'
 
 export default function LiquidityHeader({ input = undefined, output = undefined }: any): JSX.Element {
   const { chainId } = useActiveWeb3React()
+
+  const navLinkStyle =
+    'rounded-lg text-dark-primary text-base hover:text-dark-primary/60 dark:text-light-primary dark:hover:text-light-primary/60 transition-all'
+
   return (
-    <div className="grid grid-cols-2 rounded-md p-3px bg-dark-800">
-      <NavLink
-        activeClassName="font-bold text-high-emphesis bg-dark-900"
-        href={`/add/${currencyId(input)}/${currencyId(output)}`}
-      >
-        <a className="flex items-center justify-center px-4 py-3 text-base font-medium text-center rounded-md md:px-10 text-secondary hover:text-high-emphesis">
-          Add
-        </a>
+    <div className="flex p-2 pt-4 space-x-12 rounded-md">
+      <NavLink activeClassName="font-extrabold" href={`/add/${currencyId(input)}/${currencyId(output)}`}>
+        <a className={navLinkStyle}>Add liquidity</a>
       </NavLink>
       <NavLink
         onClick={(event) => {
           if (!output) event.preventDefault()
         }}
-        activeClassName="text-high-emphesis font-bold bg-dark-900"
+        activeClassName="font-extrabold"
         href={`/remove/${currencyId(input)}/${currencyId(output)}`}
       >
-        <a className="flex items-center justify-center px-4 py-3 text-base font-medium text-center rounded-md md:px-10 text-secondary hover:text-high-emphesis">
-          Remove
-        </a>
+        <a className={navLinkStyle}>Remove liquidity</a>
       </NavLink>
     </div>
   )

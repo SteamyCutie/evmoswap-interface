@@ -36,9 +36,9 @@ const ExchangeHeader: FC<ExchangeHeaderProps> = ({ input, output, allowedSlippag
   const isLimitOrder = router.asPath.startsWith('/limit-order')
 
   const navLinkStyle =
-    'font-bold rounded-lg bg-blue-special text-light-primary hover:text-light-primary/80 dark:text-light-primary dark:hover:text-light-primary/80 transition-all'
+    'font-extrabold rounded-lg bg-blue-special text-light-primary hover:text-light-primary/80 dark:text-light-primary dark:hover:text-light-primary/80 transition-all'
   const navTextStyle =
-    'flex items-center justify-center px-4 text-base font-medium text-center rounded-lg transition-all'
+    'flex items-center justify-center px-4 text-base font-extrabold text-center rounded-lg transition-all'
 
   return (
     <div className="flex items-center justify-between mb-4 space-x-3">

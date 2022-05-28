@@ -6,11 +6,12 @@ import React from 'react'
 import { t } from '@lingui/macro'
 import { useLingui } from '@lingui/react'
 import { useWalletModalToggle } from '../../state/application/hooks'
+import { classNames } from 'app/functions'
 
 const Web3Connect = ({
   color = 'gradient',
   size = 'sm',
-  className = 'px-6 py-3 font-bold text-white',
+  className = 'px-6 py-3 font-extrabold text-white',
   ...rest
 }: ButtonProps) => {
   const { i18n } = useLingui()
@@ -18,7 +19,10 @@ const Web3Connect = ({
   const { error } = useWeb3React()
   return error ? (
     <div
-      className="flex items-center justify-center px-4 py-2 font-semibold text-white rounded-[14px] bg-opacity-80 bg-red hover:bg-opacity-100"
+      className={classNames(
+        `flex items-center justify-center px-4 py-2 text-white rounded-[14px] bg-opacity-80 bg-red hover:bg-opacity-1004`,
+        className
+      )}
       onClick={toggleWalletModal}
     >
       <div className="mr-1">

@@ -41,6 +41,8 @@ import { useRouterContract } from '../../../hooks/useContract'
 import { useTransactionAdder } from '../../../state/transactions/hooks'
 import useTransactionDeadline from '../../../hooks/useTransactionDeadline'
 import { useWalletModalToggle } from '../../../state/application/hooks'
+import { ChevronRightIcon } from '@heroicons/react/outline'
+import { PlusIcon } from '@heroicons/react/solid'
 
 const DEFAULT_ADD_V2_SLIPPAGE_TOLERANCE = new Percent(50, 10_000)
 
@@ -323,17 +325,9 @@ export default function Add() {
       <Container id="add-liquidity-page" className="py-4 space-y-6 md:py-8 lg:py-12" maxWidth="2xl">
         <div className="flex items-center justify-between px-4 mb-5">
           <NavLink href="/pool">
-            <a className="flex items-center space-x-2 text-base font-medium text-center cursor-pointer text-secondary hover:text-high-emphesis">
+            <a className="flex items-center space-x-2 text-base text-center transition-all cursor-pointer text-dark-primary hover:text-dark-primary/80 dark:text-light-primary dark:hover:text-light-primary/80">
               <span>{i18n._(t`View Liquidity Positions`)}</span>
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                className="w-4 h-4"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-              >
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 5l7 7-7 7" />
-              </svg>
+              <ChevronRightIcon width={18} height={18} />
             </a>
           </NavLink>
           {/* <button
@@ -365,10 +359,11 @@ export default function Add() {
             )
           }
           type="information"
+          dismissable={false}
         />
 
         <DoubleGlowShadow>
-          <div className="p-4 space-y-4 rounded bg-dark-900" style={{ zIndex: 1 }}>
+          <div className="gap-4 p-6 transition-all rounded-3xl bg-light-bg dark:bg-dark-bg z-1">
             {/* <AddRemoveTabs creating={isCreate} adding={true} defaultSlippage={DEFAULT_ADD_V2_SLIPPAGE_TOLERANCE} /> */}
 
             <ExchangeHeader
@@ -411,16 +406,15 @@ export default function Add() {
                   showCommonBases
                 />
 
-                <AutoColumn justify="space-between" className="py-2.5">
-                  <AutoRow justify={isExpertMode ? 'space-between' : 'flex-start'} style={{ padding: '0 1rem' }}>
-                    <button className="z-10 -mt-6 -mb-6 rounded-full cursor-default bg-dark-900 p-3px">
-                      <div className="p-3 rounded-full bg-dark-800">
-                        <Plus size="32" />
+                <AutoColumn justify="space-between" className="pl-2 -mt-4 -mb-6 transition-all">
+                  <div className="flex flex-wrap justify-center w-full px-4">
+                    <div className="p-1.5 rounded-2.5xl bg-light-bg dark:bg-dark-bg">
+                      <div className="p-2 transition-all bg-white rounded-2xl hover:bg-white/80 dark:bg-dark-primary dark:hover:bg-dark-primary/80 text-dark-bg dark:text-light-bg">
+                        <PlusIcon width={24} height={24} />
                       </div>
-                    </button>
-                  </AutoRow>
+                    </div>
+                  </div>
                 </AutoColumn>
-
                 <CurrencyInputPanel
                   value={formattedAmounts[Field.CURRENCY_B]}
                   onUserInput={onFieldBInput}
@@ -436,23 +430,23 @@ export default function Add() {
               </div>
 
               {currencies[Field.CURRENCY_A] && currencies[Field.CURRENCY_B] && pairState !== PairState.INVALID && (
-                <div className="p-1 rounded bg-dark-800">
+                <div className="p-0.5 rounded-2xl bg-light-stroke dark:bg-dark-stroke">
                   <LiquidityPrice
                     currencies={currencies}
                     price={price}
                     noLiquidity={noLiquidity}
                     poolTokenPercentage={poolTokenPercentage}
-                    className="bg-dark-900"
+                    className="bg-light-primary dark:bg-dark-primary rounded-1.5xl"
                   />
                 </div>
               )}
 
               {addIsUnsupported ? (
-                <Button color="blue" size="lg" disabled>
+                <Button color="blue" size="lg" disabled className="font-extrabold">
                   {i18n._(t`Unsupported Asset`)}
                 </Button>
               ) : !account ? (
-                <Web3Connect size="lg" color="blue" className="w-full" />
+                <Web3Connect size="lg" color="gradient" className="w-full py-4 font-extrabold" />
               ) : (
                 (approvalA === ApprovalState.NOT_APPROVED ||
                   approvalA === ApprovalState.PENDING ||

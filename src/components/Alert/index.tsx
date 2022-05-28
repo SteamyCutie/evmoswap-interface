@@ -5,7 +5,7 @@ import { classNames } from '../../functions'
 
 const TYPE = {
   information: {
-    color: 'bg-purple bg-opacity-20 text-high-emphesis',
+    color: 'bg-blue-special text-high-emphesis',
     icon: (
       <svg
         width="33"
@@ -84,8 +84,10 @@ export default function Alert({
   return message && show ? (
     <div
       className={classNames(
-        'block relative w-full rounded text-sm p-4 pl-6 md:p-6 md:pl-8',
-        show && 'pr-10 md:pr-12',
+        `block relative w-full rounded text-sm p-3 pl-${dismissable ? '5' : '3'} md:p-5 md:pl-${
+          dismissable ? '7' : '5'
+        }`,
+        show && `pr-6 md:pr-${dismissable ? '8' : '6'}`,
         color,
         className
       )}
@@ -94,7 +96,7 @@ export default function Alert({
       <div className="flex items-center">
         {showIcon && <div className="flex-shrink-0">{icon}</div>}
         <div className={!showIcon ? 'ml-0' : 'ml-3'}>
-          <p className="text-sm transition-all md:text-base text-dark-primary dark:text-light-primary">{message}</p>
+          <p className="text-sm transition-all md:text-sm text-light-primary">{message}</p>
         </div>
       </div>
       {dismissable && (
