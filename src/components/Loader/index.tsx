@@ -25,7 +25,7 @@ export default function Loader({
         strokeWidth="2.5"
         strokeLinecap="round"
         strokeLinejoin="round"
-        stroke={stroke}
+        stroke="currentColor"
       />
     </svg>
   )

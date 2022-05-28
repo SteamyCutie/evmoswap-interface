@@ -191,7 +191,7 @@ export function CurrencySearch({
             ref={inputRef as RefObject<HTMLInputElement>}
             onChange={handleInput}
             onKeyDown={handleEnter}
-            className="w-full bg-transparent border border-dark-700 focus:border-transparent focus:border-gradient-r-blue-red-dark-900 rounded placeholder-secondary focus:placeholder-primary font-bold text-base px-6 py-3.5"
+            className="w-full transition-all bg-transparent border border-light-bg dark:border-dark-bg focus:border-transparent focus:border-gradient-r-blue-pink-special-light-primary dark:focus:border-transparent dark:focus:border-gradient-r-blue-pink-special-dark-primary rounded placeholder-dark-primary/90 focus:placeholder-dark-primary dark:placeholder-light-primary/90 dark:focus:placeholder-light-primary font-bold text-base px-6 py-3.5"
           />
         </div>
       )}
@@ -206,11 +206,11 @@ export function CurrencySearch({
           <ImportRow token={searchToken} showImportView={showImportView} setImportToken={setImportToken} />
         </Column>
       ) : filteredSortedTokens?.length > 0 || filteredInactiveTokens?.length > 0 ? (
-        <div className="h-screen">
+        <div className="h-screen p-2 transition-all border-2 border-light-bg dark:border-dark-bg rounded-2xl">
           <AutoSizer disableWidth>
             {({ height }) => (
               <CurrencyList
-                height={height}
+                height={height - 4}
                 currencies={includeNativeCurrency ? filteredSortedTokensWithETH : filteredSortedTokens}
                 otherListTokens={filteredInactiveTokens}
                 onCurrencySelect={handleCurrencySelect}
@@ -226,7 +226,7 @@ export function CurrencySearch({
         </div>
       ) : (
         <Column style={{ padding: '20px', height: '100%' }}>
-          <div className="mb-8 text-center">{i18n._(t`No results found`)}</div>
+          <div className="mb-8 text-sm text-center">{i18n._(t`No results found`)}</div>
         </Column>
       )}
       {/* MODIFY: EVMOSWAP */}

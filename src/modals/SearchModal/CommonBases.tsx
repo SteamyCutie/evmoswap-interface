@@ -23,7 +23,7 @@ export default function CommonBases({
 
   return (
     <div className="flex flex-col space-y-2">
-      <div className="flex flex-row">
+      <div className="flex flex-row items-center text-base">
         Common bases
         <QuestionHelper text="These tokens are commonly paired with other tokens." />
       </div>
@@ -37,7 +37,7 @@ export default function CommonBases({
               onClick={() => !isSelected && onSelect(currency)}
               disabled={isSelected}
               key={currencyId(currency)}
-              className="flex items-center p-2 m-1 space-x-2 rounded bg-dark-800 hover:bg-dark-700 disabled:bg-dark-1000 disabled:cursor-not-allowed"
+              className="flex items-center px-3 py-2 m-1 space-x-2 transition-all rounded-2xl bg-light-bg/90 hover:bg-light-bg/40 disabled:bg-light-bg dark:bg-dark-bg/90 dark:hover:bg-dark-bg/40 dark:disabled:bg-dark-bg disabled:cursor-not-allowed"
             >
               <CurrencyLogo currency={currency} />
               <Typography variant="sm" className="font-semibold">

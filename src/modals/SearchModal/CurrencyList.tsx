@@ -121,7 +121,7 @@ function CurrencyRow({
     <RowBetween
       id={`token-item-${key}`}
       style={style}
-      className="px-5 py-1 rounded cursor-pointer hover:bg-dark-800"
+      className="px-4 py-1 transition-all bg-transparent rounded cursor-pointer dark:bg-transparent hover:bg-light-bg dark:hover:bg-dark-bg"
       onClick={() => (isSelected ? null : onSelect())}
       disabled={isSelected}
       selected={otherSelected}
@@ -131,10 +131,10 @@ function CurrencyRow({
           <CurrencyLogo currency={currency} size={32} />
         </div>
         <div>
-          <div title={currency.name} className="text-sm font-medium">
+          <div title={currency.name} className="text-sm font-extrabold">
             {currency.symbol}
           </div>
-          <div className="text-sm font-thin truncate">
+          <div className="text-xs font-thin truncate">
             {currency.name} {!isOnSelectedList && customAdded && '• Added by user'}
           </div>
         </div>

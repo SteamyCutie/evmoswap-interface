@@ -21,13 +21,9 @@ const ModalHeader: FC<ModalHeaderProps> = ({
       className={`flex items-center justify-between mb-4 border-b border-b-dark-bg/10  dark:border-b-white/10 pb-2 ${className}`}
     >
       {onBack && <ChevronLeftIcon onClick={onBack} width={24} height={24} className="cursor-pointer" />}
-      {title && (
-        <Typography component="h3" variant="lg" className="font-bold">
-          {title}
-        </Typography>
-      )}
+      {title && <div className="text-lg font-extrabold">{title}</div>}
       <div
-        className="flex items-center justify-center cursor-pointer text-dark-primary hover:text-dark-primary/80 dark:text-light-primary dark:hover:text-light-primary/80 transition-all"
+        className="flex items-center justify-center transition-all cursor-pointer text-dark-primary hover:text-dark-primary/80 dark:text-light-primary dark:hover:text-light-primary/80"
         onClick={onClose}
       >
         <XIcon width={24} height={24} />
