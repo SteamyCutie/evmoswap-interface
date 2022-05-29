@@ -462,6 +462,7 @@ export default function Add() {
                             size="lg"
                             onClick={approveACallback}
                             disabled={approvalA === ApprovalState.PENDING}
+                            className="font-extrabold"
                             style={{
                               width:
                                 approvalB !== ApprovalState.APPROVED && currencyB !== NATIVE[chainId] ? '48%' : '100%',
@@ -480,6 +481,7 @@ export default function Add() {
                             size="lg"
                             onClick={approveBCallback}
                             disabled={approvalB === ApprovalState.PENDING}
+                            className="font-extrabold"
                             style={{
                               width:
                                 approvalA !== ApprovalState.APPROVED && currencyA !== NATIVE[chainId] ? '48%' : '100%',
@@ -504,6 +506,7 @@ export default function Add() {
                           !isValid || approvalA !== ApprovalState.APPROVED || approvalB !== ApprovalState.APPROVED
                         }
                         error={!isValid && !!parsedAmounts[Field.CURRENCY_A] && !!parsedAmounts[Field.CURRENCY_B]}
+                        className="font-extrabold"
                       >
                         {error ?? i18n._(t`Confirm Adding Liquidity`)}
                       </ButtonError>

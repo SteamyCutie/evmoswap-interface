@@ -25,9 +25,9 @@ export default function TradePrice({ price, showInverted, setShowInverted, class
     formattedPrice = '0'
   }
 
-  const label = showInverted ? `${price.quoteCurrency?.symbol}` : `${price.baseCurrency?.symbol} `
+  const label = showInverted ? `${price?.quoteCurrency?.symbol}` : `${price?.baseCurrency?.symbol} `
 
-  const labelInverted = showInverted ? `${price.baseCurrency?.symbol} ` : `${price.quoteCurrency?.symbol}`
+  const labelInverted = showInverted ? `${price?.baseCurrency?.symbol} ` : `${price?.quoteCurrency?.symbol}`
 
   const flipPrice = useCallback(() => setShowInverted(!showInverted), [setShowInverted, showInverted])
 
@@ -45,13 +45,22 @@ export default function TradePrice({ price, showInverted, setShowInverted, class
       <Typography variant="sm" className="select-none">
         {i18n._(t`Rate`)}
       </Typography>
-      <div className="flex items-center space-x-4">
+      <div className="flex items-center space-x-2 justify-center">
         <Typography variant="sm" className="font-extrabold select-none">
           {text}
         </Typography>
-        <svg width="2" height="12" viewBox="0 0 2 12" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <line x1="0.5" x2="0.5" y2="12" stroke="currentColor" />
-        </svg>
+        <div>
+          <svg
+            width="2"
+            height="12"
+            viewBox="0 0 2 12"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+            className="ml-0.5"
+          >
+            <line x1="0.5" x2="0.5" y2="12" stroke="currentColor" />
+          </svg>
+        </div>
         <SwitchHorizontalIcon width={18} height={18} />
       </div>
     </div>
