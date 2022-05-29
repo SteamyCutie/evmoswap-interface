@@ -120,7 +120,10 @@ const Footer = () => {
   }
 
   return (
-    <footer className="z-10 w-full p-0 mt-0 bg-light dark:bg-dark transition-all" aria-labelledby="footer-heading">
+    <footer
+      className="z-10 w-full p-0 mt-0 bg-light-primary dark:bg-dark-primary transition-all"
+      aria-labelledby="footer-heading"
+    >
       <h2 id="footer-heading" className="sr-only">
         Footer
       </h2>
@@ -134,9 +137,9 @@ const Footer = () => {
               <div className="hidden dark:grid">
                 <Image src="/logo-dark.png" alt="dark logo" width="191px" height="33px" />
               </div>
-              <div className="flex space-x-0 w-[90px] h-[30px] p-1 bg-[#EFEFFB] dark:bg-[#262230] rounded-md transition-colors">
+              <div className="flex space-x-0 w-[90px] h-[30px] p-1 bg-light-bg dark:bg-dark-bg rounded-md transition-colors">
                 <div
-                  className="w-[42.5px] h-[22px] items-center justify-center select-none cursor-pointer flex rounded-[4px] bg-transparent dark:bg-dark-primary transition-colors hover:bg-dark-primary/40"
+                  className="w-[42.5px] h-[22px] items-center justify-center select-none cursor-pointer flex rounded-[4px] bg-transparent dark:bg-dark-primary transition-colors hover:bg-dark-primary/20"
                   onClick={handleDarkTheme}
                 >
                   <Image src="/moon.png" alt="moon" width={14} height={14} />
@@ -149,7 +152,7 @@ const Footer = () => {
                 </div>
               </div>
             </div>
-            <p className="text-base text-dark-primary dark:text-light-primary transition-all">
+            <p className="text-sm text-dark-primary dark:text-light-primary transition-all">
               {i18n._(
                 t`EvmoSwap is a Decentralized Autonomous Organization (DAO) that offers a full suite of tools to explore and engage with decentralized finance opportunities.`
               )}
@@ -181,7 +184,7 @@ const Footer = () => {
                     <li key={item.name}>
                       <a
                         href={item.href}
-                        className="text-base transition-all hover:scale-105 active:scale-95 text-dark-primary dark:text-light-primary hover:text-dark-primary/60 dark:hover:text-light-primary/60 active:text-dark-primary dark:active:text-light-primary/80"
+                        className="text-sm transition-all hover:scale-105 active:scale-95 text-dark-primary dark:text-light-primary hover:text-dark-primary/60 dark:hover:text-light-primary/60 active:text-dark-primary dark:active:text-light-primary/80"
                         target="_blank"
                         rel="noreferrer"
                       >
@@ -201,7 +204,7 @@ const Footer = () => {
                   <li key={item.name}>
                     <a
                       href={item.href}
-                      className="text-base transition-all hover:scale-105 active:scale-95 text-dark-primary dark:text-light-primary hover:text-dark-primary/60 dark:hover:text-light-primary/60 active:text-dark-primary dark:active:text-light-primary/80"
+                      className="text-sm transition-all hover:scale-105 active:scale-95 text-dark-primary dark:text-light-primary hover:text-dark-primary/60 dark:hover:text-light-primary/60 active:text-dark-primary dark:active:text-light-primary/80"
                       target="_blank"
                       rel="noreferrer"
                     >
@@ -220,7 +223,7 @@ const Footer = () => {
                   <li key={item.name}>
                     <a
                       href={item.href}
-                      className="text-base transition-all hover:scale-105 active:scale-95 text-dark-primary dark:text-light-primary hover:text-dark-primary/60 dark:hover:text-light-primary/60 active:text-dark-primary dark:active:text-light-primary/80"
+                      className="text-sm transition-all hover:scale-105 active:scale-95 text-dark-primary dark:text-light-primary hover:text-dark-primary/60 dark:hover:text-light-primary/60 active:text-dark-primary dark:active:text-light-primary/80"
                       target="_blank"
                       rel="noreferrer"
                     >
