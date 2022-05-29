@@ -48,7 +48,7 @@ export const Input = React.memo(
           maxLength={3}
           className={classNames(
             align === 'right' && 'text-right',
-            'font-medium bg-transparent whitespace-nowrap overflow-ellipsis flex-auto',
+            'font-extrabold bg-transparent whitespace-nowrap overflow-ellipsis flex-auto',
             className
           )}
           style={{ fontSize }}

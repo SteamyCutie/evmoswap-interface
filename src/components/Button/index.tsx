@@ -15,7 +15,7 @@ const FILLED = {
   blue: 'bg-blue bg-opacity-90 w-full rounded text-high-emphesis hover:bg-opacity-100 disabled:bg-opacity-90',
   'blue-special': 'bg-blue-special bg-opacity-90 w-full text-light-primary hover:bg-opacity-100 disabled:bg-opacity-90',
   pink: 'bg-gradient-to-r from-pink to-opaque-pink w-full rounded text-high-emphesis opacity-90 hover:opacity-100 disabled:bg-opacity-90',
-  gray: 'rounded shadow-sm focus:ring-2 focus:ring-offset-2 bg-opacity-90 w-full bg-[#A1A1A1] dark:bg-[#4B4B4B] text-dark-primary dark:text-light-primary hover:bg-opacity-100 focus:ring-offset-dark-700 focus:ring-dark-900 disabled:bg-opacity-90',
+  gray: 'rounded shadow-sm focus:ring-2 focus:ring-offset-2 bg-opacity-90 w-full bg-light-border dark:bg-[#4B4B4B] text-dark-primary dark:text-light-primary hover:bg-opacity-100 focus:ring-offset-dark-700 focus:ring-dark-900 disabled:bg-opacity-90',
   green: 'bg-green bg-opacity-90 w-full rounded text-high-emphesis hover:bg-opacity-100 disabled:bg-opacity-90',
   gradient:
     'w-full text-high-emphesis bg-gradient-to-r from-blue-special to-pink-special opacity-90 hover:opacity-100 disabled:bg-opacity-90',
@@ -23,13 +23,14 @@ const FILLED = {
 
 const OUTLINED = {
   default: 'bg-transparent opacity-90 hover:opacity-100',
-  red: 'bg-red bg-opacity-20 outline-red rounded text-red hover:bg-opacity-40 disabled:bg-opacity-20',
+  red: 'bg-red bg-opacity-40 outline-red rounded text-light-primary hover:bg-opacity-80 disabled:bg-opacity-40 transition-all',
   blue: 'bg-blue bg-opacity-20 outline-blue rounded text-blue hover:bg-opacity-40 disabled:bg-opacity-20',
   'blue-special':
     'bg-blue-special bg-opacity-20 outline-blue-special rounded text-blue-special hover:bg-opacity-40 disabled:bg-opacity-20',
   pink: 'bg-pink bg-opacity-20 outline-pink rounded text-pink hover:bg-opacity-40 disabled:bg-opacity-20',
-  gray: 'bg-dark-700 bg-opacity-20 outline-gray rounded text-gray hover:bg-opacity-40 disabled:bg-opacity-20',
-  green: 'bg-green bg-opacity-20 border border-green rounded text-green hover:bg-opacity-40 disabled:bg-opacity-20',
+  gray: 'bg-transparent border border-light-border dark:border-dark-border rounded text-gray hover:bg-opacity-40 disabled:bg-opacity-20',
+  green:
+    'bg-transparent border border-green-special/80 rounded text-green-special hover:border-green-specical disabled:border-green-special/80',
   gradient:
     'border border-transparent border-gradient-r-blue-red-dark-900 opacity-90 hover:opacity-100 disabled:bg-opacity-20',
 }
@@ -108,16 +109,28 @@ export const ButtonConfirmed = ({
 }
 
 export const ButtonError = ({
+  variant,
+  color,
   error,
   disabled,
   ...rest
 }: {
+  variant?: string
+  color?: string
   error?: boolean
   disabled?: boolean
 } & ButtonProps) => {
   if (error) {
-    return <Button color="red" size="lg" disabled={disabled} {...rest} />
+    return <Button variant={variant} color="red" size="lg" disabled={disabled} {...rest} />
   } else {
-    return <Button color={disabled ? 'gray' : 'gradient'} disabled={disabled} size="lg" {...rest} />
+    return (
+      <Button
+        variant={variant}
+        color={disabled ? 'gray' : color ? color : 'gradient'}
+        disabled={disabled}
+        size="lg"
+        {...rest}
+      />
+    )
   }
 }

@@ -9,21 +9,21 @@ interface PercentInputPanelProps {
 
 export default function PercentInputPanel({ value, onUserInput, id }: PercentInputPanelProps) {
   return (
-    <div id={id} className="p-5 rounded bg-dark-800">
-      <div className="flex flex-col justify-between space-y-3 sm:space-y-0 sm:flex-row">
-        <div className="w-full text-white sm:w-2/5" style={{ margin: 'auto 0px' }}>
-          Amount to Remove
-        </div>
-        <div className="flex items-center w-full p-3 space-x-3 text-xl font-bold rounded bg-dark-900 sm:w-3/5">
+    <div
+      id={id}
+      className="p-5 rounded-2xl text-dark-primary dark:text-light-primary bg-light-primary dark:bg-dark-primary transition-all"
+    >
+      <div className="grid gap-3">
+        <div className="w-full text-base">Your rewards</div>
+        <div className="flex items-center w-full px-4 py-3 space-x-3 text-xl font-bold rounded bg-light-bg dark:bg-dark-bg transition-all">
           <Input.Percent
             className="token-amount-input"
             value={value}
             onUserInput={(val) => {
               onUserInput(val)
             }}
-            align="right"
           />
-          <div className="pl-2 text-xl font-bold">%</div>
+          <div className="pl-2 text-xl">%</div>
         </div>
       </div>
     </div>

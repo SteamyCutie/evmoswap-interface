@@ -51,7 +51,7 @@ export const AddressInput = React.memo(
           type="text"
           className={classNames(
             align === 'right' && 'text-right',
-            'font-medium bg-transparent whitespace-nowrap overflow-ellipsis flex-auto',
+            'font-extrabold bg-transparent whitespace-nowrap overflow-ellipsis flex-auto',
             className
           )}
           style={{ fontSize }}
