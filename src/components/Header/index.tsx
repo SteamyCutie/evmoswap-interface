@@ -38,7 +38,7 @@ const AppBar = () => {
   const routeTag: any = useRouter().asPath.split('/')[1].split('?')[0]
 
   return (
-    <header className="flex-shrink-0 w-full">
+    <header className="flex-shrink-0 w-full z-10">
       <Popover as="nav" className="z-10 w-full bg-transparent header-border-b">
         {({ open }) => (
           <>

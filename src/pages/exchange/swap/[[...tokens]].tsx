@@ -430,7 +430,7 @@ const Swap = () => {
         onConfirm={handleConfirmTokenWarning}
       />
       <DoubleGlowShadow>
-        <div className="gap-4 p-6 m-4 transition-all rounded-3xl bg-light-bg dark:bg-dark-bg z-1">
+        <div className="gap-4 p-6 m-4 transition-all rounded-3xl bg-light-bg dark:bg-dark-bg z-0">
           <SwapHeader
             input={currencies[Field.INPUT]}
             output={currencies[Field.OUTPUT]}
@@ -478,15 +478,15 @@ const Swap = () => {
                 )}
               >
                 <button
-                  className="z-10 rounded-3xl"
+                  className="z-0 rounded-3xl"
                   onClick={() => {
                     setApprovalSubmitted(false) // reset 2 step UI for approvals
                     onSwitchTokens()
                   }}
                 >
-                  <div className="p-1.5 rounded-[18px] bg-light-bg dark:bg-dark-bg">
+                  <div className="p-1.5 rounded-[18px] bg-light-bg dark:bg-dark-bg transition-all">
                     <div
-                      className="p-3 transition-all bg-white rounded-[14px] hover:bg-white/80 dark:bg-dark-primary dark:hover:bg-dark-primary/80 text-dark-bg dark:text-light-bg"
+                      className="p-3 transition-all bg-light-primary rounded-1.5xl hover:bg-light-primary/80 dark:bg-dark-primary dark:hover:bg-dark-primary/80 text-dark-bg dark:text-light-bg"
                       // onMouseEnter={() => setAnimateSwapArrows(true)}
                       // onMouseLeave={() => setAnimateSwapArrows(false)}
                     >

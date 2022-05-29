@@ -83,15 +83,21 @@ export default function CurrencyInputPanel({
   }, [setModalOpen])
 
   return (
-    <div id={id} className={classNames(hideInput ? 'p-4' : 'p-5', 'rounded-xl bg-white dark:bg-dark-primary')}>
+    <div
+      id={id}
+      className={classNames(
+        hideInput ? 'p-4' : 'p-5',
+        'rounded-xl bg-light-primary dark:bg-dark-primary transition-all'
+      )}
+    >
       <div className="grid w-full gap-3">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-3 text-xs transition-all">
             <button
               type="button"
               className={classNames(
-                !!currency ? 'text-primary' : 'text-high-emphesis',
-                'open-currency-select-button outline-none select-none cursor-pointer border-none text-xl font-medium items-center bg-light-bg dark:bg-dark-bg rounded-md transition-all p-2'
+                !!currency ? 'text-dark-primary' : 'text-light-primary',
+                'open-currency-select-button outline-none select-none cursor-pointer border-none text-xl font-medium items-center bg-light-bg hover:bg-light-bg/80 dark:bg-dark-bg dark:hover:bg-dark-bg/80 rounded-md transition-all p-2'
               )}
               onClick={() => {
                 if (onCurrencySelect) {

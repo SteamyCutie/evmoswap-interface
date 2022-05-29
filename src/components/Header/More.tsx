@@ -66,7 +66,7 @@ const Menu = () => {
   const isDesktop = window.innerWidth > 1024
 
   return (
-    <Popover className="relative ml-auto md:m-0">
+    <Popover className="relative ml-auto md:m-0 z-10">
       {({ open }) => (
         <>
           <Popover.Button
