@@ -65,47 +65,61 @@ export function MinimalPositionCard({ pair, showUnwrapped = false, border }: Pos
   return (
     <>
       {userPoolBalance && JSBI.greaterThan(userPoolBalance.quotient, JSBI.BigInt(0)) ? (
-        <div className="p-5 rounded bg-dark-800 text-high-emphesis">
+        <div className="text-dark-primary dark:text-light-primary transition-all mt-6">
           <AutoColumn gap={'md'}>
-            <div className="text-lg">Your Position</div>
-            <div className="flex flex-col md:flex-row md:justify-between">
-              <div className="flex items-center w-auto space-x-4">
-                <DoubleCurrencyLogo currency0={pair.token0} currency1={pair.token1} size={40} />
-                <div className="text-2xl font-semibold">
-                  {currency0.symbol}/{currency1.symbol}
+            <div className="text-base font-bold">Your Position</div>
+            <div className="p-6 rounded-2xl bg-light-primary dark:bg-dark-primary transition-all">
+              <div className="flex flex-col md:flex-row md:justify-between">
+                <div className="flex items-center w-auto space-x-4">
+                  <DoubleCurrencyLogo
+                    currency0={pair.token0}
+                    currency1={pair.token1}
+                    size={40}
+                    className="-space-x-2"
+                  />
+                  <div className="text-lg font-extrabold">
+                    {currency0.symbol} / {currency1.symbol}
+                  </div>
+                </div>
+                <div className="flex items-center mt-3 space-x-1 text-base md:mt-0">
+                  <div className="font-extrabold">{userPoolBalance ? userPoolBalance.toSignificant(4) : '-'} </div>
+                  <div className="text-sm">Pool Tokens</div>
                 </div>
               </div>
-              <div className="flex items-center mt-3 space-x-2 text-base md:mt-0">
-                <div>{userPoolBalance ? userPoolBalance.toSignificant(4) : '-'} </div>
-                <div className="text-secondary">Pool Tokens</div>
-              </div>
-            </div>
-            <div className="flex flex-col w-full p-3 mt-3 space-y-1 text-sm rounded bg-dark-900 text-high-emphesis">
-              <div className="flex justify-between">
-                <div>{i18n._(t`Your pool share`)}</div>
-                <div className="font-bold">{poolTokenPercentage ? poolTokenPercentage.toFixed(6) + '%' : '-'}</div>
-              </div>
-              <div className="flex justify-between">
-                <div>{currency0.symbol}:</div>
-                {token0Deposited ? (
-                  <div className="flex space-x-2 font-bold">
-                    <div> {token0Deposited?.toSignificant(6)}</div>
-                    <div className="text-secondary">{currency0.symbol}</div>
-                  </div>
-                ) : (
-                  '-'
-                )}
-              </div>
-              <div className="flex justify-between">
-                <div>{currency1.symbol}:</div>
-                {token1Deposited ? (
-                  <div className="flex space-x-2 font-bold">
-                    <div>{token1Deposited?.toSignificant(6)}</div>
-                    <div className="text-secondary">{currency1.symbol}</div>
-                  </div>
-                ) : (
-                  '-'
-                )}
+              <div className="flex flex-col w-full mt-3 space-y-1 text-sm rounded">
+                <div className="flex justify-between">
+                  <div>{i18n._(t`Your pool share`)}</div>
+                  {poolTokenPercentage ? (
+                    <div className="flex space-x-1">
+                      <div className="font-bold">{poolTokenPercentage.toFixed(6)}</div>
+                      <div>%</div>
+                    </div>
+                  ) : (
+                    <div>-</div>
+                  )}
+                </div>
+                <div className="flex justify-between">
+                  <div>{currency0.symbol}:</div>
+                  {token0Deposited ? (
+                    <div className="flex space-x-1">
+                      <div className="font-bold"> {token0Deposited?.toSignificant(6)}</div>
+                      <div>{currency0.symbol}</div>
+                    </div>
+                  ) : (
+                    '-'
+                  )}
+                </div>
+                <div className="flex justify-between">
+                  <div>{currency1.symbol}:</div>
+                  {token1Deposited ? (
+                    <div className="flex space-x-1">
+                      <div className="font-bold">{token1Deposited?.toSignificant(6)}</div>
+                      <div>{currency1.symbol}</div>
+                    </div>
+                  ) : (
+                    '-'
+                  )}
+                </div>
               </div>
             </div>
           </AutoColumn>

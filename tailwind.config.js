@@ -87,7 +87,7 @@ module.exports = {
         'dark-stroke': '#222222',
         dark: '#0F0F0F',
         'light-primary': '#FFFFFF',
-        'light-bg': '#EFEFFB',
+        'light-bg': '#F2F7FF',
         'light-stroke': '#D7D7FF',
         light: '#FBFBFB',
       },

@@ -532,7 +532,7 @@ const Swap = () => {
                 id="swap-currency-output"
               />
               {Boolean(trade) && (
-                <div className="grid p-5 mt-2 gap-2 transition-all bg-white cursor-pointer dark:bg-dark-primary border-2 border-[#D7D7FF] dark:border-[#2D2C2C] rounded-xl">
+                <div className="grid p-5 mt-2 gap-2 transition-all bg-white cursor-pointer dark:bg-dark-primary border border-light-stroke dark:border-dark-stroke rounded-xl">
                   <TradePrice
                     price={trade?.executionPrice}
                     showInverted={showInverted}
@@ -586,7 +586,7 @@ const Swap = () => {
             ) : !account ? (
               <Web3Connect size="lg" className="w-full" />
             ) : showWrap ? (
-              <Button color="blue" size="lg" disabled={Boolean(wrapInputError)} onClick={onWrap}>
+              <Button color="gradient" size="lg" disabled={Boolean(wrapInputError)} onClick={onWrap}>
                 {wrapInputError ??
                   (wrapType === WrapType.WRAP
                     ? i18n._(t`Wrap`)
@@ -606,6 +606,7 @@ const Swap = () => {
                     onClick={handleApprove}
                     disabled={approvalState !== ApprovalState.NOT_APPROVED || approvalSubmitted}
                     size="lg"
+                    color="gradient"
                   >
                     {approvalState === ApprovalState.PENDING ? (
                       <div className="flex items-center justify-center h-full space-x-2">

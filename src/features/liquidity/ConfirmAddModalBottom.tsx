@@ -22,7 +22,7 @@ export function ConfirmAddModalBottom({
   parsedAmounts: { [field in Field]?: CurrencyAmount<Currency> }
   poolTokenPercentage?: Percent
   onAdd: () => void
-  estimatedSLP?: CurrencyAmount<Currency>,
+  estimatedSLP?: CurrencyAmount<Currency>
 }) {
   const { i18n } = useLingui()
   return (
@@ -67,41 +67,47 @@ export function ConfirmAddModalBottom({
           </div>
         </div>
       </div> */}
-      <div className='p-4 my-2 rounded-lg bg-dark-1000'>
-        <div className='flex justify-between mb-2'>
-          You are depositing:
-          <div className="flex items-center justify-between">
-            <div className="text-sm text-secondary">{i18n._(t`Share of Pool:`)}</div>
-            <div className="text-sm justify-center items-center flex right-align pl-1.5 text-white">
-              {noLiquidity ? '100' : poolTokenPercentage?.toSignificant(4)}%
+      <div className="p-4 -mt-2 mb-4 rounded-lg bg-light-bg dark:bg-dark-bg">
+        <div className="flex justify-between mb-2 text-base text-dark-primary dark:text-light-primary">
+          You deposits
+          <div className="flex items-center justify-between text-sm">
+            {i18n._(t`Share of Pool:`)}
+            <div className="text-base justify-center font-extrabold items-center flex right-align pl-1.5">
+              {noLiquidity ? '100' : poolTokenPercentage?.toSignificant(4)}
+            </div>
+            {i18n._(t`%`)}
+          </div>
+        </div>
+        <div className="flex space-x-2">
+          <div className="flex w-full px-4 py-3 rounded-lg bg-light-primary dark:bg-dark-primary items-center font-extrabold space-x-2">
+            <CurrencyLogo currency={parsedAmounts[Field.CURRENCY_A]?.currency} size={40} />
+            <div>
+              {parsedAmounts[Field.CURRENCY_A]?.toSignificant(6)}&nbsp;
+              {parsedAmounts[Field.CURRENCY_A]?.currency.symbol}
+            </div>
+          </div>
+          <div className="flex w-full px-4 py-3 rounded-lg bg-light-primary dark:bg-dark-primary items-center font-extrabold space-x-2">
+            <CurrencyLogo currency={parsedAmounts[Field.CURRENCY_B]?.currency} size={40} />
+            <div>
+              {parsedAmounts[Field.CURRENCY_B]?.toSignificant(6)}&nbsp;
+              {parsedAmounts[Field.CURRENCY_B]?.currency.symbol}
             </div>
           </div>
         </div>
-        <div className='flex gap-2 p-4 border-[1px] border-gray-600 rounded-t-lg bg-dark-800'>
-          <CurrencyLogo currency={parsedAmounts[Field.CURRENCY_A]?.currency} />
-          {parsedAmounts[Field.CURRENCY_A]?.toSignificant(6)}&nbsp;
-          {parsedAmounts[Field.CURRENCY_A]?.currency.symbol}
-        </div>
-        <div className='flex gap-2 p-4 border-[1px] border-gray-600 rounded-b-lg bg-dark-800'>
-          <CurrencyLogo currency={parsedAmounts[Field.CURRENCY_B]?.currency} />
-          {parsedAmounts[Field.CURRENCY_B]?.toSignificant(6)}&nbsp;
-          {parsedAmounts[Field.CURRENCY_B]?.currency.symbol}
-        </div>
       </div>
-      <div className='p-4 mb-4 rounded-lg bg-dark-1000'>
-        <div>You will receive(at least):</div>
-        <div className='flex items-center justify-between mt-1 font-bold text-white'>
-          {estimatedSLP?.toSignificant(6)}&nbsp;
+      <div className="p-4 mb-4 rounded-lg text-base bg-light-bg dark:bg-dark-bg">
+        <div>You will receive(at least)</div>
+        <div className="flex items-center mt-2 text-lg font-extrabold text-dark-primary dark:text-light-primary">
+          {estimatedSLP && estimatedSLP?.toSignificant(6)}&nbsp;
           <div>
-            {parsedAmounts[Field.CURRENCY_A]?.currency.symbol}/
-            {parsedAmounts[Field.CURRENCY_B]?.currency.symbol}
+            {parsedAmounts[Field.CURRENCY_A]?.currency.symbol} / {parsedAmounts[Field.CURRENCY_B]?.currency.symbol}
             &nbsp;LP Token
           </div>
         </div>
       </div>
 
-      <Button color="blue" size="lg" onClick={onAdd}>
-        {noLiquidity ? i18n._(t`Create Pool & Supply`) : i18n._(t`Confirm Deposit`)}
+      <Button color="gradient" size="lg" onClick={onAdd} className="text-base font-extrabold">
+        {noLiquidity ? i18n._(t`Create Pool & Supply`) : i18n._(t`Confirm deposit`)}
       </Button>
     </div>
   )

@@ -221,30 +221,35 @@ export default function Add() {
   const modalHeader = () => {
     return noLiquidity ? (
       <div className="pb-4">
-        <div className="flex items-center justify-start gap-3">
-          <div className="text-2xl font-bold text-high-emphesis">
-            {currencies[Field.CURRENCY_A]?.symbol + '/' + currencies[Field.CURRENCY_B]?.symbol}
+        <div className="flex items-center justify-start gap-6 bg-light-bg dark:bg-dark-bg px-6 py-4 rounded-xl">
+          <DoubleCurrencyLogo currency0={currencyA} currency1={currencyB} size={40} className="-space-x-2" />
+          <div className="text-lg font-extrabold text-dark-bg dark:text-light-bg transition-all">
+            {currencies[Field.CURRENCY_A]?.symbol + ' / ' + currencies[Field.CURRENCY_B]?.symbol}
           </div>
-          <DoubleCurrencyLogo currency0={currencyA} currency1={currencyB} size={48} />
         </div>
       </div>
     ) : (
       <div className="pb-4">
-        <div className="flex items-center justify-start gap-3">
-          <div className="text-xl font-bold md:text-2xl text-high-emphesis">{liquidityMinted?.toSignificant(6)}</div>
-          <div className="grid grid-flow-col gap-2">
-            <DoubleCurrencyLogo currency0={currencyA} currency1={currencyB} size={48} />
+        <div className="flex items-center justify-start gap-6 bg-light-bg dark:bg-dark-bg px-6 py-4 rounded-xl">
+          <div className="grid grid-flow-col gap-4">
+            <DoubleCurrencyLogo currency0={currencyA} currency1={currencyB} size={40} className="-space-x-2" />
+          </div>
+          <div className="grid">
+            <div className="text-base font-extrabold md:text-lg text-dark-primary dark:text-light-primary transition-all">
+              {liquidityMinted?.toSignificant(6)}
+            </div>
+            <div className="text-sm font-medium md:text-base text-dark-primary dark:text-light-primary transition-all">
+              {currencies[Field.CURRENCY_A]?.symbol} / {currencies[Field.CURRENCY_B]?.symbol}
+              &nbsp;{i18n._(t`pool token`)}
+            </div>
           </div>
         </div>
-        <div className="text-lg font-medium md:text-2xl text-high-emphesis">
-          {currencies[Field.CURRENCY_A]?.symbol}/{currencies[Field.CURRENCY_B]?.symbol}
-          &nbsp;{i18n._(t`Pool Tokens`)}
-        </div>
-        <div className="pt-3 text-xs italic text-secondary">
-          {i18n._(t`Output is estimated. If the price changes by more than ${allowedSlippage.toSignificant(
-            4
-          )}% your transaction
-            will revert.`)}
+        <div className="pt-6 text-xs text-dark-primary/80 dark:text-light-primary/30">
+          {i18n._(
+            t`Output is estimated. If the price changes by more than ${allowedSlippage.toSignificant(
+              4
+            )}% your transaction will revert.`
+          )}
         </div>
       </div>
     )
@@ -430,19 +435,19 @@ export default function Add() {
               </div>
 
               {currencies[Field.CURRENCY_A] && currencies[Field.CURRENCY_B] && pairState !== PairState.INVALID && (
-                <div className="p-0.5 rounded-2xl bg-light-stroke dark:bg-dark-stroke">
+                <div className="p-px rounded-2xl bg-light-stroke dark:bg-dark-stroke">
                   <LiquidityPrice
                     currencies={currencies}
                     price={price}
                     noLiquidity={noLiquidity}
                     poolTokenPercentage={poolTokenPercentage}
-                    className="bg-light-primary dark:bg-dark-primary rounded-1.5xl"
+                    className="bg-light-primary dark:bg-dark-primary rounded-2xl"
                   />
                 </div>
               )}
 
               {addIsUnsupported ? (
-                <Button color="blue" size="lg" disabled className="font-extrabold">
+                <Button color="red" size="lg" disabled className="font-extrabold">
                   {i18n._(t`Unsupported Asset`)}
                 </Button>
               ) : !account ? (
@@ -458,7 +463,7 @@ export default function Add() {
                       <RowBetween>
                         {approvalA !== ApprovalState.APPROVED && currencyA !== NATIVE[chainId] && (
                           <Button
-                            color="blue"
+                            color="gradient"
                             size="lg"
                             onClick={approveACallback}
                             disabled={approvalA === ApprovalState.PENDING}
@@ -477,7 +482,7 @@ export default function Add() {
                         )}
                         {approvalB !== ApprovalState.APPROVED && currencyB !== NATIVE[chainId] && (
                           <Button
-                            color="blue"
+                            color="gradient"
                             size="lg"
                             onClick={approveBCallback}
                             disabled={approvalB === ApprovalState.PENDING}
