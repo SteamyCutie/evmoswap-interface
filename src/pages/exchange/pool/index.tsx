@@ -170,7 +170,7 @@ export default function Pool() {
         </div>
       </DoubleGlowShadow>
 
-      <div className="text-dark-primary/80 dark:text-light-primary/80 transition-all text-base">
+      <div className="text-dark-primary/80 dark:text-light-primary/80 transition-all text-base pb-24">
         {i18n._(t`Liquidity providers earn a 0.25% fee on all trades proportional to their share of
                         the pool. Fees are added to the pool, accrue in real time and can be claimed by
                         withdrawing your liquidity`)}

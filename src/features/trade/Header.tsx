@@ -41,7 +41,7 @@ const ExchangeHeader: FC<ExchangeHeaderProps> = ({ input, output, allowedSlippag
     'flex items-center justify-center px-4 text-base font-extrabold text-center rounded-lg transition-all'
 
   return (
-    <div className="flex items-center justify-between mb-4 space-x-3">
+    <div className="flex items-center justify-between space-x-3 mb-4">
       {showNavs && (
         <div className="grid grid-cols-2 p-2 transition-all rounded-2xl bg-light-primary dark:bg-dark-primary text-dark-primary hover:text-dark-primary/80 dark:text-light-primary dark:hover:text-light-primary/80 h-14">
           <NavLink

@@ -468,7 +468,7 @@ export default function Remove() {
         <title>Remove Liquidity | EvmoSwap</title>
         <meta key="description" name="description" content="Remove liquidity from the EvmoSwap AMM" />
       </Head>
-      <div className="flex items-center justify-between px-4 mb-5">
+      <div className="flex items-center justify-between mb-5">
         <NavLink href="/pool">
           <a className="flex items-center space-x-2 text-base text-center transition-all cursor-pointer text-dark-primary hover:text-dark-primary/80 dark:text-light-primary dark:hover:text-light-primary/80">
             <span>{i18n._(t`View Liquidity Positions`)}</span>
