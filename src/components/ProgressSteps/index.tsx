@@ -47,7 +47,7 @@ export default function ProgressCircles({ steps, disabled = false, ...rest }: Pr
         <div
           className={classNames(
             (disabled || !steps[steps.length - 1]) && 'bg-light-bg dark:bg-dark-bg',
-            'min-w-5 min-h-5 rounded-full flex justify-center bg-pink-special/50 items-center text-xs'
+            'min-w-5 min-h-5 rounded-full flex justify-center bg-pink-special/50 dark:bg-pink-special/50 items-center text-xs'
           )}
         >
           {steps.length + 1}

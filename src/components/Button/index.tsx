@@ -11,14 +11,14 @@ const SIZE = {
 
 const FILLED = {
   default: 'bg-transparent opacity-90 hover:opacity-100',
-  red: 'bg-red bg-opacity-90 w-full rounded-xl text-high-emphesis hover:bg-opacity-100 disabled:bg-opacity-90',
-  blue: 'bg-blue bg-opacity-90 w-full rounded-xl text-high-emphesis hover:bg-opacity-100 disabled:bg-opacity-90',
+  red: 'bg-red bg-opacity-90 w-full rounded-xl text-light-primary hover:bg-opacity-100 disabled:bg-opacity-90',
+  blue: 'bg-blue bg-opacity-90 w-full rounded-xl text-light-primary hover:bg-opacity-100 disabled:bg-opacity-90',
   'blue-special': 'bg-blue-special bg-opacity-90 w-full text-light-primary hover:bg-opacity-100 disabled:bg-opacity-90',
-  pink: 'bg-gradient-to-r from-pink to-opaque-pink w-full rounded-xl text-high-emphesis opacity-90 hover:opacity-100 disabled:bg-opacity-90',
+  pink: 'bg-gradient-to-r from-pink to-opaque-pink w-full rounded-xl text-light-primary opacity-90 hover:opacity-100 disabled:bg-opacity-90',
   gray: 'rounded-xl shadow-sm focus:ring-2 focus:ring-offset-2 bg-opacity-90 w-full bg-light-border dark:bg-[#4B4B4B] text-dark-primary dark:text-light-primary hover:bg-opacity-100 focus:ring-offset-dark-700 focus:ring-dark-900 disabled:bg-opacity-90',
-  green: 'bg-green bg-opacity-90 w-full rounded-xl text-high-emphesis hover:bg-opacity-100 disabled:bg-opacity-90',
+  green: 'bg-green bg-opacity-90 w-full rounded-xl text-light-primary hover:bg-opacity-100 disabled:bg-opacity-90',
   gradient:
-    'w-full text-high-emphesis bg-gradient-to-r from-blue-special to-pink-special opacity-100 hover:opacity-80 disabled:bg-opacity-80',
+    'w-full text-light-primary bg-gradient-to-r from-blue-special to-pink-special opacity-100 hover:opacity-80 disabled:bg-opacity-80',
 }
 
 const OUTLINED = {
@@ -41,7 +41,7 @@ const EMPTY = {
 }
 
 const LINK = {
-  default: 'text-primary hover:text-high-emphesis focus:text-high-emphesis whitespace-nowrap focus:ring-0',
+  default: 'text-primary hover:text-light-primary focus:text-light-primary whitespace-nowrap focus:ring-0',
   blue: 'text-blue text-opacity-90 hover:text-opacity-100 focus:text-opacity-100 whitespace-nowrap focus:ring-0',
 }
 

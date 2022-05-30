@@ -435,13 +435,13 @@ export default function Add() {
               </div>
 
               {currencies[Field.CURRENCY_A] && currencies[Field.CURRENCY_B] && pairState !== PairState.INVALID && (
-                <div className="p-px rounded-2xl bg-light-stroke dark:bg-dark-stroke">
+                <div className="p-px rounded-2xl bg-light-stroke dark:bg-dark-stroke transition-all">
                   <LiquidityPrice
                     currencies={currencies}
                     price={price}
                     noLiquidity={noLiquidity}
                     poolTokenPercentage={poolTokenPercentage}
-                    className="bg-light-primary dark:bg-dark-primary rounded-2xl"
+                    className="bg-light-primary dark:bg-dark-primary transition-all rounded-2xl"
                   />
                 </div>
               )}

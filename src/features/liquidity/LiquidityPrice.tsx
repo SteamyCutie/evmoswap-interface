@@ -50,7 +50,7 @@ export default function LiquidityPrice({
 
   return (
     <div className={classNames('grid items-center rounded py-4 px-5 space-y-2', className)}>
-      <div className="flex w-full font-extrabold text-dark-primary dark:text-light-primary">
+      <div className="flex w-full font-extrabold text-dark-primary dark:text-light-primary transition-all">
         <div
           onClick={flipPrice}
           title={text}
@@ -82,7 +82,7 @@ export default function LiquidityPrice({
           </div>
         </div>
       </div>
-      <div className="flex justify-between w-full font-light text-right text-dark-primary dark:text-light-primary">
+      <div className="flex justify-between w-full font-light text-right text-dark-primary dark:text-light-primary transition-all">
         <div className="text-sm">{i18n._(t`Share of Pool`)}</div>
         <div className="text-sm">
           {noLiquidity && price

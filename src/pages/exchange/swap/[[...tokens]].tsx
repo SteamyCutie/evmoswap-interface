@@ -595,7 +595,7 @@ const Swap = () => {
                     : null)}
               </Button>
             ) : routeNotFound && userHasSpecifiedInputOutput ? (
-              <div className="grid justify-center text-sm text-center text-dark-primary dark:text-light-primary">
+              <div className="grid justify-center text-sm text-center text-dark-primary dark:text-light-primary transition-all">
                 <div className="mb-1">{i18n._(t`Insufficient liquidity for this trade`)}</div>
                 {singleHopOnly && <div className="mb-1">{i18n._(t`Try enabling multi-hop trades`)}</div>}
               </div>
@@ -607,6 +607,7 @@ const Swap = () => {
                     disabled={approvalState !== ApprovalState.NOT_APPROVED || approvalSubmitted}
                     size="lg"
                     color="gradient"
+                    className="text-base font-extrabold"
                   >
                     {approvalState === ApprovalState.PENDING ? (
                       <div className="flex items-center justify-center h-full space-x-2">
