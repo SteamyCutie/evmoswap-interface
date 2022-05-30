@@ -478,7 +478,7 @@ export default function Remove() {
       </div>
 
       <DoubleGlowShadow>
-        <div className="gap-4 p-6 transition-all rounded-3xl bg-light-bg dark:bg-dark-bg z-1">
+        <div className="gap-4 p-6 transition-all rounded-3xl bg-light-bg dark:bg-dark-bg z-0">
           {/* <AddRemoveTabs
           creating={false}
           adding={false}

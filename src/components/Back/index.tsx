@@ -1,3 +1,4 @@
+import { ChevronLeftIcon } from '@heroicons/react/solid'
 import { t } from '@lingui/macro'
 import { useLingui } from '@lingui/react'
 import { useRouter } from 'next/router'
@@ -6,20 +7,12 @@ const Back = () => {
   const { i18n } = useLingui()
   const router = useRouter()
   return (
-    <div>
+    <div className="flex items-center justify-between mb-5">
       <a
         onClick={router.back}
-        className="flex items-center space-x-2 text-base text-center cursor-pointer font text-secondary hover:text-high-emphesis"
+        className="flex items-center space-x-2 text-base text-center transition-all cursor-pointer text-dark-primary hover:text-dark-primary/80 dark:text-light-primary dark:hover:text-light-primary/80"
       >
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          className="w-4 h-4"
-          fill="none"
-          viewBox="0 0 24 24"
-          stroke="currentColor"
-        >
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 19l-7-7 7-7" />
-        </svg>
+        <ChevronLeftIcon width={18} height={18} />
         <span>{i18n._(t`Go Back`)}</span>
       </a>
     </div>

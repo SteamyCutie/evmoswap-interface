@@ -168,34 +168,30 @@ export default function FullPositionCard({ pair, border, stakedBalance }: Positi
   const backgroundColor = useColor(pair?.token0)
 
   return (
-    <div
-      className="rounded bg-dark-800"
-      // style={{ backgroundColor }}
-    >
+    <div>
       <Button
         variant="empty"
         className={classNames(
-          'flex items-center justify-between w-full px-4 py-6 cursor-pointer bg-dark-800 hover:bg-dark-700',
-          showMore && '!bg-dark-700'
+          'flex items-center justify-between w-full p-4 cursor-pointer transition-all rounded-none'
         )}
-        style={{ boxShadow: 'none' }}
         onClick={() => setShowMore(!showMore)}
       >
         <div className="flex items-center space-x-4">
           {/* <DoubleCurrencyLogo currency0={currency0} currency1={currency1} size={40} /> */}
-          <CurrencyLogoArray currencies={[currency0, currency1]} dense size={40} />
+          <CurrencyLogoArray currencies={[currency0, currency1]} size={36} />
 
-          <div className="text-xl font-semibold">
-            {!currency0 || !currency1 ? <Dots>{i18n._(t`Loading`)}</Dots> : `${currency0.symbol}/${currency1.symbol}`}
+          <div className="text-base font-semibold text-dark-primary dark:text-light-primary transition-all">
+            {!currency0 || !currency1 ? <Dots>{i18n._(t`Loading`)}</Dots> : `${currency0.symbol} / ${currency1.symbol}`}
           </div>
         </div>
-        <div className="flex items-center space-x-4">
-          {i18n._(t`Manage`)}
-          {showMore ? (
-            <ChevronUpIcon width="20px" height="20px" className="ml-4" />
-          ) : (
-            <ChevronDownIcon width="20px" height="20px" className="ml-4" />
-          )}
+        <div className="flex items-center space-x-1 text-sm transition-all text-dark-primary dark:text-light-primary ">
+          <p>{i18n._(t`Manage`)}</p>
+          <ChevronDownIcon
+            width={16}
+            height={16}
+            className="transition-all"
+            style={{ transform: `rotate(${showMore ? 180 : 0}deg)` }}
+          />
         </div>
       </Button>
 
@@ -208,10 +204,15 @@ export default function FullPositionCard({ pair, border, stakedBalance }: Positi
         leaveFrom="opacity-100"
         leaveTo="opacity-0"
       >
-        <div className="p-4 space-y-4">
-          <div className="px-4 py-4 space-y-1 text-sm rounded text-high-emphesis bg-dark-900">
-            <div className="flex items-center justify-between">
-              <div>{i18n._(t`Your total pool tokens`)}:</div>
+        <div
+          className={classNames(
+            `mx-4 py-4 space-y-4 border-t transition-all`,
+            showMore ? 'border-light-stroke dark:border-dark-stroke' : 'border-opacity-0'
+          )}
+        >
+          <div className="transition-all space-y-2 text-sm">
+            <div className="flex items-center justify-between text-dark-primary dark:text-light-primary transition-all">
+              <div>{i18n._(t`Your total pool tokens`)}</div>
               <div className="font-semibold">{userPoolBalance ? userPoolBalance.toSignificant(4) : '-'}</div>
             </div>
             {/* {stakedBalance && (
@@ -220,35 +221,35 @@ export default function FullPositionCard({ pair, border, stakedBalance }: Positi
                 <div className="font-semibold">{stakedBalance.toSignificant(4)}</div>
               </div>
             )} */}
-            <div className="flex items-center justify-between">
-              <div>{i18n._(t`Pooled ${currency0?.symbol}`)}:</div>
+            <div className="flex items-center justify-between text-dark-primary dark:text-light-primary transition-all">
+              <div>{i18n._(t`Pooled ${currency0?.symbol}`)}</div>
               {token0Deposited ? (
                 <div className="flex items-center space-x-2">
+                  <CurrencyLogo size={18} currency={currency0} />
                   <div className="font-semibold">{token0Deposited?.toSignificant(6)}</div>
-                  <CurrencyLogo size="20px" currency={currency0} />
                 </div>
               ) : (
                 '-'
               )}
             </div>
 
-            <div className="flex items-center justify-between">
-              <div>{i18n._(t`Pooled ${currency1?.symbol}`)}:</div>
+            <div className="flex items-center justify-between text-dark-primary dark:text-light-primary transition-all">
+              <div>{i18n._(t`Pooled ${currency1?.symbol}`)}</div>
               {token1Deposited ? (
                 <div className="flex items-center space-x-2">
+                  <CurrencyLogo size={18} currency={currency1} />
                   <div className="font-semibold ">{token1Deposited?.toSignificant(6)}</div>
-                  <CurrencyLogo size="20px" currency={currency1} />
                 </div>
               ) : (
                 '-'
               )}
             </div>
 
-            <div className="flex items-center justify-between">
-              <div>{i18n._(t`Your pool share`)}:</div>
+            <div className="flex items-center justify-between text-dark-primary dark:text-light-primary transition-all">
+              <div>{i18n._(t`Your pool share`)}</div>
               <div className="font-semibold">
                 {poolTokenPercentage
-                  ? (poolTokenPercentage.toFixed(2) === '0.00' ? '<0.01' : poolTokenPercentage.toFixed(2)) + '%'
+                  ? (poolTokenPercentage.toFixed(2) === '0.00' ? '< 0.01' : poolTokenPercentage.toFixed(2)) + ' %'
                   : '-'}
               </div>
             </div>
@@ -256,20 +257,25 @@ export default function FullPositionCard({ pair, border, stakedBalance }: Positi
           {userDefaultPoolBalance && JSBI.greaterThan(userDefaultPoolBalance.quotient, BIG_INT_ZERO) && (
             <div className="grid grid-cols-2 gap-4">
               <Button
-                color="blue"
-                onClick={() => {
-                  router.push(`/add/${currencyId(currency0)}/${currencyId(currency1)}`)
-                }}
-              >
-                {i18n._(t`Add`)}
-              </Button>
-              <Button
-                color="blue"
+                variant="outlined"
+                color="red"
+                size="lg"
                 onClick={() => {
                   router.push(`/remove/${currencyId(currency0)}/${currencyId(currency1)}`)
                 }}
+                className="font-extrabold text-sm"
               >
                 {i18n._(t`Remove`)}
+              </Button>
+              <Button
+                color="gradient"
+                size="lg"
+                onClick={() => {
+                  router.push(`/add/${currencyId(currency0)}/${currencyId(currency1)}`)
+                }}
+                className="font-extrabold text-sm"
+              >
+                {i18n._(t`Add`)}
               </Button>
             </div>
           )}

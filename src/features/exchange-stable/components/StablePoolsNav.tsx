@@ -5,50 +5,44 @@ import { useLingui } from '@lingui/react'
 import NavLink from 'app/components/NavLink'
 
 const NAV_TABS = [
-    {
-        key: "standard",
-        title: "Standard AMM",
-        path: "/pool",
-        alert: {
-            title: "Standard AMM Liquidity Provider Rewards",
-            description: "Liquidity providers earn a 0.25% fee on all trades proportional to their share of the pool. Fees are added to the pool, accrue in real time and can be claimed by withdrawing your liquidity",
-        }
+  {
+    key: 'standard',
+    title: 'Standard AMM',
+    path: '/pool',
+    alert: {
+      title: 'Standard AMM Liquidity Provider Rewards',
+      description:
+        'Liquidity providers earn a 0.25% fee on all trades proportional to their share of the pool. Fees are added to the pool, accrue in real time and can be claimed by withdrawing your liquidity',
     },
-    {
-        key: "stable",
-        title: "Stable AMM",
-        path: "/stable-pool",
-        alert: {
-            title: "Stable AMM Liquidity Provider Rewards",
-            description: "Liquidity providers earn a 0.25% fee on all trades proportional to their share of the pool. Fees are added to the pool, accrue in real time and can be claimed by withdrawing your liquidity",
-        }
-    }
-];
-const tabStyle = ' flex justify-center items-center w-auto h-8 rounded font-bold md:font-medium lg:text-lg text-sm rounded-lg p-6 bg-dark-800'
-const activeTabStyle = `${tabStyle} text-white`
-const inactiveTabStyle = `${tabStyle} bg-opacity-40 text-secondary`
+  },
+  {
+    key: 'stable',
+    title: 'Stable AMM',
+    path: '/stable-pool',
+    alert: {
+      title: 'Stable AMM Liquidity Provider Rewards',
+      description:
+        'Liquidity providers earn a 0.25% fee on all trades proportional to their share of the pool. Fees are added to the pool, accrue in real time and can be claimed by withdrawing your liquidity',
+    },
+  },
+]
 
+const tabStyle = 'flex justify-center items-center w-auto h-8 rounded text-base pr-6'
+const activeTabStyle = `${tabStyle} text-dark-primary dark:text-light-primary font-extrabold`
+const inactiveTabStyle = `${tabStyle} bg-opacity-40`
 
-export default function PoolsNav () {
-    const { i18n } = useLingui()
+export default function PoolsNav() {
+  const { i18n } = useLingui()
 
-    return (
-        <div className="flex flex-row items-center justify-center rounded rounded p-3px h-[46px]">
-            {
-                NAV_TABS.map( ( tab, index ) => {
-                    return (
-                        <NavLink
-                            activeClassName={ activeTabStyle }
-                            href={ `${tab.path}` }
-                            key={ index }
-                        >
-                            <button className={ inactiveTabStyle }>
-                                { i18n._( t`${tab.title}` ) }
-                            </button>
-                        </NavLink>
-                    )
-                } )
-            }
-        </div>
-    )
+  return (
+    <div className="flex flex-row items-center justify-start px-1.5 pb-4 h-14 text-dark-primary/80 dark:text-light-primary/80 hover:text-dark-primary dark:hover:text-light-primary transition-all">
+      {NAV_TABS.map((tab, index) => {
+        return (
+          <NavLink activeClassName={activeTabStyle} href={`${tab.path}`} key={index}>
+            <button className={inactiveTabStyle}>{i18n._(t`${tab.title}`)}</button>
+          </NavLink>
+        )
+      })}
+    </div>
+  )
 }

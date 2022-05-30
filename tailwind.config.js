@@ -23,6 +23,7 @@ module.exports = {
           'blue-pink': ['#27B0E6', '#FA52A0'],
           'pink-red-light-brown': ['#FE5A75', '#FEC464'],
           'blue-pink-special': ['#379FFF', '#FE3DD4E1'],
+          'red-red': ['ff3838', 'ff3838'],
         },
         background: {
           'dark-1000': '#0D0415',
@@ -31,6 +32,8 @@ module.exports = {
           'dark-pink-red': '#4e3034',
           'light-primary': '#FFFFFF',
           'dark-primary': '#121212',
+          'light-bg': '#F2F7FF',
+          'dark-bg': '#1A1A1A',
         },
         border: {
           1: '1px',
