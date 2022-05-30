@@ -93,15 +93,15 @@ export default function Pool() {
         />
       </Head>
 
-      <div className="p-4 mb-3 space-y-3">
+      <div className="py-4 mb-3 space-y-3">
         <Back />
-        <div className="text-2xl text-dark-primary dark:text-light-primary transition-all">
+        <div className="text-2xl font-extrabold text-dark-primary dark:text-light-primary transition-all">
           {i18n._(t`My Liquidity Positions`)}
         </div>
       </div>
 
       <DoubleGlowShadow>
-        <div className="gap-4 p-6 transition-all rounded-3xl bg-light-bg dark:bg-dark-bg z-0">
+        <div className="gap-4 p-6 transition-all rounded-3xl z-0">
           <PoolsNav />
           <div className="grid grid-flow-row gap-3 ">
             {!account ? (

@@ -328,7 +328,7 @@ export default function Add() {
       </Head>
 
       <Container id="add-liquidity-page" className="py-4 space-y-6 md:py-8 lg:py-12" maxWidth="2xl">
-        <div className="flex items-center justify-between px-4 mb-5">
+        <div className="flex items-center mb-5">
           <NavLink href="/pool">
             <a className="flex items-center space-x-2 text-base text-center transition-all cursor-pointer text-dark-primary hover:text-dark-primary/80 dark:text-light-primary dark:hover:text-light-primary/80">
               <span>{i18n._(t`View Liquidity Positions`)}</span>
@@ -368,7 +368,7 @@ export default function Add() {
         />
 
         <DoubleGlowShadow>
-          <div className="gap-4 p-6 transition-all rounded-3xl bg-light-bg dark:bg-dark-bg z-1">
+          <div className="gap-4 p-6 transition-all rounded-3xl z-0">
             {/* <AddRemoveTabs creating={isCreate} adding={true} defaultSlippage={DEFAULT_ADD_V2_SLIPPAGE_TOLERANCE} /> */}
 
             <ExchangeHeader
@@ -413,7 +413,7 @@ export default function Add() {
 
                 <AutoColumn justify="space-between" className="pl-2 -mt-4 -mb-6 transition-all">
                   <div className="flex flex-wrap justify-center w-full px-4">
-                    <div className="p-1.5 rounded-2.5xl bg-light-bg dark:bg-dark-bg">
+                    <div className="p-1.5 rounded-2.5xl bg-light-bg dark:bg-dark-bg transition-all">
                       <div className="p-2 transition-all bg-white rounded-2xl hover:bg-white/80 dark:bg-dark-primary dark:hover:bg-dark-primary/80 text-dark-bg dark:text-light-bg">
                         <PlusIcon width={24} height={24} />
                       </div>

@@ -1,6 +1,6 @@
 import React, { useCallback, useState } from 'react'
 
-import { ChevronDownIcon } from '@heroicons/react/outline'
+import { ChevronDownIcon } from '@heroicons/react/solid'
 import { Currency } from '@evmoswap/core-sdk'
 import { CurrencyLogo } from '../CurrencyLogo'
 import CurrencySearchModal from '../../modals/SearchModal/CurrencySearchModal'
@@ -39,7 +39,7 @@ export default function CurrencySelectPanel({
   }, [setModalOpen])
 
   return (
-    <div id={id} className="p-5 rounded bg-dark-800">
+    <div id={id} className="px-8 py-6 rounded-2xl bg-light-primary dark:bg-dark-primary transition-all">
       <div className="flex flex-col justify-between space-y-3 sm:space-y-0 sm:flex-row">
         <div className="w-full" onClick={onClick}>
           <div
@@ -52,18 +52,21 @@ export default function CurrencySelectPanel({
           >
             <div className="flex">
               {currency ? (
-                <CurrencyLogo currency={currency} size={'54px'} />
+                <CurrencyLogo currency={currency} size={42} />
               ) : (
-                <div className="rounded bg-dark-700" style={{ maxWidth: 54, maxHeight: 54 }}>
-                  <div style={{ width: 54, height: 54 }}>
+                <div
+                  className="rounded-full bg-light-bg dark:bg-dark-bg transition-all"
+                  style={{ maxWidth: 42, maxHeight: 42 }}
+                >
+                  <div style={{ width: 42, height: 42 }}>
                     <Lottie animationData={selectCoinAnimation} autoplay loop />
                   </div>
                 </div>
               )}
 
               <div className="flex flex-col items-start justify-center mx-3.5">
-                <div className="flex items-center">
-                  <div className="mr-1 text-lg font-bold md:text-2xl">
+                <div className="flex items-center text-dark-primary dark:text-light-primary transition-all">
+                  <div className="mr-2 text-lg font-bold md:text-lg">
                     {(currency && currency.symbol && currency.symbol.length > 20
                       ? currency.symbol.slice(0, 4) +
                         '...' +
@@ -75,11 +78,7 @@ export default function CurrencySelectPanel({
                     )}
                   </div>
                   {!disableCurrencySelect && currency && (
-                    <ChevronDownIcon
-                      className={`${currency ? 'text-primary' : 'text-high-emphesis'} stroke-current`}
-                      width={16}
-                      height={16}
-                    />
+                    <ChevronDownIcon className={`stroke-current`} width={16} height={16} />
                   )}
                 </div>
               </div>

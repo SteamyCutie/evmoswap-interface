@@ -113,7 +113,10 @@ export default function CurrencyInputPanel({
                     <CurrencyLogo currency={currency} size={'24px'} />
                   </div>
                 ) : (
-                  <div className="rounded-full bg-dark-700" style={{ maxWidth: 24, maxHeight: 24 }}>
+                  <div
+                    className="rounded-full bg-light-primary dark:bg-dark-primary transition-all"
+                    style={{ maxWidth: 24, maxHeight: 24 }}
+                  >
                     <div style={{ width: 24, height: 24 }}>
                       <Lottie animationData={selectCoinAnimation} autoplay loop />
                     </div>

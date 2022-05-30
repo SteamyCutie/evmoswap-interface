@@ -70,7 +70,7 @@ const AppBar = () => {
                         <a
                           id={`pool-nav-link`}
                           className={`${navLinkStyle} ${
-                            routeTag === 'pool' || routeTag === 'find'
+                            routeTag === 'pool' || routeTag === 'find' || routeTag === 'stable-pool'
                               ? 'text-dark-primary/100 dark:text-light-primary/100'
                               : ''
                           }`}

@@ -21,6 +21,8 @@ import { useActiveWeb3React } from '../../../services/web3'
 import { useLingui } from '@lingui/react'
 import { usePairAdder } from '../../../state/user/hooks'
 import { useTokenBalance } from '../../../state/wallet/hooks'
+import DoubleGlowShadow from 'app/components/DoubleGlowShadow'
+import { PlusIcon } from '@heroicons/react/solid'
 
 enum Fields {
   TOKEN0 = 0,
@@ -69,7 +71,9 @@ export default function PoolFinder() {
   )
 
   const prerequisiteMessage = (
-    <div className="p-5 text-center rounded bg-dark-800">{i18n._(t`Select a token to find your liquidity`)}</div>
+    <div className="p-5 text-center text-base rounded-2xl bg-light-primary dark:bg-dark-primary text-dark-primary dark:text-light-primary transition-all">
+      {i18n._(t`Select a token to find your liquidity`)}
+    </div>
   )
 
   return (
@@ -78,104 +82,95 @@ export default function PoolFinder() {
         <title>{i18n._(t`Find Pool`)} | EvmoSwap</title>
         <meta key="description" name="description" content="Find pool" />
       </Head>
-      <div className="p-4 mb-3 space-y-3">
+      <div className="py-4 mb-3 space-y-3">
         <Back />
-
-        <Typography component="h1" variant="h2">
+        <div className="text-2xl font-extrabold text-dark-primary dark:text-light-primary transition-all">
           {i18n._(t`Import Pool`)}
-        </Typography>
+        </div>
       </div>
-      <Alert
-        message={
-          <>
-            <b>{i18n._(t`Tip:`)}</b>{' '}
-            {i18n._(t`Use this tool to find pairs that don't automatically appear in the interface`)}
-          </>
-        }
-        type="information"
-      />
-      <div className="relative p-4 space-y-4 rounded bg-dark-900 shadow-liquidity">
-        <AutoColumn gap={'md'}>
-          <CurrencySelectPanel
-            currency={currency0}
-            onClick={() => setActiveField(Fields.TOKEN0)}
-            onCurrencySelect={handleCurrencySelect}
-            otherCurrency={currency1}
-            id="pool-currency-input"
-          />
-          <AutoColumn justify="space-between">
-            <AutoRow justify={'flex-start'} style={{ padding: '0 1rem' }}>
-              <button className="z-10 -mt-6 -mb-6 rounded-full bg-dark-900 p-3px">
-                <div className="p-3 rounded-full bg-dark-800 hover:bg-dark-700">
-                  <Plus size="32" />
+
+      <DoubleGlowShadow>
+        <div className="grid gap-4 p-6 transition-all rounded-3xl z-0 text-dark-primary dark:text-light-primary ">
+          <div className="grid">
+            <CurrencySelectPanel
+              currency={currency0}
+              onClick={() => setActiveField(Fields.TOKEN0)}
+              onCurrencySelect={handleCurrencySelect}
+              otherCurrency={currency1}
+              id="pool-currency-input"
+            />
+            <AutoColumn justify="space-between" className="pl-2 -my-5 transition-all z-0">
+              <div className="flex flex-wrap justify-center w-full px-4">
+                <div className="p-1.5 rounded-2.5xl bg-light-bg dark:bg-dark-bg transition-all">
+                  <div className="p-2 transition-all bg-white rounded-2xl hover:bg-white/80 dark:bg-dark-primary dark:hover:bg-dark-primary/80 text-dark-bg dark:text-light-bg">
+                    <PlusIcon width={24} height={24} />
+                  </div>
                 </div>
-              </button>
-            </AutoRow>
-          </AutoColumn>
-          <CurrencySelectPanel
-            currency={currency1}
-            onClick={() => setActiveField(Fields.TOKEN1)}
-            onCurrencySelect={handleCurrencySelect}
-            otherCurrency={currency0}
-            id="pool-currency-output"
-          />
-        </AutoColumn>
+              </div>
+            </AutoColumn>
+            <CurrencySelectPanel
+              currency={currency1}
+              onClick={() => setActiveField(Fields.TOKEN1)}
+              onCurrencySelect={handleCurrencySelect}
+              otherCurrency={currency0}
+              id="pool-currency-output"
+            />
+          </div>
 
-        {hasPosition && (
-          <AutoRow
-            style={{
-              justifyItems: 'center',
-              backgroundColor: '',
-              padding: '12px 0px',
-              borderRadius: '12px',
-            }}
-            justify={'center'}
-            gap={'0 3px'}
-          >
-            {i18n._(t`Pool Found!`)}
-            <Link href={`/pool`}>
-              <a className="text-center">{i18n._(t`Manage this pool`)}</a>
-            </Link>
-          </AutoRow>
-        )}
+          {hasPosition && (
+            <div className="text-base font-extrabold mt-4 -mb-6 hover:opacity-60 transition-all">
+              <Link href={`/pool`}>
+                <a className="text-center">{i18n._(t`Manage this pool`)}</a>
+              </Link>
+            </div>
+          )}
 
-        {currency0 && currency1 ? (
-          pairState === PairState.EXISTS ? (
-            hasPosition && pair ? (
-              <MinimalPositionCard pair={pair} border="1px solid #CED0D9" />
-            ) : (
-              <div className="p-5 rounded bg-dark-800">
+          {currency0 && currency1 ? (
+            pairState === PairState.EXISTS ? (
+              hasPosition && pair ? (
+                <MinimalPositionCard pair={pair} border="1px solid #CED0D9" />
+              ) : (
+                <div className="p-5 rounded-2xl text-base bg-light-primary dark:bg-dark-primary transition-all">
+                  <AutoColumn gap="sm" justify="center">
+                    {i18n._(t`You don’t have liquidity in this pool yet`)}
+                    <Link href={`/add/${currencyId(currency0)}/${currencyId(currency1)}`}>
+                      <a className="text-center text-blue-special hover:opacity-60 transition-all underline">
+                        {i18n._(t`Add liquidity`)}
+                      </a>
+                    </Link>
+                  </AutoColumn>
+                </div>
+              )
+            ) : validPairNoLiquidity ? (
+              <div className="p-5 rounded-2xl text-base bg-light-primary dark:bg-dark-primary transition-all">
                 <AutoColumn gap="sm" justify="center">
-                  {i18n._(t`You don’t have liquidity in this pool yet`)}
+                  {i18n._(t`No pool found`)}
                   <Link href={`/add/${currencyId(currency0)}/${currencyId(currency1)}`}>
-                    <a className="text-center text-blue text-opacity-80 hover:text-opacity-100">
-                      {i18n._(t`Add liquidity`)}
+                    <a className="text-center text-blue-special hover:opacity-60 transition-all underline">
+                      {i18n._(t`Create pool`)}
                     </a>
                   </Link>
                 </AutoColumn>
               </div>
-            )
-          ) : validPairNoLiquidity ? (
-            <div className="p-5 rounded bg-dark-800">
-              <AutoColumn gap="sm" justify="center">
-                {i18n._(t`No pool found`)}
-                <Link href={`/add/${currencyId(currency0)}/${currencyId(currency1)}`}>
-                  <a className="text-center">{i18n._(t`Create pool`)}</a>
-                </Link>
-              </AutoColumn>
-            </div>
-          ) : pairState === PairState.INVALID ? (
-            <div className="p-5 text-center rounded bg-dark-800">{i18n._(t`Invalid pair`)}</div>
-          ) : pairState === PairState.LOADING ? (
-            <div className="p-5 text-center rounded bg-dark-800">
-              <Dots>{i18n._(t`Loading`)}</Dots>
-            </div>
-          ) : null
-        ) : !account ? (
-          <Web3Connect className="w-full" size="lg" color="blue" />
-        ) : (
-          prerequisiteMessage
-        )}
+            ) : pairState === PairState.INVALID ? (
+              <div className="p-5 text-center rounded-2xl text-base bg-light-primary dark:bg-dark-primary transition-all">
+                {i18n._(t`Invalid pair`)}
+              </div>
+            ) : pairState === PairState.LOADING ? (
+              <div className="p-5 text-center rounded-2xl text-base bg-light-primary dark:bg-dark-primary transition-all">
+                <Dots>{i18n._(t`Loading`)}</Dots>
+              </div>
+            ) : null
+          ) : !account ? (
+            <Web3Connect className="w-full" size="lg" color="gradient" />
+          ) : (
+            prerequisiteMessage
+          )}
+        </div>
+      </DoubleGlowShadow>
+      <div className="flex text-dark-primary/80 dark:text-light-primary/80 transition-all text-base pt-4 pb-10">
+        <p className="font-extrabold px-2">{i18n._(t`Tips: `)}</p>
+        {i18n._(t`Use this tool to find pairs that don't automatically appear in the interface`)}
       </div>
     </Container>
   )
