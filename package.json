@@ -187,6 +187,7 @@
     "not op_mini all"
   ],
   "dependencies": {
+    "@fontsource/inter": "^4.5.10",
     "@fontsource/montserrat": "^4.5.5",
     "@visx/curve": "^2.1.0",
     "@visx/group": "^2.1.0",
