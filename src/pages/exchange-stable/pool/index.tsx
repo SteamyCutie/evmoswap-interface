@@ -50,7 +50,7 @@ export default function StablePools() {
       /> */}
 
       <DoubleGlowShadow>
-        <div className="gap-4 p-6 transition-all rounded-3xl z-0">
+        <div className="gap-4 p-3 md:p-4 lg:p-6 transition-all rounded-3xl z-0">
           <PoolsNav />
 
           {!account ? (

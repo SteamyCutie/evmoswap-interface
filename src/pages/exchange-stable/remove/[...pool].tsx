@@ -291,7 +291,7 @@ export default function Remove() {
       </div>
 
       <DoubleGlowShadow>
-        <div className="gap-4 p-6 transition-all rounded-3xl z-0">
+        <div className="gap-4 p-3 md:p-4 lg:p-6 transition-all rounded-3xl z-0">
           <div className="flex items-center justify-between">
             <div className="text-xl text-dark-primary dark:text-light-primary transition-all px-2 font-bold  mb-4">
               {i18n._(t`Withdraw`)}

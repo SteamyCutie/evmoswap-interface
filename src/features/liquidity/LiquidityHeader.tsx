@@ -10,7 +10,7 @@ export default function LiquidityHeader({ input = undefined, output = undefined 
     'rounded-lg text-dark-primary text-base hover:text-dark-primary/60 dark:text-light-primary dark:hover:text-light-primary/60 transition-all'
 
   return (
-    <div className="flex p-2 pt-4 space-x-12 rounded-md">
+    <div className="flex p-2 pb-1 pt-2 md:pb-2 md:pt-4 space-x-12 rounded-md transition-all">
       <NavLink activeClassName="font-extrabold" href={`/add/${currencyId(input)}/${currencyId(output)}`}>
         <a className={navLinkStyle}>Add liquidity</a>
       </NavLink>

@@ -430,7 +430,7 @@ const Swap = () => {
         onConfirm={handleConfirmTokenWarning}
       />
       <DoubleGlowShadow>
-        <div className="gap-4 p-6 transition-all rounded-3xl z-0">
+        <div className="gap-4 p-3 md:p-4 lg:p-6 transition-all rounded-3xl z-0">
           <SwapHeader
             input={currencies[Field.INPUT]}
             output={currencies[Field.OUTPUT]}

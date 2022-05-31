@@ -90,7 +90,7 @@ export default function PoolFinder() {
       </div>
 
       <DoubleGlowShadow>
-        <div className="grid gap-4 p-6 transition-all rounded-3xl z-0 text-dark-primary dark:text-light-primary ">
+        <div className="grid gap-4 p-3 md:p-4 lg:p-6 transition-all rounded-3xl z-0 text-dark-primary dark:text-light-primary ">
           <div className="grid">
             <CurrencySelectPanel
               currency={currency0}
