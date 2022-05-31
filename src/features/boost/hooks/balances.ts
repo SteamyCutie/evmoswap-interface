@@ -163,7 +163,7 @@ export const useFarmsReward = () => {
     const masterChef = useMasterChefContract()
 
     const [ totalRewards, setTotalRewards ] = useState( ZERO_BN )
-    const farmingPools = Object.keys( FARMS[ chainId ] ).map( ( key ) => {
+    const farmingPools = Object.keys( FARMS[ chainId ] ?? [] ).map( ( key ) => {
         return { ...FARMS[ chainId ][ key ], lpToken: key }
     } )
 
