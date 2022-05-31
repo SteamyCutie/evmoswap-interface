@@ -1,11 +1,10 @@
-import { Currency, CurrencyAmount } from '@evmoswap/core-sdk'
+import { Currency, CurrencyAmount, Token, ZERO } from '@evmoswap/core-sdk'
 
 import React from 'react'
 import { t } from '@lingui/macro'
 import { useLingui } from '@lingui/react'
 import { CurrencyLogo } from 'app/components/CurrencyLogo'
 import { classNames } from 'app/functions'
-import { StableLpTokenInfo } from 'app/constants/pools'
 import Button from 'app/components/Button'
 
 export function ConfirmAddStableModalBottom({
@@ -17,7 +16,7 @@ export function ConfirmAddStableModalBottom({
 }: {
   parsedAmounts: CurrencyAmount<Currency>[]
   onAdd: () => void
-  lpToken: StableLpTokenInfo
+  lpToken: Token
   estimatedSLP: CurrencyAmount<Currency>
   poolTokenPercentage: string
 }) {
@@ -62,7 +61,7 @@ export function ConfirmAddStableModalBottom({
         </div>
       </div>
 
-      <Button color="gradient" size="lg" onClick={onAdd}>
+      <Button color="blue" size="lg" onClick={onAdd} disabled={!estimatedSLP.greaterThan(ZERO)}>
         {i18n._(t`Confirm Deposit`)}
       </Button>
     </div>

@@ -18,12 +18,16 @@ const Footer = () => {
       { name: `${i18n._(t`Tokenomics`)}`, href: 'https://docs.evmoswap.org/tokenomics/token-and-supply' },
     ],
 
-    partner: [{ name: `${i18n._(t`Defi Llama`)}`, href: 'https://defillama.com/protocol/evmoswap' }],
+    partner: [
+      { name: `${i18n._(t`Defi Llama`)}`, href: 'https://defillama.com/protocol/evmoswap' },
+      { name: `${i18n._(t`DexScreener`)}`, href: 'https://dexscreener.com/evmos/evmoswap' },
+      { name: `${i18n._(t`GeckoTerminal`)}`, href: 'https://geckoterminal.com/evmos/evmoswap/pools' },
+    ],
 
     developers: [
       { name: `${i18n._(t`Github`)}`, href: 'https://github.com/evmoswap' },
       { name: `${i18n._(t`Documentation`)}`, href: 'https://docs.evmoswap.org/' },
-      { name: `${i18n._(t`Audits`)}`, href: 'https://docs.evmoswap.org/security-audits' },
+      { name: `${i18n._(t`Audits`)}`, href: 'https://docs.evmoswap.org/extras/security-audits' },
     ],
 
     business: [

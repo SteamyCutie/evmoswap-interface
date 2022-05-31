@@ -3,7 +3,7 @@ import { ChainId } from '@evmoswap/core-sdk'
 export enum Feature {
   AMM = 'AMM',
   YIELD = 'Yield',
-  FARMV2 = 'Farm V2',
+  GEMO = 'Gemo',
   LENDING = 'Lending',
   ANALYTICS = 'Analytics',
   MIGRATE = 'Migrate',
@@ -14,6 +14,7 @@ export enum Feature {
   ZAP = 'Zap',
   IFO = 'Ifo',
   GAMEFI = 'GameFi',
+  AIRDROP = 'AirDrop',
   FAUCET = 'faucet',
   PRISALE = 'prisale',
 }
@@ -24,7 +25,7 @@ const features = {
   [ChainId.EVMOS]: [
     Feature.AMM,
     Feature.YIELD,
-    // Feature.FARMV2,
+    // Feature.GEMO,
     // Feature.ZAP,
     // // Feature.MIGRATE,
     // // Feature.ANALYTICS,
@@ -32,14 +33,14 @@ const features = {
     // Feature.STAKING,
     Feature.BRIDGE,
     Feature.BOOST,
-    // Feature.GAMEFI,
+    Feature.AIRDROP,
     Feature.PRISALE,
   ],
 
   [ChainId.EVMOS_TESTNET]: [
     Feature.AMM,
     Feature.YIELD,
-    // Feature.FARMV2,
+    // Feature.GEMO,
     // Feature.ZAP,
     // Feature.LENDING,
     Feature.IFO,
@@ -52,7 +53,7 @@ const features = {
   [ChainId.BSC_TESTNET]: [
     Feature.AMM,
     Feature.YIELD,
-    // Feature.FARMV2,
+    Feature.GEMO,
     // Feature.ZAP,
     // Feature.LENDING,
     Feature.IFO,

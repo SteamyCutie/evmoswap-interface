@@ -3,7 +3,7 @@ import { AutoRow, RowBetween } from '../../../components/Row'
 import Button, { ButtonConfirmed, ButtonError } from '../../../components/Button'
 import { Currency, CurrencyAmount, Percent, Token, ZERO } from '@evmoswap/core-sdk'
 import React, { useCallback, useMemo, useState } from 'react'
-import TransactionConfirmationModal, { ConfirmationModalContent } from '../../../modals/TransactionConfirmationModal'
+import TransactionConfirmationModal, { ConfirmationModalContent, TransactionErrorContent } from '../../../modals/TransactionConfirmationModal'
 import { calculateGasMargin, calculateSlippageAmount } from '../../../functions/trade'
 import { useUserSlippageToleranceWithDefault } from '../../../state/user/hooks'
 import { AutoColumn } from '../../../components/Column'
@@ -28,88 +28,109 @@ import { useWalletModalToggle } from '../../../state/application/hooks'
 import { useStablePoolFromRouter, useStablePoolInfo, useStableTokenToReceive } from 'app/features/exchange-stable/hooks'
 import { useTokenBalance } from 'app/state/wallet/hooks'
 import { classNames, tryParseAmount } from 'app/functions'
-import { currencyAmountsToString } from 'app/features/exchange-stable/utils'
-import { ArrowDownIcon, ArrowSmDownIcon, ChevronRightIcon, PlusIcon } from '@heroicons/react/solid'
+import { contractErrorToUserReadableMessage, currencyAmountsToString } from 'app/features/exchange-stable/utils'
+import { ArrowDownIcon } from '@heroicons/react/solid'
 import { CurrencyLogo } from 'app/components/CurrencyLogo'
 import Dots from 'app/components/Dots'
 import NeonSelect, { NeonSelectItem } from 'app/components/Select'
 
-const DEFAULT_ADD_V2_SLIPPAGE_TOLERANCE = new Percent(50, 10_000)
+const DEFAULT_ADD_V2_SLIPPAGE_TOLERANCE = new Percent( 50, 10_000 )
 
-export default function Remove() {
-  const { i18n } = useLingui()
-  const { account, chainId, library } = useActiveWeb3React()
-  const router = useRouter()
 
-  //pool details
-  const { poolId, pool, poolAddress, poolContract } = useStablePoolFromRouter(router.query.pool)
+export default function Add () {
 
-  //pool lp
-  const poolInfo = useStablePoolInfo(poolId)
-  const lpToken = poolInfo?.lpToken ? { ...pool?.lpToken, ...{ address: poolInfo.lpToken } } : pool?.lpToken
-  const balance = useTokenBalance(
-    account,
-    lpToken ? new Token(chainId, lpToken.address, lpToken.decimals, lpToken.symbol) : undefined
-  )
-  const lpTokenCurrency = balance?.currency
+    const { i18n } = useLingui()
+    const { account, chainId, library } = useActiveWeb3React()
+    const router = useRouter()
 
-  //pool pooled Tokens details
-  const poolTokensInfo = poolInfo.tokensInfo
-  const poolBalances = poolTokensInfo?.balances
-  const tokens = poolTokensInfo.tokens
+    //pool details
+    const { poolId, pool, poolAddress, poolContract } = useStablePoolFromRouter( router.query.pool );
 
-  //handle inputs data
-  const [tokenInput, setTokenInput] = useState('')
-  const onTokenInput = (amount: string) => {
-    if (amount?.split('.')?.[1]?.length > lpToken?.decimals) return
-    setTokenInput(amount)
-  }
-  const parsedAmount = useMemo(() => {
-    return tryParseAmount(tokenInput, lpTokenCurrency)
-  }, [tokenInput, lpTokenCurrency])
+    //pool lp
+    const poolInfo = useStablePoolInfo( poolId );
+    const lpToken = poolInfo.lpToken;
+    const balance = useTokenBalance( account, lpToken );
 
-  //token selection management
-  const [selectTokenIndex, setSelectedTokenIndex] = useState(-1) //below 0 means all
-  const singleMode = selectTokenIndex >= 0
+    //pool pooled Tokens details
+    const poolTokensInfo = poolInfo.pooledTokensInfo
+    const poolBalances = poolTokensInfo?.balances;
+    const tokens = poolTokensInfo.tokens
 
-  // modal and loading
-  const [showConfirm, setShowConfirm] = useState<boolean>(false)
-  const [attemptingTxn, setAttemptingTxn] = useState<boolean>(false) // clicked confirm
 
-  // txn values
-  const deadline = useTransactionDeadline() // custom from users settings
-  const allowedSlippage = useUserSlippageToleranceWithDefault(DEFAULT_ADD_V2_SLIPPAGE_TOLERANCE) // custom from users
-  const [txHash, setTxHash] = useState<string>('')
-  const toggleWalletModal = useWalletModalToggle() // toggle wallet when disconnected
 
-  //basic infrered stats
-  const estimatedSLPs = useStableTokenToReceive(poolId, parsedAmount, selectTokenIndex)
-  const [minToMints, minToMintsWithSlippage, amountSummaryTexts] = useMemo(() => {
-    let tempMints: CurrencyAmount<Currency>[] = new Array(tokens.length)
-    let tempMintsWithSlippage = tempMints
-    let summaryTexts = []
-
-    if (singleMode) {
-      tempMints[selectTokenIndex] = CurrencyAmount.fromRawAmount(tokens[selectTokenIndex], estimatedSLPs ?? '0')
-      tempMintsWithSlippage[selectTokenIndex] = CurrencyAmount.fromRawAmount(
-        tokens[selectTokenIndex],
-        calculateSlippageAmount(tempMints[selectTokenIndex], allowedSlippage)[0]
-      )
-      summaryTexts.push(
-        ` ${tempMintsWithSlippage[selectTokenIndex]?.toSignificant(3)} ${tokens[selectTokenIndex]?.symbol}`
-      )
-    } else if (Array.isArray(estimatedSLPs)) {
-      estimatedSLPs.map((estimate, index) => {
-        tempMints[index] = CurrencyAmount.fromRawAmount(tokens[index], estimate ?? '0')
-        tempMintsWithSlippage[index] = CurrencyAmount.fromRawAmount(
-          tokens[index],
-          calculateSlippageAmount(tempMintsWithSlippage[index], allowedSlippage)[0]
-        )
-        summaryTexts.push(` ${tempMintsWithSlippage[index]?.toSignificant(3)} ${tokens[index]?.symbol}`)
-      })
+    //handle inputs data
+    const [ tokenInput, setTokenInput ] = useState( "" )
+    const onTokenInput = ( amount: string ) => {
+        if ( amount?.split( "." )?.[ 1 ]?.length > lpToken?.decimals ) return;
+        setTokenInput( amount )
     }
-    return [tempMints, tempMintsWithSlippage, summaryTexts]
-  }, [estimatedSLPs, allowedSlippage, selectTokenIndex, tokens, singleMode])
+    const parsedAmount = useMemo( () => {
+        return tryParseAmount(
+            tokenInput,
+            lpToken
+        )
+    }, [ tokenInput, lpToken ] );
+
+
+    //token selection management
+    const [ selectTokenIndex, setSelectedTokenIndex ] = useState( -1 ); //below 0 means all
+    const singleMode = selectTokenIndex >= 0;
+
+
+    // modal and loading
+    const [ showConfirm, setShowConfirm ] = useState<boolean>( false )
+    const [ attemptingTxn, setAttemptingTxn ] = useState<boolean>( false ) // clicked confirm
+    const [ errorMessage, setErrorMessage ] = useState( "" );
+
+
+    // txn values
+    const deadline = useTransactionDeadline() // custom from users settings
+    const allowedSlippage = useUserSlippageToleranceWithDefault( DEFAULT_ADD_V2_SLIPPAGE_TOLERANCE ) // custom from users
+    const [ txHash, setTxHash ] = useState<string>( '' )
+    const toggleWalletModal = useWalletModalToggle() // toggle wallet when disconnected
+
+
+    //basic infrered stats
+    const estimatedSLPs = useStableTokenToReceive( poolId, parsedAmount, selectTokenIndex );
+    const [ minToMints, minToMintsWithSlippage, amountSummaryTexts ] = useMemo( () => {
+
+        let tempMints: CurrencyAmount<Currency>[] = new Array( tokens.length );
+        let tempMintsWithSlippage = tempMints;
+        let summaryTexts = [];
+
+        if ( singleMode ) {
+
+            tempMints[ selectTokenIndex ] = CurrencyAmount.fromRawAmount( tokens[ selectTokenIndex ], estimatedSLPs ?? "0" );
+            tempMintsWithSlippage[ selectTokenIndex ] = CurrencyAmount.fromRawAmount( tokens[ selectTokenIndex ], calculateSlippageAmount( tempMints[ selectTokenIndex ], allowedSlippage )[ 0 ] )
+            summaryTexts.push( ` ${tempMintsWithSlippage[ selectTokenIndex ]?.toSignificant( 3 )} ${tokens[ selectTokenIndex ]?.symbol}` )
+        }
+        else if ( Array.isArray( estimatedSLPs ) ) {
+
+            estimatedSLPs.map( ( estimate, index ) => {
+                tempMints[ index ] = CurrencyAmount.fromRawAmount( tokens[ index ], estimate ?? "0" )
+                tempMintsWithSlippage[ index ] = CurrencyAmount.fromRawAmount( tokens[ index ], calculateSlippageAmount( tempMintsWithSlippage[ index ], allowedSlippage )[ 0 ] )
+                summaryTexts.push( ` ${tempMintsWithSlippage[ index ]?.toSignificant( 3 )} ${tokens[ index ]?.symbol}` )
+            } )
+        }
+        return [ tempMints, tempMintsWithSlippage, summaryTexts ];
+    }, [ estimatedSLPs, allowedSlippage, selectTokenIndex, tokens, singleMode ] )
+
+
+    // pooled tokens approval handlings
+    const [ approval, approveCallback ] = useApproveCallback( parsedAmount, poolAddress )
+
+    //error montior for whole flow.
+    const checkError = () => {
+
+        let error: string | undefined
+
+        if ( !account ) {
+            error = i18n._( t`Connect Wallet` )
+        }
+
+        if ( !error ) {
+
+            const amount = parsedAmount ?? undefined;
 
   // pooled tokens approval handlings
   const [approval, approveCallback] = useApproveCallback(parsedAmount, poolAddress)
@@ -208,21 +229,97 @@ export default function Remove() {
       })
   }
 
-  //confirmation modal componentes
-  function modalHeader() {
-    return (
-      <div className="grid gap-4 pb-4">
-        <div className="grid">
-          {(singleMode ? [minToMints[selectTokenIndex]] : minToMints).map((estimate, index) => {
-            const notLastIndex = singleMode ? false : index !== minToMints.length - 1
-            return (
-              <React.Fragment key={index}>
-                <div className="flex items-center justify-between text-dark-primary dark:text-light-primary bg-light-bg dark:bg-dark-bg p-4 rounded-2xl transition-all">
-                  <div className="flex items-center gap-4">
-                    <CurrencyLogo currency={estimate.currency} size={40} />
-                    <div className="text-xl font-bold">{estimate?.toSignificant(6)}</div>
-                  </div>
-                  <div className="ml-3 text-xl font-medium">{estimate.currency?.symbol}</div>
+        const tokenInputBN = currencyAmountsToString( [ parsedAmount ] )[ 0 ];
+        const endpoint = singleMode ? "removeLiquidityOneToken" : "removeLiquidity";
+        const minAmounts = singleMode ? minToMintsWithSlippage[ selectTokenIndex ].quotient.toString() : minToMintsWithSlippage.map( ( e, i ) => e.quotient.toString() )
+
+        let estimate,
+            method: ( ...args: any ) => Promise<TransactionResponse>,
+            args: Array<string | string[] | number>,
+            value: BigNumber | null
+
+
+        estimate = poolContract.estimateGas[ endpoint ]
+        method = poolContract[ endpoint ]
+
+        args = [
+            tokenInputBN,
+            selectTokenIndex,
+            minAmounts,
+            deadline.toHexString(),
+        ]
+
+        //remove token index in not single mode
+        if ( !singleMode )
+            args.splice( 1, 1 );
+
+        value = null
+
+        setAttemptingTxn( true )
+        await estimate( ...args, value ? { value } : {} )
+            .then( ( estimatedGasLimit ) =>
+                method( ...args, {
+                    ...( value ? { value } : {} ),
+                    gasLimit: calculateGasMargin( estimatedGasLimit ),
+                } ).then( ( response ) => {
+                    setAttemptingTxn( false )
+
+                    addTransaction( response, {
+                        summary: `${i18n._( t`Remove` )} ${amountSummaryTexts.join( ', ' )}`,
+                    } )
+
+                    setTxHash( response.hash )
+
+                    ReactGA.event( {
+                        category: 'Liquidity',
+                        action: 'Remove',
+                        label: pool.name,
+                    } )
+                } )
+            )
+            .catch( ( error ) => {
+                setAttemptingTxn( false )
+                // we only care if the error is something _other_ than the user rejected the tx
+                if ( error?.code !== 4001 ) {
+                    console.error( error )
+                    setErrorMessage( contractErrorToUserReadableMessage( error ) )
+                }
+            } )
+    }
+
+    //confirmation modal componentes
+    function modalHeader () {
+        return (
+            <div className="grid gap-4 pt-3 pb-4">
+                <div className="grid gap-2">
+                    {
+                        ( singleMode ? [ minToMints[ selectTokenIndex ] ] : minToMints ).map( ( estimate, index ) => {
+                            const notLastIndex = singleMode ? false : index !== ( minToMints.length - 1 )
+                            return (
+                                <React.Fragment key={ index }>
+                                    <div className="flex items-center justify-between">
+                                        <div className="flex items-center gap-3">
+                                            <CurrencyLogo currency={ estimate.currency } size={ 48 } />
+                                            <div className="text-2xl font-bold text-high-emphesis">
+                                                { estimate?.toSignificant( 6 ) }
+                                            </div>
+                                        </div>
+                                        <div className="ml-3 text-2xl font-medium text-high-emphesis">{ estimate.currency?.symbol }</div>
+                                    </div>
+                                    { notLastIndex &&
+                                        <div className="ml-3 mr-3 min-w-[24px]">
+                                            <Plus size={ 24 } />
+                                        </div>
+                                    }
+                                </React.Fragment>
+                            )
+                        } )
+                    }
+                </div>
+                <div className="justify-start text-sm text-secondary">
+                    { t`Output is estimated. If the price changes by more than ${allowedSlippage.toSignificant(
+                        4
+                    )}% your transaction will revert.` }
                 </div>
                 {notLastIndex && (
                   <div className="flex justify-center -my-5 z-0">
@@ -262,7 +359,15 @@ export default function Remove() {
     )
   }
 
-  const pendingText = `${i18n._(t`Withdrawing`)} ${amountSummaryTexts.join(', ')}`
+    const handleDismissConfirmation = useCallback( () => {
+        setShowConfirm( false )
+        // if there was a tx hash, we want to clear the input
+        if ( txHash ) {
+            setTokenInput( '' )
+        }
+        setTxHash( '' )
+        setErrorMessage( '' )
+    }, [ txHash ] )
 
   const handleDismissConfirmation = useCallback(() => {
     setShowConfirm(false)
@@ -335,44 +440,111 @@ export default function Remove() {
                   </div>
                 </div>
 
-                <div
-                  id="remove-liquidity-output"
-                  className="p-5 rounded text-dark-primary dark:text-light-primary bg-light-primary dark:bg-dark-primary transition-all"
-                >
-                  <div className="flex flex-col justify-between space-y-0">
-                    <div className="w-full" style={{ margin: 'auto 0px' }}>
-                      <RowBetween className="items-center mb-3">
-                        <div className="text-base">{i18n._(t`You will receive`)}</div>
-                        <div className="flex text-sm font-bold">
-                          <NeonSelect value={!singleMode ? i18n._(t`All Tokens`) : tokens[selectTokenIndex].symbol}>
-                            <>
-                              <NeonSelectItem
-                                value={-1}
-                                onClick={() => {
-                                  setSelectedTokenIndex(-1)
-                                }}
-                              >
-                                {i18n._(t`All Tokens`)}
-                              </NeonSelectItem>
-                              {tokens &&
-                                tokens.map((token, index) => {
-                                  return (
-                                    <NeonSelectItem
-                                      key={index}
-                                      value={index}
-                                      onClick={() => {
-                                        setSelectedTokenIndex(index)
-                                      }}
-                                    >
-                                      {token.symbol}
-                                    </NeonSelectItem>
-                                  )
-                                })}
-                            </>
-                          </NeonSelect>
-                        </div>
-                      </RowBetween>
-                    </div>
+            <DoubleGlowShadow>
+                <div className="p-4 space-y-4 rounded bg-dark-900" style={ { zIndex: 1 } }>
+
+                    <RowBetween>
+                        <div className="text-2xl text-white font-bold">{ i18n._( t`Withdraw` ) }</div>
+                        <ExchangeHeader
+                            showNavs={ false }
+                            allowedSlippage={ allowedSlippage }
+                        />
+                    </RowBetween>
+                    <div>
+                        <TransactionConfirmationModal
+                            isOpen={ showConfirm }
+                            onDismiss={ handleDismissConfirmation }
+                            attemptingTxn={ attemptingTxn }
+                            hash={ txHash ? txHash : '' }
+                            content={ () => (
+                                errorMessage ?
+                                    <TransactionErrorContent onDismiss={ handleDismissConfirmation } message={ errorMessage } /> :
+                                    <ConfirmationModalContent
+                                        title={ i18n._( t`You will receive` ) }
+                                        onDismiss={ handleDismissConfirmation }
+                                        topContent={ modalHeader }
+                                        bottomContent={ modalBottom }
+                                    />
+                            ) }
+                            pendingText={ pendingText }
+                        />
+                        <AutoColumn gap="md">
+
+                            <div>
+                                <CurrencyInputPanel
+                                    value={ tokenInput }
+                                    onUserInput={ ( value ) => onTokenInput( value ) }
+                                    onMax={ () => {
+                                        onTokenInput( singleMode ? poolBalances?.[ selectTokenIndex ]?.toExact() : balance?.toExact() )
+                                    } }
+                                    showMaxButton={ true }
+                                    currency={ lpToken }
+                                    id={ `add-liquidity-input-token-lp}` }
+                                    showCommonBases
+                                    disableCurrencySelect={ true }
+                                />
+
+                                <AutoColumn justify="space-between" className="py-2.5">
+                                    <AutoRow justify={ 'flex-start' } style={ { padding: '0 1rem', justifyContent: 'space-between' } }>
+                                        <button className="z-10 -mt-6 -mb-6 rounded-full cursor-default bg-dark-900 p-3px">
+                                            <div className="p-3 rounded-full bg-dark-800">
+                                                <ArrowDownIcon width="32px" height="32px" />
+                                            </div>
+
+                                        </button>
+                                    </AutoRow>
+                                </AutoColumn>
+
+                                <div id="remove-liquidity-output" className="p-5 rounded bg-dark-800">
+                                    <div className="flex flex-col justify-between space-y-3">
+                                        <div className="w-full text-white" style={ { margin: 'auto 0px' } }>
+                                            <RowBetween className="items-center mb-4">
+                                                <div>{ i18n._( t`You Will Receive` ) }:</div>
+                                                <div className="flex text-sm font-bold text-secondary">
+                                                    <NeonSelect value={ !singleMode ? i18n._( t`All Tokens` ) : tokens[ selectTokenIndex ].symbol }>
+                                                        <>
+                                                            <NeonSelectItem value={ -1 } onClick={ () => { setSelectedTokenIndex( -1 ) } }>
+                                                                { i18n._( t`All Tokens` ) }
+                                                            </NeonSelectItem>
+                                                            {
+                                                                tokens && tokens.map( ( token, index ) => {
+                                                                    return (
+                                                                        <NeonSelectItem key={ index } value={ index } onClick={ () => { setSelectedTokenIndex( index ) } }>
+                                                                            { token.symbol }
+                                                                        </NeonSelectItem>
+                                                                    )
+                                                                } )
+                                                            }
+                                                        </>
+                                                    </NeonSelect>
+                                                </div>
+                                            </RowBetween>
+                                        </div>
+
+                                        <div className="flex flex-col space-y-3 md:flex-row md:space-x-6 md:space-y-0">
+                                            {
+                                                ( !singleMode ? tokens : [ tokens[ selectTokenIndex ] ] ).map( ( token, i ) => {
+                                                    const index = singleMode ? selectTokenIndex : i;
+                                                    return (
+                                                        <div
+                                                            className={ classNames(
+                                                                "flex flex-row items-center w-full p-3 pr-8 space-x-3 rounded bg-dark-900 justify-between"
+                                                            ) }
+                                                            key={ index }
+                                                        >
+
+                                                            <CurrencyLogo currency={ token } size="46px" />
+                                                            <AutoColumn>
+                                                                <div className="text-white truncate">{ minToMints?.[ index ]?.toSignificant( 6 ) || '-' }</div>
+                                                                <div className="text-sm">{ token?.symbol }</div>
+                                                            </AutoColumn>
+                                                        </div> )
+                                                } )
+                                            }
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
 
                     <div className="flex flex-col space-y-2 md:flex-row md:space-x-2 md:space-y-0">
                       {(!singleMode ? tokens : [tokens[selectTokenIndex]]).map((token, i) => {

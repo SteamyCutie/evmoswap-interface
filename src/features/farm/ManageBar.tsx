@@ -27,6 +27,7 @@ import { MASTERCHEF_ADDRESS } from 'app/constants/addresses'
 const APPROVAL_ADDRESSES = {
   [Chef.MASTERCHEF]: {
     [ChainId.ETHEREUM]: MASTERCHEF_ADDRESS[ChainId.ETHEREUM],
+    [ChainId.EVMOS]: MASTERCHEF_ADDRESS[ChainId.EVMOS],
     [ChainId.EVMOS_TESTNET]: MASTERCHEF_ADDRESS[ChainId.EVMOS_TESTNET],
     [ChainId.BSC_TESTNET]: MASTERCHEF_ADDRESS[ChainId.BSC_TESTNET],
   },
@@ -46,7 +47,7 @@ const ManageBar = ({ farm, handleDismiss }) => {
     chainId,
     getAddress(farm.lpToken),
     farm.token1 ? 18 : farm.token0 ? farm.token0.decimals : 18,
-    'SLP'
+    'ELP'
   )
   const balance = useTokenBalance(account, liquidityToken)
   const { stakedAmount } = useUserInfo(farm, liquidityToken)

@@ -57,7 +57,7 @@ export default function GEmo(): JSX.Element {
           type="information"
         />
         <GEmoControl />
-        <GEmoUtility />
+        {/* <GEmoUtility /> */}
         <GEmoFlow />
       </div>
     </Container>

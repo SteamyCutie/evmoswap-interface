@@ -119,6 +119,18 @@ const AppBar = () => {
                           </a>
                         </NavLink>
                       )}
+
+                      {chainId && featureEnabled(Feature.GEMO, chainId) && (
+                        <NavLink href={'/gemo'}>
+                          <a
+                            id={`boost-nav-link`}
+                            className="p-2 text-baseline text-primary hover:text-high-emphesis focus:text-high-emphesis md:p-3 whitespace-nowrap"
+                          >
+                            {i18n._(t`GEMO`)}
+                          </a>
+                        </NavLink>
+                      )}
+
                       {chainId && featureEnabled(Feature.BOOST, chainId) && (
                         <NavLink href={'/veEMO'}>
                           <a
@@ -195,7 +207,19 @@ const AppBar = () => {
                             }`}
                           >
                             {' '}
-                            {i18n._(t`Private sale 🚀`)}
+                            {i18n._(t`Private sale`)}
+                          </a>
+                        </Link>
+                      )}
+
+                      {chainId && featureEnabled(Feature.AIRDROP, chainId) && (
+                        <Link href={'/airdrops'}>
+                          <a
+                            id={`airdrops-nav-link`}
+                            className="p-2 text-baseline text-primary hover:text-high-emphesis focus:text-high-emphesis md:p-3 whitespace-nowrap"
+                          >
+                            {' '}
+                            {i18n._(t`Airdrop`)}
                           </a>
                         </Link>
                       )}
@@ -208,11 +232,11 @@ const AppBar = () => {
                     <div className="flex items-center w-auto mr-1 text-xs font-bold transition-all bg-transparent rounded-2xl cursor-pointer pointer-events-auto select-none hover:bg-dark-primary/10 text-primary dark:hover:bg-light-primary/5 whitespace-nowrap sm:block">
                       <TokenStats token="EMO" />
                     </div>
-                    {library && library.provider.isMetaMask && (
+                    {/* {library && library.provider.isMetaMask && (
                       <div className="hidden sm:inline-block">
                         <Web3Network />
                       </div>
-                    )}
+                    )} */}
 
                     <div className="flex w-auto text-sm font-bold transition-all rounded-2xl bg-gradient-to-r p-0.5 from-blue-special to-pink-special">
                       <div
@@ -331,6 +355,17 @@ const AppBar = () => {
                   </Link>
                 )}
 
+                {chainId && featureEnabled(Feature.GEMO, chainId) && (
+                  <Link href={'/gemo'}>
+                    <a
+                      id={`boost-nav-link`}
+                      className="p-2 text-baseline text-primary hover:text-high-emphesis focus:text-high-emphesis md:p-3 whitespace-nowrap"
+                    >
+                      {i18n._(t`GEMO`)}
+                    </a>
+                  </Link>
+                )}
+
                 {chainId && featureEnabled(Feature.BOOST, chainId) && (
                   <Link href={'/veEMO'}>
                     <a
@@ -381,6 +416,17 @@ const AppBar = () => {
                     >
                       {' '}
                       {i18n._(t`Private sale`)}
+                    </a>
+                  </Link>
+                )}
+                {chainId && featureEnabled(Feature.AIRDROP, chainId) && (
+                  <Link href={'/airdrops'}>
+                    <a
+                      id={`airdrops-nav-link`}
+                      className="p-2 text-baseline text-primary hover:text-high-emphesis focus:text-high-emphesis md:p-3 whitespace-nowrap"
+                    >
+                      {' '}
+                      {i18n._(t`Airdrop`)}
                     </a>
                   </Link>
                 )}

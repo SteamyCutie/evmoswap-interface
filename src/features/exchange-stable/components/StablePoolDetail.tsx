@@ -1,29 +1,26 @@
 import { i18n } from '@lingui/core'
 import { t } from '@lingui/macro'
+import { CurrencyLogo } from 'app/components/CurrencyLogo'
 import Dots from 'app/components/Dots'
 import Empty from 'app/components/Empty'
-import Logo from 'app/components/Logo'
 import QuestionHelper from 'app/components/QuestionHelper'
 import { RowBetween } from 'app/components/Row'
-import { STABLE_POOLS } from 'app/constants/pools'
-import { classNames, formatBalance, formatNumber, formatNumberPercentage, formatPercent } from 'app/functions'
-import { useActiveWeb3React } from 'app/services/web3'
-import { useStablePoolInfo } from '../hooks'
+import { StablePoolInfo } from 'app/constants/stables'
+import { classNames, formatNumber, formatNumberPercentage, formatPercent } from 'app/functions'
+import StablePoolPosition from './StablePoolPosition'
 
-const StablePoolInfo = ({
-  poolId,
+const StablePoolDetail = ({
+  poolInfo,
   showHeader = false,
+  showPosition = false,
   className = '',
 }: {
-  poolId: string
+  poolInfo: StablePoolInfo
   showHeader?: boolean
+  showPosition?: boolean
   className?: string
 }) => {
-  const { chainId } = useActiveWeb3React()
-  const pool = STABLE_POOLS[chainId][poolId]
-
-  const poolInfo = useStablePoolInfo(poolId)
-  const poolTokensInfo = poolInfo.tokensInfo
+  const poolTokensInfo = poolInfo.pooledTokensInfo
   const balances = poolTokensInfo.balances
   const virtualPrice = poolInfo.virtualPrice
   const isLoading = poolInfo.isLoading
@@ -39,28 +36,27 @@ const StablePoolInfo = ({
         </Empty>
       )}
 
-      {pool && (
-        <div className={classNames('grid gap-2 text-dark-primary dark:text-light-primary transition-all', className)}>
+      {poolInfo && (
+        <div className={classNames('grid gap-4 rounded bg-dark-800 text-high-emphesis', className)}>
+          {showPosition && <StablePoolPosition poolInfo={poolInfo} />}
+
+          <div className="text-lg">{i18n._(t`Pool Info`)}</div>
           {showHeader && (
             <RowBetween>
               <div className="flex items-center space-x-4">
-                <Logo
-                  srcs={[pool.lpToken.icon.src]}
-                  width={pool.lpToken.icon.width}
-                  height={pool.lpToken.icon.height}
-                />
+                <CurrencyLogo currency={poolInfo.lpToken} />
                 <div className="flex flex-col text-left">
-                  <div className="text-lg sm:text-2xl font-bold">{pool.name}</div>
+                  <div className="text-lg sm:text-2xl font-bold text-white">{poolInfo.name}</div>
                 </div>
               </div>
               <div className="flex flex-row text-left items-center space-x-2">
                 <div className="text-lg">{formatNumber(totalTvl, true, false)}</div>
-                <div className="text-sm hidden md:flex">{i18n._(t`Total Liquidity`)}</div>
+                <div className="text-sm text-secondary hidden md:flex">{i18n._(t`Total Liquidity`)}</div>
               </div>
             </RowBetween>
           )}
-          <div className="text-base font-extrabold">{i18n._(t`Pool Info`)}</div>
-          <div className="flex flex-col w-full p-3 space-y-2 text-sm">
+
+          <div className="flex flex-col w-full p-3  space-y-2 text-sm rounded text-high-emphesis">
             {balances &&
               balances.map((poolBalance, index) => {
                 const tvl = Number(poolBalance?.toExact()) * virtualPrice
@@ -75,17 +71,26 @@ const StablePoolInfo = ({
                   </RowBetween>
                 )
               })}
+            <div className="border-t dashed border-dark-800 pt-1"></div>
             <RowBetween>
-              <span className="flex items-center">
+              <span className="flex">
                 <div>{i18n._(t`Virtual Price`)}</div>
-                {/* <QuestionHelper text={i18n._(t`Average dollar value of pool token.`)}/> */}
+                <div className="ml-1 flex">
+                  <QuestionHelper text={i18n._(t`Average dollar value of pool token.`)} />
+                </div>
               </span>
               <div className="font-bold">{formatNumber(virtualPrice, false, false)}</div>
             </RowBetween>
             <RowBetween>
-              <span className="flex items-center">
+              <span className="flex">
                 <div>{i18n._(t`Amplification coefficient`)}</div>
-                {/* <QuestionHelper text={i18n._(t`Higher values help widen the range of low-slippages swaps, while lower values help keep the pool's composition balanced`)}/> */}
+                <div className="ml-1 flex">
+                  <QuestionHelper
+                    text={i18n._(
+                      t`Higher values help widen the range of low-slippages swaps, while lower values help keep the pool's composition balanced`
+                    )}
+                  />
+                </div>
               </span>
               <div className="font-bold">{formatNumber(poolInfo.a, false, false)}</div>
             </RowBetween>
@@ -106,4 +111,4 @@ const StablePoolInfo = ({
   )
 }
 
-export default StablePoolInfo
+export default StablePoolDetail

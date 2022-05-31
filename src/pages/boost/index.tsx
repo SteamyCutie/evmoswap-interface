@@ -69,12 +69,109 @@ const LOCK_PERIODS = [
 
 //evmo benefit outlines
 const OUTLINES = [
-  'Mint NFTs and Trade',
-  'Vote and Govern Protocol',
-  'Receive Free Partner Tokens',
-  'Boost your yield farm earnings',
-  'Access Exclusive Launchpad Projects',
-]
+    "Mint NFTs and Trade",
+    "Vote and Govern Protocol",
+    "Receive Free Partner Tokens",
+    "Boost your yield farm earnings",
+    "Access Exclusive Launchpad Projects",
+];
+
+
+export default function Boostv3 () {
+
+    const { i18n } = useLingui()
+    const { account, chainId } = useActiveWeb3React()
+    const balance = useTokenBalance( account ?? undefined, EvmoSwap[ chainId ] )
+    const token = balance?.currency || EMOSPlaceholder;
+
+    const { createLockWithMc, increaseAmountWithMc, increaseUnlockTimeWithMc, withdrawWithMc } = useVotingEscrow()
+    const { harvestRewards, withdrawEarnings } = useRewardPool();
+    const { manualAPY: APR } = GetAPY()
+
+    const [ pendingTx, setPendingTx ] = useState( false )
+    const [ pendingLock, setPendingLock ] = useState( false )
+    const [ withdrawing, setWithdrawing ] = useState( false )
+    const [ withdrawingMC, setWithdrawingMC ] = useState( false )
+    const [ harvesting, setHarvesting ] = useState( false )
+
+    const { lockEnd, lockAmount, emosSupply, veEmosSupply } = useLockedBalance()
+    const { earnedBalances, withdrawableBalance } = useStakingBalance();
+    const totalActiveVesting = CurrencyAmount.fromRawAmount( token, earnedBalances?.total?.toString() || "0" )
+    const totalActiveVestingPenalty = totalActiveVesting?.divide( 2 )?.toExact()?.toBigNumber( token.decimals );
+    const totalCompletedVesting = CurrencyAmount.fromRawAmount( token, withdrawableBalance?.amountWithoutPenalty?.toString() || "0" )
+    const rewards = useRewardsBalance();
+    const pendingFarmsRewards = useFarmsReward();
+
+    const { claimLockerExtraRewards } = useFeeDistributor();
+    const lockerExtraRewards = useLockerExtraRewards();
+
+    const [ activeTab, setActiveTab ] = useState( 0 );
+
+    const [ input, setInput ] = useState( '' )
+    const [ usingBalance, setUsingBalance ] = useState( false )
+    const parsedAmount = useMemo( () => {
+        return usingBalance ? balance : tryParseAmount( input, token );
+    }, [ input, balance, usingBalance, token ] );
+
+    const [ approvalState, approve ] = useApproveCallback( parsedAmount, VOTING_ESCROW_ADDRESS[ chainId ] )
+    const requireApproval = approvalState === ApprovalState.NOT_APPROVED;
+    const waitingApproval = approvalState === ApprovalState.UNKNOWN;
+
+    const insufficientFunds = !balance?.greaterThan( ZERO ) || ( parsedAmount?.greaterThan( ZERO ) && parsedAmount?.greaterThan( balance ) )
+    const inputError = insufficientFunds
+
+    const [ week, setWeek ] = useState( '' )
+    const [ lockPeriod, setLockPeriod ] = useState( LOCK_PERIODS[ 0 ] );
+    const currentBlockTime = useCurrentBlockTimestamp();
+    const blockTimestamp = currentBlockTime ? currentBlockTime.mul( 1000 ).toNumber() : Date.now();
+
+    const lockDays = Number( week ? week : lockPeriod.week ) * 7
+    const newLockTime = Math.floor( getUnixTime( addDays( blockTimestamp, lockDays ) ) / SECS_IN_WEEK ) * SECS_IN_WEEK;
+    const maxedLockedPeriod = ( Number( week ) === MAX_WEEK || lockPeriod.week === MAX_WEEK ) && newLockTime === lockEnd;
+
+    const lockTimeBtnDisabled = pendingLock || newLockTime <= lockEnd || maxedLockedPeriod;
+    const lockExpired = lockEnd && getUnixTime( blockTimestamp ) >= lockEnd;
+    const amountBtnDisabled = pendingLock || !input || insufficientFunds || waitingApproval;
+    const lockBtnDisabled = pendingLock || !input || waitingApproval;
+    const [ activeVestingRow, setActiveVestingRow ] = useState<number | undefined>( 0 );
+
+    const vestingRows = useMemo( () => {
+        const rows = [];
+
+        if ( earnedBalances && earnedBalances?.earningsData?.length )
+            earnedBalances.earningsData.map( ( earning: { unlockTime: number; amount: number } ) => {
+                const amount = CurrencyAmount.fromRawAmount( balance?.currency, earning?.amount?.toString() || "0" );
+                const penaltyAmount = amount.divide( 2 ).toExact().toBigNumber( amount.currency.decimals );
+                const expired = isFuture( getUnixTime( earning?.unlockTime ) );
+
+                if ( ( amount.greaterThan( 0 ) && expired ) || penaltyAmount.gt( 0 ) )
+                    rows.push( {
+                        unlockTime: timestampToDate( earning?.unlockTime?.toString() ),
+                        amount: amount,
+                        expired: expired,
+                        penaltyAmount: penaltyAmount
+                    } )
+            } )
+        return rows;
+    }, [ earnedBalances, balance?.currency ] )
+
+
+    const handleInput = ( v: string ) => {
+
+        if ( v.length <= INPUT_CHAR_LIMIT ) {
+            setUsingBalance( false )
+            setInput( v )
+        }
+    }
+
+    const handleWeek = ( v: string ) => {
+
+        const vN = parseInt( v );
+        if ( vN === 0 || v === '' ) {
+
+            setWeek( '' );
+            return;
+        }
 
 export default function Boostv3() {
   const { i18n } = useLingui()
@@ -307,6 +404,11 @@ export default function Boostv3() {
         <meta key="description" name="description" content="Boost EvmoSwap" />
       </Head>
       <div className="flex flex-col justify-start flex-grow w-full h-full px-4 md:px-6 py-4 space-y-6">
+      <Typography variant="base" color="red" className="text-red" weight={ 400 }>
+                    Emergency Withdraw your locked EMOs<br/>
+                    1. Please go to <a className='text-yellow' href="https://legacy.evmoswap.org/veEMO" target="_blank" rel="noreferrer">https://legacy.evmoswap.org/veEMO</a>, First Harvest lock rewards, then Emergency Withdraw your EMOs.<br/>
+                    2. Then re-lock your EMOs again on this page.
+                </Typography>
         {/** Top action cards */}
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 md:gap-4 lg:gap-6 mt-4 md:grid-cols-3">
           <BoostRewardCard title={i18n._(t`Vesting`)} value={`${totalActiveVesting?.toFixed(2)} ${token.symbol}`}>

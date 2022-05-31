@@ -208,6 +208,8 @@ const PoolDeposit = ({ currencyA, currencyB, header, handleDismiss }) => {
             action: 'Add',
             label: [currencies[Field.CURRENCY_A]?.symbol, currencies[Field.CURRENCY_B]?.symbol].join('/'),
           })
+
+          onFieldAInput('')
         })
       )
       .catch((error) => {

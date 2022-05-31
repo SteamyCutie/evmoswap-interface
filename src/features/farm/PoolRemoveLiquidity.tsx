@@ -344,6 +344,8 @@ const PoolWithdraw = ({ currencyA, currencyB, header, handleDismiss }) => {
             action: 'Remove',
             label: [currencyA?.symbol, currencyB?.symbol].join('/'),
           })
+
+          setInnerLiquidityPercentage('')
         })
         .catch((error: Error) => {
           setAttemptingTxn(false)
@@ -381,7 +383,7 @@ const PoolWithdraw = ({ currencyA, currencyB, header, handleDismiss }) => {
             </AutoColumn>
 
             <div id="remove-liquidity-output" className="p-5 rounded bg-dark-800">
-              <div className="flex flex-col justify-between space-y-3 sm:space-y-0 sm:flex-row">
+              <div className="flex flex-col justify-between space-y-3">
                 <div className="w-full text-white sm:w-2/5" style={{ margin: 'auto 0px' }}>
                   <AutoColumn>
                     <div>You will receive:</div>

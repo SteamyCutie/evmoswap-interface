@@ -39,6 +39,7 @@ import LIMIT_ORDER_HELPER_ABI from '../constants/abis/limit-order-helper.json'
 import MAKER_ABI from '../constants/abis/maker.json'
 import MASTERCHEF_ABI from '../constants/abis/masterchef.json'
 import MERKLE_DISTRIBUTOR_ABI from '../constants/abis/merkle-distributor.json'
+import VEST_MERKLE_DISTRIBUTOR_ABI from '../constants/abis/vest-merkle-distributor.json'
 import MULTICALL2_ABI from '../constants/abis/multicall2.json'
 import ROUTER_ABI from '../constants/abis/router.json'
 import SUSHI_ABI from '../constants/abis/sushi.json'
@@ -87,6 +88,8 @@ import {
     MIGRATE_DASHBOARD_ADDRESS,
     TREASURY_ADDRESS,
 } from '../constants/addresses'
+import LPToken from 'app/features/migration/LPToken'
+import { Interface } from '@ethersproject/abi'
 
 const UNI_FACTORY_ADDRESS = '0x5C69bEe701ef814a2B6a3EDD4B1652CB9cc5aA6f'
 
@@ -307,9 +310,10 @@ export function useVotingEscrowContract ( withSignerIfPossible?: boolean ): Cont
     return useContract( VOTING_ESCROW_ADDRESS[ chainId ], VOTING_ESCROW_ABI, withSignerIfPossible )
 }
 
-export function useEvmoRollContract ( withSignerIfPossible?: boolean ): Contract | null {
+export function useEvmoRollContract ( dex: LPToken[ 'dex' ] ): Contract | null {
     const { chainId } = useActiveWeb3React()
-    return useContract( EVMOROLL_ADDRESS[ chainId ], EVMOROLL_ABI, withSignerIfPossible )
+    const address = EVMOROLL_ADDRESS?.[ chainId ]?.[ dex ];
+    return useContract( address, EVMOROLL_ABI, true )
 }
 
 export function useMigrateDashboardContract ( withSignerIfPossible?: boolean ): Contract | null {
@@ -322,6 +326,11 @@ export function useTreasuryContract ( withSignerIfPossible?: boolean ): Contract
     return useContract( TREASURY_ADDRESS[ chainId ], TREASURY_ABI, withSignerIfPossible )
 }
 
+export const SIMPLE_INCENTIVE_CONTROLLER_INTERFACE = new Interface( SIMPLE_INCENTIVE_CONTROLLER_ABI );
 export function useSimpleIncentiveContract ( address?: string, withSignerIfPossible?: boolean ): Contract | null {
     return useContract( address, SIMPLE_INCENTIVE_CONTROLLER_ABI, withSignerIfPossible )
+}
+
+export function useAirdropContract ( address: string | undefined, isLinear?: boolean, withSignerIfPossible?: boolean ): Contract | null {
+    return useContract( address, isLinear ? VEST_MERKLE_DISTRIBUTOR_ABI : MERKLE_DISTRIBUTOR_ABI, withSignerIfPossible )
 }
