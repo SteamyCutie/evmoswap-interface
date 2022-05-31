@@ -274,7 +274,7 @@ export default function Remove() {
   }, [txHash])
 
   return (
-    <Container id="remove-liquidity-page" className="py-4 space-y-4 md:py-8 lg:py-12" maxWidth="2xl">
+    <Container id="remove-liquidity-page" className="p-4 space-y-4 md:py-8 lg:py-12" maxWidth="2xl">
       <Head>
         <title>Remove Liquidity | EvmoSwap</title>
         <meta key="description" name="description" content="Remove liquidity from the EvmoSwap AMM" />

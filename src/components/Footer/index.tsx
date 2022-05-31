@@ -121,7 +121,7 @@ const Footer = () => {
 
   return (
     <footer
-      className="z-10 w-full p-0 mt-0 bg-light-primary dark:bg-dark-primary transition-all"
+      className="z-0 w-full p-0 mt-0 bg-light-primary dark:bg-dark-primary transition-all"
       aria-labelledby="footer-heading"
     >
       <h2 id="footer-heading" className="sr-only">

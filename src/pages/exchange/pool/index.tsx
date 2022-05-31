@@ -83,7 +83,7 @@ export default function Pool() {
   // })
   const migrationSupported = chainId in MigrationSupported
   return (
-    <Container id="pool-page" className="py-4 space-y-6 md:py-8 lg:py-12" maxWidth="2xl">
+    <Container id="pool-page" className="p-4 space-y-6 md:py-8 lg:py-12" maxWidth="2xl">
       <Head>
         <title>Pool | EvmoSwap</title>
         <meta
@@ -170,7 +170,7 @@ export default function Pool() {
         </div>
       </DoubleGlowShadow>
 
-      <div className="text-dark-primary/80 dark:text-light-primary/80 transition-all text-base pb-24">
+      <div className="text-dark-primary/80 dark:text-light-primary/80 transition-all text-base">
         {i18n._(t`Liquidity providers earn a 0.25% fee on all trades proportional to their share of
                         the pool. Fees are added to the pool, accrue in real time and can be claimed by
                         withdrawing your liquidity`)}

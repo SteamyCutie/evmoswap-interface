@@ -26,7 +26,7 @@ export default function StablePools() {
   const pools = STABLE_POOLS[chainId]
 
   return (
-    <Container id="pool-page" className="py-4 space-y-6 md:py-8 lg:py-12" maxWidth="2xl">
+    <Container id="pool-page" className="p-4 space-y-6 md:py-8 lg:py-12" maxWidth="2xl">
       <Head>
         <title>Stable Pool | EvmoSwap</title>
         <meta
@@ -64,7 +64,7 @@ export default function StablePools() {
           )}
         </div>
       </DoubleGlowShadow>
-      <div className="pb-40 text-base text-dark-primary/50 dark:text-light-primary/50 transition-all">
+      <div className="text-base text-dark-primary/50 dark:text-light-primary/50 transition-all">
         <div className="font-extrabold">{alert.title}</div>
         <div>{alert.description}</div>
       </div>

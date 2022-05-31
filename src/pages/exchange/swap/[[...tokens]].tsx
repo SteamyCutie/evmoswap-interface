@@ -415,7 +415,7 @@ const Swap = () => {
   const [animateSwapArrows, setAnimateSwapArrows] = useState<boolean>(false)
 
   return (
-    <Container id="swap-page" className="py-4 md:py-8 lg:py-24">
+    <Container id="swap-page" className="p-4 md:py-8 lg:py-24">
       <Head>
         <title>{i18n._(t`EvmoSwap`)} | EvmoSwap</title>
         <meta

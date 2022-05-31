@@ -77,7 +77,7 @@ export default function PoolFinder() {
   )
 
   return (
-    <Container id="find-pool-page" className="py-4 space-y-6 md:py-8 lg:py-12" maxWidth="2xl">
+    <Container id="find-pool-page" className="p-4 space-y-6 md:py-8 lg:py-12" maxWidth="2xl">
       <Head>
         <title>{i18n._(t`Find Pool`)} | EvmoSwap</title>
         <meta key="description" name="description" content="Find pool" />
@@ -168,7 +168,7 @@ export default function PoolFinder() {
           )}
         </div>
       </DoubleGlowShadow>
-      <div className="flex text-dark-primary/80 dark:text-light-primary/80 transition-all text-base pt-4 pb-10">
+      <div className="flex text-dark-primary/80 dark:text-light-primary/80 transition-all text-base pt-4">
         <p className="font-extrabold px-2">{i18n._(t`Tips: `)}</p>
         {i18n._(t`Use this tool to find pairs that don't automatically appear in the interface`)}
       </div>

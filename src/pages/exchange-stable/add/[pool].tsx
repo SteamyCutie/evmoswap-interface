@@ -280,7 +280,7 @@ export default function Add() {
         />
       </Head>
 
-      <Container id="add-liquidity-page" className="py-4 space-y-6 md:py-8 lg:py-12" maxWidth="2xl">
+      <Container id="add-liquidity-page" className="p-4 space-y-6 md:py-8 lg:py-12" maxWidth="2xl">
         <div className="flex items-center mb-5">
           <a
             href="/stable-pool"

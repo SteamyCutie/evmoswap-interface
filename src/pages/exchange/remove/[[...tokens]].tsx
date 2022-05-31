@@ -463,7 +463,7 @@ export default function Remove() {
   )
 
   return (
-    <Container id="remove-liquidity-page" className="py-4 space-y-4 md:py-8 lg:py-12" maxWidth="2xl">
+    <Container id="remove-liquidity-page" className="p-4 space-y-4 md:py-8 lg:py-12" maxWidth="2xl">
       <Head>
         <title>Remove Liquidity | EvmoSwap</title>
         <meta key="description" name="description" content="Remove liquidity from the EvmoSwap AMM" />
@@ -478,7 +478,7 @@ export default function Remove() {
       </div>
 
       <DoubleGlowShadow>
-        <div className="gap-4 p-6 transition-all rounded-3xl bg-light-bg dark:bg-dark-bg z-0">
+        <div className="gap-4 p-4 transition-all rounded-3xl bg-light-bg dark:bg-dark-bg z-0">
           {/* <AddRemoveTabs
           creating={false}
           adding={false}
@@ -501,7 +501,7 @@ export default function Remove() {
               )}
               pendingText={pendingText}
             />
-            <AutoColumn gap="md">
+            <div className="grid gap-3">
               {/* <LiquidityHeader input={currencyA} output={currencyB} /> */}
 
               <div className="grid gap-3">
@@ -525,7 +525,7 @@ export default function Remove() {
                   id="remove-liquidity-output"
                   className="p-5 rounded text-dark-primary dark:text-light-primary bg-light-primary dark:bg-dark-primary transition-all"
                 >
-                  <div className="grid gap-3 sm:space-y-0 sm:flex-row">
+                  <div className="grid gap-3">
                     <div className="flex w-full justify-between items-center">
                       <div className="text-base">You will receive</div>
                       {chainId && (oneCurrencyIsWETH || oneCurrencyIsETH) ? (
@@ -581,7 +581,7 @@ export default function Remove() {
                       ) : null}
                     </div>
 
-                    <div className="flex flex-col space-x-4 md:flex-row">
+                    <div className="flex flex-col space-x-0 space-y-4 md:space-x-4 md:space-y-0 md:flex-row">
                       <div className="flex flex-row items-center w-full py-3 pl-5 pr-8 space-x-3 rounded bg-light-bg dark:bg-dark-bg transition-all">
                         <CurrencyLogo currency={currencyA} size={36} />
                         <AutoColumn>
@@ -635,7 +635,7 @@ export default function Remove() {
                   </div>
                 )}
               </div>
-            </AutoColumn>
+            </div>
           </div>
 
           {pair ? <MinimalPositionCard showUnwrapped={oneCurrencyIsWETH} pair={pair} /> : null}
