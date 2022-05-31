@@ -327,7 +327,7 @@ export default function Add() {
         />
       </Head>
 
-      <Container id="add-liquidity-page" className="py-4 space-y-6 md:py-8 lg:py-12" maxWidth="2xl">
+      <Container id="add-liquidity-page" className="p-4 space-y-6 md:py-8 lg:py-12" maxWidth="2xl">
         <div className="flex items-center mb-5">
           <NavLink href="/pool">
             <a className="flex items-center space-x-2 text-base text-center transition-all cursor-pointer text-dark-primary hover:text-dark-primary/80 dark:text-light-primary dark:hover:text-light-primary/80">
@@ -368,7 +368,7 @@ export default function Add() {
         />
 
         <DoubleGlowShadow>
-          <div className="gap-4 p-6 transition-all rounded-3xl z-0">
+          <div className="gap-4 p-3 md:p-4 lg:p-6 transition-all rounded-3xl z-0">
             {/* <AddRemoveTabs creating={isCreate} adding={true} defaultSlippage={DEFAULT_ADD_V2_SLIPPAGE_TOLERANCE} /> */}
 
             <ExchangeHeader

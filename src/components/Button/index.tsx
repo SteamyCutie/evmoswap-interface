@@ -73,7 +73,7 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
         className={classNames(
           VARIANT[variant][color],
           variant !== 'empty' && SIZE[size],
-          'rounded-xl disabled:cursor-not-allowed focus:outline-none transition-all',
+          'rounded-1.5xl disabled:cursor-not-allowed focus:outline-none transition-all font-extrabold',
           // 'rounded-xl focus:outline-none focus:ring disabled:opacity-50 disabled:cursor-not-allowed font-medium',
           className
         )}
@@ -98,13 +98,13 @@ export const ButtonConfirmed = ({
         variant="outlined"
         color="green"
         size="lg"
-        className={classNames(disabled && 'cursor-not-allowed', 'border opacity-50')}
+        className={classNames(disabled && 'cursor-not-allowed')}
         disabled={disabled}
         {...rest}
       />
     )
   } else {
-    return <Button color={disabled ? 'gray' : 'gradient'} size="lg" disabled={disabled} {...rest} />
+    return <Button color={disabled ? 'gray' : 'gradient'} variant="outlined" size="lg" disabled={disabled} {...rest} />
   }
 }
 

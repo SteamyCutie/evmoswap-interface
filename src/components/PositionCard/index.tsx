@@ -69,7 +69,7 @@ export function MinimalPositionCard({ pair, showUnwrapped = false, border }: Pos
           <AutoColumn gap={'md'}>
             <div className="text-base font-bold">Your Position</div>
             <div className="px-6 py-5 rounded-2xl bg-light-primary dark:bg-dark-primary transition-all">
-              <div className="flex flex-col pb-3 border-b-2 border-light-bg dark:border-dark-bg md:flex-row md:justify-between">
+              <div className="flex flex-col pb-3 border-b-2 border-light-bg dark:border-dark-bg md:flex-row md:justify-between transition-all">
                 <div className="flex items-center w-auto space-x-4">
                   <DoubleCurrencyLogo
                     currency0={pair.token0}

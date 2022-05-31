@@ -83,7 +83,7 @@ export default function Pool() {
   // })
   const migrationSupported = chainId in MigrationSupported
   return (
-    <Container id="pool-page" className="py-4 space-y-6 md:py-8 lg:py-12" maxWidth="2xl">
+    <Container id="pool-page" className="p-4 space-y-6 md:py-8 lg:py-12" maxWidth="2xl">
       <Head>
         <title>Pool | EvmoSwap</title>
         <meta
@@ -101,7 +101,7 @@ export default function Pool() {
       </div>
 
       <DoubleGlowShadow>
-        <div className="gap-4 p-6 transition-all rounded-3xl z-0">
+        <div className="gap-4 p-3 md:p-4 lg:p-6 transition-all rounded-3xl z-0">
           <PoolsNav />
           <div className="grid grid-flow-row gap-3 ">
             {!account ? (

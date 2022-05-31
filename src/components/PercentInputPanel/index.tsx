@@ -15,7 +15,7 @@ export default function PercentInputPanel({ value, onUserInput, id }: PercentInp
     >
       <div className="grid gap-3">
         <div className="w-full text-base">Your rewards</div>
-        <div className="flex items-center w-full px-4 py-3 space-x-3 text-xl font-bold rounded bg-light-bg dark:bg-dark-bg transition-all">
+        <div className="flex items-center justify-between px-4 py-3 text-xl font-bold rounded bg-light-bg dark:bg-dark-bg transition-all">
           <Input.Percent
             className="token-amount-input"
             value={value}

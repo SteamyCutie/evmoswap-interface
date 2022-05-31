@@ -6,7 +6,7 @@ import Popups from '../../components/Popups'
 const Layout = ({ children }) => {
   return (
     <div
-      className="z-0 flex flex-col items-center w-full h-full pb-16 lg:pb-0 bg-light-primary dark:bg-dark-primary"
+      className="z-0 flex flex-col items-center w-full min-h-screen bg-light-primary dark:bg-dark-primary transition-all"
       style={{ backgroundImage: 'url(/star.svg)' }}
     >
       <Header />

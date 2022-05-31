@@ -50,7 +50,7 @@ export default function SwapModalHeader({
             {trade.inputAmount.currency.symbol}
           </div>
         </div>
-        <div className="mx-auto -my-3.5 p-1 border-4 border-light-primary dark:border-dark-primary z-10 rounded-xl bg-light-bg dark:bg-dark-bg transition-all">
+        <div className="mx-auto -my-3.5 p-1 border-4 border-light-primary dark:border-dark-primary z-0 rounded-xl bg-light-bg dark:bg-dark-bg transition-all">
           <ArrowSmDownIcon width={18} height={18} />
         </div>
         <div className="flex items-center justify-between bg-light-bg dark:bg-dark-bg p-3 pr-4 rounded-lg transition-all">

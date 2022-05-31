@@ -20,7 +20,7 @@ const Web3Connect = ({
   return error ? (
     <div
       className={classNames(
-        `flex items-center justify-center px-4 py-2 text-white rounded-[14px] bg-opacity-80 bg-red hover:bg-opacity-1004`,
+        `flex items-center justify-center px-4 py-2 text-white rounded-1.5xl bg-opacity-80 bg-red hover:bg-opacity-1004`,
         className
       )}
       onClick={toggleWalletModal}

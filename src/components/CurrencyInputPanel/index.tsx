@@ -97,7 +97,7 @@ export default function CurrencyInputPanel({
               type="button"
               className={classNames(
                 !!currency ? 'text-dark-primary' : 'text-light-primary',
-                'open-currency-select-button outline-none select-none cursor-pointer border-none text-xl font-medium items-center bg-light-bg hover:bg-light-bg/80 dark:bg-dark-bg dark:hover:bg-dark-bg/80 rounded-md transition-all p-2'
+                'open-currency-select-button outline-none select-none cursor-pointer border-none text-xl font-medium items-center bg-light-bg hover:bg-light-bg/80 dark:bg-dark-bg dark:hover:bg-dark-bg/80 rounded-xl transition-all px-3 py-2'
               )}
               onClick={() => {
                 if (onCurrencySelect) {
@@ -163,12 +163,14 @@ export default function CurrencyInputPanel({
               </div>
             )}
           </div>
-          <div className="text-xs transition-all text-dark-primary dark:text-light-primary">
+          <div className="flex items-center text-xs transition-all text-dark-primary dark:text-light-primary">
             {renderBalance ? (
               renderBalance(selectedCurrencyBalance)
             ) : (
               <>
-                {i18n._(t`Balance:`)} {formatCurrencyAmount(selectedCurrencyBalance, 4)} {currency?.symbol}
+                {i18n._(t`Balance:`)}{' '}
+                <p className="font-extrabold mx-1">{formatCurrencyAmount(selectedCurrencyBalance, 4)}</p>{' '}
+                {currency?.symbol}
               </>
             )}
           </div>
