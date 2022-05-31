@@ -11,38 +11,23 @@ import { useActiveWeb3React } from '../../../services/web3'
 import { useLingui } from '@lingui/react'
 import { STABLE_POOLS } from 'app/constants/stables'
 import PoolsNav from 'app/features/exchange-stable/components/StablePoolsNav'
-<<<<<<< HEAD
-import DoubleGlowShadow from 'app/components/DoubleGlowShadow'
-
-const alert = {
-  title: 'Stable AMM Liquidity Provider Rewards',
-  description:
-    'Liquidity providers earn a 0.25% fee on all trades proportional to their share of the pool. Fees are added to the pool, accrue in real time and can be claimed by withdrawing your liquidity',
-}
-=======
 import Empty from 'app/components/Empty'
 import StablePoolItem from 'app/features/exchange-stable/components/StablePoolItem'
 
 const alert = {
-    title: "Stable AMM Liquidity Provider Rewards",
-    description: "Liquidity providers earn a 0.025% fee on all trades proportional to their share of the pool. Fees are added to the pool, accrue in real time and can be claimed by withdrawing your liquidity",
-};
-
-
-export default function StablePools () {
-    const { i18n } = useLingui()
-    const { account, chainId } = useActiveWeb3React()
-    const pools = STABLE_POOLS[ chainId ];
-    const poolIds = Object.keys( pools );
->>>>>>> develop
+  title: 'Stable AMM Liquidity Provider Rewards',
+  description:
+    'Liquidity providers earn a 0.025% fee on all trades proportional to their share of the pool. Fees are added to the pool, accrue in real time and can be claimed by withdrawing your liquidity',
+}
 
 export default function StablePools() {
   const { i18n } = useLingui()
   const { account, chainId } = useActiveWeb3React()
   const pools = STABLE_POOLS[chainId]
+  const poolIds = Object.keys(pools)
 
   return (
-    <Container id="pool-page" className="p-4 space-y-6 md:py-8 lg:py-12" maxWidth="2xl">
+    <Container id="pool-page" className="py-4 space-y-6 md:py-8 lg:py-12" maxWidth="2xl">
       <Head>
         <title>Stable Pool | EvmoSwap</title>
         <meta
@@ -52,51 +37,30 @@ export default function StablePools() {
         />
       </Head>
 
-      <div className="py-4 mb-3 space-y-3">
+      <div className="p-4 mb-3 space-y-3">
         <Back />
-        <div className="text-2xl font-extrabold text-dark-primary dark:text-light-primary transition-all">
+
+        <Typography component="h1" variant="h2">
           {i18n._(t`My Liquidity Positions`)}
-        </div>
+        </Typography>
       </div>
 
-      {/* <Alert
-        title={i18n._(t`${alert.title}`)}
-        message={i18n._(t`${alert.description}`)}
-        type="information"
-      /> */}
+      <Alert title={i18n._(t`${alert.title}`)} message={i18n._(t`${alert.description}`)} type="information" />
 
-      <DoubleGlowShadow>
-        <div className="gap-4 p-3 md:p-4 lg:p-6 transition-all rounded-3xl z-0">
+      <div className="p-4 space-y-4 rounded bg-dark-900">
+        <div className="flex flex-row items-center justify-center rounded rounded p-3px h-[46px]">
           <PoolsNav />
-
-<<<<<<< HEAD
-          {!account ? (
-            <Web3Connect size="lg" color="gradient" className="w-full text-sm font-extrabold" />
-          ) : (
-            <div className="bg-light-primary dark:bg-dark-primary transition-all border-2 rounded-2xl border-light-stroke dark:border-dark-stroke p-2">
-              {Object.keys(pools).map((pAddress, index) => (
-                <StablePool key={index} poolId={pAddress} />
-              ))}
-=======
-                { !account && <Web3Connect size="lg" color="blue" className="w-full" /> }
-                {
-                    !poolIds.length && <Empty className="flex text-lg text-center text-low-emphesis">
-                        <div className="px-4 py-2">{ i18n._( t`No liquidity was found. ` ) }</div>
-                    </Empty>
-                }
-                {
-                    poolIds.map( ( pAddress, index ) => (
-                        <StablePoolItem key={ index } poolId={ pAddress } />
-                    ) )
-                }
->>>>>>> develop
-            </div>
-          )}
         </div>
-      </DoubleGlowShadow>
-      <div className="text-base text-dark-primary/50 dark:text-light-primary/50 transition-all">
-        <div className="font-extrabold">{alert.title}</div>
-        <div>{alert.description}</div>
+
+        {!account && <Web3Connect size="lg" color="blue" className="w-full" />}
+        {!poolIds.length && (
+          <Empty className="flex text-lg text-center text-low-emphesis">
+            <div className="px-4 py-2">{i18n._(t`No liquidity was found. `)}</div>
+          </Empty>
+        )}
+        {poolIds.map((pAddress, index) => (
+          <StablePoolItem key={index} poolId={pAddress} />
+        ))}
       </div>
     </Container>
   )
