@@ -5,9 +5,9 @@ import TransactionPopup from './TransactionPopup'
 import { XIcon } from '@heroicons/react/outline'
 import { useRemovePopup } from '../../state/application/hooks'
 
-const AnimatedFader = ({ duration }) => (
-  <div className="h-[3px] bg-dark-800 w-full">
-    <style jsx>{`
+const AnimatedFader = ( { duration } ) => (
+    <div className="h-[3px] bg-dark-800 w-full">
+        <style jsx>{ `
       .animation {
         animation-duration: ${duration}ms;
         animation-name: fader;
@@ -24,52 +24,52 @@ const AnimatedFader = ({ duration }) => (
         }
       }
     `}</style>
-    <div className="animation h-[3px] bg-gradient-to-r from-blue to-pink" />
-  </div>
+        <div className="animation h-[3px] bg-gradient-to-r from-blue to-pink" />
+    </div>
 )
 
-export default function PopupItem({
-  removeAfterMs,
-  content,
-  popKey,
+export default function PopupItem ( {
+    removeAfterMs,
+    content,
+    popKey,
 }: {
-  removeAfterMs: number | null
-  content: PopupContent
-  popKey: string
-}) {
-  const removePopup = useRemovePopup()
-  const removeThisPopup = useCallback(() => removePopup(popKey), [popKey, removePopup])
-  useEffect(() => {
-    if (removeAfterMs === null) return undefined
+    removeAfterMs: number | null
+    content: PopupContent
+    popKey: string
+} ) {
+    const removePopup = useRemovePopup()
+    const removeThisPopup = useCallback( () => removePopup( popKey ), [ popKey, removePopup ] )
+    useEffect( () => {
+        if ( removeAfterMs === null ) return undefined
 
-    const timeout = setTimeout(() => {
-      removeThisPopup()
-    }, removeAfterMs)
+        const timeout = setTimeout( () => {
+            removeThisPopup()
+        }, removeAfterMs )
 
-    return () => {
-      clearTimeout(timeout)
+        return () => {
+            clearTimeout( timeout )
+        }
+    }, [ removeAfterMs, removeThisPopup ] )
+
+    let popupContent
+    if ( 'txn' in content ) {
+        const {
+            txn: { hash, success, summary },
+        } = content
+        popupContent = <TransactionPopup hash={ hash } success={ success } summary={ summary } />
     }
-  }, [removeAfterMs, removeThisPopup])
 
-  let popupContent
-  if ('txn' in content) {
-    const {
-      txn: { hash, success, summary },
-    } = content
-    popupContent = <TransactionPopup hash={hash} success={success} summary={summary} />
-  }
-
-  return (
-    <div className="mb-4">
-      <div className="relative w-full overflow-hidden bg-light-bg dark:bg-dark-bg transition-all">
-        <div className="flex flex-row p-4">
-          {popupContent}
-          <div className="cursor-pointer opacity-100 hover:opacity-60 transition-all text-dark-primary dark:text-light-primary w-6 h-6">
-            <XIcon width={24} height={24} onClick={removeThisPopup} />
-          </div>
+    return (
+        <div className="mb-4">
+            <div className="relative w-full overflow-hidden bg-light-secondary dark:bg-dark-secondary transition-all">
+                <div className="flex flex-row p-4">
+                    { popupContent }
+                    <div className="cursor-pointer opacity-100 hover:opacity-60 transition-all text-dark-primary dark:text-light-primary w-6 h-6">
+                        <XIcon width={ 24 } height={ 24 } onClick={ removeThisPopup } />
+                    </div>
+                </div>
+                { removeAfterMs !== null ? <AnimatedFader duration={ removeAfterMs } /> : null }
+            </div>
         </div>
-        {removeAfterMs !== null ? <AnimatedFader duration={removeAfterMs} /> : null}
-      </div>
-    </div>
-  )
+    )
 }

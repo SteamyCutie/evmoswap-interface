@@ -400,7 +400,7 @@ export default function Boostv3 () {
                 </div>
 
                 {/** Vesting */ }
-                <div className="flex flex-col space-y-2 text-center  border rounded-2xl border-light-stroke/50 dark:border-dark-stroke/50 bg-light-bg dark:bg-dark-bg">
+                <div className="flex flex-col space-y-2 text-center  border rounded-2xl border-light-stroke/50 dark:border-dark-stroke/50 bg-light-secondary dark:bg-dark-secondary">
                     <div className={ classNames( 'rounded-t p-4', vestingRows.length ? '' : 'rounded-b' ) }>
                         <h2 className="text-blue-special font-medium text-slg">{ i18n._( `Vests are grouped by week` ) }</h2>
                         <p className="text-dark dark:text-light my-3 text-3xl font-bold">
@@ -418,9 +418,9 @@ export default function Boostv3 () {
                                 <table className="w-full border-collapse table-auto text-base text-dark-primary dark:text-white font-semibold">
                                     <thead className="rounded-md text-left">
                                         <tr>
-                                            <th className="p-4 bg-light-bg dark:bg-dark-bg rounded-l-md">{ i18n._( t`Expiry Time` ) }</th>
-                                            <th className="p-4 bg-light-bg dark:bg-dark-bg">{ i18n._( t`Amount` ) }</th>
-                                            <th className="p-4 bg-light-bg dark:bg-dark-bg rounded-r-md">{ i18n._( t`Action` ) }</th>
+                                            <th className="p-4 bg-light-secondary dark:bg-dark-secondary rounded-l-md">{ i18n._( t`Expiry Time` ) }</th>
+                                            <th className="p-4 bg-light-secondary dark:bg-dark-secondary">{ i18n._( t`Amount` ) }</th>
+                                            <th className="p-4 bg-light-secondary dark:bg-dark-secondary rounded-r-md">{ i18n._( t`Action` ) }</th>
                                         </tr>
                                     </thead>
                                     <tbody className="text-left">
@@ -472,7 +472,7 @@ export default function Boostv3 () {
                                                                 size="sm"
                                                                 variant="outlined"
                                                                 className={ classNames(
-                                                                    '!w-auto !border-none !rounded-md !p-2 !bg-light-bg dark:!bg-dark-bg font-bold',
+                                                                    '!w-auto !border-none !rounded-md !p-2 !bg-light-secondary dark:!bg-dark-secondary font-bold',
                                                                     !row.expired ? 'text-dark-primary dark:text-white' : ' text-blue-special'
                                                                 ) }
                                                                 onClick={ () => handleWithdrawVesting( row.amount, index, false ) }
@@ -508,7 +508,7 @@ export default function Boostv3 () {
                     <div className="flex flex-col space-y-8 w-full md:w-[60%]">
                         {/** Staking and Locking */ }
                         <div
-                            className={ `h-full px-8 border rounded-2xl border-light-stroke/50 dark:border-dark-stroke/50 bg-light-bg dark:bg-dark-bg` }
+                            className={ `h-full px-8 border rounded-2xl border-light-stroke/50 dark:border-dark-stroke/50 bg-light-secondary dark:bg-dark-secondary` }
                         >
                             <div className="flex flex-row items-center justify-between w-full text-lg py-6 text-high-emphesis font-black text-dark dark:text-light">
                                 <div className="">{ i18n._( t`Staking & Lock ${token.symbol}` ) }</div>
@@ -798,7 +798,7 @@ export default function Boostv3 () {
                     </div>
 
                     {/** col 2 */ }
-                    <div className="flex flex-col w-full md:w-[40%] p-4 justify-between border rounded-2xl border-light-stroke/50 dark:border-dark-stroke/50 bg-light-bg dark:bg-dark-bg">
+                    <div className="flex flex-col w-full md:w-[40%] p-4 justify-between border rounded-2xl border-light-stroke/50 dark:border-dark-stroke/50 bg-light-secondary dark:bg-dark-secondary">
                         <h3 className="text-medium font-bold text-dark dark:text-light">
                             { i18n._( t`Locking demonstrates a commitment to the long-term vision of EvmoSwap` ) }
                         </h3>
@@ -867,7 +867,7 @@ const BoostRewardCard = ( props: BoostRewardCardProps ) => {
     return (
         <div
             className={ classNames(
-                'flex flex-col text-center w-full overflow-hidden px-4 pt-6 pb-4 font-semibold justify-between border rounded-2xl border-light-stroke/50 dark:border-dark-stroke/50 bg-light-bg dark:bg-dark-bg',
+                'flex flex-col text-center w-full overflow-hidden px-4 pt-6 pb-4 font-semibold justify-between border rounded-2xl border-light-stroke/50 dark:border-dark-stroke/50 bg-light-secondary dark:bg-dark-secondary',
                 className
             ) }
         >

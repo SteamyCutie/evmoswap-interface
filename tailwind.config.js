@@ -2,13 +2,7 @@ const defaultTheme = require( 'tailwindcss/defaultTheme' )
 const plugin = require( 'tailwindcss/plugin' )
 
 module.exports = {
-    // important: '#__next',
-    // darkMode: true,
     mode: 'jit',
-    // future: {
-    //   purgeLayersByDefault: true,
-    //   applyComplexClasses: true,
-    // },
     purge: ['./src/**/*.{js,ts,jsx,tsx}'],
     darkMode: 'class',
     theme: {
@@ -32,8 +26,6 @@ module.exports = {
                     'dark-pink-red': '#4e3034',
                     'light-primary': '#FFFFFF',
                     'dark-primary': '#121212',
-                    'light-bg': '#F2F7FF',
-                    'dark-bg': '#1A1A1A',
                 },
                 border: {
                     1: '1px',
@@ -43,73 +35,74 @@ module.exports = {
                 },
             },
             colors: {
-                purple: '#a755dd',
+                'cyan-blue': '#0993EC',
+                'low-emphesis': '#575757',
+                'high-emphesis': '#E3E3E3',
+                'black-russian': '#1A1D26',
+                'carribean-green': '#00D395',
+                'tahiti-gold': '#F5841F',
+                purple: {
+                    DEFAULT: '#a755dd'
+                },
                 blue: {
                     DEFAULT: '#2172e5',
                     'special': '#0085FF',
                     600: '#418AE8',
                 },
-                pink: '#f338c3',
-                'pink-special': '#FE3DD4E1',
-                'pink-strong': '#B102AA',
-                green: '#7cff6b',
-                'green-special': '#26A17B',
+                green: {
+                    DEFAULT: '#7cff6b',
+                    'special': '#26A17B',
+                },
                 red: {
                     DEFAULT: '#ff3838',
                     550: '#E12006',
                 },
-                yellow: '#ffd166',
+                yellow: {
+                    DEFAULT: '#ffd166',
+                },
+                gold: {
+                    DEFAULT: '#EC8F04'
+                },
+                pink: {
+                    DEFAULT: '#f338c3',
+                    red: '#FE5A75',
+                    special: '#FE3DD4E1',
+                    900: '#B102AA'
+                },
                 grey: {
                     DEFAULT: '#AFAFC5',
                     light: '#D1D1D1',
                     600: '#AEAEAE',
                     400: '#2B2B2B'
                 },
-                gold: {
-                    DEFAULT: '#EC8F04'
+                light: {
+                    primary: '#FFFFFF',
+                    secondary: '#F2F7FF',
+                    text: '#595959',
+                    border: '#A1A1A1',
+                    stroke: '#EAEAFF',
+                    blue: '#0085FF',
+                    yellow: '#FFD166'
+
                 },
-                'light-blue': '#71B2D1',
-                'dark-gray': '#20222F',
-                'opaque-blue': '#0993ec80',
-                'opaque-pink': '#f338c380',
-                'pink-red': '#FE5A75',
-                'light-brown': '#FEC464',
-                'light-yellow': '#FFD166',
-                'cyan-blue': '#0993EC',
-                'dark-pink': '#221825',
-                'dark-blue': '#0F182A',
-                'dark-1000': '#0D0415',
-                'dark-900': '#161522',
-                'dark-850': '#1d1e2c',
-                'dark-800': '#202231',
-                'dark-700': '#2E3348',
-                'dark-650': '#8F8D94',
-                'dark-600': '#1C2D49',
-                'dark-500': '#223D5E',
-                'dark-400': '#171522',
-                'low-emphesis': '#575757',
-                'high-emphesis': '#E3E3E3',
-                blackberry: '#3A1F3E',
-                bunting: '#202C45',
-                'Mardi-Gras': '#212B2B',
-                Myrtle: '#23274A',
-                'aqua-pearl': '#5CB6D5',
-                'black-russian': '#1A1D26',
-                'carribean-green': '#00D395',
-                'tahiti-gold': '#F5841F',
-                'dark-primary': '#121212',
-                'dark-bg': '#1A1A1A',
-                'dark-border': '#595959',
-                'dark-stroke': '#222222',
-                dark: '#0F0F0F',
-                'light-primary': '#FFFFFF',
-                'light-bg': '#F2F7FF',
-                'light-border': '#A1A1A1',
-                'light-stroke': '#D7D7FF',
-                light: '#FBFBFB',
-                'secondary': {
-                    dark: '#868686',
-                    DEFAULT: '#595959'
+                dark: {
+                    primary: '#121212',
+                    secondary: '#1A1A1A',
+                    text: '#868686',
+                    border: '#2B2B2B',
+                    stroke: '#222222',
+                    blue: '#0085FF',
+                    pink: '#221825',
+                    gray: '#20222F',
+                    1000: '#0D0415',
+                    900: '#161522',
+                    850: '#1d1e2c',
+                    800: '#202231',
+                    700: '#2E3348',
+                    650: '#8F8D94',
+                    600: '#1C2D49',
+                    500: '#223D5E',
+                    400: '#171522',
                 }
             },
             lineHeight: {
@@ -186,8 +179,6 @@ module.exports = {
             },
             minHeight: {
                 empty: '128px',
-                cardContent: '230px',
-                fitContent: 'fit-content',
             },
             minHeight: {
                 5: '1.25rem',
