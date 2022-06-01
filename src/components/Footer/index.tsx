@@ -136,10 +136,10 @@ const Footer = () => {
                     <div className="space-y-8">
                         <div className="flex items-center justify-between">
                             <div className="grid dark:hidden">
-                                <Image src="/logo.png" alt="light logo" width="191px" height="33px" />
+                                <Image src="/logo.svg" alt="light logo" width="191px" height="33px" />
                             </div>
                             <div className="hidden dark:grid">
-                                <Image src="/logo-dark.png" alt="dark logo" width="191px" height="33px" />
+                                <Image src="/logo-dark.svg" alt="dark logo" width="191px" height="33px" />
                             </div>
                             <div className="flex space-x-0 w-[90px] h-[30px] p-1 bg-light-secondary dark:bg-dark-secondary rounded-md transition-colors">
                                 <div
