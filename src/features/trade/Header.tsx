@@ -10,60 +10,59 @@ import { useActiveWeb3React } from '../../services/web3'
 import { useLingui } from '@lingui/react'
 import { useRouter } from 'next/router'
 
-const getQuery = (input, output) => {
-  if (!input && !output) return
+const getQuery = ( input, output ) => {
+    if ( !input && !output ) return
 
-  if (input && !output) {
-    return { inputCurrency: input.address || 'EVMOS' }
-  } else if (input && output) {
-    return { inputCurrency: input.address, outputCurrency: output.address }
-  }
+    if ( input && !output ) {
+        return { inputCurrency: input.address || 'EVMOS' }
+    } else if ( input && output ) {
+        return { inputCurrency: input.address, outputCurrency: output.address }
+    }
 }
 
 interface ExchangeHeaderProps {
-  input?: Currency
-  output?: Currency
-  allowedSlippage?: Percent
-  showNavs?: boolean
+    input?: Currency
+    output?: Currency
+    allowedSlippage?: Percent
+    showNavs?: boolean
 }
 
-const ExchangeHeader: FC<ExchangeHeaderProps> = ({ input, output, allowedSlippage, showNavs = true }) => {
-  const { i18n } = useLingui()
-  const { chainId } = useActiveWeb3React()
-  const router = useRouter()
-  const [animateWallet, setAnimateWallet] = useState(false)
-  const isRemove = router.asPath.startsWith('/remove')
-  const isLimitOrder = router.asPath.startsWith('/limit-order')
+const ExchangeHeader: FC<ExchangeHeaderProps> = ( { input, output, allowedSlippage, showNavs = true } ) => {
+    const { i18n } = useLingui()
+    const { chainId } = useActiveWeb3React()
+    const router = useRouter()
+    const [ animateWallet, setAnimateWallet ] = useState( false )
+    const isRemove = router.asPath.startsWith( '/remove' )
+    const isLimitOrder = router.asPath.startsWith( '/limit-order' )
 
-  const navLinkStyle =
-    'font-extrabold rounded-lg bg-blue-special text-light-primary hover:text-light-primary/80 dark:text-light-primary dark:hover:text-light-primary/80 transition-all'
-  const navTextStyle =
-    'flex items-center justify-center px-4 text-base font-extrabold text-center rounded-lg transition-all'
+    const navLinkStyle =
+        'font-semibold rounded-md bg-blue-special !px-5 text-light-primary hover:text-light-primary/80 dark:text-light-primary dark:hover:text-light-primary/80 transition-all'
+    const navTextStyle =
+        'flex items-center justify-center px-6 text-base font-medium text-center rounded-md transition-all'
 
-  return (
-    <div className="flex items-center justify-between space-x-3 mb-4">
-      {showNavs && (
-        <div className="grid grid-cols-2 p-2 transition-all rounded-2xl bg-light-primary dark:bg-dark-primary text-dark-primary hover:text-dark-primary/80 dark:text-light-primary dark:hover:text-light-primary/80 h-14">
-          <NavLink
-            activeClassName={navLinkStyle}
-            href={{
-              pathname: '/swap',
-              query: getQuery(input, output),
-            }}
-          >
-            <a className={navTextStyle}>{i18n._(t`Swap`)}</a>
-          </NavLink>
+    return (
+        <div className="flex items-center justify-between space-x-3 mb-4">
+            { showNavs && (
+                <div className="flex flex-nowrap p-1 transition-all rounded-xl bg-light-primary dark:bg-dark-primary text-dark-primary hover:text-dark-primary/80 dark:text-light-primary dark:hover:text-light-primary/80 h-9">
+                    <NavLink
+                        activeClassName={ navLinkStyle }
+                        href={ {
+                            pathname: '/swap',
+                            query: getQuery( input, output ),
+                        } }
+                    >
+                        <a className={ navTextStyle }>{ i18n._( t`Swap` ) }</a>
+                    </NavLink>
 
-          <NavLink
-            activeClassName={navLinkStyle}
-            href={`/${!isRemove ? 'add' : 'remove'}${input ? `/${currencyId(input)}` : ''}${
-              output ? `/${currencyId(output)}` : ''
-            }`}
-          >
-            <a className={navTextStyle}>{i18n._(t`Liquidity`)}</a>
-          </NavLink>
+                    <NavLink
+                        activeClassName={ navLinkStyle }
+                        href={ `/${!isRemove ? 'add' : 'remove'}${input ? `/${currencyId( input )}` : ''}${output ? `/${currencyId( output )}` : ''
+                            }` }
+                    >
+                        <a className={ navTextStyle }>{ i18n._( t`Liquidity` ) }</a>
+                    </NavLink>
 
-          {/* <NavLink
+                    {/* <NavLink
           activeClassName={navLinkStyle}
           href={{
             pathname: '/zap',
@@ -73,16 +72,16 @@ const ExchangeHeader: FC<ExchangeHeaderProps> = ({ input, output, allowedSlippag
             {i18n._(t`Zap`)}
           </a>
         </NavLink> */}
-        </div>
-      )}
-      <div className="flex items-center">
-        <div className="grid grid-flow-col gap-1">
-          {/* {isLimitOrder && (
+                </div>
+            ) }
+            <div className="flex items-center">
+                <div className="grid grid-flow-col gap-1">
+                    {/* {isLimitOrder && (
             <div className="items-center h-full w-full cursor-pointer hover:bg-dark-800 rounded px-3 py-1.5">
               <MyOrders />
             </div>
           )} */}
-          {/* {chainId === ChainId.EVMOS &&
+                    {/* {chainId === ChainId.EVMOS &&
             <div className="items-center w-full h-full px-3 space-x-3 rounded cursor-pointer text-green text-opacity-80 hover:text-opacity-100 md:flex hover:bg-dark-800">
               <svg width="18" height="20" viewBox="0 0 18 20" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <path
@@ -96,7 +95,7 @@ const ExchangeHeader: FC<ExchangeHeaderProps> = ({ input, output, allowedSlippag
               </div>
             </div>
           } */}
-          {/* <a
+                    {/* <a
             href={'https://app.multichain.org/#/router'}
             target="_blank"
             rel="noreferrer"
@@ -104,13 +103,13 @@ const ExchangeHeader: FC<ExchangeHeaderProps> = ({ input, output, allowedSlippag
           >
             Bridge
           </a> */}
-          <div className="relative flex items-center w-full h-full p-2 rounded">
-            <Settings placeholderSlippage={allowedSlippage} />
-          </div>
+                    <div className="relative flex items-center w-full h-full p-2 rounded">
+                        <Settings placeholderSlippage={ allowedSlippage } />
+                    </div>
+                </div>
+            </div>
         </div>
-      </div>
-    </div>
-  )
+    )
 }
 
 export default ExchangeHeader

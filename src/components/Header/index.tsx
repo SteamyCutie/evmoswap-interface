@@ -22,6 +22,7 @@ import { ExternalLink as LinkIcon } from 'react-feather'
 import Typography from '../Typography'
 import TokenStats from '../TokenStats'
 import { useRouter } from 'next/router'
+import { MenuIcon } from '../Icon'
 
 // import { ExternalLink, NavLink } from "./Link";
 // import { ReactComponent as Burger } from "../assets/images/burger.svg";
@@ -268,7 +269,7 @@ const AppBar = () => {
                                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="3" d="M6 18L18 6M6 6l12 12" />
                                             </svg>
                                         ) : (
-                                            <Image src="/menu.svg" alt="Menu" width="24px" height="24px" className='block' />
+                                            <MenuIcon width="24px" height="24px" className='block' />
                                         ) }
                                     </Popover.Button>
                                 </div>

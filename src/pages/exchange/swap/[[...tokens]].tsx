@@ -415,7 +415,7 @@ const Swap = () => {
     const [ animateSwapArrows, setAnimateSwapArrows ] = useState<boolean>( false )
 
     return (
-        <Container id="swap-page" className="p-4 md:py-8 lg:py-24">
+        <Container id="swap-page" className="p-4 md:py-8 lg:pb-24">
             <Head>
                 <title>{ i18n._( t`EvmoSwap` ) } | EvmoSwap</title>
                 <meta
@@ -430,7 +430,7 @@ const Swap = () => {
                 onConfirm={ handleConfirmTokenWarning }
             />
             <DoubleGlowShadow>
-                <div className="gap-4 p-3 md:p-4 lg:p-6 transition-all rounded-3xl z-0">
+                <div className="gap-4 p-3 md:p-4 lg:p-6 transition-all rounded-2.5xl z-0">
                     <SwapHeader
                         input={ currencies[ Field.INPUT ] }
                         output={ currencies[ Field.OUTPUT ] }
