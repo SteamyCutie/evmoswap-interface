@@ -33,7 +33,9 @@ const AppBar = () => {
     const userEthBalance = useETHBalances( account ? [ account ] : [] )?.[ account ?? '' ]
 
     const navLinkStyle =
-        'p-2 text-base font-bold transition-all text-dark-primary/80 hover:text-dark-primary active:text-dark-primary/90 focus:text-dark-primary dark:text-light-primary/80 dark:hover:text-light-primary dark:active:text-light-primary/90 dark:focus:text-light-primary md:p-3 whitespace-nowrap'
+        'p-2 text-base font-normal transition-all md:p-3 whitespace-nowrap !text-dark-primary dark:!text-light-primary'
+
+    const activeNavLinkStyle = '!font-semibold';
 
     const routeTag: any = useRouter().asPath.split( '/' )[ 1 ].split( '?' )[ 0 ]
 
@@ -42,7 +44,7 @@ const AppBar = () => {
             <Popover as="nav" className="z-10 w-full bg-transparent header-border-b">
                 { ( { open } ) => (
                     <>
-                        <div className="px-4 py-4 border-b border-dark-primary/10 dark:border-light-primary/10 bg-light-primary/50 dark:bg-dark-primary/50 lg:backdrop-blur-lg">
+                        <div className="px-4 mx-0.5 sm:px-6 lg:px-12 py-4 border-b border-dark-primary/10 dark:border-light-primary/10 bg-light-primary/50 dark:bg-dark-primary/50 lg:backdrop-blur-lg">
                             <div className="flex items-center justify-between">
                                 <div className="flex items-center">
                                     <div className="grid dark:hidden">
@@ -58,7 +60,7 @@ const AppBar = () => {
                                                 <a
                                                     id={ `swap-nav-link` }
                                                     className={ `${navLinkStyle} ${routeTag === 'swap' || routeTag === 'add' || routeTag === 'remove'
-                                                        ? 'text-dark-primary/100 dark:text-light-primary/100'
+                                                        ? activeNavLinkStyle
                                                         : ''
                                                         }` }
                                                 >
@@ -69,7 +71,7 @@ const AppBar = () => {
                                                 <a
                                                     id={ `pool-nav-link` }
                                                     className={ `${navLinkStyle} ${routeTag === 'pool' || routeTag === 'find' || routeTag === 'stable-pool'
-                                                        ? 'text-dark-primary/100 dark:text-light-primary/100'
+                                                        ? activeNavLinkStyle
                                                         : ''
                                                         }` }
                                                 >
@@ -81,7 +83,7 @@ const AppBar = () => {
                                                 <NavLink href={ '/farm' }>
                                                     <a
                                                         id={ `yield-nav-link` }
-                                                        className={ `${navLinkStyle} ${routeTag === 'farm' ? 'text-dark-primary/100 dark:text-light-primary/100' : ''
+                                                        className={ `${navLinkStyle} ${routeTag === 'farm' ? activeNavLinkStyle : ''
                                                             }` }
                                                     >
                                                         { i18n._( t`Farms` ) }
@@ -94,7 +96,7 @@ const AppBar = () => {
                                                     <NavLink href={ '/lending' }>
                                                         <a
                                                             id={ `lend-nav-link` }
-                                                            className={ `${navLinkStyle} ${routeTag === 'lending' ? 'text-dark-primary/100 dark:text-light-primary/100' : ''
+                                                            className={ `${navLinkStyle} ${routeTag === 'lending' ? activeNavLinkStyle : ''
                                                                 }` }
                                                         >
                                                             { i18n._( t`Lending` ) }
@@ -107,7 +109,7 @@ const AppBar = () => {
                                                 <NavLink href={ '/stake' }>
                                                     <a
                                                         id={ `stake-nav-link` }
-                                                        className={ `${navLinkStyle} ${routeTag === 'stake' ? 'text-dark-primary/100 dark:text-light-primary/100' : ''
+                                                        className={ `${navLinkStyle} ${routeTag === 'stake' ? activeNavLinkStyle : ''
                                                             }` }
                                                     >
                                                         { i18n._( t`Stake` ) }
@@ -119,7 +121,8 @@ const AppBar = () => {
                                                 <NavLink href={ '/gemo' }>
                                                     <a
                                                         id={ `boost-nav-link` }
-                                                        className="p-2 text-baseline text-primary hover:text-high-emphesis focus:text-high-emphesis md:p-3 whitespace-nowrap"
+                                                        className={ `${navLinkStyle} ${routeTag === 'gemo' ? activeNavLinkStyle : ''
+                                                            }` }
                                                     >
                                                         { i18n._( t`GEMO` ) }
                                                     </a>
@@ -130,7 +133,7 @@ const AppBar = () => {
                                                 <NavLink href={ '/veEMO' }>
                                                     <a
                                                         id={ `boost-nav-link` }
-                                                        className={ `${navLinkStyle} ${routeTag === 'veEMO' ? 'text-dark-primary/100 dark:text-light-primary/100' : ''
+                                                        className={ `${navLinkStyle} ${routeTag === 'veEMO' ? activeNavLinkStyle : ''
                                                             }` }
                                                     >
                                                         { i18n._( t`veEMO` ) }
@@ -143,7 +146,7 @@ const AppBar = () => {
                                                     <NavLink href={ '/ieo' }>
                                                         <a
                                                             id={ `lend-nav-link` }
-                                                            className={ `${navLinkStyle} ${routeTag === 'ieo' ? 'text-dark-primary/100 dark:text-light-primary/100' : ''
+                                                            className={ `${navLinkStyle} ${routeTag === 'ieo' ? activeNavLinkStyle : ''
                                                                 }` }
                                                         >
                                                             { i18n._( t`IEO` ) }
@@ -156,7 +159,7 @@ const AppBar = () => {
                                                 <NavLink href={ '/gamefi' }>
                                                     <a
                                                         id={ `boost-nav-link` }
-                                                        className={ `${navLinkStyle} ${routeTag === 'gamefi' ? 'text-dark-primary/100 dark:text-light-primary/100' : ''
+                                                        className={ `${navLinkStyle} ${routeTag === 'gamefi' ? activeNavLinkStyle : ''
                                                             }` }
                                                     >
                                                         { i18n._( t`GameFi` ) }
@@ -168,7 +171,7 @@ const AppBar = () => {
                                                 <NavLink href={ '/tools' }>
                                                     <a
                                                         id={ `bridge-nav-link` }
-                                                        className={ `${navLinkStyle} ${routeTag === 'tools' ? 'text-dark-primary/100 dark:text-light-primary/100' : ''
+                                                        className={ `${navLinkStyle} ${routeTag === 'tools' ? activeNavLinkStyle : ''
                                                             }` }
                                                     >
                                                         { i18n._( t`Faucet` ) }
@@ -180,7 +183,7 @@ const AppBar = () => {
                                                 <NavLink href={ '/bridge' }>
                                                     <a
                                                         id={ `bridge-nav-link` }
-                                                        className={ `${navLinkStyle} ${routeTag === 'bridge' ? 'text-dark-primary/100 dark:text-light-primary/100' : ''
+                                                        className={ `${navLinkStyle} ${routeTag === 'bridge' ? activeNavLinkStyle : ''
                                                             }` }
                                                     >
                                                         { i18n._( t`Bridges` ) }
@@ -192,7 +195,7 @@ const AppBar = () => {
                                                 <Link href={ '/privatesale' }>
                                                     <a
                                                         id={ `prisale-nav-link` }
-                                                        className={ `${navLinkStyle} ${routeTag === 'privatesale' ? 'text-dark-primary/100 dark:text-light-primary/100' : ''
+                                                        className={ `${navLinkStyle} ${routeTag === 'privatesale' ? activeNavLinkStyle : ''
                                                             }` }
                                                     >
                                                         { ' ' }
@@ -218,7 +221,7 @@ const AppBar = () => {
 
                                 <div className="fixed bottom-0 left-0 z-20 flex flex-row items-center justify-center w-full p-4 transition-all lg:w-auto bg-light-primary/30 dark:bg-dark-primary/50 backdrop-blur-lg lg:backdrop-filter-none lg:relative lg:p-0 lg:bg-transparent lg:dark:bg-transparent">
                                     <div className="flex items-center justify-center w-full gap-4 sm:justify-end">
-                                        <div className="flex items-center w-auto mr-1 text-xs font-bold transition-all bg-transparent rounded-2xl cursor-pointer pointer-events-auto select-none hover:bg-dark-primary/10 text-primary dark:hover:bg-light-primary/5 whitespace-nowrap sm:block">
+                                        <div className="flex items-center w-auto mr-1 text-sm font-normal transition-all bg-transparent rounded-2xl cursor-pointer pointer-events-auto select-none hover:bg-dark-primary/10 text-primary dark:hover:bg-light-primary/5 whitespace-nowrap sm:block">
                                             <TokenStats token="EMO" />
                                         </div>
                                         {/* {library && library.provider.isMetaMask && (
@@ -227,17 +230,16 @@ const AppBar = () => {
                       </div>
                     )} */}
 
-                                        <div className="flex w-auto text-sm font-bold transition-all rounded-2xl bg-gradient-to-r p-0.5 from-blue-special to-pink-special">
+                                        <div className={ `flex w-auto text-sm transition-all ${account ? 'rounded-xl border border-transparent border-gradient-r-blue-pink-special-light-primary dark:border-gradient-r-blue-pink-special-dark-primary p-0.5' : ''}` }>
                                             <div
-                                                className={ `flex items-center justify-between h-full rounded-1.5xl cursor-pointer pointer-events-auto select-none text-dark-primary dark:text-light-primary transition-all whitespace-nowrap ${account ? ' bg-light-primary/90 dark:bg-dark-primary/90' : ''
-                                                    }` }
+                                                className={ `flex items-center justify-between h-full rounded-xl cursor-pointer pointer-events-auto select-none` }
                                             >
                                                 { account && chainId && userEthBalance && (
-                                                    <>
-                                                        <div className="pl-4 pr-2 py-2 text-base font-extrabold">
-                                                            { userEthBalance?.toSignificant( 4 ) } { NATIVE[ chainId ].symbol }
-                                                        </div>
-                                                    </>
+
+                                                    <div className="pl-4 pr-2 py-2 text-sm font-bold text-light-text dark:text-dark-text whitespace-nowrap">
+                                                        { userEthBalance?.toSignificant( 4 ) } { NATIVE[ chainId ].symbol }
+                                                    </div>
+
                                                 ) }
                                                 <Web3Status />
                                             </div>
@@ -266,23 +268,7 @@ const AppBar = () => {
                                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="3" d="M6 18L18 6M6 6l12 12" />
                                             </svg>
                                         ) : (
-                                            // <X title="Close" className="block w-6 h-6" aria-hidden="true" />
-                                            <svg
-                                                className="block w-6 h-6"
-                                                aria-hidden="true"
-                                                xmlns="http://www.w3.org/2000/svg"
-                                                fill="none"
-                                                viewBox="0 0 24 24"
-                                                stroke="currentColor"
-                                            >
-                                                <path
-                                                    strokeLinecap="round"
-                                                    strokeLinejoin="round"
-                                                    strokeWidth="3"
-                                                    d="M4 6h16M4 12h16M4 18h16"
-                                                />
-                                            </svg>
-                                            // <Burger title="Burger" className="block w-6 h-6" aria-hidden="true" />
+                                            <Image src="/menu.svg" alt="Menu" width="24px" height="24px" className='block' />
                                         ) }
                                     </Popover.Button>
                                 </div>
@@ -295,7 +281,7 @@ const AppBar = () => {
                                     <a
                                         id={ `swap-nav-link` }
                                         className={ `${navLinkStyle} ${routeTag === 'swap' || routeTag === 'add' || routeTag === 'remove'
-                                            ? 'text-dark-primary/100 dark:text-light-primary/100'
+                                            ? activeNavLinkStyle
                                             : ''
                                             }` }
                                     >
@@ -306,7 +292,7 @@ const AppBar = () => {
                                     <a
                                         id={ `pool-nav-link` }
                                         className={ `${navLinkStyle} ${routeTag === 'pool' || routeTag === 'find'
-                                            ? 'text-dark-primary/100 dark:text-light-primary/100'
+                                            ? activeNavLinkStyle
                                             : ''
                                             }` }
                                     >
@@ -318,7 +304,7 @@ const AppBar = () => {
                                     <Link href={ '/farm' }>
                                         <a
                                             id={ `yield-nav-link` }
-                                            className={ `${navLinkStyle} ${routeTag === 'farm' ? 'text-dark-primary/100 dark:text-light-primary/100' : ''
+                                            className={ `${navLinkStyle} ${routeTag === 'farm' ? activeNavLinkStyle : ''
                                                 }` }
                                         >
                                             { ' ' }
@@ -331,7 +317,7 @@ const AppBar = () => {
                                     <Link href={ '/stake' }>
                                         <a
                                             id={ `stake-nav-link` }
-                                            className={ `${navLinkStyle} ${routeTag === 'stake' ? 'text-dark-primary/100 dark:text-light-primary/100' : ''
+                                            className={ `${navLinkStyle} ${routeTag === 'stake' ? activeNavLinkStyle : ''
                                                 }` }
                                         >
                                             { i18n._( t`Stake` ) }
@@ -354,7 +340,7 @@ const AppBar = () => {
                                     <Link href={ '/veEMO' }>
                                         <a
                                             id={ `boost-nav-link` }
-                                            className={ `${navLinkStyle} ${routeTag === 'veEMO' ? 'text-dark-primary/100 dark:text-light-primary/100' : ''
+                                            className={ `${navLinkStyle} ${routeTag === 'veEMO' ? activeNavLinkStyle : ''
                                                 }` }
                                         >
                                             { i18n._( t`veEMO` ) }
@@ -366,7 +352,7 @@ const AppBar = () => {
                                     <Link href={ '/ieo' }>
                                         <a
                                             id={ `yield-nav-link` }
-                                            className={ `${navLinkStyle} ${routeTag === 'ieo' ? 'text-dark-primary/100 dark:text-light-primary/100' : ''
+                                            className={ `${navLinkStyle} ${routeTag === 'ieo' ? activeNavLinkStyle : ''
                                                 }` }
                                         >
                                             { ' ' }
@@ -379,7 +365,7 @@ const AppBar = () => {
                                     <Link href={ '/bridge' }>
                                         <a
                                             id={ `gamefi-nav-link` }
-                                            className={ `${navLinkStyle} ${routeTag === 'bridge' ? 'text-dark-primary/100 dark:text-light-primary/100' : ''
+                                            className={ `${navLinkStyle} ${routeTag === 'bridge' ? activeNavLinkStyle : ''
                                                 }` }
                                         >
                                             { i18n._( t`Bridges` ) }
@@ -391,7 +377,7 @@ const AppBar = () => {
                                     <Link href={ '/privatesale' }>
                                         <a
                                             id={ `prisale-nav-link` }
-                                            className={ `${navLinkStyle} ${routeTag === 'privatesale' ? 'text-dark-primary/100 dark:text-light-primary/100' : ''
+                                            className={ `${navLinkStyle} ${routeTag === 'privatesale' ? activeNavLinkStyle : ''
                                                 }` }
                                         >
                                             { ' ' }
@@ -403,7 +389,7 @@ const AppBar = () => {
                                     <Link href={ '/airdrops' }>
                                         <a
                                             id={ `airdrops-nav-link` }
-                                            className="p-2 text-baseline text-primary hover:text-high-emphesis focus:text-high-emphesis md:p-3 whitespace-nowrap"
+                                            className={ `${navLinkStyle} ${routeTag === 'privatesale' ? activeNavLinkStyle : ''}` }
                                         >
                                             { ' ' }
                                             { i18n._( t`Airdrop` ) }

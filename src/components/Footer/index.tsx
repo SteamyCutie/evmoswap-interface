@@ -132,7 +132,7 @@ const Footer = () => {
                 Footer
             </h2>
             <div className="px-4 py-12 pb-28 mx-0.5 sm:px-6 lg:py-8 lg:px-12">
-                <div className="grid grid-cols-1 gap-8 lg:grid-cols-2 lg:gap-20 xl:gap-48">
+                <div className="grid grid-cols-1 gap-8 lg:grid-cols-3 lg:gap-15 xl:gap-48">
                     <div className="space-y-8">
                         <div className="flex items-center justify-between">
                             <div className="grid dark:hidden">
@@ -177,7 +177,7 @@ const Footer = () => {
                             {/* <Polling /> */ }
                         </div>
                     </div>
-                    <div className="grid gap-8 sm:grid-cols-1 md:grid-cols-3">
+                    <div className="grid gap-8 grid-cols-2 sm:grid-cols-3 lg:col-span-2">
                         <div>
                             <div>
                                 <h3 className="text-sm font-semibold tracking-wider uppercase text-dark-primary dark:text-light-primary transition-all">
@@ -237,23 +237,6 @@ const Footer = () => {
                                 ) ) }
                             </ul>
                         </div>
-                        {/* <div className="mt-12 md:mt-0">
-                <h3 className="text-sm font-semibold tracking-wider text-gray-400 uppercase">{i18n._(t`Bridge`)}</h3>
-                <ul role="list" className="mt-4 space-y-1">
-                  {navigation.exchanges.map((item) => (
-                    <li key={item.name}>
-                      <a
-                        href={item.href}
-                        className="text-base text-gray-500 hover:text-gray-600"
-                        target="_blank"
-                        rel="noreferrer"
-                      >
-                        {item.name}
-                      </a>
-                    </li>
-                  ))}
-                </ul>
-              </div> */}
                     </div>
                 </div>
             </div>

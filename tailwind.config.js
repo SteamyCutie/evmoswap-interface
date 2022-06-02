@@ -16,7 +16,7 @@ module.exports = {
                     'blue-red': ['#27B0E6', '#ff3838'],
                     'blue-pink': ['#27B0E6', '#FA52A0'],
                     'pink-red-light-brown': ['#FE5A75', '#FEC464'],
-                    'blue-pink-special': ['#379FFF', '#FE3DD4E1'],
+                    'blue-pink-special': ['#379FFF', '#FE3DD4'],
                     'red-red': ['ff3838', 'ff3838'],
                 },
                 background: {
@@ -125,7 +125,7 @@ module.exports = {
                     '14px',
                     {
                         letterSpacing: '0',
-                        lineHeight: '22.4px',
+                        lineHeight: '17px',
                         fontWeight: 400,
                     },
                 ],
@@ -155,12 +155,9 @@ module.exports = {
                 ],
             },
             borderRadius: {
-                none: '0',
                 px: '1px',
-                md: '6px',
                 '1.5xl': '14px',
                 '2.5xl': '20px',
-                DEFAULT: '0.625rem',
             },
             boxShadow: {
                 swap: '0px 50px 250px -47px rgba(39, 176, 230, 0.29)',
@@ -208,19 +205,6 @@ module.exports = {
                     '100%': { opacity: 100 },
                 },
             },
-        },
-    },
-    variants: {
-        linearBorderGradients: ['responsive', 'hover', 'dark'], // defaults to ['responsive']
-        extend: {
-            backgroundColor: ['checked', 'disabled'],
-            backgroundImage: ['hover', 'focus'],
-            borderColor: ['checked', 'disabled'],
-            cursor: ['disabled'],
-            opacity: ['hover', 'disabled'],
-            placeholderColor: ['hover', 'active'],
-            ringWidth: ['disabled'],
-            ringColor: ['disabled'],
         },
     },
     plugins: [

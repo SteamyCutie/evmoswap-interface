@@ -486,7 +486,7 @@ const Swap = () => {
                                 >
                                     <div className="p-1.5 rounded-[18px] bg-light-secondary dark:bg-dark-secondary transition-all">
                                         <div
-                                            className="p-3 transition-all bg-light-primary rounded-1.5xl hover:bg-light-primary/80 dark:bg-dark-primary dark:hover:bg-dark-primary/80 text-dark-secondary dark:text-light-secondary"
+                                            className="p-3 transition-all bg-light-primary rounded-md hover:bg-light-primary/80 dark:bg-dark-primary dark:hover:bg-dark-primary/80 text-dark-secondary dark:text-light-secondary"
                                         // onMouseEnter={() => setAnimateSwapArrows(true)}
                                         // onMouseLeave={() => setAnimateSwapArrows(false)}
                                         >
