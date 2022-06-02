@@ -8,6 +8,9 @@ import { classNames } from '../../functions/styling'
 import { t } from '@lingui/macro'
 import { useLingui } from '@lingui/react'
 import NavLink from '../NavLink'
+import LanguageSwitch from '../LanguageSwitch'
+import { MenuIcon } from '../Icon'
+import { Divider } from '../Divider/Divider'
 
 const items = ( i18n: I18n ) => [
     {
@@ -55,7 +58,7 @@ const items = ( i18n: I18n ) => [
     {
         name: i18n._( t`Vesting` ),
         description: i18n._( t`Daily unlocks from the vesting period.` ),
-        href: '/vesting',
+        href: '/veEMO',
         external: false,
     },
 ]
@@ -67,22 +70,17 @@ const Menu = () => {
 
     return (
         <Popover className="relative ml-auto md:m-0 z-10">
-            { ( { open } ) => (
+            { ( { open, close } ) => (
                 <>
                     <Popover.Button
                         className={ classNames(
                             open
-                                ? 'text-dark-primary/60 dark:text-light-primary/60'
-                                : 'text-dark-primary dark:text-light-primary',
-                            'focus:outline-none hover:text-dark-primary/60 dark:hover:text-light-primary/60 transition-all m-0 mr-1 flex justify-center items-center font-black'
+                                ? 'text-dark/60 dark:text-light/60'
+                                : 'text-dark dark:text-light',
+                            'focus:outline-none hover:text-dark/60 dark:hover:text-light/60 transition-all m-0 mr-1 flex justify-center items-center font-black'
                         ) }
                     >
-                        <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <path fill-rule="evenodd" clip-rule="evenodd" d="M1 3.33333C1 1.58319 1.01874 1 3.33333 1C5.64793 1 5.66667 1.58319 5.66667 3.33333C5.66667 5.08348 5.67405 5.66667 3.33333 5.66667C0.992618 5.66667 1 5.08348 1 3.33333Z" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" />
-                            <path fill-rule="evenodd" clip-rule="evenodd" d="M8.33398 3.33333C8.33398 1.58319 8.35272 1 10.6673 1C12.9819 1 13.0007 1.58319 13.0007 3.33333C13.0007 5.08348 13.008 5.66667 10.6673 5.66667C8.3266 5.66667 8.33398 5.08348 8.33398 3.33333Z" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" />
-                            <path fill-rule="evenodd" clip-rule="evenodd" d="M1 10.6667C1 8.91653 1.01874 8.33334 3.33333 8.33334C5.64793 8.33334 5.66667 8.91653 5.66667 10.6667C5.66667 12.4168 5.67405 13 3.33333 13C0.992618 13 1 12.4168 1 10.6667Z" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" />
-                            <path fill-rule="evenodd" clip-rule="evenodd" d="M8.33398 10.6667C8.33398 8.91653 8.35272 8.33334 10.6673 8.33334C12.9819 8.33334 13.0007 8.91653 13.0007 10.6667C13.0007 12.4168 13.008 13 10.6673 13C8.3266 13 8.33398 12.4168 8.33398 10.6667Z" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" />
-                        </svg>
+                        <MenuIcon width="14" height="14" />
                     </Popover.Button>
 
                     <Transition
@@ -97,22 +95,35 @@ const Menu = () => {
                     >
                         <Popover.Panel
                             static
-                            className={ `absolute w-screen max-w-sm px-2 mt-[9px] transform -translate-x-full bottom-12 lg:top-12 left-full sm:px-0 ${isDesktop ? '' : 'overflow-y-scroll max-h-[480px]'
-                                }` }
+                            className={ classNames(
+                                'absolute w-screen md:max-w-sm h-screen  z-10  overflow-y-scroll',
+                                'top-8 md:-top-8 mt-2 -mr-3 md:-mr-0 md:mt-0 -right-1 md:-right-5',
+                                'md:border-l md:border-0.5 md:border-dark/10 md:dark:border-light/10',
+                                '-translate-y-full md:translate-y-0',
+                                'bg-light dark:bg-dark md:bg-transparent md:dark:bg-transparent',
+                            ) }
                         >
-                            <div className="overflow-hidden border-0">
-                                <div className="relative z-50 grid gap-4 px-5 py-6 transition-all bg-light-primary/70 dark:bg-dark-primary/80 sm:gap-6 sm:p-8">
+                            <div className="flex justify-between py-3 md:py-4 mb-1 mt-2 bg-light dark:bg-dark px-8 md:px-6">
+                                <LanguageSwitch />
+                                <button className='text-dark dark:text-light hover:text-dark dark:hover:text-light' onClick={ () => { close() } }>
+                                    <MenuIcon width="14" height="14" />
+                                </button>
+                            </div>
+                            <Divider className='md:hidden' />
+                            <div className="overflow-hidden md:px-0 bg-light dark:bg-dark">
+                                <div className="relative grid gap-4 py-3 transition-all px-8 md:px-6">
+
                                     { solutions.map( ( item, idx ) =>
-                                        item.external ? (
-                                            <ExternalLink
-                                                key={ item.name }
-                                                href={ item.href }
-                                                className={ `flex items-center justify-between p-3 -m-3 transition-all duration-150 ease-in-out hover:bg-dark-primary/10 dark:hover:bg-light-primary/5 ${idx > 0 ? 'border-t border-[#12121219] dark:border-[#FFFFFF19]' : ''
-                                                    }` }
+                                    ( <>
+                                        { idx > 0 && <Divider /> }
+                                        <NavLink key={ item.name } href={ item.href }>
+                                            <a
+                                                className={ `flex items-center justify-between transition-all duration-150 ease-in-out hover:bg-dark/10 dark:hover:bg-light/5}` }
+                                                target={ item.external ? '_blank' : '' }
                                             >
                                                 <div>
-                                                    <p className="text-base font-bold transition-all text-dark dark:text-light">{ item.name }</p>
-                                                    <p className="mt-1 text-sm transition-all text-dark/80 dark:text-light/80">
+                                                    <p className="text-base font-semibold transition-all text-dark dark:text-light">{ item.name }</p>
+                                                    <p className="mt-1 text-sm transition-all text-light-text dark:text-dark-text">
                                                         { item.description }
                                                     </p>
                                                 </div>
@@ -138,52 +149,19 @@ const Menu = () => {
                                                         />
                                                     </svg>
                                                 </div>
-                                            </ExternalLink>
-                                        ) : (
-                                            <NavLink key={ item.name } href={ item.href }>
-                                                <a
-                                                    className={ `flex items-center justify-between p-3 -m-3 transition-all duration-150 ease-in-out hover:bg-dark-primary/10 dark:hover:bg-light-primary/5 ${idx > 0 ? 'border-t border-[#12121219] dark:border-[#FFFFFF19]' : ''
-                                                        }` }
-                                                >
-                                                    <div>
-                                                        <p className="text-base font-bold transition-all text-dark dark:text-light">{ item.name }</p>
-                                                        <p className="mt-1 text-sm transition-all text-dark/80 dark:text-light/80">
-                                                            { item.description }
-                                                        </p>
-                                                    </div>
-                                                    <div className="text-dark dark:text-light">
-                                                        <svg
-                                                            width="18"
-                                                            height="18"
-                                                            viewBox="0 0 18 18"
-                                                            fill="none"
-                                                            xmlns="http://www.w3.org/2000/svg"
-                                                        >
-                                                            <path
-                                                                d="M14.8125 8.79425H3.5625"
-                                                                stroke="currentColor"
-                                                                strokeLinecap="round"
-                                                                strokeLinejoin="round"
-                                                            />
-                                                            <path
-                                                                d="M10.2754 4.27596L14.8129 8.79396L10.2754 13.3127"
-                                                                stroke="currentColor"
-                                                                strokeLinecap="round"
-                                                                strokeLinejoin="round"
-                                                            />
-                                                        </svg>
-                                                    </div>
-                                                </a>
-                                            </NavLink>
-                                        )
+                                            </a>
+                                        </NavLink>
+                                    </>
+                                    )
                                     ) }
                                 </div>
                             </div>
                         </Popover.Panel>
                     </Transition>
                 </>
-            ) }
-        </Popover>
+            )
+            }
+        </Popover >
     )
 }
 

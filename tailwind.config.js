@@ -76,6 +76,7 @@ module.exports = {
                     400: '#2B2B2B'
                 },
                 light: {
+                    DEFAULT: '#FFFFFF',
                     primary: '#FFFFFF',
                     secondary: '#F2F7FF',
                     text: '#595959',
@@ -86,6 +87,7 @@ module.exports = {
 
                 },
                 dark: {
+                    DEFAULT: '#121212',
                     primary: '#121212',
                     secondary: '#1A1A1A',
                     text: '#868686',
@@ -156,6 +158,7 @@ module.exports = {
             },
             borderRadius: {
                 px: '1px',
+                'xl': '10px',
                 '1.5xl': '14px',
                 '2.5xl': '20px',
             },
@@ -220,7 +223,7 @@ module.exports = {
                     background: 'linear-gradient(90deg, rgba(255, 255, 255, 0.1) 0%, rgba(255, 255, 255, 0.2) 51.04%, rgba(255, 255, 255, 0.1) 100%)',
                 },
                 '.grey-linear-gradient': {
-                    background: 'linear-gradient(90deg, rgba(18, 18, 18, 0.1) 0%, rgba(18, 18, 18, 0.2) 51.04%, rgba(18, 18, 18, 0.1) 100%);'
+                    background: 'linear-gradient(90deg, rgba(18, 18, 18, 0.05) 0%, rgba(18, 18, 18, 0.15) 51.04%, rgba(18, 18, 18, 0.05) 100%);'
                 }
             } )
         } ),

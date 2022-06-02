@@ -88,7 +88,7 @@ const Web3StatusInner = () => {
         return (
             <div
                 id="web3-status-connected"
-                className="flex items-center px-3 py-2 m-0.5 text-sm rounded-lg bg-light-secondary dark:bg-dark-secondary transition-all text-dark-primary/80 dark:text-light-primary/80"
+                className="flex items-center px-2 sm:px-3 py-1 sm:py-2 m-0.5 text-sm rounded-lg bg-light-secondary dark:bg-dark-secondary transition-all text-dark-primary/80 dark:text-light-primary/80"
                 onClick={ toggleWalletModal }
             >
                 { hasPendingTransactions ? (
@@ -99,7 +99,7 @@ const Web3StatusInner = () => {
                         <Loader stroke="white" />
                     </div>
                 ) : (
-                    <div className="mr-2">{ ENSName || shortenAddress( account ) }</div>
+                    <div className="mr-1 sm:mr-2 w-10 sm:w-auto overflow-hidden">{ ENSName || shortenAddress( account ) }</div>
                 ) }
                 { !hasPendingTransactions && connector && <StatusIcon connector={ connector } /> }
             </div>

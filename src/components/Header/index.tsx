@@ -23,6 +23,8 @@ import Typography from '../Typography'
 import TokenStats from '../TokenStats'
 import { useRouter } from 'next/router'
 import { MenuIcon } from '../Icon'
+import { MenuAlt1Icon } from '@heroicons/react/outline'
+import CloseIcon from '../CloseIcon'
 
 // import { ExternalLink, NavLink } from "./Link";
 // import { ReactComponent as Burger } from "../assets/images/burger.svg";
@@ -43,7 +45,7 @@ const AppBar = () => {
     return (
         <header className="flex-shrink-0 w-full z-10">
             <Popover as="nav" className="z-10 w-full bg-transparent header-border-b">
-                { ( { open } ) => (
+                { ( { open, close } ) => (
                     <>
                         <div className="px-4 mx-0.5 sm:px-6 lg:px-12 py-4 border-b border-dark-primary/10 dark:border-light-primary/10 bg-light-primary/50 dark:bg-dark-primary/50 lg:backdrop-blur-lg">
                             <div className="flex items-center justify-between">
@@ -220,7 +222,7 @@ const AppBar = () => {
                                     </div>
                                 </div>
 
-                                <div className="fixed bottom-0 left-0 z-20 flex flex-row items-center justify-center w-full p-4 transition-all lg:w-auto bg-light-primary/30 dark:bg-dark-primary/50 backdrop-blur-lg lg:backdrop-filter-none lg:relative lg:p-0 lg:bg-transparent lg:dark:bg-transparent">
+                                <div className="fixed bottom-0 left-0 z-20 flex flex-row items-center justify-center w-full p-4 transition-all lg:w-auto bg-light-primary/90 dark:bg-dark-primary/90 backdrop-blur-lg lg:backdrop-filter-none lg:relative lg:p-0 lg:bg-transparent lg:dark:bg-transparent">
                                     <div className="flex items-center justify-center w-full gap-4 sm:justify-end">
                                         <div className="flex items-center w-auto mr-1 text-sm font-normal transition-all bg-transparent rounded-2xl cursor-pointer pointer-events-auto select-none hover:bg-dark-primary/10 text-primary dark:hover:bg-light-primary/5 whitespace-nowrap sm:block">
                                             <TokenStats token="EMO" />
@@ -245,31 +247,19 @@ const AppBar = () => {
                                                 <Web3Status />
                                             </div>
                                         </div>
-                                        {/* <div className="hidden md:block">
-                      <LanguageSwitch />
-                    </div> */}
+
                                         <More />
                                     </div>
                                 </div>
                                 <div className="flex -mr-2 sm:hidden">
                                     {/* Mobile menu button */ }
-                                    {/* <div className="block mr-2 md:hidden">
-                    <LanguageSwitch />
-                  </div> */}
+
                                     <Popover.Button className="inline-flex items-center justify-center p-2 rounded-md text-dark-primary dark:text-light-primary focus:outline-none">
                                         <span className="sr-only">{ i18n._( t`Open main menu` ) }</span>
                                         { open ? (
-                                            <svg
-                                                className="block w-6 h-6"
-                                                aria-hidden="true"
-                                                xmlns="http://www.w3.org/2000/svg"
-                                                viewBox="0 0 24 24"
-                                                stroke="currentColor"
-                                            >
-                                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="3" d="M6 18L18 6M6 6l12 12" />
-                                            </svg>
+                                            <CloseIcon width="24px" height="24px" className='block' />
                                         ) : (
-                                            <MenuIcon width="24px" height="24px" className='block' />
+                                            <MenuAlt1Icon width="24px" height="24px" className='block' />
                                         ) }
                                     </Popover.Button>
                                 </div>
