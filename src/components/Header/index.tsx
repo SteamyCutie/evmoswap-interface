@@ -25,6 +25,7 @@ import { useRouter } from 'next/router'
 import { MenuIcon } from '../Icon'
 import { MenuAlt1Icon } from '@heroicons/react/outline'
 import CloseIcon from '../CloseIcon'
+import { Divider } from '../Divider/Divider'
 
 // import { ExternalLink, NavLink } from "./Link";
 // import { ReactComponent as Burger } from "../assets/images/burger.svg";
@@ -44,10 +45,11 @@ const AppBar = () => {
 
     return (
         <header className="flex-shrink-0 w-full z-10">
-            <Popover as="nav" className="z-10 w-full bg-transparent header-border-b">
+            <Popover as="nav" className="z-10 w-full bg-transparent">
                 { ( { open, close } ) => (
                     <>
-                        <div className="px-4 mx-0.5 sm:px-6 lg:px-12 py-4 border-b border-dark-primary/10 dark:border-light-primary/10 bg-light-primary/50 dark:bg-dark-primary/50 lg:backdrop-blur-lg">
+
+                        <div className="px-4 mx-0.5 sm:px-6 lg:px-12 py-4 bg-light-primary/50 dark:bg-dark-primary/50 lg:backdrop-blur-lg">
                             <div className="flex items-center justify-between">
                                 <div className="flex items-center">
                                     <div className="grid dark:hidden">
@@ -399,8 +401,10 @@ const AppBar = () => {
                                 ) }
                             </div>
                         </Popover.Panel>
+                        <Divider className='mx-4 sm:mx-6 lg:mx-12' />
                     </>
                 ) }
+
             </Popover>
         </header>
     )
