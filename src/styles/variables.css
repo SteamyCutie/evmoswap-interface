@@ -2,6 +2,6 @@
     /* #0D0415 */
     --primary: #000000; 
     --text-primary: #BFBFBF;
-    --font-sans: "Montserrat", -apple-system, system-ui, BlinkMacSystemFont, 'Helvetica Neue', 'Helvetica', sans-serif;
+    --font-sans: "MontserratVariable", sans-serif;
     --scrollbar-width: 14px;
 }

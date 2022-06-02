@@ -1,6 +1,6 @@
 @tailwind base;
 
-@import '@fontsource/montserrat/index.css';
+@import '@fontsource/montserrat/variable.css';
 @import '@fontsource/inter/variable.css';
 @import 'react-virtualized/styles.css';
 @import 'rc-slider/assets/index.css';
