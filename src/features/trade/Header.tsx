@@ -103,7 +103,7 @@ const ExchangeHeader: FC<ExchangeHeaderProps> = ( { input, output, allowedSlippa
           >
             Bridge
           </a> */}
-                    <div className="relative flex items-center w-full h-full p-2 rounded">
+                    <div className="relative flex items-center w-full h-full rounded">
                         <Settings placeholderSlippage={ allowedSlippage } />
                     </div>
                 </div>

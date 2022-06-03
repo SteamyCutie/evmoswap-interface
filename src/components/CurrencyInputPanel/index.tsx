@@ -168,8 +168,8 @@ export default function CurrencyInputPanel ( {
                             renderBalance( selectedCurrencyBalance )
                         ) : (
                             <>
-                                { i18n._( t`Balance :` ) }{ ' ' }
-                                <p className="">{ formatCurrencyAmount( selectedCurrencyBalance, 4 ) }</p>
+                                { i18n._( t`Balance :` ) }
+                                <p className="ml-1">{ formatCurrencyAmount( selectedCurrencyBalance, 4 ) }</p>
                                 {/* currency?.symbol */ }
                             </>
                         ) }

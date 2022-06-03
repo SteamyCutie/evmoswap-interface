@@ -37,14 +37,15 @@ export default function SettingsTab ( { placeholderSlippage }: { placeholderSlip
     return (
         <div className="relative flex" ref={ node }>
             <div
-                className="flex items-center justify-center w-8 h-8 rounded cursor-pointer text-dark-primary hover:text-dark-primary/80 active:text-dark-primary dark:text-light-primary dark:hover:text-light-primary/80 dark:active:text-light-primary/80 transition-all"
+                className="flex items-center justify-end w-8 h-8 rounded cursor-pointer text-dark-primary hover:text-dark-primary/80 active:text-dark-primary dark:text-light-primary dark:hover:text-light-primary/80 dark:active:text-light-primary/80 transition-all"
                 onClick={ toggle }
                 id="open-settings-dialog-button"
             >
                 <CogIcon className="w-[20px] h-[20px] transform rotate-90" />
             </div>
+
             { open && (
-                <div className="absolute top-4 z-50 right-3 md:left-3 md:right-0 mr-2.5 md:ml-2.5 md:mr-0 min-w-20 md:m-w-22 md:-mr-5 bg-white dark:bg-dark-primary border-2 border-light-stroke dark:border-dark-stroke rounded-xl w-64 shadow-lg">
+                <div className="absolute z-50 right-2 md:left-0 -mr-3 md:ml-3 min-w-20 md:m-w-22 md:-mr-5 bg-white dark:bg-dark-primary border-2 border-light-stroke dark:border-dark-stroke rounded-xl w-64 shadow-lg">
                     <div className="p-4 space-y-2">
                         <Typography className="text-dark-primary dark:text-light-primary pb-1 font-semibold transition-all">
                             { i18n._( t`Transaction Settings` ) }
