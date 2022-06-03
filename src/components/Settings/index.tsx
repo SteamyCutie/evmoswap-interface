@@ -16,6 +16,7 @@ import { useActiveWeb3React } from '../../services/web3'
 import { useLingui } from '@lingui/react'
 import { useOnClickOutside } from '../../hooks/useOnClickOutside'
 import { CogIcon } from '../Icon'
+import { Divider } from '../Divider/Divider'
 
 export default function SettingsTab ( { placeholderSlippage }: { placeholderSlippage?: Percent } ) {
     const { i18n } = useLingui()
@@ -43,17 +44,19 @@ export default function SettingsTab ( { placeholderSlippage }: { placeholderSlip
                 <CogIcon className="w-[20px] h-[20px] transform rotate-90" />
             </div>
             { open && (
-                <div className="absolute top-4 right-3 z-50 -mr-2.5 min-w-20 md:m-w-22 md:-mr-5 bg-white dark:bg-dark-primary border-2 border-[#D7D7FF] dark:border-[#2D2C2C] rounded-3xl w-64 shadow-lg">
+                <div className="absolute top-4 left-3 z-50 ml-2.5 min-w-20 md:m-w-22 md:-mr-5 bg-white dark:bg-dark-primary border-2 border-light-stroke dark:border-dark-stroke rounded-xl w-64 shadow-lg">
                     <div className="p-4 space-y-2">
-                        <Typography className="text-dark-primary dark:text-light-primary pb-2 font-bold border-b-2 border-b-dark-primary/20 dark:border-b-light-primary/20 transition-all">
+                        <Typography className="text-dark-primary dark:text-light-primary pb-1 font-semibold transition-all">
                             { i18n._( t`Transaction Settings` ) }
                         </Typography>
+                        <Divider />
 
                         <TransactionSettings placeholderSlippage={ placeholderSlippage } />
 
-                        <Typography className="text-dark-primary dark:text-light-primary pb-2 font-bold border-b-2 border-b-dark-primary/20 dark:border-b-light-primary/20 transition-all pt-4">
+                        <Typography className="text-dark-primary dark:text-light-primary pb-1 font-semibold transition-all pt-6">
                             { i18n._( t`Interface Settings` ) }
                         </Typography>
+                        <Divider />
 
                         <div className="flex items-center justify-between">
                             <div className="flex items-center">
