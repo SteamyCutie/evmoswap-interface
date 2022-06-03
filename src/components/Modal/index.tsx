@@ -1,4 +1,5 @@
 import { Dialog, Transition } from '@headlessui/react'
+import { classNames } from 'app/functions'
 import React, { Fragment, useEffect } from 'react'
 import { isMobile } from 'react-device-detect'
 
@@ -23,6 +24,7 @@ export default function Modal ( {
     children,
     padding = 5,
     maxWidth = 500,
+    className = '',
 }: ModalProps ) {
 
     //@TODO: reverse this and add  backdrop-blur-md to Dialog and Dialog.Overlay when 'backdrop-filter' is widely supported.
@@ -55,7 +57,11 @@ export default function Modal ( {
                                 } }
                             >
                                 {/* <div className="w-full p-px rounded bg-gradient-to-r from-blue to-red"> */ }
-                                <div className="w-full p-px rounded-2.5xl bg-light-primary dark:bg-dark-primary border-2 dark-[#D6D6D6] dark:border-[#2D2C2C] transition-all">
+                                <div className={ classNames(
+                                    "w-full p-px rounded-2.5xl bg-light-primary dark:bg-dark-primary border-2 border-light-stroke dark:border-dark-stroke transition-all",
+                                    className ?? '',
+                                ) }
+                                >
                                     <div className="flex flex-col w-full h-full p-6 overflow-y-hidden rounded-2.5xl bg-light-primary dark:bg-dark-primary text-dark-primary dark:text-light-primary transition-all">
                                         <div style={ { minHeight: `${minHeight}vh`, maxHeight: `${maxHeight}vh` } }>{ children }</div>
                                     </div>

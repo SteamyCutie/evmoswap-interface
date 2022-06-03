@@ -415,7 +415,7 @@ const Swap = () => {
     const [ animateSwapArrows, setAnimateSwapArrows ] = useState<boolean>( false )
 
     return (
-        <Container id="swap-page" className="p-4 md:py-8 lg:pb-24 mt-4 sm:mt-0">
+        <Container id="swap-page" className="p-4 md:py-8 lg:pb-24 mt-4 sm:mt-0 max-w-xl">
             <Head>
                 <title>{ i18n._( t`EvmoSwap` ) } | EvmoSwap</title>
                 <meta
@@ -429,7 +429,7 @@ const Swap = () => {
                 tokens={ importTokensNotInDefault }
                 onConfirm={ handleConfirmTokenWarning }
             />
-            <DoubleGlowShadow className='max-w-lg'>
+            <DoubleGlowShadow>
                 <div className="gap-4 p-3 md:p-4 lg:p-6 transition-all rounded-2.5xl z-0">
                     <SwapHeader
                         input={ currencies[ Field.INPUT ] }
@@ -449,6 +449,7 @@ const Swap = () => {
                         onConfirm={ handleSwap }
                         swapErrorMessage={ swapErrorMessage }
                         onDismiss={ handleConfirmDismiss }
+                        className=""
                     />
                     <div>
                         <CurrencyInputPanel

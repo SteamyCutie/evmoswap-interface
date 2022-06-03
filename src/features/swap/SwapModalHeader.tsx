@@ -42,7 +42,7 @@ export default function SwapModalHeader ( {
                 <div className="flex items-center justify-between bg-light-secondary dark:bg-dark-secondary p-3 pr-4 rounded-lg transition-all">
                     <div className="flex items-center gap-3">
                         <CurrencyLogo currency={ trade.inputAmount.currency } size={ 30 } />
-                        <div className="overflow-ellipsis w-[220px] overflow-hidden font-bold text-lg text-dark-primary dark:text-light-primary transition-all">
+                        <div className="overflow-ellipsis overflow-hidden font-bold text-lg text-dark-primary dark:text-light-primary transition-all">
                             { trade.inputAmount.toSignificant( 6 ) }
                         </div>
                     </div>
@@ -50,14 +50,14 @@ export default function SwapModalHeader ( {
                         { trade.inputAmount.currency.symbol }
                     </div>
                 </div>
-                <div className="mx-auto -my-3.5 p-1 border-4 border-light-primary dark:border-dark-primary z-0 rounded-xl bg-light-secondary dark:bg-dark-secondary transition-all">
+                <div className="mx-auto -my-3.5 p-1 border-4 border-light-primary dark:border-dark-primary z-0 rounded-1.5xl bg-light-secondary dark:bg-dark-secondary transition-all">
                     <ArrowSmDownIcon width={ 18 } height={ 18 } />
                 </div>
                 <div className="flex items-center justify-between bg-light-secondary dark:bg-dark-secondary p-3 pr-4 rounded-lg transition-all">
                     <div className="flex items-center gap-3">
                         <CurrencyLogo currency={ trade.outputAmount.currency } size={ 30 } />
                         <div
-                            className={ `overflow-ellipsis w-[220px] overflow-hidden font-bold text-lg transition-all ${priceImpactSeverity > 2 ? 'text-red' : 'text-dark-primary dark:text-light-primary'
+                            className={ `overflow-ellipsis overflow-hidden font-bold text-lg transition-all ${priceImpactSeverity > 2 ? 'text-red' : 'text-dark-primary dark:text-light-primary'
                                 }` }
                         >
                             { trade.outputAmount.toSignificant( 6 ) }
