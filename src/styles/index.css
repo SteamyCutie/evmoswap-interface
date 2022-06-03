@@ -95,3 +95,9 @@ input:focus {
 ::-webkit-scrollbar-thumb:active {
   background-color: #1A1A1A;
 }
+
+/** use till backdrop-filter is widely supported **/
+.modal-open body>div:first-child{
+    filter: blur(8px);
+  -webkit-filter: blur(8px);
+}

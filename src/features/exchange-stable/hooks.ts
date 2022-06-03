@@ -375,10 +375,10 @@ export function useStableSwapCallback (
     ] )?.result?.[ 0 ]
 
     const parsedOutputAmount = swapOutputAmount ? CurrencyAmount.fromRawAmount( outputToken, swapOutputAmount ) : undefined
-    console.log( tokenIndexFrom,
+    /*console.log( tokenIndexFrom,
         tokenIndexTo,
         parsedInputAmount?.quotient?.toString(), inputToken?.address, outputToken?.address )
-    console.log( swapOutputAmount, outputToken?.decimals, parsedInputAmount?.toExact(), parsedOutputAmount?.toExact() )
+    console.log( swapOutputAmount, outputToken?.decimals, parsedInputAmount?.toExact(), parsedOutputAmount?.toExact() )*/
 
     //create stable Trade
     const stableTrade = useStableTrade( parsedInputAmount, parsedOutputAmount, isExactIn )
