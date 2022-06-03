@@ -15,7 +15,7 @@ const FILLED = {
     blue: 'bg-blue bg-opacity-90 w-full rounded-md text-light-primary hover:bg-opacity-100 disabled:bg-opacity-90',
     'blue-special': 'bg-blue-special bg-opacity-90 w-full text-light-primary hover:bg-opacity-100 disabled:bg-opacity-90',
     pink: 'bg-gradient-to-r from-pink to-pink w-full rounded-md text-light-primary opacity-90 hover:opacity-100 disabled:bg-opacity-90',
-    gray: 'rounded-md shadow-sm focus:ring-2 focus:ring-offset-2 bg-opacity-90 w-full bg-light-border dark:bg-[#4B4B4B] text-dark-primary dark:text-light-primary hover:bg-opacity-100 focus:ring-offset-dark-700 focus:ring-dark-900 disabled:bg-opacity-90',
+    gray: 'rounded-xl shadow-sm focus:ring-2 focus:ring-offset-2 bg-opacity-90 w-full bg-grey-light dark:bg-light-text text-light hover:bg-opacity-100 focus:ring-offset-dark-700 focus:ring-dark-900 disabled:bg-opacity-90',
     green: 'bg-green bg-opacity-90 w-full rounded-md text-light-primary hover:bg-opacity-100 disabled:bg-opacity-90',
     gradient:
         'w-full text-light-primary bg-gradient-to-r from-blue-special to-pink-special opacity-100 hover:opacity-80 disabled:bg-opacity-80',
@@ -73,7 +73,7 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
                 className={ classNames(
                     VARIANT[ variant ][ color ],
                     variant !== 'empty' && SIZE[ size ],
-                    'rounded-md disabled:cursor-not-allowed focus:outline-none transition-all font-extrabold',
+                    'rounded-md disabled:cursor-not-allowed focus:outline-none transition-all font-bold',
                     // 'rounded-md focus:outline-none focus:ring disabled:opacity-50 disabled:cursor-not-allowed font-medium',
                     className
                 ) }
