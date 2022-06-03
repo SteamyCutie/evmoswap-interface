@@ -32,10 +32,10 @@ export default function TokenStatsModal ( { token, price }: { token: any; price:
 
     function getSummaryLine ( title, value ) {
         return (
-            <div className="flex flex-col w-full gap-2 px-5 py-3 rounded-md bg-light-secondary dark:bg-dark-secondary transition-all">
-                <div className="flex items-center justify-between font-extrabold">
+            <div className="w-full py-1 transition-all">
+                <div className="flex items-center justify-between">
                     { title }
-                    <Typography variant="sm" className="flex items-center font-extrabold py-0.5">
+                    <Typography variant="sm" weight={ 700 } className="flex items-center py-0.5">
                         { value }
                     </Typography>
                 </div>
@@ -46,9 +46,11 @@ export default function TokenStatsModal ( { token, price }: { token: any; price:
     function getModalContent () {
         return (
             <div className="space-y-6">
-                <div className="space-y-2">
-                    <ModalHeader title={ token[ 'name' ] } onClose={ toggleWalletModal } />
-                    <div className="flex flex-row space-x-4 w-full bg-light-secondary/50 dark:bg-dark-secondary/50 transition-all px-5 py-4 rounded-md">
+                <div className="space-y-6">
+                    <div>
+                        <ModalHeader title={ token[ 'name' ] } onClose={ toggleWalletModal } className="mb-4" />
+                    </div>
+                    <div className="flex flex-row space-x-4 w-full bg-light-secondary dark:bg-dark-secondary transition-all px-5 py-4 rounded-md">
                         { token.icon && (
                             <Image
                                 src={ token[ 'icon' ] }
@@ -59,9 +61,9 @@ export default function TokenStatsModal ( { token, price }: { token: any; price:
                                 className="items-center"
                             />
                         ) }
-                        <div className="flex flex-col flex-1">
+                        <div className="flex flex-col flex-1 space-y-2">
                             <div className="flex flex-row">
-                                <div className="text-xl text-primary font-extrabold transition-all">{ token[ 'symbol' ] }</div>
+                                <div className="text-xl text-primary font-semibold transition-all">{ token[ 'symbol' ] }</div>
                             </div>
                             <div className="flex items-center justify-between gap-2 space-x-3">
                                 { token?.address && (
@@ -71,23 +73,23 @@ export default function TokenStatsModal ( { token, price }: { token: any; price:
                                         href={ getExplorerLink( chainId, token[ 'address' ][ chainId ], 'address' ) }
                                         className="outline-none"
                                     >
-                                        <Typography variant="base" weight={ 700 }>
+                                        <Typography variant="base" weight={ 500 } className="font-medium">
                                             { i18n._( t`View Contract` ) }
                                         </Typography>
                                     </ExternalLink>
                                 ) }
                             </div>
                         </div>
-                        <div className="flex items-center text-primary text-bold">
-                            <div className="ml-2 text-xl text-primary font-extrabold transition-all">{ `${emoPrice}` }</div>
+                        <div className="flex items-center text-primary">
+                            <div className="ml-2 text-xl text-primary font-semibold transition-all">{ `${emoPrice}` }</div>
                         </div>
                     </div>
                 </div>
-                <div className="space-y-2">
+                <div className="space-y-3">
                     <div className="flex items-center justify-between">
                         <Typography weight={ 700 }>{ i18n._( t`Supply & Market Cap` ) }</Typography>
                     </div>
-                    <div className="flex flex-col gap-1.5 -m-1 flex-nowrap">
+                    <div className="flex flex-col flex-nowrap">
                         { getSummaryLine(
                             <Typography variant="sm" className="flex items-center py-0.5">
                                 { i18n._( t`Total Supply` ) }
