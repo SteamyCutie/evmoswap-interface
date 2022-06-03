@@ -2,7 +2,7 @@ import React from 'react'
 import { classNames } from '../../functions'
 
 const SIZE = {
-    xs: 'px-2 py-1 text-sm',
+    xs: 'px-2 py-1 text-xs',
     sm: 'px-4 py-2 text-base',
     default: 'px-4 py-3 text-base',
     lg: 'px-7 py-5 text-base',

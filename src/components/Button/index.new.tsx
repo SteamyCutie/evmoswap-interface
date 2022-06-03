@@ -16,7 +16,7 @@ const DIMENSIONS = {
 }
 
 const SIZE = {
-    xs: 'text-sm rounded',
+    xs: 'text-xs rounded',
     sm: 'text-sm rounded',
     md: 'rounded',
     lg: 'text-lg rounded',

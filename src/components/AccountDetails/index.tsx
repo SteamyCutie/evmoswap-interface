@@ -148,7 +148,7 @@ const AccountDetails: FC<AccountDetailsProps> = ( {
                             </div>
                             { account && (
                                 <Copy toCopy={ account } showIcon={ false }>
-                                    <Typography >{ i18n._( t`Copy` ) }</Typography>
+                                    <Typography weight={ 500 } className='!text-sm'>{ i18n._( t`Copy` ) }</Typography>
                                 </Copy>
                             ) }
                         </div>
