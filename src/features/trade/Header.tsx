@@ -36,14 +36,14 @@ const ExchangeHeader: FC<ExchangeHeaderProps> = ( { input, output, allowedSlippa
     const isLimitOrder = router.asPath.startsWith( '/limit-order' )
 
     const navLinkStyle =
-        'font-semibold rounded-md bg-blue-special !px-5 text-light-primary hover:text-light-primary/80 dark:text-light-primary dark:hover:text-light-primary/80 transition-all'
+        'font-semibold rounded-md bg-blue !px-5 text-light-primary hover:text-light-primary/80 dark:text-light-primary dark:hover:text-light-primary/80 transition-all'
     const navTextStyle =
         'flex items-center justify-center px-6 text-base font-medium text-center rounded-md transition-all'
 
     return (
         <div className="flex items-center justify-between space-x-3 mb-4">
             { showNavs && (
-                <div className="flex flex-nowrap p-1 transition-all rounded-xl bg-light-primary dark:bg-dark-primary text-dark-primary hover:text-dark-primary/80 dark:text-light-primary dark:hover:text-light-primary/80 h-9">
+                <div className="flex flex-nowrap p-1 transition-all rounded-xl bg-light-primary dark:bg-dark-primary text-dark-primary hover:text-dark-primary/80 dark:text-light-primary dark:hover:text-light-primary/80 h-10">
                     <NavLink
                         activeClassName={ navLinkStyle }
                         href={ {

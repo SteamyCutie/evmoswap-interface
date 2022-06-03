@@ -193,7 +193,7 @@ export default function CurrencyInputPanel ( {
                             { showMaxButton && selectedCurrencyBalance && (
                                 <Button
                                     onClick={ onMax }
-                                    size="xs"
+                                    size="sm"
                                     className="text-sm font-bold transition-all bg-transparent rounded-full text-blue-special hover:text-blue-special/80 whitespace-nowrap"
                                 >
                                     { i18n._( t`Max` ) }
