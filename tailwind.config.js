@@ -124,6 +124,7 @@ module.exports = {
                 base: [
                     '14px',
                 ],
+                md: ['16px'],
                 hero: [
                     '48px',
                     {

@@ -36,9 +36,9 @@ export const ConfirmationPendingContent: FC<ConfirmationPendingContentProps> = (
                 <Lottie animationData={ loadingRollingCircleDark } className="hidden dark:flex" autoplay loop />
             </div>
             <div className="flex flex-col items-center justify-center gap-3">
-                <div className="text-lg font-extrabold text-primary">{ i18n._( t`Waiting for Confirmation` ) }</div>
-                <div className="font-bold">{ pendingText }</div>
-                <div className="text-sm font-bold text-secondary">{ i18n._( t`Confirm this transaction in your wallet` ) }</div>
+                <div className="text-md font-medium text-dark dark:text-light">{ i18n._( t`Waiting for Confirmation` ) }</div>
+                <div className="text-xl font-semibold mt-2 mb-4">{ pendingText }</div>
+                <div className="text-sm font-medim text-light-text dark:text-dark-text">{ i18n._( t`Confirm this transaction in your wallet` ) }</div>
             </div>
         </div>
     )
@@ -66,33 +66,33 @@ export const TransactionSubmittedContent: FC<TransactionSubmittedContentProps> =
             <div className="flex justify-end">
                 <CloseIcon onClick={ onDismiss } />
             </div>
-            <div className="w-24 pb-4 m-auto">
+            <div className="w-24 pb-4 m-auto mb-8">
                 <CheckIcon
                     strokeWidth={ 2 }
-                    width={ 80 }
-                    height={ 80 }
-                    className="p-2 border-4 text-green-special border-green-special rounded-2xl"
+                    width={ 65 }
+                    height={ 65 }
+                    className="p-4 border-2 text-green-special border-green-special rounded-2.5xl"
                 />
             </div>
             <div className="flex flex-col items-center justify-center gap-1">
-                <div className="text-lg font-bold">{ i18n._( t`Transaction Submitted` ) }</div>
+                <div className="text-xl font-semibold text-dark dark:text-light">{ i18n._( t`Transaction Submitted` ) }</div>
                 { chainId && hash && (
                     <ExternalLink href={ getExplorerLink( chainId, hash, 'transaction' ) }>
-                        <div className="font-bold text-base text-blue-special">View on explorer</div>
+                        <div className="font-medium text-md text-blue my-2">View on explorer</div>
                     </ExternalLink>
                 ) }
                 { currencyToAdd && library?.provider?.isMetaMask && (
-                    <Button color="gradient" onClick={ addToken } className="w-auto px-8 mt-4 font-extrabold">
+                    <Button size='default' color="gradient" onClick={ addToken } className="w-auto px-8 mt-4 font-extrabold !w-full">
                         { !success ? (
-                            <RowFixed className="mx-auto space-x-2 items-center text-sm">
+                            <RowFixed className="mx-auto space-x-2 items-center text-sm font-bold">
                                 <span>{ i18n._( t`Add ${currencyToAdd.symbol} to MetaMask` ) }</span>
-                                <Image
+                                {/*<Image
                                     src="/images/wallets/metamask.png"
                                     alt={ i18n._( t`Add ${currencyToAdd.symbol} to MetaMask` ) }
                                     width={ 18 }
                                     height={ 18 }
                                     className="ml-1 rounded-none"
-                                />
+                        />*/}
                             </RowFixed>
                         ) : (
                             <RowFixed>
@@ -188,13 +188,13 @@ const TransactionConfirmationModal: FC<ConfirmationModalProps> = ( {
 
     // confirmation screen
     return (
-        <Modal isOpen={ isOpen } onDismiss={ onDismiss } maxHeight={ 90 } className={ className }>
+        <Modal isOpen={ isOpen } onDismiss={ onDismiss } maxHeight={ 90 } className={ `md:-mt-32 ${hash ? 'max-w-sm ' : 'max-w-md'} ${className}` }>
             { attemptingTxn ? (
-                <div className="mb-6">
+                <div className="mb-2">
                     <ConfirmationPendingContent onDismiss={ onDismiss } pendingText={ pendingText } />
                 </div>
             ) : hash ? (
-                <div className="mb-6">
+                <div className="mb-2">
                     <TransactionSubmittedContent
                         chainId={ chainId }
                         hash={ hash }

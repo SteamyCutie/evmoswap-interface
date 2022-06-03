@@ -23,7 +23,7 @@ export default function Modal ( {
     initialFocusRef,
     children,
     padding = 5,
-    maxWidth = 500,
+    maxWidth = 400,
     className = '',
 }: ModalProps ) {
 
@@ -50,7 +50,7 @@ export default function Modal ( {
                             leaveTo="opacity-0"
                         >
                             <div
-                                className="transition-all transform"
+                                className="transition-all transform flex justify-center"
                                 style={ {
                                     width: isMobile ? `100%` : '90vw',
                                     maxWidth: `${maxWidth}px`,

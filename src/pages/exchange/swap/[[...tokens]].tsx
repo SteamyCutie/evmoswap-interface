@@ -532,7 +532,7 @@ const Swap = () => {
                                 id="swap-currency-output"
                             />
                             { Boolean( trade ) && (
-                                <div className="grid p-5 mt-2 gap-2 transition-all bg-white cursor-pointer dark:bg-dark-primary border border-light-stroke dark:border-dark-stroke rounded-xl">
+                                <div className="grid p-5 mt-4 gap-2 transition-all bg-white cursor-pointer dark:bg-dark-primary border border-light-stroke dark:border-dark-stroke rounded-xl">
                                     <TradePrice
                                         price={ trade?.executionPrice }
                                         showInverted={ showInverted }
