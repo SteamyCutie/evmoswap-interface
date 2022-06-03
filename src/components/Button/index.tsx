@@ -24,11 +24,9 @@ const FILLED = {
 const OUTLINED = {
     default: 'bg-transparent opacity-90 hover:opacity-100',
     red: 'border border-red bg-opacity-40 outline-red rounded-md text-red opacity-100 hover:opacity-60 disabled:opacity-40 transition-all',
-    blue: 'bg-blue bg-opacity-20 outline-blue rounded-md text-blue hover:bg-opacity-40 disabled:bg-opacity-20',
-    'blue-special':
-        'bg-blue-special bg-opacity-20 outline-blue-special rounded-md text-blue-special hover:bg-opacity-40 disabled:bg-opacity-20',
+    blue: 'bg-transparent outline-blue border border-blue rounded-md text-blue',
     pink: 'bg-pink bg-opacity-20 outline-pink rounded-md text-pink hover:bg-opacity-40 disabled:bg-opacity-20',
-    gray: 'bg-transparent border border-light-border dark:border-dark-border rounded-md text-gray hover:bg-opacity-40 disabled:bg-opacity-20',
+    gray: 'bg-transparent border border-light-text dark:border-dark-text text-light-text dark:text-dark-text rounded-md',
     green:
         'bg-transparent border border-green-special/80 rounded-md text-green-special hover:border-green-specical disabled:border-green-special/80',
     gradient:
