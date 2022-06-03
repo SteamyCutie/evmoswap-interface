@@ -158,7 +158,7 @@ export default function CurrencyInputPanel ( {
                             </div>
                         </button>
                         { currencyPrice && (
-                            <div className="text-light-text dark:text-dark-text transition-all">
+                            <div className="text-light-text dark:text-dark-text transition-all whitespace-nowrap">
                                 { i18n._( t`~ $` ) } { Number( currencyPrice?.valueInUSD?.toFixed( 18 ) ).toFixed( 4 ) }
                             </div>
                         ) }
@@ -167,11 +167,11 @@ export default function CurrencyInputPanel ( {
                         { renderBalance ? (
                             renderBalance( selectedCurrencyBalance )
                         ) : (
-                            <>
-                                { i18n._( t`Balance :` ) }
+                            <div className='flex flex-wrap items-center justify-end w-auto'>
+                                <div>{ i18n._( t`Balance :` ) }</div>
                                 <p className="ml-1">{ formatCurrencyAmount( selectedCurrencyBalance, 4 ) }</p>
                                 {/* currency?.symbol */ }
-                            </>
+                            </div>
                         ) }
                     </div>
                 </div>
