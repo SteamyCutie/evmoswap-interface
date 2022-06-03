@@ -44,7 +44,7 @@ export default function SettingsTab ( { placeholderSlippage }: { placeholderSlip
                 <CogIcon className="w-[20px] h-[20px] transform rotate-90" />
             </div>
             { open && (
-                <div className="absolute top-4 left-3 z-50 ml-2.5 min-w-20 md:m-w-22 md:-mr-5 bg-white dark:bg-dark-primary border-2 border-light-stroke dark:border-dark-stroke rounded-xl w-64 shadow-lg">
+                <div className="absolute top-4 z-50 right-3 md:left-3 md:right-0 mr-2.5 md:ml-2.5 md:mr-0 min-w-20 md:m-w-22 md:-mr-5 bg-white dark:bg-dark-primary border-2 border-light-stroke dark:border-dark-stroke rounded-xl w-64 shadow-lg">
                     <div className="p-4 space-y-2">
                         <Typography className="text-dark-primary dark:text-light-primary pb-1 font-semibold transition-all">
                             { i18n._( t`Transaction Settings` ) }
