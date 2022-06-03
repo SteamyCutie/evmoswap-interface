@@ -415,7 +415,7 @@ const Swap = () => {
     const [ animateSwapArrows, setAnimateSwapArrows ] = useState<boolean>( false )
 
     return (
-        <Container id="swap-page" className="p-4 md:py-8 lg:pb-24">
+        <Container id="swap-page" className="p-4 md:py-8 lg:pb-24 mt-4 sm:mt-0">
             <Head>
                 <title>{ i18n._( t`EvmoSwap` ) } | EvmoSwap</title>
                 <meta
@@ -429,7 +429,7 @@ const Swap = () => {
                 tokens={ importTokensNotInDefault }
                 onConfirm={ handleConfirmTokenWarning }
             />
-            <DoubleGlowShadow>
+            <DoubleGlowShadow className='max-w-lg'>
                 <div className="gap-4 p-3 md:p-4 lg:p-6 transition-all rounded-2.5xl z-0">
                     <SwapHeader
                         input={ currencies[ Field.INPUT ] }
@@ -469,7 +469,7 @@ const Swap = () => {
                         />
                         <AutoColumn
                             justify="space-between"
-                            className={ classNames( isExpertMode ? '-mt-3 -mb-3' : '-mt-4 -mb-7', 'transition-all pl-2' ) }
+                            className={ classNames( isExpertMode ? '-mt-3 -mb-3' : '-mt-3 -mb-5', 'transition-all pl-2' ) }
                         >
                             <div
                                 className={ classNames(
@@ -478,26 +478,25 @@ const Swap = () => {
                                 ) }
                             >
                                 <button
-                                    className="z-0 rounded-3xl"
+                                    className="z-0 rounded-2xl"
                                     onClick={ () => {
                                         setApprovalSubmitted( false ) // reset 2 step UI for approvals
                                         onSwitchTokens()
                                     } }
                                 >
-                                    <div className="p-1.5 rounded-[18px] bg-light-secondary dark:bg-dark-secondary transition-all">
-                                        <div
-                                            className="p-3 transition-all bg-light-primary rounded-md hover:bg-light-primary/80 dark:bg-dark-primary dark:hover:bg-dark-primary/80 text-dark-secondary dark:text-light-secondary"
-                                        // onMouseEnter={() => setAnimateSwapArrows(true)}
-                                        // onMouseLeave={() => setAnimateSwapArrows(false)}
-                                        >
-                                            <SwitchVerticalIcon width={ 18 } height={ 18 } />
-                                            {/* <Lottie
+
+                                    <div
+                                        className="flex items-center justify-center border-4 border-light-secondary dark:border-dark-secondary text-center w-10 h-10 transition-all bg-light-primary rounded-2xl hover:bg-light-primary/80 dark:bg-dark-primary dark:hover:bg-dark-primary/80 text-dark-secondary dark:text-light-secondary"
+                                    // onMouseEnter={() => setAnimateSwapArrows(true)}
+                                    // onMouseLeave={() => setAnimateSwapArrows(false)}
+                                    >
+                                        <SwitchVerticalIcon width={ 16 } height={ 16 } />
+                                        {/* <Lottie
                         animationData={swapArrowsAnimationData}
                         autoplay={animateSwapArrows}
                         loop={false}
                         style={{ width: 32, height: 32 }}
                       /> */}
-                                        </div>
                                     </div>
                                 </button>
                                 { isExpertMode ? (
