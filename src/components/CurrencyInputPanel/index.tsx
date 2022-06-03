@@ -137,7 +137,7 @@ export default function CurrencyInputPanel ( {
                                             <div className="hidden text-xs font-medium text-secondary whitespace-nowrap">{ label }</div>
                                         ) }
                                         <div className="flex items-center transition-all text-dark-primary dark:text-light-primary">
-                                            <div className="text-sm font-bold token-symbol-container md:text-sm">
+                                            <div className="text-sm font-bold token-symbol-container md:text-base">
                                                 { ( currency && currency.symbol && currency.symbol.length > 20
                                                     ? currency.symbol.slice( 0, 4 ) +
                                                     '...' +
@@ -150,7 +150,7 @@ export default function CurrencyInputPanel ( {
                                             </div>
 
                                             { !disableCurrencySelect && currency && (
-                                                <ChevronDownIcon width={ 16 } height={ 16 } className="ml-0.5 stroke-current" />
+                                                <ChevronDownIcon width={ 16 } height={ 16 } className="ml-0.5 stroke-current font-bold" />
                                             ) }
                                         </div>
                                     </div>
@@ -158,19 +158,19 @@ export default function CurrencyInputPanel ( {
                             </div>
                         </button>
                         { currencyPrice && (
-                            <div className="text-[#303030] dark:text-[#868686] transition-all">
+                            <div className="text-light-text dark:text-dark-text transition-all">
                                 { i18n._( t`~ $` ) } { Number( currencyPrice?.valueInUSD?.toFixed( 18 ) ).toFixed( 4 ) }
                             </div>
                         ) }
                     </div>
-                    <div className="flex items-center text-xs transition-all text-dark-primary dark:text-light-primary">
+                    <div className="flex items-center text-sm transition-all text-dark-primary dark:text-light-primary font-medium">
                         { renderBalance ? (
                             renderBalance( selectedCurrencyBalance )
                         ) : (
                             <>
-                                { i18n._( t`Balance:` ) }{ ' ' }
-                                <p className="font-extrabold mx-1">{ formatCurrencyAmount( selectedCurrencyBalance, 4 ) }</p>{ ' ' }
-                                { currency?.symbol }
+                                { i18n._( t`Balance :` ) }{ ' ' }
+                                <p className="">{ formatCurrencyAmount( selectedCurrencyBalance, 4 ) }</p>
+                                {/* currency?.symbol */ }
                             </>
                         ) }
                     </div>
@@ -178,7 +178,7 @@ export default function CurrencyInputPanel ( {
                 { !hideInput && (
                     <div
                         className={ classNames(
-                            'flex items-center w-full space-x-3 focus:bg-dark-700 px-5 py-3 bg-light-secondary dark:bg-dark-secondary text-dark-primary dark:text-white placeholder-[#4B4B4B] rounded-md transition-all'
+                            'flex items-center w-full space-x-3 focus:bg-dark-700 px-5 py-3 mt-2 bg-light-secondary dark:bg-dark-secondary text-dark-primary dark:text-white placeholder-[#4B4B4B] rounded-md transition-all'
                             // showMaxButton && selectedCurrencyBalance && 'px-3'
                         ) }
                     >
@@ -203,7 +203,7 @@ export default function CurrencyInputPanel ( {
                                 <div className="flex flex-col">
                                     <div onClick={ onMax } className="text-xs font-medium text-right cursor-pointer text-low-emphesis">
                                         {
-                                            <div className="text-[#303030] dark:text-[#868686] transition-all">
+                                            <div className="text-light-text dark:text-dark-text transition-all">
                                                 { i18n._( t`~ $` ) } { Number( currencyPrice?.valueInUSD?.toFixed( 18 ) * Number( value ) ).toFixed( 4 ) }
                                             </div>
                                         }
