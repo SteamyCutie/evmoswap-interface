@@ -30,7 +30,7 @@ const OUTLINED = {
     green:
         'bg-transparent border border-green-special/80 rounded-md text-green-special hover:border-green-specical disabled:border-green-special/80',
     gradient:
-        'border border-transparent border border-gradient-r-blue-pink-special-light-secondary dark:border-gradient-r-blue-pink-special-dark-secondary opacity-100 hover:opacity-60 disabled:bg-opacity-20 text-blue-special transition-all',
+        'border border-transparent border-gradient-r-blue-pink-special-light-primary dark:border-gradient-r-blue-pink-special-dark-primary opacity-100 hover:opacity-60 disabled:bg-opacity-20 text-blue-special transition-all',
 }
 
 const EMPTY = {
