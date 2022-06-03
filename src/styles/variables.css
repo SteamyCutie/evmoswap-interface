@@ -1,6 +1,7 @@
 :root {
     /* #0D0415 */
     --primary: #FFFFFF; 
+    --primary-dark: #000000; 
     --text-primary: #595959;
     --font-sans: "MontserratVariable", sans-serif;
     --scrollbar-width: 14px;

@@ -36,6 +36,9 @@ body {
   background-color: var(--primary);
   color: var(--text-primary);
 }
+html.dark, html.dark body{
+    background-color: var(--primary-dark);
+}
 
 body {
   position: relative;
