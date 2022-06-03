@@ -27,7 +27,7 @@ export default function ProgressCircles ( { steps, disabled = false, ...rest }: 
                                 className={ classNames(
                                     step ? 'bg-green-special' : 'bg-pink-special',
                                     ( disabled || ( !steps[ i - 1 ] && i !== 0 ) ) && 'bg-pink-special',
-                                    'min-w-5 min-h-5 rounded-full flex justify-center items-center text-xs transition-all'
+                                    'min-w-5 min-h-5 rounded-full flex justify-center items-center text-sm transition-all'
                                 ) }
                             >
                                 { step ? '✓' : i + 1 }
@@ -47,7 +47,7 @@ export default function ProgressCircles ( { steps, disabled = false, ...rest }: 
                 <div
                     className={ classNames(
                         ( disabled || !steps[ steps.length - 1 ] ) && 'bg-light-secondary dark:bg-dark-secondary',
-                        'min-w-5 min-h-5 rounded-full flex justify-center bg-pink-special/50 dark:bg-pink-special/50 items-center text-xs'
+                        'min-w-5 min-h-5 rounded-full flex justify-center bg-pink-special/50 dark:bg-pink-special/50 items-center text-sm'
                     ) }
                 >
                     { steps.length + 1 }

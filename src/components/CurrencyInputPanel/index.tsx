@@ -92,7 +92,7 @@ export default function CurrencyInputPanel ( {
         >
             <div className="grid w-full gap-3">
                 <div className="flex items-center justify-between">
-                    <div className="flex items-center gap-3 text-xs transition-all">
+                    <div className="flex items-center gap-3 text-sm transition-all">
                         <button
                             type="button"
                             className={ classNames(
@@ -134,7 +134,7 @@ export default function CurrencyInputPanel ( {
                                 ) : (
                                     <div className="flex flex-1 flex-col items-start justify-center ml-1.5">
                                         { label && (
-                                            <div className="hidden text-xs font-medium text-secondary whitespace-nowrap">{ label }</div>
+                                            <div className="hidden text-sm font-medium text-secondary whitespace-nowrap">{ label }</div>
                                         ) }
                                         <div className="flex items-center transition-all text-dark-primary dark:text-light-primary">
                                             <div className="text-sm font-bold token-symbol-container md:text-base">
@@ -143,7 +143,7 @@ export default function CurrencyInputPanel ( {
                                                     '...' +
                                                     currency.symbol.slice( currency.symbol.length - 5, currency.symbol.length )
                                                     : currency?.symbol ) || (
-                                                        <div className="px-2 py-1 text-xs font-medium bg-transparent border rounded-full hover:bg-primary border-low-emphesis text-secondary whitespace-nowrap ">
+                                                        <div className="px-2 py-1 text-sm font-medium bg-transparent border rounded-full hover:bg-primary border-low-emphesis text-secondary whitespace-nowrap ">
                                                             { i18n._( t`Select a token` ) }
                                                         </div>
                                                     ) }
@@ -194,14 +194,14 @@ export default function CurrencyInputPanel ( {
                                 <Button
                                     onClick={ onMax }
                                     size="xs"
-                                    className="text-xs font-bold transition-all bg-transparent rounded-full text-blue-special hover:text-blue-special/80 whitespace-nowrap"
+                                    className="text-sm font-bold transition-all bg-transparent rounded-full text-blue-special hover:text-blue-special/80 whitespace-nowrap"
                                 >
                                     { i18n._( t`Max` ) }
                                 </Button>
                             ) }
                             { !hideBalance && currency && selectedCurrencyBalance ? (
                                 <div className="flex flex-col">
-                                    <div onClick={ onMax } className="text-xs font-medium text-right cursor-pointer text-low-emphesis">
+                                    <div onClick={ onMax } className="text-sm font-medium text-right cursor-pointer text-low-emphesis">
                                         {
                                             <div className="text-light-text dark:text-dark-text transition-all">
                                                 { i18n._( t`~ $` ) } { Number( currencyPrice?.valueInUSD?.toFixed( 18 ) * Number( value ) ).toFixed( 4 ) }

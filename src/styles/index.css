@@ -35,6 +35,8 @@ body {
   -moz-osx-font-smoothing: grayscale;
   background-color: var(--primary);
   color: var(--text-primary);
+  font-size: var(--font-size);
+  line-height: var(--line-height);
 }
 html.dark, html.dark body{
     background-color: var(--primary-dark);

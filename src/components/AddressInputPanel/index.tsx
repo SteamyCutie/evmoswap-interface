@@ -32,7 +32,7 @@ const AddressInputPanel: FC<AddressInputPanelProps> = ( { id, value, onChange } 
         >
             <div className="flex items-center justify-between w-full px-5 sm:w-2/5">
                 <span className="">{ i18n._( t`Send to:` ) }</span>
-                <span className="text-xs underline cursor-pointer text-blue-special" onClick={ () => onChange( null ) }>
+                <span className="text-sm underline cursor-pointer text-blue-special" onClick={ () => onChange( null ) }>
                     { i18n._( t`Remove` ) }
                 </span>
             </div>

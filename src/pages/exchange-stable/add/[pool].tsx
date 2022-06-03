@@ -238,7 +238,7 @@ export default function Add () {
                         <div className="text-lg font-medium md:text-2xl text-high-emphesis">{ lpToken?.symbol }</div>
                     </div>
                 </div>
-                <div className="pt-3 text-xs italic text-secondary">
+                <div className="pt-3 text-sm italic text-secondary">
                     { i18n._(
                         t`Output is estimated. If the price changes by more than ${allowedSlippage.toSignificant(
                             4

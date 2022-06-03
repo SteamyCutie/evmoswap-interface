@@ -20,7 +20,7 @@ const VARIANTS = {
     lg: 'text-lg',
     base: 'text-base',
     sm: 'text-sm',
-    xs: 'text-xs',
+    xs: 'text-sm',
     xxs: 'text-[0.625rem] leading-[1.2]',
 }
 

@@ -99,7 +99,7 @@ const FarmListItem: FC<FarmListItem> = ( { farm, onClick } ) => {
                 <Typography weight={ 700 } className="text-high-emphasis">
                     <div className="flex items-center">
                         <LockClosedIcon className="h-4 text-yellow" />
-                        <div className="text-xs font-bold md:text-base">
+                        <div className="text-sm font-bold md:text-base">
                             { formatPercent( farm.apr ) } → { formatPercent( farm.apr * 2.5 ) }
                         </div>
                     </div>

@@ -243,7 +243,7 @@ export default function Add () {
                         </div>
                     </div>
                 </div>
-                <div className="pt-6 text-xs text-dark-primary/80 dark:text-light-primary/30">
+                <div className="pt-6 text-sm text-dark-primary/80 dark:text-light-primary/30">
                     { i18n._(
                         t`Output is estimated. If the price changes by more than ${allowedSlippage.toSignificant(
                             4

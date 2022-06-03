@@ -637,7 +637,7 @@ export default function Boostv3 () {
                                                             value={ week }
                                                             onUserInput={ handleWeek }
                                                             className={ classNames(
-                                                                'flex-none h-auto min-h-[2.5rem] h-auto px-3 md:px-5 ml-2 mb-2 rounded-md  text-xs font-bold caret-high-emphesis',
+                                                                'flex-none h-auto min-h-[2.5rem] h-auto px-3 md:px-5 ml-2 mb-2 rounded-md  text-sm font-bold caret-high-emphesis',
                                                                 inputError ? 'text-red' : '',
                                                                 week
                                                                     ? 'bg-blue-special text-white !border-none !text-lg'
@@ -890,7 +890,7 @@ const StatButton = ( props: StatButtonProps ) => {
                 <div className="px-1 text-dark dark:text-light font-inter text-xl md:text-lg xl:text-xl md:truncate">
                     { value }
                 </div>
-                <div className="px-1 text-primary text-xs md:truncate text-secondary dark:text-secondary-dark">{ title }</div>
+                <div className="px-1 text-primary text-sm md:truncate text-secondary dark:text-secondary-dark">{ title }</div>
             </div>
         </div>
     )

@@ -37,7 +37,7 @@ export default function Option ( {
                     { active && <div className="w-4 h-4 mr-4 rounded-full" style={ { background: color } } /> }
                     { header }
                 </div>
-                { subheader && <div className="mt-2.5 text-xs">{ subheader }</div> }
+                { subheader && <div className="mt-2.5 text-sm">{ subheader }</div> }
             </div>
             <Image src={ icon } alt={ 'Icon' } width="32px" height="32px" />
         </div>

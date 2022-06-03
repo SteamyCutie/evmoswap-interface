@@ -134,7 +134,7 @@ function CurrencyRow ( {
                     <div title={ currency.name } className="text-sm font-extrabold">
                         { currency.symbol }
                     </div>
-                    <div className="text-xs font-thin truncate">
+                    <div className="text-sm font-thin truncate">
                         { currency.name } { !isOnSelectedList && customAdded && '• Added by user' }
                     </div>
                 </div>
