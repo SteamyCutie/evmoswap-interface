@@ -117,25 +117,12 @@ module.exports = {
             fontSize: {
                 xs: [
                     '10px',
-                    {
-                        lineHeight: '12px',
-                    },
                 ],
                 sm: [
-                    '12px',
-                    {
-                        letterSpacing: '0.5px',
-                        lineHeight: '16.63px',
-                        fontWeight: 400,
-                    },
+                    '12px'
                 ],
                 base: [
                     '14px',
-                    {
-                        letterSpacing: '0',
-                        lineHeight: '17px',
-                        fontWeight: 400,
-                    },
                 ],
                 hero: [
                     '48px',
