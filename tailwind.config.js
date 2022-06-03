@@ -54,7 +54,7 @@ module.exports = {
                     'special': '#26A17B',
                 },
                 red: {
-                    DEFAULT: '#ff3838',
+                    DEFAULT: '#B42942',
                     550: '#E12006',
                 },
                 yellow: {

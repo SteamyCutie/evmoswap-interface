@@ -143,18 +143,25 @@ export const TransactionErrorContent: FC<TransactionErrorContentProps> = ( { mes
     return (
         <div className="grid gap-6">
             <div>
-                <div className="flex justify-between">
-                    <div className="text-base font-extrabold text-primary">{ i18n._( t`Error` ) }</div>
+                <div className="flex justify-end">
                     <CloseIcon onClick={ onDismiss } />
                 </div>
+                <div className="w-24 pb-4 m-auto mb-8">
+                    <CloseIcon
+                        strokeWidth={ 2 }
+                        width={ 65 }
+                        height={ 65 }
+                        className="p-4 border-2 text-red border-red rounded-2.5xl"
+                    />
+                </div>
                 <div className="flex flex-col items-center justify-center gap-3">
-                    <AlertTriangle className="text-red" style={ { strokeWidth: 1.5 } } size={ 64 } />
-                    <div className="font-bold text-red">{ message }</div>
+
+                    <div className="text-xl font-semibold text-dark dark:text-light">{ message }</div>
                 </div>
             </div>
             <div>
-                <Button color="gradient" size="lg" className="font-extrabold" onClick={ onDismiss }>
-                    Dismiss
+                <Button color="gradient" variant='outlined' size="default" className="font-bold w-full text-sm mt-4" onClick={ onDismiss }>
+                    { i18n._( t`Back` ) }
                 </Button>
             </div>
         </div>
