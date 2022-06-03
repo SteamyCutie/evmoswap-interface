@@ -7,38 +7,39 @@ import { useLingui } from '@lingui/react'
 import { t } from '@lingui/macro'
 
 interface CopyHelperProps {
-  className?: string
-  toCopy: string
-  children?: React.ReactNode
+    className?: string
+    toCopy: string
+    showIcon?: boolean
+    children?: React.ReactNode
 }
 
-const CopyHelper: FC<CopyHelperProps> = ({ className, toCopy, children }) => {
-  const [isCopied, setCopied] = useCopyClipboard()
-  const { i18n } = useLingui()
+const CopyHelper: FC<CopyHelperProps> = ( { className, toCopy, children, showIcon = true } ) => {
+    const [ isCopied, setCopied ] = useCopyClipboard()
+    const { i18n } = useLingui()
 
-  return (
-    <div
-      className={classNames(
-        'flex items-center flex-shrink-0 space-x-1 no-underline cursor-pointer whitespace-nowrap hover:no-underline focus:no-underline active:no-underline text-blue-special opacity-80 hover:opacity-100 focus:opacity-100',
-        className
-      )}
-      onClick={() => setCopied(toCopy)}
-    >
-      {isCopied && (
-        <div className="flex items-center space-x-1 whitespace-nowrap">
-          <Typography variant="sm">{i18n._(t`Copied`)}</Typography>
-          {/* <CheckCircleIcon width={16} height={16} /> */}
+    return (
+        <div
+            className={ classNames(
+                'flex items-center flex-shrink-0 space-x-1 no-underline cursor-pointer whitespace-nowrap hover:no-underline focus:no-underline active:no-underline text-blue-special opacity-80 hover:opacity-100 focus:opacity-100',
+                className
+            ) }
+            onClick={ () => setCopied( toCopy ) }
+        >
+            { isCopied && (
+                <div className="flex items-center space-x-1 whitespace-nowrap">
+                    <Typography variant="sm">{ i18n._( t`Copied` ) }</Typography>
+                    {/* <CheckCircleIcon width={16} height={16} /> */ }
+                </div>
+            ) }
+
+            { !isCopied && (
+                <>
+                    { children }
+                    { showIcon && <ClipboardCopyIcon width={ 16 } height={ 16 } /> }
+                </>
+            ) }
         </div>
-      )}
-
-      {!isCopied && (
-        <>
-          {children}
-          <ClipboardCopyIcon width={16} height={16} />
-        </>
-      )}
-    </div>
-  )
+    )
 }
 
 export default CopyHelper

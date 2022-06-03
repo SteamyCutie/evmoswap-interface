@@ -126,52 +126,52 @@ const AccountDetails: FC<AccountDetailsProps> = ( {
                 )} */}
                             <Button
                                 variant="outlined"
-                                color="gray"
+                                color="blue"
                                 size="xs"
                                 onClick={ () => {
                                     openOptions()
                                 } }
+                                className='!font-medium !border-[0.6px]'
                             >
                                 { i18n._( t`Change` ) }
                             </Button>
                         </div>
                     </div>
                     <div id="web3-account-identifier-row" className="flex flex-col justify-center space-y-3">
-                        { ENSName ? (
-                            <div className="bg-light-secondary dark:bg-dark-secondary transition-all">
+
+                        <div className="px-3 py-4 mt-2 rounded-md bg-light-secondary dark:bg-dark-secondary transition-all font-medium flex justify-between items-center">
+                            <div>
                                 { getStatusIcon() }
-                                <Typography>{ ENSName }</Typography>
+                                <Typography>
+                                    { ENSName ? ENSName : account ? shortenAddress( account ) : '' }
+                                </Typography>
                             </div>
-                        ) : (
-                            <div className="px-5 py-3 rounded-md bg-light-secondary dark:bg-dark-secondary transition-all font-extrabold">
-                                { getStatusIcon() }
-                                <Typography>{ account && shortenAddress( account ) }</Typography>
-                            </div>
-                        ) }
-                        <div className="flex items-center gap-2 space-x-3">
+                            { account && (
+                                <Copy toCopy={ account } showIcon={ false }>
+                                    <Typography >{ i18n._( t`Copy` ) }</Typography>
+                                </Copy>
+                            ) }
+                        </div>
+
+                        <div className="flex items-center">
                             { chainId && account && (
                                 <ExternalLink
-                                    color="blue-special"
+                                    color="blue"
                                     // startIcon={<LinkIcon size={16} />}
                                     href={ chainId && getExplorerLink( chainId, ENSName || account, 'address' ) }
                                 >
                                     <Typography variant="sm">{ i18n._( t`View on explorer` ) }</Typography>
                                 </ExternalLink>
                             ) }
-                            { account && (
-                                <Copy toCopy={ account }>
-                                    <Typography variant="sm">{ i18n._( t`Copy Address` ) }</Typography>
-                                </Copy>
-                            ) }
                         </div>
                     </div>
                 </div>
             </div>
             <div className="space-y-2">
-                <div className="flex items-center justify-between">
+                <div className="flex items-center justify-between mt-4">
                     <Typography weight={ 700 }>{ i18n._( t`Recent Transactions` ) }</Typography>
                     <div>
-                        <Button variant="outlined" color="gray" size="xs" onClick={ clearAllTransactionsCallback }>
+                        <Button variant="outlined" color="gray" size="xs" className='!font-medium !border-[0.6px]' onClick={ clearAllTransactionsCallback }>
                             { i18n._( t`Clear all` ) }
                         </Button>
                     </div>
@@ -182,7 +182,7 @@ const AccountDetails: FC<AccountDetailsProps> = ( {
                         { renderTransactions( confirmedTransactions ) }
                     </>
                 ) : (
-                    <Typography variant="sm" className="text-secondary">
+                    <Typography variant="sm" className="text-light-text dark:text-dark-text text-center pt-4">
                         { i18n._( t`Your transactions will appear here...` ) }
                     </Typography>
                 ) }

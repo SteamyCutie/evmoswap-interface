@@ -45,7 +45,7 @@ module.exports = {
                     DEFAULT: '#a755dd'
                 },
                 blue: {
-                    DEFAULT: '#2172e5',
+                    DEFAULT: '#0085FF',
                     'special': '#0085FF',
                     600: '#418AE8',
                 },
@@ -115,6 +115,12 @@ module.exports = {
                 inter: ['Inter', 'sans-serif']
             },
             fontSize: {
+                xs: [
+                    '10px',
+                    {
+                        lineHeight: '12px',
+                    },
+                ],
                 sm: [
                     '12px',
                     {
