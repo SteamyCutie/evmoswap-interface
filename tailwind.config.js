@@ -184,6 +184,7 @@ module.exports = {
             },
             screens: {
                 '3xl': '1600px',
+                '7xl': '1920px'
             },
             animation: {
                 ellipsis: 'ellipsis 1.25s infinite',
