@@ -55,3 +55,21 @@ export function MouseoverTooltipContent ( { content, children, ...rest }: Omit<T
         </TooltipContent>
     )
 }
+
+
+export function MouseoverContent ( { content, children, ...rest }: Omit<TooltipContentProps, 'show'> ) {
+    const [ show, setShow ] = useState( false )
+    const open = useCallback( () => setShow( true ), [ setShow ] )
+    const close = useCallback( () => setShow( false ), [ setShow ] )
+    return (
+        <>
+            <div
+                onMouseEnter={ open }
+                onMouseLeave={ close }
+            >
+                { children }
+            </div>
+            { show && content }
+        </>
+    )
+}
