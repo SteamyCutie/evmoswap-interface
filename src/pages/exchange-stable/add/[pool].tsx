@@ -9,7 +9,6 @@ import TransactionConfirmationModal, {
 } from '../../../modals/TransactionConfirmationModal'
 import { calculateGasMargin, calculateSlippageAmount } from '../../../functions/trade'
 import { useExpertModeManager, useUserSlippageToleranceWithDefault } from '../../../state/user/hooks'
-import Alert from '../../../components/Alert'
 import { AutoColumn } from '../../../components/Column'
 import { BigNumber } from '@ethersproject/bignumber'
 import Container from '../../../components/Container'
@@ -17,7 +16,6 @@ import CurrencyInputPanel from '../../../components/CurrencyInputPanel'
 import DoubleGlowShadow from '../../../components/DoubleGlowShadow'
 import ExchangeHeader from '../../../features/trade/Header'
 import Head from 'next/head'
-import NavLink from '../../../components/NavLink'
 import { Plus } from 'react-feather'
 import ReactGA from 'react-ga'
 import { TransactionResponse } from '@ethersproject/providers'
@@ -42,7 +40,6 @@ import {
     currencyAmountsToString,
     sumCurrencyAmounts,
 } from 'app/features/exchange-stable/utils'
-import { swapErrorToUserReadableMessage } from 'app/hooks/useSwapCallback'
 import AddLiquidityPositionNav from 'app/features/liquidity/AddLiquidityPositionNav'
 
 const DEFAULT_ADD_V2_SLIPPAGE_TOLERANCE = new Percent( 50, 10_000 )
