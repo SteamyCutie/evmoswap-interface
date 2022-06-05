@@ -43,6 +43,7 @@ import {
     sumCurrencyAmounts,
 } from 'app/features/exchange-stable/utils'
 import { swapErrorToUserReadableMessage } from 'app/hooks/useSwapCallback'
+import AddLiquidityPositionNav from 'app/features/liquidity/AddLiquidityPositionNav'
 
 const DEFAULT_ADD_V2_SLIPPAGE_TOLERANCE = new Percent( 50, 10_000 )
 
@@ -286,33 +287,18 @@ export default function Add () {
             </Head>
 
             <Container id="add-liquidity-page" className="py-4 space-y-6 md:py-8 lg:py-12" maxWidth="2xl">
-                <div className="flex items-center justify-between px-4 mb-5">
-                    <NavLink href="/stable-pool">
-                        <a className="flex items-center space-x-2 text-base font-medium text-center cursor-pointer text-secondary hover:text-high-emphesis">
-                            <span>{ i18n._( t`View Liquidity Positions` ) }</span>
-                            <svg
-                                xmlns="http://www.w3.org/2000/svg"
-                                className="w-4 h-4"
-                                fill="none"
-                                viewBox="0 0 24 24"
-                                stroke="currentColor"
-                            >
-                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 5l7 7-7 7" />
-                            </svg>
-                        </a>
-                    </NavLink>
-                </div>
 
-                <Alert
-                    message={
-                        <>
-                            <b>{ i18n._( t`Tip:` ) }</b>{ ' ' }
-                            { i18n._(
-                                t`By adding liquidity you'll earn 0.25% of all trades on this pair proportional to your share of the pool. Fees are added to the pool, accrue in real time and can be claimed by withdrawing your liquidity.`
-                            ) }
-                        </>
-                    }
-                    type="information"
+                <AddLiquidityPositionNav
+                    alert={ {
+                        message:
+                            <>
+                                <b>{ i18n._( t`Tip:` ) }</b>{ ' ' }
+                                { i18n._(
+                                    t`By adding liquidity you'll earn 0.25% of all trades on this pair proportional to your share of the pool. Fees are added to the pool, accrue in real time and can be claimed by withdrawing your liquidity.`
+                                ) }
+                            </>
+                    } }
+                    link={ '/stable-pool' }
                 />
 
                 <DoubleGlowShadow>

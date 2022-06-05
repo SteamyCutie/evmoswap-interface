@@ -43,6 +43,9 @@ import useTransactionDeadline from '../../../hooks/useTransactionDeadline'
 import { useWalletModalToggle } from '../../../state/application/hooks'
 import { ChevronRightIcon } from '@heroicons/react/outline'
 import { PlusIcon } from '@heroicons/react/solid'
+import { InfoSquareIcon } from 'app/components/Icon'
+import { MouseoverContent, MouseoverTooltipContent } from 'app/components/Tooltip'
+import AddLiquidityPositionNav from 'app/features/liquidity/AddLiquidityPositionNav'
 
 const DEFAULT_ADD_V2_SLIPPAGE_TOLERANCE = new Percent( 50, 10_000 )
 
@@ -326,43 +329,24 @@ export default function Add () {
             </Head>
 
             <Container id="add-liquidity-page" className="p-4 space-y-6 md:py-8 lg:py-12" maxWidth="2xl">
-                <div className="flex items-center mb-5">
-                    <NavLink href="/pool">
-                        <a className="flex items-center space-x-2 text-base text-center transition-all cursor-pointer text-dark-primary hover:text-dark-primary/80 dark:text-light-primary dark:hover:text-light-primary/80">
-                            <span>{ i18n._( t`View Liquidity Positions` ) }</span>
-                            <ChevronRightIcon width={ 18 } height={ 18 } />
-                        </a>
-                    </NavLink>
-                    {/* <button
-            style={{
-              backgroundColor: 'rgba(167, 85, 221, 0.25)',
-              border: '1px solid #A755DD',
-              borderRadius: 20,
-              padding: '5px 40px',
-              fontSize: 14,
-            }}
-          >
-            FARM THE {currencies[Field.CURRENCY_A]?.symbol}-{currencies[Field.CURRENCY_B]?.symbol} POOL
-          </button> */}
-                </div>
 
-                <Alert
-                    message={
-                        noLiquidity ? (
-                            i18n._(
-                                t`When creating a pair you are the first liquidity provider. The ratio of tokens you add will set the price of this pool. Once you are happy with the rate, click supply to review`
+                <AddLiquidityPositionNav
+                    alert={ {
+                        message:
+                            noLiquidity ? (
+                                i18n._(
+                                    t`When creating a pair you are the first liquidity provider. The ratio of tokens you add will set the price of this pool. Once you are happy with the rate, click supply to review`
+                                )
+                            ) : (
+                                <>
+                                    <b>{ i18n._( t`Tip:` ) }</b>{ ' ' }
+                                    { i18n._(
+                                        t`By adding liquidity you'll earn 0.25% of all trades on this pair proportional to your share of the pool. Fees are added to the pool, accrue in real time and can be claimed by withdrawing your liquidity.`
+                                    ) }
+                                </>
                             )
-                        ) : (
-                            <>
-                                <b>{ i18n._( t`Tip:` ) }</b>{ ' ' }
-                                { i18n._(
-                                    t`By adding liquidity you'll earn 0.25% of all trades on this pair proportional to your share of the pool. Fees are added to the pool, accrue in real time and can be claimed by withdrawing your liquidity.`
-                                ) }
-                            </>
-                        )
-                    }
-                    type="information"
-                    dismissable={ false }
+                    } }
+                    link={ '/pool' }
                 />
 
                 <DoubleGlowShadow>
