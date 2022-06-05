@@ -270,3 +270,14 @@ export const CogIcon = ( props: React.ComponentProps<'svg'> ) => {
         </svg>
     )
 }
+
+
+export const InfoSquareIcon = ( props: React.ComponentProps<'svg'> ) => {
+    return (
+        <svg { ...props } viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path fill-rule="evenodd" clip-rule="evenodd" d="M12.613 1.29199L5.3888 1.29199C2.8713 1.29199 1.29297 3.07449 1.29297 5.59699L1.29297 12.4037C1.29297 14.9262 2.8638 16.7087 5.3888 16.7087H12.6121C15.138 16.7087 16.7096 14.9262 16.7096 12.4037V5.59699C16.7096 3.07449 15.138 1.29199 12.613 1.29199Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+            <path d="M8.9987 12.3338V9.00049" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+            <path d="M8.99453 5.83708H9.00286" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+        </svg>
+    )
+}
