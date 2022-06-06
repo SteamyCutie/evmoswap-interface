@@ -60,10 +60,7 @@ module.exports = {
                     550: '#E12006',
                 },
                 yellow: {
-                    DEFAULT: '#ffd166',
-                },
-                gold: {
-                    DEFAULT: '#EC8F04'
+                    DEFAULT: '#EC8F04',
                 },
                 pink: {
                     DEFAULT: '#f338c3',
