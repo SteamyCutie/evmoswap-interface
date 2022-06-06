@@ -403,7 +403,7 @@ export default function Boostv3 () {
                 <div className="flex flex-col space-y-2 text-center  border rounded-2xl border-light-stroke/50 dark:border-dark-stroke/50 bg-light-secondary dark:bg-dark-secondary">
                     <div className={ classNames( 'rounded-t p-4', vestingRows.length ? '' : 'rounded-b' ) }>
                         <h2 className="text-blue-special font-medium text-slg">{ i18n._( `Vests are grouped by week` ) }</h2>
-                        <p className="text-dark dark:text-light my-3 text-3xl font-bold">
+                        <p className="text-dark dark:text-light my-3 text-2xl md:text-3xl font-bold">
                             { i18n._( `Next vesting group starts on` ) }
                             <span>{ format( addDays( blockTimestamp, DAYS_IN_WEEK ), " dd MMM yyyy 'at' hh:mm aaaaa'm' " ) }</span>
                         </p>
@@ -590,7 +590,7 @@ export default function Boostv3 () {
                                                         value={ input }
                                                         onUserInput={ handleInput }
                                                         className={ classNames(
-                                                            'w-full h-14 px-3 md:px-5 my-2 mb-3  rounded-md text-2xl md:text-3xl font-inter font-bold whitespace-nowrap caret-high-emphesis dark:bg-dark dark:bg-opacity-50',
+                                                            'w-full h-14 px-3 md:px-5 my-2 mb-3  rounded-md text-2xl md:text-3xl font-bold whitespace-nowrap caret-high-emphesis dark:bg-dark dark:bg-opacity-50',
                                                             inputError ? 'text-red' : ''
                                                         ) }
                                                         placeholder="0.0"
@@ -874,7 +874,7 @@ const BoostRewardCard = ( props: BoostRewardCardProps ) => {
                 <h2 className="flex items-center place-self-center text-lg text-secondary dark:text-secondary-dark transition-all">
                     { title } { icon }
                 </h2>
-                <p className="font-bold text-3.5xl my-3 text-dark dark:text-light font-inter">{ value }</p>
+                <p className="font-bold text-2xl md:text-3.5xl my-3 text-dark dark:text-light">{ value }</p>
             </div>
             <div>{ children }</div>
         </div>
@@ -886,7 +886,7 @@ const StatButton = ( props: StatButtonProps ) => {
     return (
         <div className="bg-white dark:bg-dark hover:bg-darker px-0 py-4 justify-evenly h-auto rounded-2xl">
             <div className="flex flex-col space-y-2 text-center items-center">
-                <div className="px-1 text-dark dark:text-light font-inter text-xl md:text-lg xl:text-xl md:truncate">
+                <div className="px-1 text-dark dark:text-light text-xl md:text-lg xl:text-xl md:truncate">
                     { value }
                 </div>
                 <div className="px-1 text-primary text-sm md:truncate text-secondary dark:text-secondary-dark">{ title }</div>
