@@ -23,7 +23,7 @@ const NeonSelect: FC<NeonSelectProps> = ( { value, children } ) => {
             </div>
             <div
                 className={ `z-[1] w-full absolute top-0 pt-10 py-1.5 ${open ? 'flex flex-col' : 'hidden'
-                    } bg-light-secondary dark:bg-dark-secondary opacity-90 transition-all rounded-lg` }
+                    } bg-light-secondary dark:bg-dark-secondary transition-all rounded-lg` }
             >
                 { children }
             </div>
