@@ -522,15 +522,14 @@ export default function Boostv3 () {
                                 /** Lock tab content */
 
                                 <div className="mt-8">
-                                    <div className="bg-gold bg-opacity-20 p-3 rounded-md">
-                                        <ul className="text-gold text-sm text-high-emphesis list-none flex flex-col space-y-3 font-medium">
-                                            <li>
-                                                { i18n._(
-                                                    t`Lock ${token.symbol} is equal to Staking ${token.symbol} and enjoys ${token.symbol} minted rewards at the same time.`
-                                                ) }
-                                            </li>
-                                        </ul>
-                                    </div>
+                                    <Alert
+                                        type='warning'
+                                        message={ i18n._(
+                                            t`Lock ${token.symbol} is equal to Staking ${token.symbol} and enjoys ${token.symbol} minted rewards at the same time.`
+                                        ) }
+                                        dismissable={ false }
+                                        className={ "!p-3 !rounded-md" }
+                                    />
 
                                     { lockAmount?.greaterThan( ZERO ) && (
                                         <RowBetween className="my-6 text-dark dark:text-light font-semibold">
@@ -637,7 +636,7 @@ export default function Boostv3 () {
                                                             value={ week }
                                                             onUserInput={ handleWeek }
                                                             className={ classNames(
-                                                                'flex-none h-auto min-h-[2.5rem] h-auto px-3 md:px-5 ml-2 mb-2 rounded-md  text-sm font-bold caret-high-emphesis',
+                                                                'flex-none h-auto min-h-[2.5rem] h-auto px-3 md:px-5 ml-2 mb-2 rounded-md !text-sm font-bold caret-high-emphesis',
                                                                 inputError ? 'text-red' : '',
                                                                 week
                                                                     ? 'bg-blue-special text-white !border-none !text-lg'
