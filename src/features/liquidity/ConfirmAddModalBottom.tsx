@@ -6,6 +6,7 @@ import React from 'react'
 import { t } from '@lingui/macro'
 import { useLingui } from '@lingui/react'
 import { CurrencyLogo } from 'app/components/CurrencyLogo'
+import Typography from 'app/components/Typography'
 
 export function ConfirmAddModalBottom ( {
     noLiquidity,
@@ -69,24 +70,23 @@ export function ConfirmAddModalBottom ( {
       </div> */}
             <div className="p-4 -mt-2 mb-4 rounded-lg bg-light-secondary dark:bg-dark-secondary">
                 <div className="flex justify-between mb-2 text-base text-dark-primary dark:text-light-primary">
-                    You deposits
+                    <Typography weight={ 500 }>You deposits</Typography>
                     <div className="flex items-center justify-between text-sm">
                         { i18n._( t`Share of Pool:` ) }
-                        <div className="text-base justify-center font-extrabold items-center flex right-align pl-1.5">
-                            { noLiquidity ? '100' : poolTokenPercentage?.toSignificant( 4 ) }
+                        <div className="text-base justify-center font-bold items-center flex right-align pl-1.5">
+                            { noLiquidity ? '100' : poolTokenPercentage?.toSignificant( 4 ) }{ i18n._( t`%` ) }
                         </div>
-                        { i18n._( t`%` ) }
                     </div>
                 </div>
                 <div className="flex space-x-2">
-                    <div className="flex w-full px-4 py-3 rounded-lg bg-light-primary dark:bg-dark-primary items-center font-extrabold space-x-2">
+                    <div className="flex w-full px-4 py-3 rounded-lg bg-light-primary dark:bg-dark-primary items-center font-semibold space-x-2">
                         <CurrencyLogo currency={ parsedAmounts[ Field.CURRENCY_A ]?.currency } size={ 40 } />
                         <div>
                             { parsedAmounts[ Field.CURRENCY_A ]?.toSignificant( 6 ) }&nbsp;
                             { parsedAmounts[ Field.CURRENCY_A ]?.currency.symbol }
                         </div>
                     </div>
-                    <div className="flex w-full px-4 py-3 rounded-lg bg-light-primary dark:bg-dark-primary items-center font-extrabold space-x-2">
+                    <div className="flex w-full px-4 py-3 rounded-lg bg-light-primary dark:bg-dark-primary items-center font-semibold space-x-2">
                         <CurrencyLogo currency={ parsedAmounts[ Field.CURRENCY_B ]?.currency } size={ 40 } />
                         <div>
                             { parsedAmounts[ Field.CURRENCY_B ]?.toSignificant( 6 ) }&nbsp;
@@ -97,7 +97,7 @@ export function ConfirmAddModalBottom ( {
             </div>
             <div className="p-4 mb-4 rounded-lg text-base bg-light-secondary dark:bg-dark-secondary">
                 <div>You will receive(at least)</div>
-                <div className="flex items-center mt-2 text-lg font-extrabold text-dark-primary dark:text-light-primary">
+                <div className="flex items-center mt-2 text-lg font-semibold text-dark-primary dark:text-light-primary">
                     { estimatedSLP && estimatedSLP?.toSignificant( 6 ) }&nbsp;
                     <div>
                         { parsedAmounts[ Field.CURRENCY_A ]?.currency.symbol } / { parsedAmounts[ Field.CURRENCY_B ]?.currency.symbol }
@@ -106,7 +106,7 @@ export function ConfirmAddModalBottom ( {
                 </div>
             </div>
 
-            <Button color="gradient" size="lg" onClick={ onAdd } className="text-base font-extrabold">
+            <Button color="gradient" size="lg" onClick={ onAdd } className="text-base font-bold">
                 { noLiquidity ? i18n._( t`Create Pool & Supply` ) : i18n._( t`Confirm deposit` ) }
             </Button>
         </div>

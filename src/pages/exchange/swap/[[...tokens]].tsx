@@ -54,6 +54,7 @@ import { useStableSwapCallback } from 'app/features/exchange-stable/hooks'
 import TradingMode, { TRADING_MODE } from 'app/features/exchange-stable/components/TradingMode'
 import _ from 'lodash'
 import { SwitchVerticalIcon } from '@heroicons/react/outline'
+import { SwapIcon } from 'app/components/Icon'
 
 const Swap = () => {
     const { i18n } = useLingui()
@@ -491,7 +492,7 @@ const Swap = () => {
                                     // onMouseEnter={() => setAnimateSwapArrows(true)}
                                     // onMouseLeave={() => setAnimateSwapArrows(false)}
                                     >
-                                        <SwitchVerticalIcon width={ 16 } height={ 16 } />
+                                        <SwapIcon height={ 12 } width={ 12 } className="rotate-90" />
                                         {/* <Lottie
                         animationData={swapArrowsAnimationData}
                         autoplay={animateSwapArrows}

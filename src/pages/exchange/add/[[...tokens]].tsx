@@ -219,7 +219,7 @@ export default function Add () {
             <div className="pb-4">
                 <div className="flex items-center justify-start gap-6 bg-light-secondary dark:bg-dark-secondary px-6 py-4 rounded-xl">
                     <DoubleCurrencyLogo currency0={ currencyA } currency1={ currencyB } size={ 40 } className="-space-x-2" />
-                    <div className="text-lg font-extrabold text-dark-secondary dark:text-light-secondary transition-all">
+                    <div className="text-lg font-bold text-dark-secondary dark:text-light-secondary transition-all">
                         { currencies[ Field.CURRENCY_A ]?.symbol + ' / ' + currencies[ Field.CURRENCY_B ]?.symbol }
                     </div>
                 </div>
@@ -231,7 +231,7 @@ export default function Add () {
                         <DoubleCurrencyLogo currency0={ currencyA } currency1={ currencyB } size={ 40 } className="-space-x-2" />
                     </div>
                     <div className="grid">
-                        <div className="text-base font-extrabold md:text-lg text-dark-primary dark:text-light-primary transition-all">
+                        <div className="text-base font-bold md:text-lg text-dark-primary dark:text-light-primary transition-all">
                             { liquidityMinted?.toSignificant( 6 ) }
                         </div>
                         <div className="text-sm font-medium md:text-base text-dark-primary dark:text-light-primary transition-all">
@@ -358,6 +358,7 @@ export default function Add () {
                             onDismiss={ handleDismissConfirmation }
                             attemptingTxn={ attemptingTxn }
                             hash={ txHash }
+                            className={ `!max-w-lg` }
                             content={ () => (
                                 <ConfirmationModalContent
                                     title={ noLiquidity ? i18n._( t`You are creating a pool` ) : i18n._( t`You will receive` ) }
@@ -387,11 +388,11 @@ export default function Add () {
                                     showCommonBases
                                 />
 
-                                <AutoColumn justify="space-between" className="pl-2 -mt-4 -mb-6 transition-all">
+                                <AutoColumn justify="space-between" className="-mt-4 -mb-5 transition-all">
                                     <div className="flex flex-wrap justify-center w-full px-4">
-                                        <div className="p-1.5 rounded-2.5xl bg-light-secondary dark:bg-dark-secondary transition-all">
-                                            <div className="p-2 transition-all bg-white rounded-2xl hover:bg-white/80 dark:bg-dark-primary dark:hover:bg-dark-primary/80 text-dark-secondary dark:text-light-secondary">
-                                                <PlusIcon width={ 24 } height={ 24 } />
+                                        <div className="p-1.5 rounded-2xl bg-light-secondary dark:bg-dark-secondary transition-all">
+                                            <div className="p-2 transition-all bg-white rounded-xl hover:bg-white/80 dark:bg-dark-primary dark:hover:bg-dark-primary/80 text-dark-secondary dark:text-light-secondary">
+                                                <PlusIcon width={ 18 } height={ 18 } />
                                             </div>
                                         </div>
                                     </div>
@@ -417,17 +418,17 @@ export default function Add () {
                                         price={ price }
                                         noLiquidity={ noLiquidity }
                                         poolTokenPercentage={ poolTokenPercentage }
-                                        className="bg-light-primary dark:bg-dark-primary transition-all rounded-2xl"
+                                        className="bg-light-primary dark:bg-dark-primary transition-all rounded-2xl font-semibold"
                                     />
                                 </div>
                             ) }
 
                             { addIsUnsupported ? (
-                                <Button color="red" size="lg" disabled className="font-extrabold">
+                                <Button color="red" size="lg" disabled className="font-bold">
                                     { i18n._( t`Unsupported Asset` ) }
                                 </Button>
                             ) : !account ? (
-                                <Web3Connect size="lg" color="gradient" className="w-full py-4 font-extrabold" />
+                                <Web3Connect size="lg" color="gradient" className="w-full py-4 font-bold" />
                             ) : (
                                 ( approvalA === ApprovalState.NOT_APPROVED ||
                                     approvalA === ApprovalState.PENDING ||
@@ -443,7 +444,7 @@ export default function Add () {
                                                         size="lg"
                                                         onClick={ approveACallback }
                                                         disabled={ approvalA === ApprovalState.PENDING }
-                                                        className="font-extrabold"
+                                                        className="font-bold"
                                                         style={ {
                                                             width:
                                                                 approvalB !== ApprovalState.APPROVED && currencyB !== NATIVE[ chainId ] ? '48%' : '100%',
@@ -462,7 +463,7 @@ export default function Add () {
                                                         size="lg"
                                                         onClick={ approveBCallback }
                                                         disabled={ approvalB === ApprovalState.PENDING }
-                                                        className="font-extrabold"
+                                                        className="font-bold"
                                                         style={ {
                                                             width:
                                                                 approvalA !== ApprovalState.APPROVED && currencyA !== NATIVE[ chainId ] ? '48%' : '100%',
@@ -487,7 +488,7 @@ export default function Add () {
                                                     !isValid || approvalA !== ApprovalState.APPROVED || approvalB !== ApprovalState.APPROVED
                                                 }
                                                 error={ !isValid && !!parsedAmounts[ Field.CURRENCY_A ] && !!parsedAmounts[ Field.CURRENCY_B ] }
-                                                className="font-extrabold"
+                                                className="font-bold"
                                             >
                                                 { error ?? i18n._( t`Confirm Adding Liquidity` ) }
                                             </ButtonError>
@@ -497,7 +498,7 @@ export default function Add () {
                             ) }
                         </div>
 
-                        { !addIsUnsupported ? (
+                        <div className='mt-10'>{ !addIsUnsupported ? (
                             pair && !noLiquidity && pairState !== PairState.INVALID ? (
                                 <MinimalPositionCard showUnwrapped={ oneCurrencyIsWETH } pair={ pair } />
                             ) : null
@@ -507,6 +508,7 @@ export default function Add () {
                                 currencies={ [ currencies.CURRENCY_A, currencies.CURRENCY_B ] }
                             />
                         ) }
+                        </div>
                     </div>
                 </DoubleGlowShadow>
             </Container>

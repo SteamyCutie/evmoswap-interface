@@ -26,6 +26,8 @@ module.exports = {
                     'dark-pink-red': '#4e3034',
                     'light-primary': '#FFFFFF',
                     'dark-primary': '#121212',
+                    'light-secondary': '#F2F7FF',
+                    'dark-secondary': '#1A1A1A'
                 },
                 border: {
                     1: '1px',

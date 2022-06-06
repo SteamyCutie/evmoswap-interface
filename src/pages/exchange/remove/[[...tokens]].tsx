@@ -48,6 +48,7 @@ import { useUserSlippageToleranceWithDefault } from '../../../state/user/hooks'
 import { useV2LiquidityTokenPermit } from '../../../hooks/useERC20Permit'
 import { useWalletModalToggle } from '../../../state/application/hooks'
 import { ChevronRightIcon } from '@heroicons/react/outline'
+import { SwapIcon } from 'app/components/Icon'
 
 const DEFAULT_REMOVE_LIQUIDITY_SLIPPAGE_TOLERANCE = new Percent( 5, 100 )
 
@@ -80,10 +81,10 @@ export default function Remove () {
     const flipPrice = useCallback( () => setShowInverted( !showInverted ), [ setShowInverted, showInverted ] )
 
     const text = i18n._(
-        t`1 ${currencyA?.symbol} = ${tokenA ? pair.priceOf( tokenA ).toSignificant( 6 ) : '-'} ${currencyB?.symbol}`
+        t`1 ${currencyA?.symbol} = ${tokenA && pair ? pair.priceOf( tokenA ).toSignificant( 6 ) : '-'} ${currencyB?.symbol}`
     )
     const textInverted = i18n._(
-        t`1 ${currencyB?.symbol} = ${tokenB ? pair.priceOf( tokenB ).toSignificant( 6 ) : '-'} ${currencyA?.symbol}`
+        t`1 ${currencyB?.symbol} = ${tokenB && pair ? pair.priceOf( tokenB ).toSignificant( 6 ) : '-'} ${currencyA?.symbol}`
     )
 
     // txn values
@@ -325,19 +326,19 @@ export default function Remove () {
     function modalHeader () {
         return (
             <div className="grid gap-4 pb-4">
-                <div className="grid gap-2 font-extrabold text-dark-primary dark:text-light-primary transition-all">
+                <div className="grid gap-1.5 font-medium text-dark-primary dark:text-light-primary transition-all">
                     <div className="flex items-center justify-between bg-light-secondary dark:bg-dark-secondary transition-all p-6 rounded-2xl">
                         <div className="flex items-center gap-3">
                             <CurrencyLogo currency={ currencyA } size={ 36 } />
-                            <div className="text-lg">{ parsedAmounts[ Field.CURRENCY_A ]?.toSignificant( 6 ) }</div>
+                            <div className="text-3xl">{ parsedAmounts[ Field.CURRENCY_A ]?.toSignificant( 6 ) }</div>
                         </div>
-                        <div className="ml-3 text-base">{ currencyA?.symbol }</div>
+                        {/*<div className="ml-3 text-base">{ currencyA?.symbol }</div>*/ }
                     </div>
                     <div className="-my-6 transition-all z-0">
                         <div className="flex flex-wrap justify-center w-full px-4">
-                            <div className="p-1.5 rounded-2.5xl bg-light-primary dark:bg-dark-primary">
-                                <div className="p-2 transition-all bg-white rounded-2xl hover:bg-white/80 dark:bg-dark-secondary dark:hover:bg-dark-secondary/80 text-dark-secondary dark:text-light-secondary">
-                                    <PlusIcon width={ 24 } height={ 24 } />
+                            <div className="p-1.5 rounded-2xl bg-light-primary dark:bg-dark-primary">
+                                <div className="p-2 transition-all bg-white rounded-xl hover:bg-white/80 dark:bg-dark-secondary dark:hover:bg-dark-secondary/80 text-dark-secondary dark:text-light-secondary">
+                                    <PlusIcon width={ 18 } height={ 18 } />
                                 </div>
                             </div>
                         </div>
@@ -345,12 +346,12 @@ export default function Remove () {
                     <div className="flex items-center justify-between bg-light-secondary dark:bg-dark-secondary transition-all p-6 rounded-2xl">
                         <div className="flex items-center gap-3">
                             <CurrencyLogo currency={ currencyB } size={ 36 } />
-                            <div className="text-lg">{ parsedAmounts[ Field.CURRENCY_B ]?.toSignificant( 6 ) }</div>
+                            <div className="text-3xl">{ parsedAmounts[ Field.CURRENCY_B ]?.toSignificant( 6 ) }</div>
                         </div>
-                        <div className="ml-3 text-base">{ currencyB?.symbol }</div>
+                        {/*<div className="ml-3 text-base">{ currencyB?.symbol }</div>*/ }
                     </div>
                 </div>
-                <div className="justify-start text-sm opacity-40">
+                <div className="justify-start text-sm text-light-text dark:text-dark-text">
                     { t`Output is estimated. If the price changes by more than ${allowedSlippage.toSignificant(
                         4
                     )}% your transaction will revert.` }
@@ -365,30 +366,21 @@ export default function Remove () {
                 <div className="grid gap-2 p-6 bg-light-secondary dark:bg-dark-secondary transition-all rounded-2xl">
                     { pair && (
                         <div className="flex items-center justify-between cursor-pointer" onClick={ flipPrice }>
-                            <div className="text-sm">{ i18n._( t`Rates` ) }</div>
-                            <div className="flex space-x-2 items-center">
+                            <div className="font-medium">{ i18n._( t`Rates` ) }</div>
+                            <div className="flex space-x-2 items-center font-semibold">
                                 <div className="text-sm font-bold justify-center items-center flex right-align pl-1.5">
                                     { showInverted ? text : textInverted }
                                 </div>
                                 <div>
-                                    <svg
-                                        width="2"
-                                        height="12"
-                                        viewBox="0 0 2 12"
-                                        fill="none"
-                                        xmlns="http://www.w3.org/2000/svg"
-                                        className="ml-0.5"
-                                    >
-                                        <line x1="0.5" x2="0.5" y2="12" stroke="currentColor" />
-                                    </svg>
+                                    |
                                 </div>
-                                <SwitchHorizontalIcon width={ 18 } height={ 18 } />
+                                <SwapIcon width={ 12 } height={ 14 } />
                             </div>
                         </div>
                     ) }
                     <div className="flex items-center justify-between">
-                        <div className="text-sm">{ i18n._( t`${currencyA?.symbol} / ${currencyB?.symbol} Burned` ) }</div>
-                        <div className="text-sm font-bold justify-center items-center flex right-align pl-1.5">
+                        <div className="font-medium">{ i18n._( t`${currencyA?.symbol} / ${currencyB?.symbol} Burned` ) }</div>
+                        <div className="font-semibold justify-center items-center flex right-align pl-1.5">
                             { parsedAmounts[ Field.LIQUIDITY ]?.toSignificant( 6 ) }
                         </div>
                     </div>
@@ -499,56 +491,49 @@ export default function Remove () {
                                 />
                             ) }
                             pendingText={ pendingText }
+                            className="!max-w-lg"
                         />
                         <div className="grid gap-3">
-                            {/* <LiquidityHeader input={currencyA} output={currencyB} /> */ }
+                            { <LiquidityHeader input={ currencyA } output={ currencyB } /> }
 
-                            <div className="grid gap-3">
+                            <div className="">
                                 <PercentInputPanel
                                     value={ innerLiquidityPercentage }
                                     onUserInput={ setInnerLiquidityPercentage }
                                     id="liquidity-percent"
+                                    className='py-6'
                                 />
 
-                                {/* <AutoColumn justify="space-between" className="py-2.5">
-                  <AutoRow justify={'flex-start'} style={{ padding: '0 1rem' }}>
-                    <button className="z-10 -mt-6 -mb-6 rounded-full cursor-default bg-light-primary dark:bg-dark-primary p-2.5 transition-all">
-                      <div className="p-3 rounded-full bg-light-secondary dark:bg-dark-secondary transition-all">
-                        <ArrowDownIcon width="32px" height="32px" />
-                      </div>
-                    </button>
-                  </AutoRow>
-                </AutoColumn> */}
 
+                                <AutoColumn justify="space-between" className="-mt-4 -mb-5 transition-all">
+                                    <div className="flex flex-wrap justify-center w-full px-4">
+                                        <div className="p-1.5 rounded-2xl bg-light-secondary dark:bg-dark-secondary transition-all">
+                                            <div className="p-2 transition-all bg-white rounded-xl hover:bg-white/80 dark:bg-dark-primary dark:hover:bg-dark-primary/80 text-dark-secondary dark:text-light-secondary">
+                                                <ArrowDownIcon width={ 18 } height={ 18 } />
+                                            </div>
+                                        </div>
+                                    </div>
+                                </AutoColumn>
                                 <div
                                     id="remove-liquidity-output"
-                                    className="p-5 rounded text-dark-primary dark:text-light-primary bg-light-primary dark:bg-dark-primary transition-all"
+                                    className="p-5 rounded-2xl text-dark-primary dark:text-light-primary bg-light-primary dark:bg-dark-primary transition-all"
                                 >
                                     <div className="grid gap-3">
                                         <div className="flex w-full justify-between items-center">
-                                            <div className="text-base">You will receive</div>
+                                            <div className="text-base font-medium">You will receive</div>
                                             { chainId && ( oneCurrencyIsWETH || oneCurrencyIsETH ) ? (
-                                                <div className="text-sm">
+                                                <div className="text-base font-semibold">
                                                     { oneCurrencyIsETH ? (
                                                         <Link
                                                             href={ `/remove/${currencyA?.isNative ? WNATIVE_ADDRESS[ chainId ] : currencyIdA}/${currencyB?.isNative ? WNATIVE_ADDRESS[ chainId ] : currencyIdB
                                                                 }` }
                                                         >
-                                                            <a className="flex space-x-2 items-center text-baseline opacity-80 hover:opacity-100 whitespace-nowrap transition-all">
+                                                            <a className="flex space-x-2 items-center text-baseline hover:opacity-80 whitespace-nowrap transition-all">
                                                                 <div>Receive W{ NATIVE[ chainId ].symbol }</div>
                                                                 <div>
-                                                                    <svg
-                                                                        width="2"
-                                                                        height="12"
-                                                                        viewBox="0 0 2 12"
-                                                                        fill="none"
-                                                                        xmlns="http://www.w3.org/2000/svg"
-                                                                        className="ml-0.5"
-                                                                    >
-                                                                        <line x1="0.5" x2="0.5" y2="12" stroke="currentColor" />
-                                                                    </svg>
+                                                                    |
                                                                 </div>
-                                                                <SwitchHorizontalIcon width={ 18 } height={ 18 } />
+                                                                <SwapIcon width={ 12 } height={ 14 } />
                                                             </a>
                                                         </Link>
                                                     ) : oneCurrencyIsWETH ? (
@@ -556,21 +541,12 @@ export default function Remove () {
                                                             href={ `/remove/${currencyA?.equals( WNATIVE[ chainId ] ) ? 'EVMOS' : currencyIdA}/${currencyB?.equals( WNATIVE[ chainId ] ) ? 'EVMOS' : currencyIdB
                                                                 }` }
                                                         >
-                                                            <a className="flex space-x-2 items-center text-baseline opacity-80 hover:opacity-100 whitespace-nowrap transition-all">
+                                                            <a className="flex space-x-2 items-center text-baseline hover:opacity-80 whitespace-nowrap transition-all">
                                                                 <div>Receive { NATIVE[ chainId ].symbol }</div>
                                                                 <div>
-                                                                    <svg
-                                                                        width="2"
-                                                                        height="12"
-                                                                        viewBox="0 0 2 12"
-                                                                        fill="none"
-                                                                        xmlns="http://www.w3.org/2000/svg"
-                                                                        className="ml-0.5"
-                                                                    >
-                                                                        <line x1="0.5" x2="0.5" y2="12" stroke="currentColor" />
-                                                                    </svg>
+                                                                    |
                                                                 </div>
-                                                                <SwitchHorizontalIcon width={ 18 } height={ 18 } />
+                                                                <SwapIcon width={ 12 } height={ 14 } />
                                                             </a>
                                                         </Link>
                                                     ) : null }
@@ -578,18 +554,18 @@ export default function Remove () {
                                             ) : null }
                                         </div>
 
-                                        <div className="flex flex-col space-x-0 space-y-4 md:space-x-4 md:space-y-0 md:flex-row">
-                                            <div className="flex flex-row items-center w-full py-3 pl-5 pr-8 space-x-3 rounded bg-light-secondary dark:bg-dark-secondary transition-all">
+                                        <div className="flex flex-col space-x-0 space-y-4 md:space-x-4 md:space-y-0 md:flex-row font-semibold">
+                                            <div className="flex flex-row items-center w-full py-3 pl-5 pr-8 space-x-3 rounded-md bg-light-secondary dark:bg-dark-secondary transition-all">
                                                 <CurrencyLogo currency={ currencyA } size={ 36 } />
                                                 <AutoColumn>
-                                                    <div className="font-extrabold truncate">{ formattedAmounts[ Field.CURRENCY_A ] || '-' }</div>
+                                                    <div className="truncate">{ formattedAmounts[ Field.CURRENCY_A ] || '-' }</div>
                                                     <div className="text-sm">{ currencyA?.symbol }</div>
                                                 </AutoColumn>
                                             </div>
-                                            <div className="flex flex-row items-center w-full py-3 pl-5 pr-8 space-x-3 rounded bg-light-secondary dark:bg-dark-secondary transition-all">
+                                            <div className="flex flex-row items-center w-full py-3 pl-5 pr-8 space-x-3 rounded-md bg-light-secondary dark:bg-dark-secondary transition-all">
                                                 <CurrencyLogo currency={ currencyB } size={ 36 } />
                                                 <AutoColumn>
-                                                    <div className="font-extrabold truncate">{ formattedAmounts[ Field.CURRENCY_B ] || '-' }</div>
+                                                    <div className="truncate">{ formattedAmounts[ Field.CURRENCY_B ] || '-' }</div>
                                                     <div className="text-sm">{ currencyB?.symbol }</div>
                                                 </AutoColumn>
                                             </div>
@@ -604,7 +580,7 @@ export default function Remove () {
                                 ) : (
                                     <div className="grid grid-cols-2 gap-4">
                                         <ButtonError
-                                            variant="outlined"
+                                            variant="filled"
                                             onClick={ () => {
                                                 setShowConfirm( true )
                                             } }
@@ -635,7 +611,9 @@ export default function Remove () {
                         </div>
                     </div>
 
-                    { pair ? <MinimalPositionCard showUnwrapped={ oneCurrencyIsWETH } pair={ pair } /> : null }
+                    <div className='mt-10'>
+                        { pair ? <MinimalPositionCard showUnwrapped={ oneCurrencyIsWETH } pair={ pair } /> : null }
+                    </div>
                 </div>
             </DoubleGlowShadow>
         </Container>

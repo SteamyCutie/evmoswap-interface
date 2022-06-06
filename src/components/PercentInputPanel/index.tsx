@@ -5,13 +5,14 @@ interface PercentInputPanelProps {
     value: string
     onUserInput: ( value: string ) => void
     id: string
+    className?: string
 }
 
-export default function PercentInputPanel ( { value, onUserInput, id }: PercentInputPanelProps ) {
+export default function PercentInputPanel ( { value, onUserInput, id, className }: PercentInputPanelProps ) {
     return (
         <div
             id={ id }
-            className="p-5 rounded-2xl text-dark-primary dark:text-light-primary bg-light-primary dark:bg-dark-primary transition-all"
+            className={ `p-5 rounded-2xl text-dark-primary dark:text-light-primary bg-light-primary dark:bg-dark-primary transition-all ${className ?? ''}` }
         >
             <div className="grid gap-3">
                 <div className="w-full text-base">Your rewards</div>

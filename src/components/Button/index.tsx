@@ -11,24 +11,24 @@ const SIZE = {
 
 const FILLED = {
     default: 'bg-transparent opacity-90 hover:opacity-100',
-    red: 'bg-red bg-opacity-90 w-full rounded-md text-light-primary hover:bg-opacity-100 disabled:bg-opacity-90',
-    blue: 'bg-blue bg-opacity-90 w-full rounded-md text-light-primary hover:bg-opacity-100 disabled:bg-opacity-90',
+    red: 'bg-red bg-opacity-90 w-full rounded-xl text-light-primary hover:bg-opacity-100 disabled:bg-opacity-90',
+    blue: 'bg-blue bg-opacity-90 w-full rounded-xl text-light-primary hover:bg-opacity-100 disabled:bg-opacity-90',
     'blue-special': 'bg-blue-special bg-opacity-90 w-full text-light-primary hover:bg-opacity-100 disabled:bg-opacity-90',
-    pink: 'bg-gradient-to-r from-pink to-pink w-full rounded-md text-light-primary opacity-90 hover:opacity-100 disabled:bg-opacity-90',
+    pink: 'bg-gradient-to-r from-pink to-pink w-full rounded-xl text-light-primary opacity-90 hover:opacity-100 disabled:bg-opacity-90',
     gray: 'rounded-xl shadow-sm focus:ring-2 focus:ring-offset-2 bg-opacity-90 w-full bg-grey-light dark:bg-light-text text-light hover:bg-opacity-100 focus:ring-offset-dark-700 focus:ring-dark-900 disabled:bg-opacity-90',
-    green: 'bg-green bg-opacity-90 w-full rounded-md text-light-primary hover:bg-opacity-100 disabled:bg-opacity-90',
+    green: 'bg-green bg-opacity-90 w-full rounded-xl text-light-primary hover:bg-opacity-100 disabled:bg-opacity-90',
     gradient:
         'w-full text-light-primary bg-gradient-to-r from-blue-special to-pink-special opacity-100 hover:opacity-80 disabled:bg-opacity-80',
 }
 
 const OUTLINED = {
     default: 'bg-transparent opacity-90 hover:opacity-100',
-    red: 'border border-red bg-opacity-40 outline-red rounded-md text-red opacity-100 hover:opacity-60 disabled:opacity-40 transition-all',
-    blue: 'bg-transparent outline-blue border border-blue rounded-md text-blue',
-    pink: 'bg-pink bg-opacity-20 outline-pink rounded-md text-pink hover:bg-opacity-40 disabled:bg-opacity-20',
-    gray: 'bg-transparent border border-light-text dark:border-dark-text text-light-text dark:text-dark-text rounded-md',
+    red: 'border border-red bg-opacity-40 outline-red rounded-xl text-red opacity-100 hover:opacity-60 disabled:opacity-40 transition-all',
+    blue: 'bg-transparent outline-blue border border-blue rounded-xl text-blue',
+    pink: 'bg-pink bg-opacity-20 outline-pink rounded-xl text-pink hover:bg-opacity-40 disabled:bg-opacity-20',
+    gray: 'bg-transparent border border-light-text/40 dark:border-dark-text/40 text-light-text/40 dark:text-dark-text/40 rounded-xl',
     green:
-        'bg-transparent border border-green-special/80 rounded-md text-green-special hover:border-green-specical disabled:border-green-special/80',
+        'bg-transparent border border-green-special/80 rounded-xl text-green-special hover:border-green-specical disabled:border-green-special/80',
     gradient:
         'border border-transparent border-gradient-r-blue-pink-special-light-primary dark:border-gradient-r-blue-pink-special-dark-primary opacity-100 hover:opacity-60 disabled:bg-opacity-20 text-blue-special transition-all',
 }
@@ -71,8 +71,8 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
                 className={ classNames(
                     VARIANT[ variant ][ color ],
                     variant !== 'empty' && SIZE[ size ],
-                    'rounded-md disabled:cursor-not-allowed focus:outline-none transition-all font-bold',
-                    // 'rounded-md focus:outline-none focus:ring disabled:opacity-50 disabled:cursor-not-allowed font-medium',
+                    'rounded-xl disabled:cursor-not-allowed focus:outline-none transition-all font-bold',
+                    // 'rounded-xl focus:outline-none focus:ring disabled:opacity-50 disabled:cursor-not-allowed font-medium',
                     className
                 ) }
                 { ...rest }
@@ -94,7 +94,7 @@ export const ButtonConfirmed = ( {
         return (
             <Button
                 variant="outlined"
-                color="green"
+                color="gray"
                 size="lg"
                 className={ classNames( disabled && 'cursor-not-allowed' ) }
                 disabled={ disabled }
@@ -102,7 +102,7 @@ export const ButtonConfirmed = ( {
             />
         )
     } else {
-        return <Button color={ disabled ? 'gray' : 'gradient' } variant="outlined" size="lg" disabled={ disabled } { ...rest } />
+        return <Button color={ disabled ? 'gray' : 'gradient' } size="lg" disabled={ disabled } { ...rest } />
     }
 }
 

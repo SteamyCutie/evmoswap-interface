@@ -18,10 +18,10 @@ import { useRouter } from 'next/router'
 import { useTokenBalance } from '../../state/wallet/hooks'
 import { useTotalSupply } from '../../hooks/useTotalSupply'
 import { useCurrency } from 'app/hooks/Tokens'
-import { usePendingReward } from 'app/features/farm/hooks'
 import { EvmoSwap } from 'config/tokens'
 import { useUserInfo } from '../../features/farm/hooks'
 import { getAddress } from '@ethersproject/address'
+import { Divider } from '../Divider/Divider'
 
 interface PositionCardProps {
     pair: Pair
@@ -69,7 +69,7 @@ export function MinimalPositionCard ( { pair, showUnwrapped = false, border }: P
                     <AutoColumn gap={ 'md' }>
                         <div className="text-base font-bold">Your Position</div>
                         <div className="px-6 py-5 rounded-2xl bg-light-primary dark:bg-dark-primary transition-all">
-                            <div className="flex flex-col pb-3 border-b-2 border-light-secondary dark:border-dark-secondary md:flex-row md:justify-between transition-all">
+                            <div className="flex flex-col pb-3 md:flex-row md:justify-between transition-all">
                                 <div className="flex items-center w-auto space-x-4">
                                     <DoubleCurrencyLogo
                                         currency0={ pair.token0 }
@@ -77,21 +77,22 @@ export function MinimalPositionCard ( { pair, showUnwrapped = false, border }: P
                                         size={ 40 }
                                         className="-space-x-2"
                                     />
-                                    <div className="text-lg font-extrabold">
+                                    <div className="text-lg font-semibold">
                                         { currency0.symbol }/{ currency1.symbol }
                                     </div>
                                 </div>
-                                <div className="flex items-center mt-3 space-x-1 text-base md:mt-0">
-                                    <div className="font-extrabold">{ userPoolBalance ? userPoolBalance.toSignificant( 4 ) : '-' } </div>
-                                    <div className="text-sm">Pool Tokens</div>
+                                <div className="flex items-center mt-3 space-x-1 text-base md:mt-0 font-medium">
+                                    <div>{ userPoolBalance ? userPoolBalance.toSignificant( 4 ) : '-' } </div>
+                                    <div>Pool Tokens</div>
                                 </div>
                             </div>
-                            <div className="flex flex-col w-full mt-3 space-y-1 text-sm rounded">
+                            <Divider className='mt-2 mb-4' />
+                            <div className="flex flex-col w-full mt-3 space-y-1 font-semibold rounded">
                                 <div className="flex justify-between">
-                                    <div>{ i18n._( t`Your pool share` ) }</div>
+                                    <div className='font-medium'>{ i18n._( t`Your pool share` ) }</div>
                                     { poolTokenPercentage ? (
                                         <div className="flex space-x-1">
-                                            <div className="font-bold">{ poolTokenPercentage.toFixed( 6 ) }</div>
+                                            <div>{ poolTokenPercentage.toFixed( 6 ) }</div>
                                             <div>%</div>
                                         </div>
                                     ) : (
@@ -102,7 +103,7 @@ export function MinimalPositionCard ( { pair, showUnwrapped = false, border }: P
                                     <div>{ currency0.symbol }:</div>
                                     { token0Deposited ? (
                                         <div className="flex space-x-1">
-                                            <div className="font-bold"> { token0Deposited?.toSignificant( 6 ) }</div>
+                                            <div className="font-medium"> { token0Deposited?.toSignificant( 6 ) }</div>
                                             <div>{ currency0.symbol }</div>
                                         </div>
                                     ) : (
@@ -113,7 +114,7 @@ export function MinimalPositionCard ( { pair, showUnwrapped = false, border }: P
                                     <div>{ currency1.symbol }:</div>
                                     { token1Deposited ? (
                                         <div className="flex space-x-1">
-                                            <div className="font-bold">{ token1Deposited?.toSignificant( 6 ) }</div>
+                                            <div className="font-medium">{ token1Deposited?.toSignificant( 6 ) }</div>
                                             <div>{ currency1.symbol }</div>
                                         </div>
                                     ) : (
@@ -195,6 +196,8 @@ export default function FullPositionCard ( { pair, border, stakedBalance }: Posi
                 </div>
             </Button>
 
+            { showMore && <Divider /> }
+
             <Transition
                 show={ showMore }
                 enter="transition-opacity duration-75"
@@ -204,13 +207,13 @@ export default function FullPositionCard ( { pair, border, stakedBalance }: Posi
                 leaveFrom="opacity-100"
                 leaveTo="opacity-0"
             >
+
                 <div
                     className={ classNames(
-                        `mx-4 py-4 space-y-4 border-t transition-all`,
-                        showMore ? 'border-light-stroke dark:border-dark-stroke' : 'border-opacity-0'
+                        `mx-4 py-4 space-y-4 transition-all`
                     ) }
                 >
-                    <div className="transition-all space-y-2 text-sm">
+                    <div className="transition-all space-y-2 text-sm font-medium">
                         <div className="flex items-center justify-between text-dark-primary dark:text-light-primary transition-all">
                             <div>{ i18n._( t`Your total pool tokens` ) }</div>
                             <div className="font-semibold">{ userPoolBalance ? userPoolBalance.toSignificant( 4 ) : '-' }</div>
@@ -238,7 +241,7 @@ export default function FullPositionCard ( { pair, border, stakedBalance }: Posi
                             { token1Deposited ? (
                                 <div className="flex items-center space-x-2">
                                     <CurrencyLogo size={ 18 } currency={ currency1 } />
-                                    <div className="font-semibold ">{ token1Deposited?.toSignificant( 6 ) }</div>
+                                    <div className="font-semibold">{ token1Deposited?.toSignificant( 6 ) }</div>
                                 </div>
                             ) : (
                                 '-'
@@ -263,7 +266,7 @@ export default function FullPositionCard ( { pair, border, stakedBalance }: Posi
                                 onClick={ () => {
                                     router.push( `/remove/${currencyId( currency0 )}/${currencyId( currency1 )}` )
                                 } }
-                                className="font-extrabold text-sm"
+                                className="font-semibold text-sm"
                             >
                                 { i18n._( t`Remove` ) }
                             </Button>
@@ -273,7 +276,7 @@ export default function FullPositionCard ( { pair, border, stakedBalance }: Posi
                                 onClick={ () => {
                                     router.push( `/add/${currencyId( currency0 )}/${currencyId( currency1 )}` )
                                 } }
-                                className="font-extrabold text-sm"
+                                className="font-semibold text-sm"
                             >
                                 { i18n._( t`Add` ) }
                             </Button>
