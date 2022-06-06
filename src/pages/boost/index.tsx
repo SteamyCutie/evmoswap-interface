@@ -510,9 +510,9 @@ export default function Boostv3 () {
                         <div
                             className={ `h-full px-8 border rounded-2xl border-light-stroke/50 dark:border-dark-stroke/50 bg-light-secondary dark:bg-dark-secondary` }
                         >
-                            <div className="flex flex-row items-center justify-between w-full text-lg py-6 text-high-emphesis font-black text-dark dark:text-light">
+                            <div className="flex flex-row items-center justify-between w-full text-xl py-6 font-semibold text-dark dark:text-light">
                                 <div className="">{ i18n._( t`Staking & Lock ${token.symbol}` ) }</div>
-                                <div>
+                                <div className="font-bold">
                                     { i18n._( t`APR` ) } { formatPercent( APR ) }
                                 </div>
                             </div>
@@ -577,7 +577,7 @@ export default function Boostv3 () {
 
                                             {/** input */ }
                                             { ( activeTab === 0 || !lockAmount?.greaterThan( ZERO ) ) && (
-                                                <RowBetween className="mt-8 text-dark dark:text-light font-semibold">
+                                                <RowBetween className="mt-8 text-dark dark:text-light font-medium">
                                                     <div>{ i18n._( t`Your ${token.symbol} Balance` ) }</div>
                                                     <div>
                                                         { balance?.toFixed( 4 ) } { balance?.currency?.symbol }
@@ -619,7 +619,7 @@ export default function Boostv3 () {
                                                                 disabled={ maxedLockedPeriod }
                                                                 className={ classNames(
                                                                     'w-auto mb-2',
-                                                                    '!rounded-md text-dark dark:text-light font-bold',
+                                                                    '!rounded-md text-dark dark:text-light !font-medium',
                                                                     lockPeriod.week === period.week && !week ? '' : 'capitalize',
                                                                     ( lockPeriod.week === period.week ||
                                                                         ( maxedLockedPeriod && period.week === MAX_WEEK ) ) &&
@@ -636,12 +636,12 @@ export default function Boostv3 () {
                                                             value={ week }
                                                             onUserInput={ handleWeek }
                                                             className={ classNames(
-                                                                'flex-none h-auto min-h-[2.5rem] h-auto px-3 md:px-5 ml-2 mb-2 rounded-md !text-sm font-bold caret-high-emphesis',
+                                                                'flex-none h-auto min-h-[2.5rem] h-auto px-3 md:px-5 ml-2 mb-2 rounded-md !text-sm font-medium caret-high-emphesis text-center',
                                                                 inputError ? 'text-red' : '',
                                                                 week
                                                                     ? 'bg-blue-special text-white !border-none !text-lg'
                                                                     : 'bg-white dark:bg-dark text-secondary',
-                                                                '!border !border-solid border-grey-600 dark:border-grey-400'
+                                                                '!border !border-solid border-light-border/90 dark:border-dark-border/90'
                                                             ) }
                                                             placeholder={ i18n._( t`Custom week` ) }
                                                             title={ i18n._( t`Custom lock period in weeks` ) }
@@ -798,10 +798,10 @@ export default function Boostv3 () {
 
                     {/** col 2 */ }
                     <div className="flex flex-col w-full md:w-[40%] p-4 justify-between border rounded-2xl border-light-stroke/50 dark:border-dark-stroke/50 bg-light-secondary dark:bg-dark-secondary">
-                        <h3 className="text-medium font-bold text-dark dark:text-light">
+                        <h3 className="text-medium font-semibold text-dark dark:text-light">
                             { i18n._( t`Locking demonstrates a commitment to the long-term vision of EvmoSwap` ) }
                         </h3>
-                        <p className="my-4 text-base leading-6 text-secondary dark:text-secondary-dark font-semibold">
+                        <p className="my-4 text-base leading-6 text-secondary dark:text-secondary-dark font-normal">
                             { i18n._(
                                 t`Lock your ${token.symbol} and get Boost Power to increase your Yield farm earnings and participate in protocol Governance`
                             ) }
@@ -811,7 +811,7 @@ export default function Boostv3 () {
                             <div className="bg-white dark:bg-dark px-4 py-6 h-full rounded-2xl mt-4 mb-4 space-y-4  text-secondary dark:text-secondary-dark text-sm grow">
                                 { OUTLINES &&
                                     OUTLINES.map( ( outline, index ) => (
-                                        <div className="flex items-center space-x-2 text-dark dark:text-light font-semibold" key={ index }>
+                                        <div className="flex items-center space-x-2 text-dark dark:text-light font-medium" key={ index }>
                                             <div className="h-5 w-5 p-1 bg-blue-special rounded-md text-white">
                                                 <CheckIcon />
                                             </div>
@@ -886,10 +886,10 @@ const StatButton = ( props: StatButtonProps ) => {
     return (
         <div className="bg-white dark:bg-dark hover:bg-darker px-0 py-4 justify-evenly h-auto rounded-2xl">
             <div className="flex flex-col space-y-2 text-center items-center">
-                <div className="px-1 text-dark dark:text-light text-xl md:text-lg xl:text-xl md:truncate">
+                <div className="px-1 text-dark dark:text-light text-xl xl:text-2xl md:truncate font-semibold">
                     { value }
                 </div>
-                <div className="px-1 text-primary text-sm md:truncate text-secondary dark:text-secondary-dark">{ title }</div>
+                <div className="px-1 text-primary text-sm md:truncate text-secondary dark:text-secondary-dark font-medium">{ title }</div>
             </div>
         </div>
     )
