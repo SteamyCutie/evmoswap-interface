@@ -42,6 +42,8 @@ interface CurrencyInputPanelProps {
     customBalanceText?: string
     showSearch?: boolean
     currencyList?: string[]
+    showCurrencyValue?: boolean
+    className?: string
 }
 
 export default function CurrencyInputPanel ( {
@@ -67,6 +69,8 @@ export default function CurrencyInputPanel ( {
     allowManageTokenList = true,
     showSearch = true,
     currencyList = null,
+    showCurrencyValue = true,
+    className = '',
 }: CurrencyInputPanelProps ) {
     const { i18n } = useLingui()
     const [ modalOpen, setModalOpen ] = useState( false )
@@ -87,7 +91,8 @@ export default function CurrencyInputPanel ( {
             id={ id }
             className={ classNames(
                 hideInput ? 'p-4' : 'p-5',
-                'rounded-xl bg-light-primary dark:bg-dark-primary transition-all'
+                'rounded-xl bg-light-primary dark:bg-dark-primary transition-all',
+                className
             ) }
         >
             <div className="grid w-full gap-3">
@@ -157,7 +162,7 @@ export default function CurrencyInputPanel ( {
                                 ) }
                             </div>
                         </button>
-                        { currencyPrice && (
+                        { Boolean( showCurrencyValue ) && currencyPrice && (
                             <div className="text-light-text dark:text-dark-text transition-all whitespace-nowrap">
                                 { i18n._( t`~ $` ) } { Number( currencyPrice?.valueInUSD?.toFixed( 18 ) ).toFixed( 4 ) }
                             </div>

@@ -59,10 +59,11 @@ export default function Modal ( {
                                 {/* <div className="w-full p-px rounded bg-gradient-to-r from-blue to-red"> */ }
                                 <div className={ classNames(
                                     "w-full p-px rounded-2.5xl bg-light-primary dark:bg-dark-primary border-2 border-light-stroke dark:border-dark-stroke transition-all",
+                                    "text-dark-primary dark:text-light-primary",
                                     className ?? '',
                                 ) }
                                 >
-                                    <div className="flex flex-col w-full h-full p-6 overflow-y-hidden rounded-2.5xl bg-light-primary dark:bg-dark-primary text-dark-primary dark:text-light-primary transition-all">
+                                    <div className="flex flex-col w-full h-full p-6 overflow-y-hidden rounded-2.5xl transition-all">
                                         <div style={ { minHeight: `${minHeight}vh`, maxHeight: `${maxHeight}vh` } }>{ children }</div>
                                     </div>
                                 </div>
