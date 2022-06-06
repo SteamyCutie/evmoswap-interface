@@ -2,11 +2,11 @@ import Button from 'app/components/Button'
 import Link from 'next/link'
 
 const GEmoFlow = () => {
-    const styleCell = 'p-2 md:p-4 rounded-xl bg-dark-900 items-center text-center grid align-middle text-sm md:text-sm'
+    const styleCell = 'p-2 md:p-4 rounded-xl bg-light dark:bg-dark items-center text-center grid align-middle text-sm md:text-sm'
     const styleCard = `${styleCell} grid gap-1 items-center justify-center justify-items-center w-full text-center text-sm md:text-base`
 
     return (
-        <div className="grid items-start justify-center grid-cols-1 gap-2 p-4 bg-cover md:p-6 bg-dark-900/60 rounded-2xl">
+        <div className="grid items-start justify-center grid-cols-1 gap-2 p-4 bg-cover md:p-6 bg-light dark:bg-dark/60 rounded-2xl">
             <div className="m-4 text-2xl font-extrabold text-center uppercase">Gem EMO Breakdown</div>
             <div className="grid grid-cols-12 gap-1 md:gap-2">
                 <div className="col-span-2"></div>

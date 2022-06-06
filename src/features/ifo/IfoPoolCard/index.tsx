@@ -244,7 +244,7 @@ const IfoPoolCard: React.FC<IfoCardProps> = ( { poolId, ifo, publicIfoData, wall
     }
 
     return (
-        <div className="space-y-6 rounded-3xl bg-dark-800">
+        <div className="space-y-6 rounded-3xl bg-light-secondary dark:bg-dark-secondary">
             {/* <div className="flex flex-row justify-between p-6 rounded-t item-center bg-dark-600"> */ }
             <div
                 className={ `flex flex-row justify-between px-6 py-4 items-center rounded-t-3xl item-center bg-gradient-to-b ${poolId === PoolIds.poolBasic ? 'from-[#6c4999] to-[#6d4db2]' : 'from-[#00707f] to-[#19778c]'

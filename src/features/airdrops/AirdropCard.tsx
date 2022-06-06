@@ -73,8 +73,8 @@ export default function AirdropCard ( { airdrop, evmoPrice, className = '' }: { 
 
     return (
 
-        <div className={ classNames( 'flex flex-col  bg-dark-900 bg-opacity-80 rounded-b', className ) }>
-            <div className="flex flex-row items-center justify-between w-full p-6 bg-dark-800 text-lg rounded-t text-high-emphesis font-black">
+        <div className={ classNames( 'flex flex-col  bg-light dark:bg-dark bg-opacity-80 rounded-b', className ) }>
+            <div className="flex flex-row items-center justify-between w-full p-6 bg-light-secondary dark:bg-dark-secondary text-lg rounded-t text-high-emphesis font-black">
                 { i18n._( t`${airdrop.title}` ) }
             </div>
             <div className="p-6 text-white h-full">

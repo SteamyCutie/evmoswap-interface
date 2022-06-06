@@ -77,7 +77,7 @@ export default function LPTokenSelectPanel ( {
     }, [ setModalOpen ] )
 
     return (
-        <div id={ id } className={ classNames( hideInput ? 'p-4' : 'p-5', 'rounded bg-dark-800' ) }>
+        <div id={ id } className={ classNames( hideInput ? 'p-4' : 'p-5', 'rounded bg-light-secondary dark:bg-dark-secondary' ) }>
             <div className="flex flex-col justify-between space-y-3 sm:space-y-0 sm:flex-row">
                 <div className={ classNames( 'w-full sm:w-2/5' ) }>
                     <button

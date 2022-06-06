@@ -128,7 +128,7 @@ const IfoCardData: React.FC<Props> = ( { ifo } ) => {
                     </div>
                     <div className="grid items-center gap-4 mx-4 mt-0 mb-6">
                         <div className="grid w-full grid-cols-1 gap-4 md:grid-cols-2">
-                            <div className="space-y-6 rounded-3xl bg-dark-800">
+                            <div className="space-y-6 rounded-3xl bg-light-secondary dark:bg-dark-secondary">
                                 <div className="flex flex-row justify-between px-6 py-4 items-center rounded-t-3xl item-center bg-gradient-to-b from-[#6c4999] to-[#6d4db2]">
                                     <div className="flex flex-row items-center text-2xl font-bold text-high-emphesis">
                                         Base Sale
@@ -200,7 +200,7 @@ const IfoCardData: React.FC<Props> = ( { ifo } ) => {
                                 </div>
                             </div>
 
-                            <div className="space-y-6 rounded-3xl bg-dark-800">
+                            <div className="space-y-6 rounded-3xl bg-light-secondary dark:bg-dark-secondary">
                                 <div className="flex flex-row justify-between px-6 py-4 items-center rounded-t-3xl item-center bg-gradient-to-b from-[#00707f] to-[#19778c]">
                                     <div className="flex flex-row items-center text-2xl font-bold text-high-emphesis">
                                         Unlimited Sale

@@ -36,7 +36,7 @@ import ROICalculatorModal from 'app/components/ROICalculatorModal'
 const INPUT_CHAR_LIMIT = 18
 
 const tabStyle = 'flex justify-center items-center h-full w-full rounded-lg cursor-pointer text-sm md:text-base'
-const activeTabStyle = `${tabStyle} text-high-emphesis font-bold bg-dark-900`
+const activeTabStyle = `${tabStyle} text-high-emphesis font-bold bg-light dark:bg-dark`
 const inactiveTabStyle = `${tabStyle} text-secondary`
 
 const buttonStyle =
@@ -169,7 +169,7 @@ export default function AutoPoolCardDetails () {
     }
 
     return (
-        <div className="grid w-full grid-cols-1 gap-4 p-4 rounded-b-lg rounded-t-none sm:grid-cols-3 bg-dark-800">
+        <div className="grid w-full grid-cols-1 gap-4 p-4 rounded-b-lg rounded-t-none sm:grid-cols-3 bg-light-secondary dark:bg-dark-secondary">
             <div className="col-span-2 text-center md:col-span-1">
                 { account && (
                     <div className="flex flex-row justify-between">

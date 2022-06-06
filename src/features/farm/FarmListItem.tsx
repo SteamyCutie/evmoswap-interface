@@ -16,11 +16,11 @@ interface FarmListItem {
     onClick ( x: ReactNode ): void
 }
 
-export const TABLE_TBODY_TR_CLASSNAME = 'hover:bg-dark-900/40 hover:cursor-pointer'
+export const TABLE_TBODY_TR_CLASSNAME = 'hover:bg-light dark:bg-dark/40 hover:cursor-pointer'
 // @ts-ignore TYPE NEEDS FIXING
 export const TABLE_TBODY_TD_CLASSNAME = ( i, length ) =>
     classNames(
-        'py-3 border-t border-dark-900 flex items-center',
+        'py-3 border-t border-light-border dark:border-dark-border flex items-center',
         i === 0 ? 'pl-4 justify-start' : 'justify-end',
         i === length - 1 ? 'pr-4' : ''
     )

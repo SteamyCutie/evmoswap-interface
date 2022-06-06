@@ -3,10 +3,10 @@ import Link from 'next/link'
 
 const GEmoUtility = () => {
     const styleCard =
-        'grid p-2 md:p-4 rounded-xl bg-dark-900 gap-1 items-center justify-center justify-items-center w-full'
+        'grid p-2 md:p-4 rounded-xl bg-light dark:bg-dark gap-1 items-center justify-center justify-items-center w-full'
     const styleIllustr = `${styleCard} gap-4 p-6 px-4 md:p-8`
     return (
-        <div className="grid items-start justify-center grid-cols-1 gap-4 p-4 bg-cover md:p-6 bg-dark-900/60 rounded-2xl">
+        <div className="grid items-start justify-center grid-cols-1 gap-4 p-4 bg-cover md:p-6 bg-light dark:bg-dark/60 rounded-2xl">
             <div className="m-3 text-2xl font-extrabold text-center">Gem EMO Utility</div>
             <div className="grid gap-4 grid-cols-2 md:grid-cols-4">
                 <div className="grid col-span-2 gap-3">
@@ -14,7 +14,7 @@ const GEmoUtility = () => {
                         <div className="text-xl font-extrabold text-center">Option 1</div>
                         <div className="flex items-center justify-center text-sm font-extrabold text-yellow">Hold in Wallet</div>
                     </div>
-                    <div className="grid grid-cols-9 justify-center items-center bg-dark-900 rounded-xl px-4 md:px-8">
+                    <div className="grid grid-cols-9 justify-center items-center bg-light dark:bg-dark rounded-xl px-4 md:px-8">
                         <div className={ `${styleIllustr} col-span-4` }>
                             <svg
                                 xmlns="http://www.w3.org/2000/svg"

@@ -46,7 +46,7 @@ const AmountInput = ( { state }: { state: MigrateState } ) => {
     if ( !state.selectedLPToken ) {
         return (
             <>
-                <div className="p-3 text-center rounded cursor-not-allowed bg-dark-800">
+                <div className="p-3 text-center rounded cursor-not-allowed bg-light-secondary dark:bg-dark-secondary">
                     <Typography variant="lg" className="text-secondary">
                         { state.lpTokens.length === 0 ? 'No LP tokens found' : 'Select an LP Token' }
                     </Typography>
@@ -94,7 +94,7 @@ const LPTokenSelect = ( { lpToken, onToggle, isSelected, updating, exchange }: P
     return (
         <div
             key={ lpToken.address }
-            className="flex items-center justify-between px-3 py-5 rounded cursor-pointer bg-dark-800 hover:bg-dark-700"
+            className="flex items-center justify-between px-3 py-5 rounded cursor-pointer bg-light-secondary dark:bg-dark-secondary hover:bg-dark-700"
             onClick={ () => onToggle( lpToken ) }
         >
             <div className="flex items-center space-x-3">
@@ -264,9 +264,9 @@ export default function Migrate () {
             </div>
 
             { !account ? (
-                <Web3Connect className="w-full !bg-dark-900 bg-gradient-to-r from-blue/80 hover:from-blue to-purple/80 hover:to-purple text-white h-[38px]" />
+                <Web3Connect className="w-full !bg-light dark:bg-dark bg-gradient-to-r from-blue/80 hover:from-blue to-purple/80 hover:to-purple text-white h-[38px]" />
             ) : (
-                <div className="p-4 space-y-4 rounded bg-dark-900">
+                <div className="p-4 space-y-4 rounded bg-light dark:bg-dark">
                     { state.loading ? (
                         <Typography variant="lg" className="p-4 text-center text-primary">
                             <Dots>{ i18n._( t`Loading your ${exchange} liquidity positions` ) }</Dots>

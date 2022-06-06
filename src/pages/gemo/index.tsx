@@ -24,7 +24,7 @@ export default function GEmo (): JSX.Element {
             <div className="col-span-4 space-y-6 lg:col-span-3">
                 {/* Hero */ }
                 <div
-                    className="flex-row items-center justify-between w-full p-8 space-y-2 bg-center bg-no-repeat bg-cover md:p-16 rounded-2xl md:flex bg-dark-900"
+                    className="flex-row items-center justify-between w-full p-8 space-y-2 bg-center bg-no-repeat bg-cover md:p-16 rounded-2xl md:flex bg-light dark:bg-dark"
                     style={ { backgroundImage: "url('/images/gemo/gnana-night.png')" } }
                 >
                     <div className="gap-8 md:block">

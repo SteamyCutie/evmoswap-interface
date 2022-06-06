@@ -23,10 +23,10 @@ export const IfoFinishedCard = ( {
 
     return (
         <div className="flex flex-row justify-between gap-4">
-            <div className="w-full rounded bg-dark-900">
+            <div className="w-full rounded bg-light dark:bg-dark">
                 <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
                     {/* Base sale */ }
-                    <div className="space-y-6 rounded-lg md:mt-4 md:mb-4 md:ml-4 bg-dark-800">
+                    <div className="space-y-6 rounded-lg md:mt-4 md:mb-4 md:ml-4 bg-light-secondary dark:bg-dark-secondary">
                         <div className="flex flex-row justify-between p-6 rounded-t item-center bg-dark-600">
                             <div className="flex flex-row items-center text-2xl font-bold text-high-emphesis">
                                 Base Sale
@@ -94,7 +94,7 @@ export const IfoFinishedCard = ( {
                     </div>
 
                     {/* Unlimited Sale */ }
-                    <div className="space-y-6 rounded-lg md:mt-4 md:mb-4 bg-dark-800">
+                    <div className="space-y-6 rounded-lg md:mt-4 md:mb-4 bg-light-secondary dark:bg-dark-secondary">
                         <div className="flex flex-row justify-between p-6 rounded-t item-center bg-dark-600">
                             <div className="flex flex-row items-center text-2xl font-bold text-high-emphesis">
                                 Unlimited Sale
@@ -170,7 +170,7 @@ export const IfoFinishedCard = ( {
                     </div>
 
                     {/* ifo info */ }
-                    <div className="relative flex flex-col px-4 pt-8 space-y-8 rounded-r bg-dark-800">
+                    <div className="relative flex flex-col px-4 pt-8 space-y-8 rounded-r bg-light-secondary dark:bg-dark-secondary">
                         <div className="absolute inset-0 opacity-50 filter saturate-0 ">
                             <Image src="/images/ifo/ifo-bg.png" className="object-cover w-full" layout="fill" alt="ifo-bg" />
                         </div>

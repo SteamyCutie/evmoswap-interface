@@ -574,7 +574,7 @@ const Swap = () => {
           )} */}
                     {/*
           {trade && (
-            <div className="p-5 rounded bg-dark-800">
+            <div className="p-5 rounded bg-light-secondary dark:bg-dark-secondary">
               <AdvancedSwapDetails trade={trade} allowedSlippage={allowedSlippage} />
             </div>
           )} */}

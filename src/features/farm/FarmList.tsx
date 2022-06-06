@@ -16,7 +16,7 @@ import { FarmType } from 'app/constants/farms'
 import FarmListItemDetailsStable from './FarmListItemDetailsStable'
 
 export const TABLE_WRAPPER_DIV_CLASSNAME =
-    'overflow-x-auto border border-dark-900 rounded shadow-md bg-[rgba(0,0,0,0.12)]'
+    'overflow-x-auto border border-light-border dark:border-dark-border rounded shadow-md bg-light dark:bg-dark'
 export const TABLE_TR_TH_CLASSNAME = ( i, length ) =>
     classNames( 'text-secondary text-sm py-3', i === 0 ? 'pl-4 text-left' : 'text-right', i === length - 1 ? 'pr-4' : '' )
 

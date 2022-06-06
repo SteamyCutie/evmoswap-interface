@@ -14,7 +14,7 @@ import SearchPools from 'app/components/SearchPools'
 import Head from 'next/head'
 
 const tabStyle = 'flex justify-center items-center h-full w-full rounded-lg cursor-pointer text-sm md:text-base'
-const activeTabStyle = `${tabStyle} text-high-emphasis font-bold bg-dark-900`
+const activeTabStyle = `${tabStyle} text-high-emphasis font-bold bg-light dark:bg-dark`
 const inactiveTabStyle = `${tabStyle} text-white`
 
 const FILTER_TYPES = [
@@ -96,7 +96,7 @@ export default function Farms (): JSX.Element {
                 <div className="flex flex-col w-full gap-6">
                     <div className="flex flex-col items-center justify-between gap-4 sm:flex-row">
                         {/* Select Tab */ }
-                        <div className="flex m-auto mb-2 rounded h-11 md:m-0 md:w-8/12 bg-dark-800">
+                        <div className="flex m-auto mb-2 rounded h-11 md:m-0 md:w-8/12 bg-light-secondary dark:bg-dark-secondary">
                             {
                                 FILTER_TYPES.map( ( filter, index ) => (
                                     <div className="w-3/12 h-full p-1" onClick={ () => setSelected( filter.key ) } key={ index }>

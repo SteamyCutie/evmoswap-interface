@@ -6,7 +6,7 @@ import { XIcon } from '@heroicons/react/outline'
 import { useRemovePopup } from '../../state/application/hooks'
 
 const AnimatedFader = ( { duration } ) => (
-    <div className="h-[3px] bg-dark-800 w-full">
+    <div className="h-[3px] bg-light-secondary dark:bg-dark-secondary w-full">
         <style jsx>{ `
       .animation {
         animation-duration: ${duration}ms;

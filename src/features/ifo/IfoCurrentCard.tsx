@@ -110,7 +110,7 @@ export const IfoCurrentCard = ( {
                 </Button>
             </div>
             { isOpen && (
-                <div className="w-full rounded rounded-t-none bg-dark-900">
+                <div className="w-full rounded rounded-t-none bg-light dark:bg-dark">
                     { publicIfoData.status === 'finished' && (
                         <div className="flex-row items-center w-full overflow-hidden">
                             <div className="flex rounded-[50%] w-[100%] translate-y-[-50%] scale-150 bg-[#372f47] h-[100px] justify-center items-end pb-4 md:pb-3 text-sm md:text-[16px] font-extrabold text-white/70">
@@ -120,7 +120,7 @@ export const IfoCurrentCard = ( {
                     ) }
                     { publicIfoData.status === 'coming_soon' && (
                         <div className="flex-row items-center w-full overflow-hidden">
-                            <div className="flex rounded-[50%] w-[100%] translate-y-[-50%] scale-150 bg-dark-800 h-[100px] justify-center items-end pb-4 md:pb-3 text-sm md:text-[16px] font-extrabold text-white/70">
+                            <div className="flex rounded-[50%] w-[100%] translate-y-[-50%] scale-150 bg-light-secondary dark:bg-dark-secondary h-[100px] justify-center items-end pb-4 md:pb-3 text-sm md:text-[16px] font-extrabold text-white/70">
                                 { Math.floor( startTime / 1000 / 3600 / 24 ) } days { Math.floor( ( ( startTime / 1000 ) % ( 3600 * 24 ) ) / 3600 ) }{ ' ' }
                                 hours { Math.floor( ( ( startTime / 1000 ) % 3600 ) / 60 ) } minutes { Math.floor( ( startTime / 1000 ) % 60 ) }{ ' ' }
                                 seconds
@@ -163,7 +163,7 @@ export const IfoCurrentCard = ( {
                         {/* ifo info */ }
 
                         <div
-                            className="flex-col hidden px-4 space-y-8 rounded-r pt-14 bg-dark-800"
+                            className="flex-col hidden px-4 space-y-8 rounded-r pt-14 bg-light-secondary dark:bg-dark-secondary"
                             { ...{
                                 style: {
                                     backgroundImage: `url("/images/ifo/${ifo.id}-bg.png")`,

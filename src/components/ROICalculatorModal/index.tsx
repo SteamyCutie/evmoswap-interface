@@ -94,13 +94,13 @@ const ROICalculatorModal: React.FC<RoiCalculatorModalProps> = ( {
                             </div>
                         ) }
                     </div>
-                    <div className="flex items-center justify-between mt-1 mb-2 rounded-md bg-dark-800">
+                    <div className="flex items-center justify-between mt-1 mb-2 rounded-md bg-light-secondary dark:bg-dark-secondary">
                         <div className="w-11/12">
                             <div className="flex items-end w-full p-3 space-x-3 focus:bg-dark-700">
                                 <Input.Numeric
                                     id="token-amount-input"
                                     value={ editingCurrency === 'usd' ? usdValue : lpValue }
-                                    className="h-6 bg-dark-800 text-blue"
+                                    className="h-6 bg-light-secondary dark:bg-dark-secondary text-blue"
                                     onUserInput={ ( val ) => {
                                         editingCurrency === 'usd'
                                             ? ( setUsdValue( val ), setLpValue( ( Number( val ) / lpPrice ).toString() ) )
@@ -248,7 +248,7 @@ const ROICalculatorModal: React.FC<RoiCalculatorModalProps> = ( {
                         </>
                     ) }
                     <ArrowDownIcon className="h-6 mx-auto mb-3" />
-                    <div className="p-4 space-y-1 rounded-lg bg-dark-800">
+                    <div className="p-4 space-y-1 rounded-lg bg-light-secondary dark:bg-dark-secondary">
                         <Typography variant="sm" className="text-cyan-blue">
                             { i18n._( t`ROI AT CURRENT RATES` ) }
                         </Typography>
@@ -264,7 +264,7 @@ const ROICalculatorModal: React.FC<RoiCalculatorModalProps> = ( {
                     </div>
                 </div>
 
-                <div className="align-middle bg-dark-800">
+                <div className="align-middle bg-light-secondary dark:bg-dark-secondary">
                     <div className="flex items-center justify-center mx-auto">
                         <Typography variant="lg" className="text-cyan-blue" onClick={ () => setIsExpand( !isExpand ) }>
                             { isExpand ? i18n._( t`Hide ` ) : i18n._( t`Details ` ) }

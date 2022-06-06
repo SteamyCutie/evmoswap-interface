@@ -288,7 +288,7 @@ export default function WalletModal ( {
                             {/* {['Clover', 'Telos', 'Optimism'].map((network, i) => (
           <button
             key={i}
-            className="flex items-center w-full col-span-1 p-3 space-x-3 rounded cursor-pointer bg-dark-800 hover:bg-dark-700"
+            className="flex items-center w-full col-span-1 p-3 space-x-3 rounded cursor-pointer bg-light-secondary dark:bg-dark-secondary hover:bg-dark-700"
           >
             <Image
               src="/images/tokens/unknown.png"

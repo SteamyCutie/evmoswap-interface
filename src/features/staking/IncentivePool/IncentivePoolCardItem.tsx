@@ -76,7 +76,7 @@ const IncentivePoolCardItem = ( { pool, ...rest } ) => {
         //       <Disclosure.Button
         //         className={classNames(
         //           open && 'rounded-b-none',
-        //           'w-full px-4 py-6 text-left rounded cursor-pointer select-none bg-dark-900 text-primary text-sm md:text-lg'
+        //           'w-full px-4 py-6 text-left rounded cursor-pointer select-none bg-light dark:bg-dark text-primary text-sm md:text-lg'
         //         )}
         //       >
         //         <div className="flex gap-x-2">
@@ -162,7 +162,7 @@ const IncentivePoolCardItem = ( { pool, ...rest } ) => {
         //     </div>
         //   )}
         // </Disclosure>
-        <div className="grid select-none bg-dark-900 text-[#C3C6C7] rounded text-left text-sm">
+        <div className="grid select-none bg-light dark:bg-dark text-[#C3C6C7] rounded text-left text-sm">
             <div className="grid p-6 pb-3 gap-y-2">
                 <div className="flex items-center justify-between">
                     <p>
@@ -224,7 +224,7 @@ const IncentivePoolCardItem = ( { pool, ...rest } ) => {
             </div>
             <hr className="w-full border-[#303336]" />
             <div className="grid p-6 py-3 gap-y-2 mb-1">
-                <div className="flex m-auto mb-2 rounded md:m-0 w-full h-12 bg-dark-800">
+                <div className="flex m-auto mb-2 rounded md:m-0 w-full h-12 bg-light-secondary dark:bg-dark-secondary">
                     <div className="w-6/12 h-full p-1" onClick={ () => setActiveTab( 0 ) }>
                         <div className={ activeTab === 0 ? activeTabStyle : inactiveTabStyle }>
                             <p>Staking</p>

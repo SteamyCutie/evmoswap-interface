@@ -177,7 +177,7 @@ export default function ManualPoolCardDetails () {
     }
 
     return (
-        <div className="grid grid-cols-1 gap-4 p-4 rounded-b-lg rounded-t-none sm:grid-cols-2 lg:grid-cols-3 bg-dark-800">
+        <div className="grid grid-cols-1 gap-4 p-4 rounded-b-lg rounded-t-none sm:grid-cols-2 lg:grid-cols-3 bg-light-secondary dark:bg-dark-secondary">
             <div className="col-span-2 text-center md:col-span-1">
                 { account && (
                     <div className="flex flex-row justify-between">

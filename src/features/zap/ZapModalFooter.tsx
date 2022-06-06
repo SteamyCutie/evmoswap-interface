@@ -7,19 +7,19 @@ import { t } from '@lingui/macro'
 import { useLingui } from '@lingui/react'
 import { ZapTrade } from 'app/state/zap/hooks'
 
-export default function ZapModalFooter({
-  trade,
-  onConfirm,
-  zapErrorMessage,
+export default function ZapModalFooter ( {
+    trade,
+    onConfirm,
+    zapErrorMessage,
 }: {
-  trade: ZapTrade
-  onConfirm: () => void
-  zapErrorMessage: ReactNode | undefined
-}) {
-  const { i18n } = useLingui()
-  return (
-    <div className="p-6 mt-0 -m-6 rounded bg-dark-800">
-      {/* <div className="grid gap-1 pb-6">
+    trade: ZapTrade
+    onConfirm: () => void
+    zapErrorMessage: ReactNode | undefined
+} ) {
+    const { i18n } = useLingui()
+    return (
+        <div className="p-6 mt-0 -m-6 rounded bg-light-secondary dark:bg-dark-secondary">
+            {/* <div className="grid gap-1 pb-6">
         <div className="flex items-center justify-between">
           <div className="text-sm text-secondary">{i18n._(t`Price`)}</div>
           <div className="text-sm font-bold justify-center items-center flex right-align pl-1.5 text-high-emphesis">
@@ -90,11 +90,11 @@ export default function ZapModalFooter({
         )}
       </div> */}
 
-      <ButtonError onClick={onConfirm} id="confirm-zap-or-send" className="text-xl font-semibold">
-        {i18n._(t`Confirm Zap`)}
-      </ButtonError>
+            <ButtonError onClick={ onConfirm } id="confirm-zap-or-send" className="text-xl font-semibold">
+                { i18n._( t`Confirm Zap` ) }
+            </ButtonError>
 
-      {zapErrorMessage ? <ZapCallbackError error={zapErrorMessage} /> : null}
-    </div>
-  )
+            { zapErrorMessage ? <ZapCallbackError error={ zapErrorMessage } /> : null }
+        </div>
+    )
 }

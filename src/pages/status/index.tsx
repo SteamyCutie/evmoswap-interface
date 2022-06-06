@@ -9,16 +9,16 @@ import { getChainsStatus } from '../../services/covalent/fetchers'
 import { useChainsStatus } from '../../services/covalent/hooks'
 import { useState } from 'react'
 
-export default function Status({ initialData }) {
-  //   const res = useChainsStatus({ initialData })
-  //   const { data } = res.data
-  return (
-    <Container id="status-page" className="py-4 md:py-8 lg:py-12" maxWidth="full">
-      <Head>
-        <title>Status | EvmoSwap</title>
-        <meta key="description" name="description" content="Sushi Status..." />
-      </Head>
-      {/* <div className="w-full max-w-6xl mx-auto">
+export default function Status ( { initialData } ) {
+    //   const res = useChainsStatus({ initialData })
+    //   const { data } = res.data
+    return (
+        <Container id="status-page" className="py-4 md:py-8 lg:py-12" maxWidth="full">
+            <Head>
+                <title>Status | EvmoSwap</title>
+                <meta key="description" name="description" content="Sushi Status..." />
+            </Head>
+            {/* <div className="w-full max-w-6xl mx-auto">
                 <Typography component="h1" variant="h1" className="w-full mb-4">
                     Status
                 </Typography>
@@ -51,7 +51,7 @@ export default function Status({ initialData }) {
               {data.items.map((item) => {
                 const words = item.name.split('-')
                 return (
-                  <div className="p-4 rounded bg-dark-900 text-primary">
+                  <div className="p-4 rounded bg-light dark:bg-dark text-primary">
                     <Typography variant="h3">{words.map((word) => `${capitalize(word)} `)}</Typography>
                     <Typography variant="sm" className="text-secondary">
                       Chain Id: {item['chain_id']}
@@ -76,9 +76,9 @@ export default function Status({ initialData }) {
         </Tab.Group>
             </div>*/}
 
-      {/* <pre>{JSON.stringify(data, null, 2)}</pre> */}
-    </Container>
-  )
+            {/* <pre>{JSON.stringify(data, null, 2)}</pre> */ }
+        </Container>
+    )
 }
 
 // export async function getStaticProps() {

@@ -80,7 +80,7 @@ const IncentivePoolItemDetail = ( {
             leaveFrom="opacity-100"
             leaveTo="opacity-0"
         >
-            <Disclosure.Panel className="flex flex-col w-full border-t-0 rounded rounded-t-none bg-dark-800" static>
+            <Disclosure.Panel className="flex flex-col w-full border-t-0 rounded rounded-t-none bg-light-secondary dark:bg-dark-secondary" static>
                 {/* <div className="grid grid-cols-2 gap-4 p-4"> */ }
                 <div className="grid grid-cols-1 gap-4 p-4 sm:grid-cols-3">
                     <div className="col-span-2 text-center md:col-span-1">

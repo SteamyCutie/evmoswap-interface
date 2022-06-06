@@ -37,7 +37,7 @@ const IncentivePoolItem = ( { pool, ...rest } ) => {
                     <Disclosure.Button
                         className={ classNames(
                             open && 'rounded-b-none',
-                            'w-full px-4 py-6 text-left rounded cursor-pointer select-none bg-dark-900 text-primary text-sm md:text-lg'
+                            'w-full px-4 py-6 text-left rounded cursor-pointer select-none bg-light dark:bg-dark text-primary text-sm md:text-lg'
                         ) }
                     >
                         <div className="flex gap-x-2">

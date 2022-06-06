@@ -98,7 +98,7 @@ export default function DualChainCurrencyInputPanel ( {
 
     return (
         <>
-            <div className={ classNames( 'p-5 rounded rounded-b-none bg-dark-800' ) }>
+            <div className={ classNames( 'p-5 rounded rounded-b-none bg-light-secondary dark:bg-dark-secondary' ) }>
                 <div className="flex flex-col justify-between space-y-3 sm:space-y-0 sm:flex-row">
                     <div className={ classNames( 'w-full sm:w-72' ) }>
                         <button
@@ -145,7 +145,7 @@ export default function DualChainCurrencyInputPanel ( {
                             </div>
                         </button>
                     </div>
-                    <div className={ classNames( 'flex items-center w-full space-x-3 rounded bg-dark-900 focus:bg-dark-700 p-3' ) }>
+                    <div className={ classNames( 'flex items-center w-full space-x-3 rounded bg-light dark:bg-dark focus:bg-dark-700 p-3' ) }>
                         <>
                             { selectedCurrencyBalance && (
                                 <Button
@@ -187,7 +187,7 @@ export default function DualChainCurrencyInputPanel ( {
             </div>
             <div
                 className={ classNames(
-                    'flex items-center w-full rounded rounded-t-none border border-dark-800 bg-dark-900 px-0 py-2 !mt-0'
+                    'flex items-center w-full rounded rounded-t-none border border-dark-800 bg-light dark:bg-dark px-0 py-2 !mt-0'
                 ) }
             >
                 <div className="flex flex-row justify-between flex-1">
