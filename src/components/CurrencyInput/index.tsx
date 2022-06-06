@@ -39,6 +39,7 @@ interface CurrencyInputProps {
     customBalanceText?: string
     showSearch?: boolean
     currencyList?: string[]
+    className?: string
 }
 
 export default function CurrencyInput ( {
@@ -64,6 +65,7 @@ export default function CurrencyInput ( {
     allowManageTokenList = true,
     showSearch = true,
     currencyList = null,
+    className = ''
 }: CurrencyInputProps ) {
     const { i18n } = useLingui()
     const [ modalOpen, setModalOpen ] = useState( false )
@@ -75,19 +77,19 @@ export default function CurrencyInput ( {
     }, [ setModalOpen ] )
 
     return (
-        <div id={ id } className={ classNames( hideInput ? 'p-4' : 'p-5', 'rounded bg-dark-800' ) }>
-            <div className="flex flex-col justify-between space-y-3 sm:space-y-0 sm:flex-row">
-                <div className={ classNames( 'w-full sm:w-1/5' ) }>
+        <div id={ id }>
+            <div className={ classNames( "flex flex-row items-center justify-between", hideInput ? 'p-4' : 'p-5', 'rounded-xl', className ) }>
+                <div className={ classNames( 'w-auto' ) }>
                     <div className="flex">
                         { pair ? (
-                            <DoubleCurrencyLogo currency0={ pair.token0 } currency1={ pair.token1 } size={ 54 } margin={ true } />
+                            <DoubleCurrencyLogo currency0={ pair.token0 } currency1={ pair.token1 } size={ 40 } margin={ true } />
                         ) : currency ? (
                             <div className="flex items-center">
-                                <CurrencyLogo currency={ currency } size={ '54px' } />
+                                <CurrencyLogo currency={ currency } size={ '40px' } />
                             </div>
                         ) : (
-                            <div className="rounded bg-dark-700" style={ { maxWidth: 54, maxHeight: 54 } }>
-                                <div style={ { width: 54, height: 54 } }>
+                            <div className="rounded" style={ { maxWidth: 40, maxHeight: 40 } }>
+                                <div style={ { width: 40, height: 40 } }>
                                     <Lottie animationData={ selectCoinAnimation } autoplay loop />
                                 </div>
                             </div>
@@ -97,7 +99,7 @@ export default function CurrencyInput ( {
                 { !hideInput && (
                     <div
                         className={ classNames(
-                            'flex items-center w-full space-x-3 rounded bg-dark-900 focus:bg-dark-700 p-3 sm:w-4/5'
+                            'flex items-center w-full space-x-3 rounded p-3'
                             // showMaxButton && selectedCurrencyBalance && 'px-3'
                         ) }
                     >
