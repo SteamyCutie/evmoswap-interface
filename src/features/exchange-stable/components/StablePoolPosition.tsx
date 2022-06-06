@@ -46,9 +46,9 @@ const StablePoolPosition = ( { poolInfo, className = '' }: { poolInfo: StablePoo
             ) }
 
             { !isLoading && (
-                <div className={ classNames( 'px-4 py-4 space-y-1 text-sm rounded text-high-emphesis bg-dark-900', className ) }>
+                <div className={ classNames( 'px-4 py-4 space-y-2 rounded-2xl bg-light-secondary dark:bg-dark-secondary font-medium', className ) }>
                     <RowBetween>
-                        <div>{ i18n._( t`Your total pool tokens` ) }:</div>
+                        <div>{ i18n._( t`Your total pool tokens` ) }</div>
                         <div className="font-semibold">{ formatNumber( balance?.toExact(), false, false, 6 ) }</div>
                     </RowBetween>
 
@@ -61,7 +61,7 @@ const StablePoolPosition = ( { poolInfo, className = '' }: { poolInfo: StablePoo
                                         <QuestionHelper
                                             text={ i18n._( t`Estimated from liquidity token` ) }
                                         />
-                                    </div>:
+                                    </div>
                                 </div>
                                 <div className="font-semibold">{ formatNumber( token?.toExact(), false, false, 6 ) }</div>
                             </RowBetween>
@@ -69,7 +69,7 @@ const StablePoolPosition = ( { poolInfo, className = '' }: { poolInfo: StablePoo
                     }
 
                     <RowBetween>
-                        <div>{ i18n._( t`Your pool share` ) }:</div>
+                        <div>{ i18n._( t`Your pool share` ) }</div>
                         <div className="font-semibold">{ formatNumberPercentage( balance?.toExact(), totalLpSupply?.toExact() ) }</div>
                     </RowBetween>
                 </div>

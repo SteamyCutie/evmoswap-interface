@@ -13,6 +13,7 @@ import { STABLE_POOLS } from 'app/constants/stables'
 import PoolsNav from 'app/features/exchange-stable/components/StablePoolsNav'
 import Empty from 'app/components/Empty'
 import StablePoolItem from 'app/features/exchange-stable/components/StablePoolItem'
+import DoubleGlowShadow from 'app/components/DoubleGlowShadow'
 
 const alert = {
     title: 'Stable AMM Liquidity Provider Rewards',
@@ -37,31 +38,29 @@ export default function StablePools () {
                 />
             </Head>
 
-            <div className="p-4 mb-3 space-y-3">
-                <Back />
-
-                <Typography component="h1" variant="h2">
+            <div className="py-4 mb-3 space-y-3">
+                <Back text={ i18n._( t`Back to liquidity` ) } path={ `/stable-pool/add/${pools[ '0' ].slug}` } />
+                <div className="text-3xl font-semibold text-dark dark:text-light transition-all">
                     { i18n._( t`My Liquidity Positions` ) }
-                </Typography>
-            </div>
-
-            <Alert title={ i18n._( t`${alert.title}` ) } message={ i18n._( t`${alert.description}` ) } type="information" />
-
-            <div className="p-4 space-y-4 rounded bg-dark-900">
-                <div className="flex flex-row items-center justify-center rounded rounded p-3px h-[46px]">
-                    <PoolsNav />
                 </div>
-
-                { !account && <Web3Connect size="lg" color="blue" className="w-full" /> }
-                { !poolIds.length && (
-                    <Empty className="flex text-lg text-center text-low-emphesis">
-                        <div className="px-4 py-2">{ i18n._( t`No liquidity was found. ` ) }</div>
-                    </Empty>
-                ) }
-                { poolIds.map( ( pAddress, index ) => (
-                    <StablePoolItem key={ index } poolId={ pAddress } />
-                ) ) }
             </div>
+
+            <DoubleGlowShadow>
+                <div className="gap-4 p-3 md:p-4 lg:p-6 transition-all rounded-3xl z-0">
+
+                    <PoolsNav />
+
+                    { !account && <Web3Connect size="lg" color="blue" className="w-full" /> }
+                    { !poolIds.length && (
+                        <Empty className="flex text-lg text-center text-low-emphesis">
+                            <div className="px-4 py-2">{ i18n._( t`No liquidity was found. ` ) }</div>
+                        </Empty>
+                    ) }
+                    { poolIds.map( ( pAddress, index ) => (
+                        <StablePoolItem key={ index } poolId={ pAddress } />
+                    ) ) }
+                </div>
+            </DoubleGlowShadow>
         </Container>
     )
 }

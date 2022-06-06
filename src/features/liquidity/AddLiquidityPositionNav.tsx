@@ -11,8 +11,8 @@ import { MouseoverContent } from "app/components/Tooltip"
 const AddLiquidityPositionNav = ( { link, alert }: { link: string, alert: AlertProps } ) => {
 
     return (
-        <RowBetween className="w-full items-center mb-5 flex-wrap  text-dark dark:text-light hover:text-dark-primary dark:hover:text-light-primary">
-            <NavLink href={ link }>
+        <RowBetween className="w-full items-center mb-5 flex-wrap text-dark dark:text-light hover:text-dark-primary dark:hover:text-light-primary">
+            <NavLink href={ link } activeClassName="text-dark dark:text-light">
                 <a className="flex items-center space-x-2 text-base text-center transition-all cursor-pointer">
                     <span>{ i18n._( t`View Liquidity Positions` ) }</span>
                     <ChevronRightIcon width={ 18 } height={ 18 } />

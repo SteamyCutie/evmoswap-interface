@@ -12,7 +12,7 @@ import { useExpertModeManager, useUserSlippageToleranceWithDefault } from '../..
 import { AutoColumn } from '../../../components/Column'
 import { BigNumber } from '@ethersproject/bignumber'
 import Container from '../../../components/Container'
-import CurrencyInputPanel from '../../../components/CurrencyInputPanel'
+import CurrencyInput from '../../../components/CurrencyInput'
 import DoubleGlowShadow from '../../../components/DoubleGlowShadow'
 import ExchangeHeader from '../../../features/trade/Header'
 import Head from 'next/head'
@@ -41,6 +41,7 @@ import {
     sumCurrencyAmounts,
 } from 'app/features/exchange-stable/utils'
 import AddLiquidityPositionNav from 'app/features/liquidity/AddLiquidityPositionNav'
+import Button from 'app/components/Button/index'
 
 const DEFAULT_ADD_V2_SLIPPAGE_TOLERANCE = new Percent( 50, 10_000 )
 
@@ -56,7 +57,7 @@ export default function Add () {
     const poolInfo = useStablePoolInfo( poolId )
     const poolTokensInfo = poolInfo.pooledTokensInfo
     const poolTVL = Number( poolTokensInfo.total ) * Number( poolInfo.virtualPrice )
-    const tokens = poolTokensInfo.tokens
+    const tokens = poolTokensInfo.tokens || []
 
     //pool lp
     const lpToken = poolInfo.lpToken
@@ -230,13 +231,11 @@ export default function Add () {
     const modalHeader = () => {
         return (
             <div className="pb-4">
-                <div className="flex items-center justify-start gap-3">
-                    <div className="text-xl font-bold md:text-2xl text-high-emphesis">{ minToMint?.toSignificant( 6 ) }</div>
-                    <div className="grid grid-flow-col gap-2">
-                        <div className="text-lg font-medium md:text-2xl text-high-emphesis">{ lpToken?.symbol }</div>
-                    </div>
+                <div className="flex items-center justify-start gap-3 font-semibold text-2xl md:text-3xl">
+                    <div>{ minToMint?.toSignificant( 6 ) }</div>
+                    <div>{ lpToken?.symbol }</div>
                 </div>
-                <div className="pt-3 text-sm italic text-secondary">
+                <div className="pt-3 text-sm text-light-text dark:text-dark-text">
                     { i18n._(
                         t`Output is estimated. If the price changes by more than ${allowedSlippage.toSignificant(
                             4
@@ -283,7 +282,7 @@ export default function Add () {
                 />
             </Head>
 
-            <Container id="add-liquidity-page" className="py-4 space-y-6 md:py-8 lg:py-12" maxWidth="2xl">
+            <Container id="add-liquidity-page" className="p-4 space-y-6 md:py-8 lg:py-12" maxWidth="2xl">
 
                 <AddLiquidityPositionNav
                     alert={ {
@@ -299,9 +298,9 @@ export default function Add () {
                 />
 
                 <DoubleGlowShadow>
-                    <div className="p-4 space-y-4 rounded bg-dark-900" style={ { zIndex: 1 } }>
-                        <RowBetween>
-                            <div className="text-2xl text-white font-bold">{ i18n._( t`Add` ) }</div>
+                    <div className="gap-4 p-3 md:p-4 lg:p-6 transition-all rounded-3xl z-0">
+                        <RowBetween className="my-2">
+                            <div className="text-2xl text-dark dark:text-light font-bold">{ i18n._( t`Add` ) }</div>
                             <ExchangeHeader showNavs={ false } allowedSlippage={ allowedSlippage } />
                         </RowBetween>
 
@@ -324,28 +323,31 @@ export default function Add () {
                             }
                             pendingText={ pendingText }
                         />
-                        <div className="flex flex-col space-y-4">
-                            <div>
+                        <div className="flex flex-col space-y-4 mt-4">
+                            <div className='flex flex-col space-y-1'>
                                 { tokens.map( ( token, index ) => (
                                     <React.Fragment key={ index }>
-                                        <CurrencyInputPanel
+                                        <CurrencyInput
                                             value={ tokensInput[ index ] ?? '' }
                                             onUserInput={ ( value ) => onTokenInput( index, value ) }
                                             onMax={ () => {
                                                 onTokenInput( index, balances?.[ index ]?.toExact() )
                                             } }
-                                            showMaxButton={ true }
+                                            showMaxButton={ false }
                                             currency={ token }
                                             id={ `add-liquidity-input-token-${index}` }
                                             showCommonBases
                                             disableCurrencySelect={ true }
+                                            hideBalance={ true }
+                                            label=''
+                                            className='bg-light dark:bg-dark space-x-3 py-3 rounded-xl'
                                         />
                                         { index !== tokens.length - 1 && (
-                                            <AutoColumn justify="space-between" className="py-2.5">
-                                                <AutoRow justify={ isExpertMode ? 'space-between' : 'flex-start' } style={ { padding: '0 1rem' } }>
-                                                    <button className="z-10 -mt-6 -mb-6 rounded-full cursor-default bg-dark-900 p-3px">
-                                                        <div className="p-3 rounded-full bg-dark-800">
-                                                            <Plus size="32" />
+                                            <AutoColumn justify="space-between" className="py-0.5 z-10">
+                                                <AutoRow justify={ isExpertMode ? 'space-between' : 'center' }>
+                                                    <button className="p-1.5 rounded-2xl bg-light-secondary dark:bg-dark-secondary transition-all -mt-6 -mb-6">
+                                                        <div className="p-2 transition-all bg-white rounded-xl hover:bg-white/80 dark:bg-dark-primary dark:hover:bg-dark-primary/80 text-dark-secondary dark:text-light-secondary">
+                                                            <Plus size="18" />
                                                         </div>
                                                     </button>
                                                 </AutoRow>
@@ -355,6 +357,15 @@ export default function Add () {
                                 ) ) }
                             </div>
 
+
+                            <StablePositionCard
+                                className="rounded-xl p-4 my-4"
+                                amounts={ parsedAmounts }
+                                poolTVL={ poolTVL }
+                                estimatedSLP={ minToMint }
+                                poolTokenPercentage={ poolTokenPercentage }
+                            />
+
                             { !account ? (
                                 <Web3Connect size="lg" color="blue" className="w-full" />
                             ) : (
@@ -363,7 +374,7 @@ export default function Add () {
                                         <RowBetween
                                             justify="center"
                                             align="center"
-                                            className="flex-col md:flex-row space-y-4 md:space-x-4 md:space-y-0"
+                                            className="flex-col md:flex-row space-y-4 md:space-x-2 md:space-y-0"
                                         >
                                             { tokens.map( ( _, index ) => {
                                                 if ( balances?.[ index ]?.greaterThan( ZERO ) && approvals[ index ] !== ApprovalState.APPROVED )
@@ -373,9 +384,9 @@ export default function Add () {
                                                             spender={ poolAddress }
                                                             onApprovalChange={ ( approval ) => updateApprovals( index, approval ) }
                                                             key={ index }
-                                                            size="sm"
-                                                            color="blue"
-                                                            className={ `disabled:bg-blue-600 ${approvals[ index ] === ApprovalState.UNKNOWN ? 'hidden' : ''
+                                                            size="default"
+                                                            color="gradient"
+                                                            className={ `${approvals[ index ] === ApprovalState.UNKNOWN ? 'hidden' : ''
                                                                 }` }
                                                         />
                                                     )
@@ -384,27 +395,19 @@ export default function Add () {
                                     ) }
 
                                     { totalApproved > 0 && (
-                                        <ButtonError
+                                        <Button
                                             onClick={ () => {
                                                 isExpertMode ? onAdd() : setShowConfirm( true )
                                             } }
+                                            color={ !isValid ? ( error.includes( 'amount' ) ? 'gray' : 'red' ) : 'gradient' }
                                             disabled={ !isValid }
-                                            error={ !isValid }
-                                            className={ !isValid ? 'bg-red-600' : '' }
+                                            size="lg"
                                         >
                                             { error ?? i18n._( t`Confirm Adding Liquidity` ) }
-                                        </ButtonError>
+                                        </Button>
                                     ) }
                                 </AutoColumn>
                             ) }
-
-                            <StablePositionCard
-                                className="rounded bg-dark-800 p-4"
-                                amounts={ parsedAmounts }
-                                poolTVL={ poolTVL }
-                                estimatedSLP={ minToMint }
-                                poolTokenPercentage={ poolTokenPercentage }
-                            />
 
                             <StablePoolInfo poolInfo={ poolInfo } showHeader={ true } className="p-4" />
                         </div>
