@@ -1,7 +1,6 @@
 import { ChevronUpIcon } from '@heroicons/react/solid'
 import { classNames } from 'app/functions'
 import React, { useState } from 'react'
-import { ChevronDown, ChevronUp } from 'react-feather'
 
 function Accordion ( {
     header,
@@ -16,7 +15,7 @@ function Accordion ( {
         <React.Fragment>
             <button className={ classNames( 'accordion-item', className ) } onClick={ () => setIsActive( !isActive ) }>
                 <div>{ header }</div>
-                <div className="text-sm flex items-center space-x-4">
+                <div className="flex items-center space-x-4">
                     { toggle }
                     { showIcon && (
                         <ChevronUpIcon
