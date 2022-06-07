@@ -23,25 +23,27 @@ const SIZE = {
 }
 
 const FILLED = {
-    default: 'bg-transparent opacity-80 hover:opacity-100',
-    red: 'bg-red bg-opacity-80 w-full rounded text-high-emphesis hover:bg-opacity-100 disabled:bg-opacity-80',
-    blue: 'bg-blue bg-opacity-80 w-full rounded text-high-emphesis hover:bg-opacity-100 disabled:bg-opacity-80',
-    pink: 'bg-gradient-to-r from-pink to-pink w-full rounded text-high-emphesis opacity-80 hover:opacity-100 disabled:bg-opacity-80',
-    gray: 'border rounded shadow-sm focus:ring-2 focus:ring-offset-2 bg-dark-700 bg-opacity-80 w-full text-primary border-dark-800 hover:bg-opacity-100 focus:ring-offset-dark-700 focus:ring-dark-800 disabled:bg-opacity-80',
-    green: 'bg-green bg-opacity-80 w-full rounded text-high-emphesis hover:bg-opacity-100 disabled:bg-opacity-80',
+    default: 'bg-transparent opacity-90 hover:opacity-100',
+    red: 'bg-red bg-opacity-90 w-full text-light-primary hover:bg-opacity-100 disabled:bg-opacity-90',
+    blue: 'bg-blue bg-opacity-90 w-full text-light-primary hover:bg-opacity-100 disabled:bg-opacity-90',
+    'blue-special': 'bg-blue-special bg-opacity-90 w-full text-light-primary hover:bg-opacity-100 disabled:bg-opacity-90',
+    pink: 'bg-gradient-to-r from-pink to-pink w-full text-light-primary opacity-90 hover:opacity-100 disabled:bg-opacity-90',
+    gray: 'shadow-sm focus:ring-2 focus:ring-offset-2 bg-opacity-90 w-full bg-grey-light dark:bg-light-text text-light hover:bg-opacity-100 focus:ring-offset-dark-700 focus:ring-dark-900 disabled:bg-opacity-90',
+    green: 'bg-green bg-opacity-90 w-full text-light-primary hover:bg-opacity-100 disabled:bg-opacity-90',
     gradient:
-        'w-full text-high-emphesis bg-gradient-to-r from-blue to-pink opacity-80 hover:opacity-100 disabled:bg-opacity-80',
+        'w-full text-light-primary bg-gradient-to-r from-blue-special to-pink-special opacity-100 hover:opacity-80 disabled:bg-opacity-80',
 }
 
 const OUTLINED = {
-    default: 'bg-transparent opacity-80 hover:opacity-100',
-    red: 'bg-red bg-opacity-20 outline-red rounded text-red hover:bg-opacity-40 disabled:bg-opacity-20',
-    blue: 'bg-blue bg-opacity-20 outline-blue rounded text-blue hover:bg-opacity-40 disabled:bg-opacity-20',
-    pink: 'bg-pink bg-opacity-20 outline-pink rounded text-pink hover:bg-opacity-40 disabled:bg-opacity-20',
-    gray: 'bg-dark-700 bg-opacity-20 outline-gray rounded text-gray hover:bg-opacity-40 disabled:bg-opacity-20',
-    green: 'bg-green bg-opacity-20 border border-green rounded text-green hover:bg-opacity-40 disabled:bg-opacity-20',
+    default: 'bg-transparent opacity-90 hover:opacity-100',
+    red: 'border border-red bg-opacity-40 outline-red text-red opacity-100 hover:opacity-60 disabled:opacity-40 transition-all',
+    blue: 'bg-transparent outline-blue border border-blue text-blue',
+    pink: 'bg-pink bg-opacity-20 outline-pink text-pink hover:bg-opacity-40 disabled:bg-opacity-20',
+    gray: 'bg-transparent border border-light-text/40 dark:border-dark-text/40 text-light-text/40 dark:text-dark-text/40 rounded-xl',
+    green:
+        'bg-transparent border border-green-special/80 text-green-special hover:border-green-specical disabled:border-green-special/80',
     gradient:
-        'border border-transparent border-gradient-r-blue-red-dark-900 opacity-80 hover:opacity-100 disabled:bg-opacity-20',
+        'border border-transparent border-gradient-r-blue-pink-special-light-primary dark:border-gradient-r-blue-pink-special-dark-primary opacity-100 hover:opacity-60 disabled:bg-opacity-20 text-blue-special transition-all',
 }
 
 const EMPTY = {
