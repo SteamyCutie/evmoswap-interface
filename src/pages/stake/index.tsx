@@ -101,7 +101,7 @@ export default function Stake () {
             </Head>
             <div className="w-11/12 m-auto">
                 <div className="grid w-full space-y-2 md:flex justify-center m-auto md:justify-between items-center">
-                    <div className="text-white flex flex-wrap md:grid m-auto md:ml-0">
+                    <div className="flex flex-wrap md:grid m-auto md:ml-0 font-medium">
                         <div className="text-2xl">Staking Pool</div>
                         <div className="text-sm md:text-base">{ i18n._( t`Just stake some tokens to earn. High APR, low risk.` ) }</div>
                     </div>
