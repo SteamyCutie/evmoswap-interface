@@ -114,9 +114,9 @@ const Menu = () => {
                                 <div className="relative grid gap-4 py-3 transition-all px-8 md:px-6">
 
                                     { solutions.map( ( item, idx ) =>
-                                    ( <>
+                                    ( <React.Fragment key={ idx }>
                                         { idx > 0 && <Divider /> }
-                                        <NavLink key={ item.name } href={ item.href }>
+                                        <NavLink href={ item.href }>
                                             <a
                                                 className={ `flex items-center justify-between transition-all duration-150 ease-in-out hover:bg-dark/10 dark:hover:bg-light/5}` }
                                                 target={ item.external ? '_blank' : '' }
@@ -151,7 +151,7 @@ const Menu = () => {
                                                 </div>
                                             </a>
                                         </NavLink>
-                                    </>
+                                    </React.Fragment>
                                     )
                                     ) }
                                 </div>
