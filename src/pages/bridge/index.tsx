@@ -3,6 +3,7 @@ import Container from 'app/components/Container'
 import { i18n } from '@lingui/core'
 import { t } from '@lingui/macro'
 import Button from 'app/components/Button'
+import Alert from 'app/components/Alert'
 
 const BRIDGE_DATA = [
     {
@@ -41,23 +42,28 @@ export default function Bridge () {
             </Head>
             <div className="w-full m-auto mt-8 ">
                 <div className="w-full">
-                    <div className="text-3xl text-center font-extrabold scale-125">Bridge your assets</div>
+                    <div className="text-3xl text-center font-bold scale-125">Bridge your assets</div>
                 </div>
-                <div className="w-full">
-                    <div className="text-sm p-4 md:text-sm">
-                        Tip:{ ' ' }
-                        <b>
-                            { i18n._(
-                                t`Bridging assets might take up to 30 minutes or more depending on chain of departure, network congestion, and other factors. For advanced support regarding a bridge transaction please refer to your bridge of choice.`
-                            ) }
-                        </b>
-                    </div>
+                <div className='p-4 my-2'>
+                    <Alert message={
+                        <>
+                            Tip:{ ' ' }
+                            <span className='font-bold'>
+                                { i18n._(
+                                    t`Bridging assets might take up to 30 minutes or more depending on chain of departure, network congestion, and other factors. For advanced support regarding a bridge transaction please refer to your bridge of choice.`
+                                ) }
+                            </span>
+                        </>
+                    }
+                        type="warning"
+                        dismissable={ false }
+                    />
                 </div>
                 <div className="grid w-full gap-4 p-4">
                     { BRIDGE_DATA.map( ( item, idx ) => (
                         <div
                             key={ idx }
-                            className="flex items-center w-full bg-light dark:bg-dark text-primary px-12 py-8 rounded-2xl space-x-8"
+                            className="flex items-center w-full bg-light-secondary dark:bg-dark-secondary px-12 py-8 rounded-2xl space-x-8"
                         >
                             <div className="grid w-4/5 space-y-2">
                                 <div className="text-2xl font-bold">{ item.name }</div>
