@@ -156,7 +156,7 @@ const Footer = () => {
                                 </div>
                             </div>
                         </div>
-                        <p className="text-sm text-dark-primary dark:text-light-primary transition-all">
+                        <p className="text-dark-primary dark:text-light-primary transition-all">
                             { i18n._(
                                 t`EvmoSwap is a Decentralized Autonomous Organization (DAO) that offers a full suite of tools to explore and engage with decentralized finance opportunities.`
                             ) }
@@ -180,7 +180,7 @@ const Footer = () => {
                     <div className="grid gap-8 grid-cols-2 sm:grid-cols-3 lg:col-span-2">
                         <div>
                             <div>
-                                <h3 className="text-sm font-semibold tracking-wider uppercase text-dark-primary dark:text-light-primary transition-all">
+                                <h3 className="font-semibold tracking-wider uppercase text-dark-primary dark:text-light-primary transition-all">
                                     { i18n._( t`Partners` ) }
                                 </h3>
                                 <ul role="list" className="mt-4 space-y-1">
@@ -188,7 +188,7 @@ const Footer = () => {
                                         <li key={ item.name }>
                                             <a
                                                 href={ item.href }
-                                                className="text-sm transition-all hover:scale-105 active:scale-95 text-dark-primary dark:text-light-primary hover:text-dark-primary/60 dark:hover:text-light-primary/60 active:text-dark-primary dark:active:text-light-primary/80"
+                                                className="transition-all hover:scale-105 active:scale-95 text-dark-primary dark:text-light-primary hover:text-dark-primary/60 dark:hover:text-light-primary/60 active:text-dark-primary dark:active:text-light-primary/80"
                                                 target="_blank"
                                                 rel="noreferrer"
                                             >
@@ -200,7 +200,7 @@ const Footer = () => {
                             </div>
                         </div>
                         <div>
-                            <h3 className="text-sm font-semibold tracking-wider uppercase text-dark-primary dark:text-light-primary transition-all">
+                            <h3 className="font-semibold tracking-wider uppercase text-dark-primary dark:text-light-primary transition-all">
                                 { i18n._( t`Developers` ) }
                             </h3>
                             <ul role="list" className="mt-4 space-y-1">
@@ -208,7 +208,7 @@ const Footer = () => {
                                     <li key={ item.name }>
                                         <a
                                             href={ item.href }
-                                            className="text-sm transition-all hover:scale-105 active:scale-95 text-dark-primary dark:text-light-primary hover:text-dark-primary/60 dark:hover:text-light-primary/60 active:text-dark-primary dark:active:text-light-primary/80"
+                                            className="transition-all hover:scale-105 active:scale-95 text-dark-primary dark:text-light-primary hover:text-dark-primary/60 dark:hover:text-light-primary/60 active:text-dark-primary dark:active:text-light-primary/80"
                                             target="_blank"
                                             rel="noreferrer"
                                         >
@@ -219,7 +219,7 @@ const Footer = () => {
                             </ul>
                         </div>
                         <div>
-                            <h3 className="text-sm font-semibold tracking-wider uppercase text-dark-primary dark:text-light-primary transition-all">
+                            <h3 className="font-semibold tracking-wider uppercase text-dark-primary dark:text-light-primary transition-all">
                                 { i18n._( t`Business` ) }
                             </h3>
                             <ul role="list" className="mt-4 space-y-1">
@@ -227,7 +227,7 @@ const Footer = () => {
                                     <li key={ item.name }>
                                         <a
                                             href={ item.href }
-                                            className="text-sm transition-all hover:scale-105 active:scale-95 text-dark-primary dark:text-light-primary hover:text-dark-primary/60 dark:hover:text-light-primary/60 active:text-dark-primary dark:active:text-light-primary/80"
+                                            className="transition-all hover:scale-105 active:scale-95 text-dark-primary dark:text-light-primary hover:text-dark-primary/60 dark:hover:text-light-primary/60 active:text-dark-primary dark:active:text-light-primary/80"
                                             target="_blank"
                                             rel="noreferrer"
                                         >
