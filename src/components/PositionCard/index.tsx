@@ -1,6 +1,6 @@
-import { ChevronDownIcon, ChevronUpIcon } from '@heroicons/react/outline'
+import { ChevronDownIcon } from '@heroicons/react/outline'
 import { Currency, CurrencyAmount, JSBI, Pair, Percent, Token } from '@evmoswap/core-sdk'
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import { currencyId, unwrappedToken } from '../../functions/currency'
 import { AutoColumn } from '../Column'
 import { BIG_INT_ZERO } from '../../constants'
@@ -22,6 +22,7 @@ import { EvmoSwap } from 'config/tokens'
 import { useUserInfo } from '../../features/farm/hooks'
 import { getAddress } from '@ethersproject/address'
 import { Divider } from '../Divider/Divider'
+import { TokenAmountCard } from '../TokenAmountCard'
 
 interface PositionCardProps {
     pair: Pair
@@ -86,10 +87,10 @@ export function MinimalPositionCard ( { pair, showUnwrapped = false, border }: P
                                     <div>Pool Tokens</div>
                                 </div>
                             </div>
-                            <Divider className='mt-2 mb-4' />
+                            <Divider className="mt-2 mb-4" />
                             <div className="flex flex-col w-full mt-3 space-y-1 font-semibold rounded">
                                 <div className="flex justify-between">
-                                    <div className='font-medium'>{ i18n._( t`Your pool share` ) }</div>
+                                    <div className="font-medium">{ i18n._( t`Your pool share` ) }</div>
                                     { poolTokenPercentage ? (
                                         <div className="flex space-x-1">
                                             <div>{ poolTokenPercentage.toFixed( 6 ) }</div>
@@ -207,12 +208,7 @@ export default function FullPositionCard ( { pair, border, stakedBalance }: Posi
                 leaveFrom="opacity-100"
                 leaveTo="opacity-0"
             >
-
-                <div
-                    className={ classNames(
-                        `mx-4 py-4 space-y-4 transition-all`
-                    ) }
-                >
+                <div className={ classNames( `mx-4 py-4 space-y-4 transition-all` ) }>
                     <div className="transition-all space-y-2 text-sm font-medium">
                         <div className="flex items-center justify-between text-dark-primary dark:text-light-primary transition-all">
                             <div>{ i18n._( t`Your total pool tokens` ) }</div>
@@ -328,61 +324,24 @@ export function PositionCard ( { pair, farm, showUnwrapped = false, border }: Po
 
     return (
         <>
-            { userPoolBalance && JSBI.greaterThan( userPoolBalance.quotient, JSBI.BigInt( 0 ) ) ? (
-                <div className="w-full p-0 text-sm rounded">
-                    <AutoColumn gap={ 'md' }>
-                        <div className="flex justify-between">
-                            <div>Your Deposits</div>
-                            <div className="flex gap-1">
-                                <div>{ userPoolBalance ? userPoolBalance.toSignificant( 4 ) : '-' } </div>
-                                <div>
-                                    { currency0.symbol }/{ currency1.symbol }
-                                </div>
-                                <div className="text-white">${ ( Number( userPoolBalance.toExact() ) * farm?.lpPrice ).toFixed( 2 ) }</div>
+            <div className="w-full p-0 text-base rounded ">
+                <AutoColumn gap={ 'md' }>
+                    <div className="flex justify-between">
+                        <div>Your Deposits</div>
+                        <div className="flex gap-1">
+                            <div>{ userPoolBalance ? userPoolBalance.toSignificant( 4 ) : '-' } </div>
+                            <div>
+                                { currency0.symbol }/{ currency1.symbol }
                             </div>
+                            <div className="font-bold">${ ( Number( userPoolBalance.toExact() ) * farm?.lpPrice ).toFixed( 2 ) }</div>
                         </div>
-                        <div className="flex flex-col space-y-2">
-                            <div className="flex items-center gap-2">
-                                <CurrencyLogo currency={ pair.token0 } size={ 20 } />
-                                <div>
-                                    { token0Deposited?.toSignificant( 6 ) } { currency0.symbol }
-                                </div>
-                            </div>
-                            <div className="flex items-center gap-2">
-                                <CurrencyLogo currency={ pair.token1 } size={ 20 } />
-                                <div>
-                                    { token1Deposited?.toSignificant( 6 ) } { currency1.symbol }
-                                </div>
-                            </div>
-                        </div>
-                    </AutoColumn>
-                </div>
-            ) : (
-                <div className="w-full p-0 text-sm rounded">
-                    <AutoColumn gap={ 'md' }>
-                        <div className="flex justify-between">
-                            <div>Your Deposits</div>
-                            <div className="flex gap-1">
-                                <div>0</div>
-                                <div>
-                                    { currency0.symbol }/{ currency1.symbol }
-                                </div>
-                                <div className="text-white">$0.0</div>
-                            </div>
-                        </div>
-                        <div className="flex flex-col space-y-2">
-                            <div className="flex items-center gap-2">
-                                <CurrencyLogo currency={ pair.token0 } size={ 20 } />
-                                <div>0 { currency0.symbol }</div>
-                            </div>
-                            <div className="flex items-center gap-2">
-                                <CurrencyLogo currency={ pair.token1 } size={ 20 } />
-                                <div>0 { currency1.symbol }</div>
-                            </div>
-                        </div>
-                    </AutoColumn>
-                </div>
-            ) }
+                    </div>
+                    <div className="flex flex-col space-y-3 md:flex-row md:space-x-6 md:space-y-0">
+                        <TokenAmountCard amount={ token0Deposited } currency={ currency0 } significant={ 6 } />
+                        <TokenAmountCard amount={ token1Deposited } currency={ currency1 } significant={ 6 } />
+                    </div>
+                </AutoColumn>
+            </div>
         </>
     )
 }
@@ -412,16 +371,13 @@ export function RewardCard ( { reward } ) {
 export function MultiRewardsCard ( { rewards }: { rewards: CurrencyAmount<Token | Currency>[] } ) {
     return (
         <>
-            <div className="w-full p-0 text-sm rounded">
+            <div className="w-full p-0 text-base rounded">
                 <AutoColumn gap={ 'md' }>
                     <div className="flex justify-between">
                         <div>Your Rewards</div>
                     </div>
                     { rewards.map( ( reward, index ) => (
-                        <div className="flex items-center gap-2" key={ index }>
-                            <CurrencyLogo currency={ reward.currency } size={ 20 } />
-                            <div>{ `${reward?.toExact()} ${reward?.currency?.symbol}` }</div>
-                        </div>
+                        <TokenAmountCard key={ index } amount={ reward } flexDir="row" gap={ 1 } />
                     ) ) }
                 </AutoColumn>
             </div>

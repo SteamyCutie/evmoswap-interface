@@ -11,14 +11,14 @@ export default function SearchPools ( {
 
     return (
         <div className="flex items-center flex-grow w-full gap-4 sm:w-auto">
-            <div className="flex items-center flex-grow w-full gap-2 px-3 py-2 bg-opacity-50 border rounded focus-within:ring-2 ring-blue border-dark-800 bg-light dark:bg-dark sm:w-auto">
-                <SearchIcon strokeWidth={ 3 } width={ 20 } height={ 20 } />
+            <div className="flex items-center justify-between flex-grow w-full gap-2 px-3 py-3 rounded-md bg-light dark:bg-dark sm:w-auto">
                 <input
-                    className="w-full bg-transparent text-high-emphesis placeholder:text-low-emphesis"
+                    className="w-full bg-transparent text-light-text/40 dark:text-dark-text/40 placeholder:text-light-text/40 dark:placeholder:text-dark-text/40"
                     placeholder="Search by token or pair"
                     onChange={ ( e ) => search( e.target.value ) }
                     value={ term }
                 />
+                <SearchIcon strokeWidth={ 2 } width={ 20 } height={ 20 } />
             </div>
         </div>
     )

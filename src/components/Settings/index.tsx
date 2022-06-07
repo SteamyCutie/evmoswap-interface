@@ -106,7 +106,7 @@ export default function SettingsTab ( { placeholderSlippage, direction = "right"
                 </div>
             ) }
 
-            <Modal isOpen={ showConfirmation } onDismiss={ () => setShowConfirmation( false ) } disableBackdrop={ true }>
+            <Modal isOpen={ showConfirmation } onDismiss={ () => setShowConfirmation( false ) }>
                 <div className="space-y-4">
                     <ModalHeader title={ i18n._( t`Are you sure?` ) } onClose={ () => setShowConfirmation( false ) } />
                     <Typography variant="base">

@@ -13,9 +13,9 @@ import NavLink from 'app/components/NavLink'
 import SearchPools from 'app/components/SearchPools'
 import Head from 'next/head'
 
-const tabStyle = 'flex justify-center items-center h-full w-full rounded-lg cursor-pointer text-sm md:text-base'
-const activeTabStyle = `${tabStyle} text-high-emphasis font-bold bg-light dark:bg-dark`
-const inactiveTabStyle = `${tabStyle} text-white`
+const tabStyle = 'flex justify-center items-center h-full w-full rounded-lg cursor-pointer px-2 py-1 md:px-8 md:py-3 text-xs md:text-base whitespace-nowrap font-medium'
+const activeTabStyle = `${tabStyle} text-white font-semibold bg-blue`
+const inactiveTabStyle = `${tabStyle} text-dark dark:text-light`
 
 const FILTER_TYPES = [
     { key: 'all', title: 'All Farms' },
@@ -70,10 +70,10 @@ export default function Farms (): JSX.Element {
             </Head>
             <TridentHeader className="sm:!flex-row justify-between items-center" pattern="bg-bubble">
                 <div>
-                    <Typography variant="h2" className="text-high-emphesis" weight={ 700 }>
+                    <Typography variant="h2" className="text-dark dark:text-light" weight={ 700 }>
                         { i18n._( t`Yield Farm` ) }
                     </Typography>
-                    <Typography variant="sm" weight={ 400 }>
+                    <Typography weight={ 400 } className="text-light-text dark:text-dark-text">
                         { i18n._( t`Earn fees and rewards by depositing and staking your tokens to the platform.` ) }
                     </Typography>
 
@@ -84,22 +84,22 @@ export default function Farms (): JSX.Element {
                         2. Staked your LPs in the below pools.
                     </Typography>
                 </div>
-                <div className="flex gap-3">
-                    <Button id="btn-create-new-pool" size="sm">
+                <div className="flex gap-3 w-full md:w-auto">
+                    <Button id="btn-create-new-pool" size="default" color='gradient' variant='outlined' className='w-full md:w-56'>
                         <a href="https://forms.gle/rg2ac5xAQKR8d6Ff6" target="_blank" rel="noreferrer">
-                            { i18n._( t`Apply for Yield Farm` ) }
+                            { i18n._( t`Apply for Yield` ) }
                         </a>
                     </Button>
                 </div>
             </TridentHeader>
             <TridentBody>
                 <div className="flex flex-col w-full gap-6">
-                    <div className="flex flex-col items-center justify-between gap-4 sm:flex-row">
+                    <div className="flex flex-col items-center justify-between gap-4 sm:flex-row bg-light-secondary dark:bg-dark-secondary p-1.5 rounded-xl">
                         {/* Select Tab */ }
-                        <div className="flex m-auto mb-2 rounded h-11 md:m-0 md:w-8/12 bg-light-secondary dark:bg-dark-secondary">
+                        <div className="flex md:w-auto">
                             {
                                 FILTER_TYPES.map( ( filter, index ) => (
-                                    <div className="w-3/12 h-full p-1" onClick={ () => setSelected( filter.key ) } key={ index }>
+                                    <div onClick={ () => setSelected( filter.key ) } key={ index }>
                                         <NavLink href={ `/farm?filter=${filter.key}` }>
                                             <div className={ selected === filter.key ? activeTabStyle : inactiveTabStyle }>
                                                 <p>{ i18n._( t`${filter.title}` ) }</p>
@@ -109,7 +109,9 @@ export default function Farms (): JSX.Element {
                                 ) )
                             }
                         </div>
-                        <SearchPools search={ search } term={ term } />
+                        <div className='w-full md:w-4/12'>
+                            <SearchPools search={ search } term={ term } />
+                        </div>
                     </div>
                     <FarmList farms={ result } />
                 </div>

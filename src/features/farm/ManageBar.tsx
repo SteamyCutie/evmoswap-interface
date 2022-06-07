@@ -23,179 +23,197 @@ import useMasterChef from './useMasterChef'
 import NumericalInput from 'app/components/NumericalInput'
 import Dots from 'app/components/Dots'
 import { MASTERCHEF_ADDRESS } from 'app/constants/addresses'
+import Settings from 'app/components/Settings'
+import RemovePercentInput from 'app/components/RemovePercentInput'
 
 const APPROVAL_ADDRESSES = {
-  [Chef.MASTERCHEF]: {
-    [ChainId.ETHEREUM]: MASTERCHEF_ADDRESS[ChainId.ETHEREUM],
-    [ChainId.EVMOS]: MASTERCHEF_ADDRESS[ChainId.EVMOS],
-    [ChainId.EVMOS_TESTNET]: MASTERCHEF_ADDRESS[ChainId.EVMOS_TESTNET],
-    [ChainId.BSC_TESTNET]: MASTERCHEF_ADDRESS[ChainId.BSC_TESTNET],
-  },
+    [ Chef.MASTERCHEF ]: {
+        [ ChainId.ETHEREUM ]: MASTERCHEF_ADDRESS[ ChainId.ETHEREUM ],
+        [ ChainId.EVMOS ]: MASTERCHEF_ADDRESS[ ChainId.EVMOS ],
+        [ ChainId.EVMOS_TESTNET ]: MASTERCHEF_ADDRESS[ ChainId.EVMOS_TESTNET ],
+        [ ChainId.BSC_TESTNET ]: MASTERCHEF_ADDRESS[ ChainId.BSC_TESTNET ],
+    },
 }
 
 // @ts-ignore TYPE NEEDS FIXING
-const ManageBar = ({ farm, handleDismiss }) => {
-  const { account, chainId } = useActiveWeb3React()
-  const { setContent } = useFarmListItemDetailsModal()
-  const [toggle, setToggle] = useState(true)
-  const [depositValue, setDepositValue] = useState<string>()
-  const [withdrawValue, setWithdrawValue] = useState<string>()
-  const { deposit, withdraw } = useMasterChef(farm.chef)
-  const addTransaction = useTransactionAdder()
-  const liquidityToken = new Token(
+const ManageBar = ( { farm, handleDismiss } ) => {
+    const { account, chainId } = useActiveWeb3React()
+    const { setContent } = useFarmListItemDetailsModal()
+    const [ toggle, setToggle ] = useState( true )
+    const [ depositValue, setDepositValue ] = useState<string>()
+    const [ withdrawValue, setWithdrawValue ] = useState<string>()
+    const { deposit, withdraw } = useMasterChef( farm.chef )
+    const addTransaction = useTransactionAdder()
+    const liquidityToken = new Token(
+        // @ts-ignore TYPE NEEDS FIXING
+        chainId,
+        getAddress( farm.lpToken ),
+        farm.token1 ? 18 : farm.token0 ? farm.token0.decimals : 18,
+        'ELP'
+    )
+    const balance = useTokenBalance( account, liquidityToken )
+    const { stakedAmount } = useUserInfo( farm, liquidityToken )
+    const parsedDepositValue = tryParseAmount( depositValue, liquidityToken )
+    const parsedWithdrawValue = tryParseAmount( withdrawValue, liquidityToken )
     // @ts-ignore TYPE NEEDS FIXING
-    chainId,
-    getAddress(farm.lpToken),
-    farm.token1 ? 18 : farm.token0 ? farm.token0.decimals : 18,
-    'ELP'
-  )
-  const balance = useTokenBalance(account, liquidityToken)
-  const { stakedAmount } = useUserInfo(farm, liquidityToken)
-  const parsedDepositValue = tryParseAmount(depositValue, liquidityToken)
-  const parsedWithdrawValue = tryParseAmount(withdrawValue, liquidityToken)
-  // @ts-ignore TYPE NEEDS FIXING
-  const [approvalState, approve] = useApproveCallback(parsedDepositValue, APPROVAL_ADDRESSES[farm.chef][chainId])
+    const [ approvalState, approve ] = useApproveCallback( parsedDepositValue, APPROVAL_ADDRESSES[ farm.chef ][ chainId ] )
 
-  const depositError = !parsedDepositValue
-    ? 'Enter an amount'
-    : balance?.lessThan(parsedDepositValue)
-    ? 'Insufficient balance'
-    : undefined
-  const isDepositValid = !depositError
-  const withdrawError = !parsedWithdrawValue
-    ? 'Enter an amount'
-    : // @ts-ignore TYPE NEEDS FIXING
-    stakedAmount?.lessThan(parsedWithdrawValue)
-    ? 'Insufficient balance'
-    : undefined
-  const isWithdrawValid = !withdrawError
-  const [pendingTx, setPendingTx] = useState(undefined)
+    const depositError = !parsedDepositValue
+        ? 'Enter an amount'
+        : balance?.lessThan( parsedDepositValue )
+            ? 'Insufficient balance'
+            : undefined
+    const isDepositValid = !depositError
+    const withdrawError = !parsedWithdrawValue
+        ? 'Enter an amount'
+        : // @ts-ignore TYPE NEEDS FIXING
+        stakedAmount?.lessThan( parsedWithdrawValue )
+            ? 'Insufficient balance'
+            : undefined
+    const isWithdrawValid = !withdrawError
+    const [ pendingTx, setPendingTx ] = useState( undefined )
 
-  return (
-    <>
-      <HeadlessUiModal.BorderedContent className="flex flex-col gap-4 bg-dark-1000/40">
-        <div className="flex flex-col gap-2">
-          <div className="flex justify-between">
-            <Typography variant="lg" weight={700} className="text-high-emphesis">
-              {toggle ? i18n._(t`Stake liquidity`) : i18n._(t`Unstake liquidity`)}
-            </Typography>
-            <Switch
-              size="sm"
-              checked={toggle}
-              onChange={() => setToggle(!toggle)}
-              checkedIcon={<PlusIcon className="text-dark-1000" />}
-              uncheckedIcon={<MinusIcon className="text-dark-1000" />}
-            />
-          </div>
+    const navLinkStyle =
+        'rounded-lg text-dark-text text-base hover:text-dark-text/60 dark:text-light-text dark:hover:text-light-text/60 transition-all'
+    const activeNavLinkStyle = `${navLinkStyle} font-bold !text-dark dark:!text-light`;
 
-          <Typography variant="sm" className="text-secondary">
-            {i18n._(t`Use one of the buttons to set a percentage or enter a value manually using the input field`)}
-          </Typography>
-        </div>
+    return (
+        <>
+            <div className="flex flex-col gap-2">
+                <div className="flex items-center justify-between">
 
-        <div className="flex items-center justify-between pl-2">
-          <div className="text-base text-white">Balance: {toggle ? balance?.toSignificant(4) : stakedAmount?.toSignificant(4)}</div>
-          <div className="flex justify-end gap-2">
-            {['25', '50', '75', '100'].map((multiplier, i) => (
-              <Button
-                variant="outlined"
-                size="xs"
-                color={toggle ? 'blue' : 'pink'}
-                key={i}
-                onClick={() => {
-                  toggle
-                    ? balance
-                      ? // @ts-ignore TYPE NEEDS FIXING
-                        setDepositValue(balance.multiply(multiplier).divide(100).toExact())
-                      : undefined
-                    : stakedAmount
-                    ? // @ts-ignore TYPE NEEDS FIXING
-                      setWithdrawValue(stakedAmount.multiply(multiplier).divide(100).toExact())
-                    : undefined
-                }}
-                className={classNames(
-                  'text-md border border-opacity-50',
-                  toggle ? 'focus:ring-blue border-blue' : 'focus:ring-pink border-pink'
-                )}
-              >
-                {multiplier === '100' ? 'MAX' : multiplier + '%'}
-              </Button>
-            ))}
-          </div>
-        </div>
+                    <div className="flex py-2 md:pt-4 space-x-8 rounded-md transition-all">
+                        <button className={ `${toggle ? activeNavLinkStyle : navLinkStyle}` } onClick={ () => setToggle( true ) }>{ i18n._( t`Stake liquidity` ) }</button>
+                        <button className={ `${!toggle ? activeNavLinkStyle : navLinkStyle}` } onClick={ () => setToggle( false ) }>{ i18n._( t`Unstake liquidity` ) }</button>
+                    </div>
+                    <Settings direction="left" />
+                </div>
+            </div>
 
-        <NumericalInput
-          className="w-full px-4 py-4 pr-20 rounded bg-dark-700 focus:ring focus:ring-dark-purple"
-          value={toggle ? depositValue : withdrawValue}
-          onUserInput={toggle ? setDepositValue : setWithdrawValue}
-        />
-      </HeadlessUiModal.BorderedContent>
-      {toggle ? (
-        !account ? (
-          <Web3Connect size="lg" color="blue" />
-        ) : (isDepositValid && approvalState === ApprovalState.NOT_APPROVED) ||
-          approvalState === ApprovalState.PENDING ? (
-          <Button
-            className="w-full"
-            color="gradient"
-            disabled={approvalState === ApprovalState.PENDING}
-            onClick={approve}
-          >
-            {approvalState === ApprovalState.PENDING ? <Dots>{i18n._(t`Approving`)}</Dots> : i18n._(t`Approve`)}
-          </Button>
-        ) : (
-          <Button
-            className="w-full"
-            color={!isDepositValid && !!parsedDepositValue ? 'red' : 'blue'}
-            // disabled={pendingTx || !typedDepositValue || balance?.lessThan(typedDepositValue)}
-            disabled={!isDepositValid}
-            onClick={async () => {
-              setPendingTx(true)
-              try {
-                // KMP decimals depend on asset, SLP is always 18
-                // @ts-ignore TYPE NEEDS FIXING
-                const tx = await deposit(farm.pid, BigNumber.from(parsedDepositValue?.quotient.toString()))
-                addTransaction(tx, {
-                  summary: `Deposit ${farm.token0.symbol}/${farm.token1.symbol}`,
-                })
-              } catch (error) {
-                console.error(error)
-              }
-              setTimeout(() => {
-                handleDismiss(), setPendingTx(false)
-              }, 4000)
-            }}
-          >
-            {pendingTx ? <Dots>{i18n._(t`Depositing`)}</Dots> : depositError || i18n._(t`Confirm Deposit`)}
-          </Button>
-        )
-      ) : (
-        <Button
-          className="w-full"
-          color={!isWithdrawValid && !!parsedWithdrawValue ? 'red' : 'blue'}
-          disabled={!isWithdrawValid}
-          onClick={async () => {
-            setPendingTx(true)
-            try {
-              // KMP decimals depend on asset, SLP is always 18
-              // @ts-ignore TYPE NEEDS FIXING
-              const tx = await withdraw(farm.pid, BigNumber.from(parsedWithdrawValue?.quotient.toString()))
-              addTransaction(tx, {
-                summary: `Withdraw ${farm.token0.symbol}/${farm.token1.symbol}`,
-              })
-            } catch (error) {
-              console.error(error)
-            }
-            setTimeout(() => {
-              handleDismiss(), setPendingTx(false)
-            }, 4000)
-          }}
-        >
-          {pendingTx ? <Dots>{i18n._(t`Withdrawing`)}</Dots> : withdrawError || i18n._(t`Confirm Withdraw`)}
-        </Button>
-      )}
-    </>
-  )
+            <div className='flex flex-col bg-light dark:bg-dark p-6 rounded-xl gap-6'>
+
+                {/*<Input.Numeric
+                    id="staking-input"
+                    className="text-light-text dark:text-dark-text bg-light-secondary dark:bg-dark-secondary p-5 rounded-md"
+                    value={ toggle ? depositValue : withdrawValue }
+                    onUserInput={ toggle ? setDepositValue : setWithdrawValue }
+                />*/}
+                <RemovePercentInput
+                    id="staking-input"
+                    className="w-full !p-0"
+                    value={ toggle ? depositValue : withdrawValue }
+                    onUserInput={ toggle ? setDepositValue : setWithdrawValue }
+                    showPercent={ true }
+                    inputClassName="text-3xl"
+                    label={
+                        <div className="flex items-center justify-between mb-2">
+                            <div className="text-base text-dark dark:text-light font-medium">Balance: { toggle ? balance?.toSignificant( 4 ) : stakedAmount?.toSignificant( 4 ) }</div>
+                            <div className="flex justify-end gap-2">
+                                { [ '25', '50', '75', '100' ].map( ( multiplier, i ) => (
+                                    <Button
+                                        variant="outlined"
+                                        size="xs"
+                                        color={ toggle ? 'blue' : 'pink' }
+                                        key={ i }
+                                        onClick={ () => {
+                                            toggle
+                                                ? balance
+                                                    ? // @ts-ignore TYPE NEEDS FIXING
+                                                    setDepositValue( balance.multiply( multiplier ).divide( 100 ).toExact() )
+                                                    : undefined
+                                                : stakedAmount
+                                                    ? // @ts-ignore TYPE NEEDS FIXING
+                                                    setWithdrawValue( stakedAmount.multiply( multiplier ).divide( 100 ).toExact() )
+                                                    : undefined
+                                        } }
+                                        className={ classNames(
+                                            'text-xs !py-0.5 border border-opacity-50 text-dark dark:text-light bg-light-secondary dark:bg-dark-secondary',
+                                            toggle ? 'focus:ring-blue border-blue' : 'focus:ring-pink border-pink'
+                                        ) }
+                                    >
+                                        { multiplier === '100' ? 'MAX' : multiplier + '%' }
+                                    </Button>
+                                ) ) }
+                            </div>
+                        </div> }
+                />
+
+                <Typography variant="sm" className="text-light-text dark:text-dark-text">
+                    { i18n._( t`Use one of the buttons to set a percentage or enter a value manually using the input field` ) }
+                </Typography>
+            </div>
+
+            <div className='my-4'>
+                { toggle ? (
+                    !account ? (
+                        <Web3Connect size="lg" color="blue" />
+                    ) : ( isDepositValid && approvalState === ApprovalState.NOT_APPROVED ) ||
+                        approvalState === ApprovalState.PENDING ? (
+                        <Button
+                            className="w-full"
+                            color="gradient"
+                            size='lg'
+                            disabled={ approvalState === ApprovalState.PENDING }
+                            onClick={ approve }
+                        >
+                            { approvalState === ApprovalState.PENDING ? <Dots>{ i18n._( t`Approving` ) }</Dots> : i18n._( t`Approve` ) }
+                        </Button>
+                    ) : (
+                        <Button
+                            className="w-full"
+                            size='lg'
+                            color={ !isDepositValid ? ( !!parsedDepositValue ? 'red' : 'gray' ) : 'blue' }
+                            // disabled={pendingTx || !typedDepositValue || balance?.lessThan(typedDepositValue)}
+                            disabled={ !isDepositValid }
+                            onClick={ async () => {
+                                setPendingTx( true )
+                                try {
+                                    // KMP decimals depend on asset, SLP is always 18
+                                    // @ts-ignore TYPE NEEDS FIXING
+                                    const tx = await deposit( farm.pid, BigNumber.from( parsedDepositValue?.quotient.toString() ) )
+                                    addTransaction( tx, {
+                                        summary: `Deposit ${farm.token0.symbol}/${farm.token1.symbol}`,
+                                    } )
+                                } catch ( error ) {
+                                    console.error( error )
+                                }
+                                setTimeout( () => {
+                                    handleDismiss(), setPendingTx( false )
+                                }, 4000 )
+                            } }
+                        >
+                            { pendingTx ? <Dots>{ i18n._( t`Depositing` ) }</Dots> : depositError || i18n._( t`Confirm Deposit` ) }
+                        </Button>
+                    )
+                ) : (
+                    <Button
+                        className="w-full"
+                        size='lg'
+                        color={ !isWithdrawValid ? ( !!parsedWithdrawValue ? 'red' : 'gray' ) : 'gradient' }
+                        disabled={ !isWithdrawValid }
+                        onClick={ async () => {
+                            setPendingTx( true )
+                            try {
+                                // KMP decimals depend on asset, SLP is always 18
+                                // @ts-ignore TYPE NEEDS FIXING
+                                const tx = await withdraw( farm.pid, BigNumber.from( parsedWithdrawValue?.quotient.toString() ) )
+                                addTransaction( tx, {
+                                    summary: `Withdraw ${farm.token0.symbol}/${farm.token1.symbol}`,
+                                } )
+                            } catch ( error ) {
+                                console.error( error )
+                            }
+                            setTimeout( () => {
+                                handleDismiss(), setPendingTx( false )
+                            }, 4000 )
+                        } }
+                    >
+                        { pendingTx ? <Dots>{ i18n._( t`Withdrawing` ) }</Dots> : withdrawError || i18n._( t`Confirm Withdraw` ) }
+                    </Button>
+                ) }
+            </div>
+        </>
+    )
 }
 
 export default ManageBar

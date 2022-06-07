@@ -32,6 +32,7 @@ import { useUserSlippageToleranceWithDefault } from 'app/state/user/hooks'
 import { Percent, NATIVE } from '@evmoswap/core-sdk'
 import { ConfirmationModalContent } from 'app/modals/TransactionConfirmationModal'
 import ConfirmAddModalBottom from '../liquidity/ConfirmAddModalBottom'
+import CurrencyInputPanel from 'app/components/CurrencyInputPanel'
 
 const DEFAULT_ADD_V2_SLIPPAGE_TOLERANCE = new Percent( 50, 10_000 )
 
@@ -224,9 +225,9 @@ const PoolDeposit = ( { currencyA, currencyB, header, handleDismiss } ) => {
 
     return (
         <>
-            <HeadlessUiModal.BorderedContent className="flex flex-col gap-4 bg-dark-1000/40 -z-10">
-                { header }
-                <CurrencyInput
+            { header }
+            <div>
+                <CurrencyInputPanel
                     value={ formattedAmounts[ Field.CURRENCY_A ] }
                     onUserInput={ onFieldAInput }
                     onMax={ () => {
@@ -237,18 +238,16 @@ const PoolDeposit = ( { currencyA, currencyB, header, handleDismiss } ) => {
                     id="add-liquidity-input-tokena"
                     showCommonBases
                 />
-                <div className="mx-auto">
-                    <AutoColumn justify="space-between" className="py-2.5">
-                        <AutoRow justify={ isExpertMode ? 'space-between' : 'flex-start' } style={ { padding: '0 1rem' } }>
-                            <button className="z-10 -mt-6 -mb-6 rounded-full cursor-default bg-light dark:bg-dark p-3px">
-                                <div className="p-3 rounded-full bg-light-secondary dark:bg-dark-secondary">
-                                    <Plus size="16" />
-                                </div>
-                            </button>
-                        </AutoRow>
-                    </AutoColumn>
-                </div>
-                <CurrencyInput
+                <AutoColumn>
+                    <AutoRow justify={ 'center' } className="p-1">
+                        <button className="z-10 -mt-4 -mb-4 rounded-2xl cursor-default bg-light-secondary dark:bg-dark-secondary p-1">
+                            <div className="p-2 rounded-xl bg-light dark:bg-dark">
+                                <Plus size="14" />
+                            </div>
+                        </button>
+                    </AutoRow>
+                </AutoColumn>
+                <CurrencyInputPanel
                     value={ formattedAmounts[ Field.CURRENCY_B ] }
                     onUserInput={ onFieldBInput }
                     onMax={ () => {
@@ -259,75 +258,77 @@ const PoolDeposit = ( { currencyA, currencyB, header, handleDismiss } ) => {
                     id="add-liquidity-input-tokenb"
                     showCommonBases
                 />
+            </div>
 
-                { ( approvalA === ApprovalState.NOT_APPROVED ||
-                    approvalA === ApprovalState.PENDING ||
-                    approvalB === ApprovalState.NOT_APPROVED ||
-                    approvalB === ApprovalState.PENDING ||
-                    isValid ) && (
-                        <AutoColumn gap={ 'md' }>
-                            {
-                                <RowBetween>
-                                    { approvalA !== ApprovalState.APPROVED && currencyA !== NATIVE[ chainId ] && (
-                                        <Button
-                                            color="blue"
-                                            size="lg"
-                                            onClick={ approveACallback }
-                                            disabled={ approvalA === ApprovalState.PENDING }
-                                            style={ {
-                                                width: approvalB !== ApprovalState.APPROVED && currencyB !== NATIVE[ chainId ] ? '48%' : '100%',
-                                            } }
-                                        >
-                                            { approvalA === ApprovalState.PENDING ? (
-                                                <Dots>{ i18n._( t`Approving ${currencies[ Field.CURRENCY_A ]?.symbol}` ) }</Dots>
-                                            ) : (
-                                                i18n._( t`Approve ${currencies[ Field.CURRENCY_A ]?.symbol}` )
-                                            ) }
-                                        </Button>
-                                    ) }
-                                    { approvalB !== ApprovalState.APPROVED && currencyB !== NATIVE[ chainId ] && (
-                                        <Button
-                                            color="blue"
-                                            size="lg"
-                                            onClick={ approveBCallback }
-                                            disabled={ approvalB === ApprovalState.PENDING }
-                                            style={ {
-                                                width: approvalA !== ApprovalState.APPROVED && currencyA !== NATIVE[ chainId ] ? '48%' : '100%',
-                                            } }
-                                        >
-                                            { approvalB === ApprovalState.PENDING ? (
-                                                <Dots>{ i18n._( t`Approving ${currencies[ Field.CURRENCY_B ]?.symbol}` ) }</Dots>
-                                            ) : (
-                                                i18n._( t`Approve ${currencies[ Field.CURRENCY_B ]?.symbol}` )
-                                            ) }
-                                        </Button>
-                                    ) }
-                                </RowBetween>
-                            }
-                        </AutoColumn>
-                    ) }
-                { approvalA === ApprovalState.APPROVED && approvalB === ApprovalState.APPROVED && (
-                    <ButtonError
-                        onClick={ () => {
-                            isExpertMode
-                                ? onAdd()
-                                : setContent(
-                                    <ConfirmationModalContent
-                                        title={ noLiquidity ? i18n._( t`You are creating a pool` ) : i18n._( t`Confirm add liquidity` ) }
-                                        onDismiss={ handleDismissConfirmation }
-                                        topContent={ modalHeader }
-                                        bottomContent={ modalBottom }
-                                    />
-                                )
-                        } }
-                        color={ error ? 'gray' : 'blue' }
-                        disabled={ approvalA !== ApprovalState.APPROVED || approvalB !== ApprovalState.APPROVED }
-                        error={ !isValid && !!parsedAmounts[ Field.CURRENCY_A ] && !!parsedAmounts[ Field.CURRENCY_B ] }
-                    >
-                        { error ? error : i18n._( t`Confirm Adding Liquidity` ) }
-                    </ButtonError>
+            { ( approvalA === ApprovalState.NOT_APPROVED ||
+                approvalA === ApprovalState.PENDING ||
+                approvalB === ApprovalState.NOT_APPROVED ||
+                approvalB === ApprovalState.PENDING ||
+                isValid ) && (
+                    <AutoColumn gap={ 'md' }>
+                        {
+                            <RowBetween className="gap-2">
+                                { approvalA !== ApprovalState.APPROVED && currencyA !== NATIVE[ chainId ] && (
+                                    <Button
+                                        color="gradient"
+                                        size="lg"
+                                        onClick={ approveACallback }
+                                        disabled={ approvalA === ApprovalState.PENDING }
+                                        style={ {
+                                            width: approvalB !== ApprovalState.APPROVED && currencyB !== NATIVE[ chainId ] ? '48%' : '100%',
+                                        } }
+                                    >
+                                        { approvalA === ApprovalState.PENDING ? (
+                                            <Dots>{ i18n._( t`Approving ${currencies[ Field.CURRENCY_A ]?.symbol}` ) }</Dots>
+                                        ) : (
+                                            i18n._( t`Approve ${currencies[ Field.CURRENCY_A ]?.symbol}` )
+                                        ) }
+                                    </Button>
+                                ) }
+                                { approvalB !== ApprovalState.APPROVED && currencyB !== NATIVE[ chainId ] && (
+                                    <Button
+                                        color="gradient"
+                                        size="lg"
+                                        onClick={ approveBCallback }
+                                        disabled={ approvalB === ApprovalState.PENDING }
+                                        style={ {
+                                            width: approvalA !== ApprovalState.APPROVED && currencyA !== NATIVE[ chainId ] ? '48%' : '100%',
+                                        } }
+                                    >
+                                        { approvalB === ApprovalState.PENDING ? (
+                                            <Dots>{ i18n._( t`Approving ${currencies[ Field.CURRENCY_B ]?.symbol}` ) }</Dots>
+                                        ) : (
+                                            i18n._( t`Approve ${currencies[ Field.CURRENCY_B ]?.symbol}` )
+                                        ) }
+                                    </Button>
+                                ) }
+                            </RowBetween>
+                        }
+                    </AutoColumn>
                 ) }
-            </HeadlessUiModal.BorderedContent>
+            { approvalA === ApprovalState.APPROVED && approvalB === ApprovalState.APPROVED && (
+                <ButtonError
+                    onClick={ () => {
+                        isExpertMode
+                            ? onAdd()
+                            : setContent(
+                                <ConfirmationModalContent
+                                    title={ noLiquidity ? i18n._( t`You are creating a pool` ) : i18n._( t`Confirm add liquidity` ) }
+                                    onDismiss={ handleDismissConfirmation }
+                                    topContent={ modalHeader }
+                                    bottomContent={ modalBottom }
+                                />
+                            )
+                    } }
+                    color={ error ? 'gray' : 'gradient' }
+                    size='lg'
+                    disabled={ approvalA !== ApprovalState.APPROVED || approvalB !== ApprovalState.APPROVED || !isValid }
+                    error={ !isValid && !!parsedAmounts[ Field.CURRENCY_A ] && !!parsedAmounts[ Field.CURRENCY_B ] }
+                >
+                    { error ? error : i18n._( t`Confirm Adding Liquidity` ) }
+                </ButtonError>
+            ) }
+
         </>
     )
 }

@@ -171,6 +171,7 @@ const FarmListItemDetailsStable = ( { farm, onDismiss, handleDismiss } ) => {
 
         <div className={ classNames( '' ) }>
             <div className={ classNames( COLUMN_CONTAINER ) }>
+
                 <HeadlessUiModal.Header
                     header={
                         <div className="flex gap-0.5 items-center">
@@ -179,6 +180,7 @@ const FarmListItemDetailsStable = ( { farm, onDismiss, handleDismiss } ) => {
                     }
                     onClose={ onDismiss }
                 />
+
                 <ToggleButtonGroup size="sm" value={ view } onChange={ ( view: OnsenModalView ) => updateView( view ) } variant="filled">
                     <ToggleButtonGroup.Button value={ OnsenModalView.Deposit }>{ i18n._( t`Deposit` ) }</ToggleButtonGroup.Button>
                     <ToggleButtonGroup.Button value={ OnsenModalView.Withdraw }>{ i18n._( t`Withdraw` ) }</ToggleButtonGroup.Button>
@@ -186,47 +188,52 @@ const FarmListItemDetailsStable = ( { farm, onDismiss, handleDismiss } ) => {
                 </ToggleButtonGroup>
 
                 {/*Dont unmount following components to make modal more react faster*/ }
-                <div className={ classNames( COLUMN_CONTAINER, [ OnsenModalView.Deposit, OnsenModalView.Withdraw ].includes( view ) ? 'block px-2' : 'hidden' ) }>
+                <div className={ classNames( COLUMN_CONTAINER, [ OnsenModalView.Deposit, OnsenModalView.Withdraw ].includes( view ) ? 'block' : 'hidden' ) }>
 
-                    <Typography variant="sm" className="text-secondary my-4">
-                        { i18n._( t`Use one of the buttons to set a percentage or enter a value manually using the input field` ) }
-                    </Typography>
 
-                    <RowBetween>
-                        <div className="text-base text-white">{ renderBalance() }</div>
-                        <div className="flex justify-end gap-2">
-                            { [ '25', '50', '75', '100' ].map( ( multiplier, i ) => (
-                                <Button
-                                    variant="outlined"
-                                    size="xs"
-                                    color={ !isWidthdraw ? 'blue' : 'pink' }
-                                    key={ i }
-                                    disabled={ !selectedBalance || !selectedBalance?.greaterThan( ZERO ) }
-                                    onClick={ () => { selectedBalance ? onMax( selectedBalance.multiply( multiplier ).divide( 100 ).toExact() ) : undefined } }
-                                    className={ classNames(
-                                        'text-md border border-opacity-50',
-                                        !isWidthdraw ? 'focus:ring-blue border-blue' : 'focus:ring-pink border-pink'
-                                    ) }
-                                >
-                                    { multiplier === '100' ? 'MAX' : multiplier + '%' }
-                                </Button>
-                            ) ) }
-                        </div>
-                    </RowBetween>
 
-                    <Input.Numeric
-                        className='w-full px-4 py-4 pr-20 rounded bg-dark-700 focus:ring focus:ring-dark-purple'
-                        label=''
-                        value={ typedValue }
-                        onUserInput={ handleInput }
-                        id="add-liquidity-input-token"
-                    />
+                    <div className='flex flex-col bg-light dark:bg-dark p-6 rounded-xl gap-6'>
+                        <RowBetween>
+                            <div className="text-base text-whitetext-base text-dark dark:text-light font-medium">{ renderBalance() }</div>
+                            <div className="flex justify-end gap-2">
+                                { [ '25', '50', '75', '100' ].map( ( multiplier, i ) => (
+                                    <Button
+                                        variant="outlined"
+                                        size="xs"
+                                        color={ !isWidthdraw ? 'blue' : 'pink' }
+                                        key={ i }
+                                        disabled={ !selectedBalance || !selectedBalance?.greaterThan( ZERO ) }
+                                        onClick={ () => { selectedBalance ? onMax( selectedBalance.multiply( multiplier ).divide( 100 ).toExact() ) : undefined } }
+                                        className={ classNames(
+                                            'text-xs !py-0.5 border border-opacity-50 text-dark dark:text-light bg-light-secondary dark:bg-dark-secondary',
+                                            !isWidthdraw ? 'focus:ring-blue border-blue' : 'focus:ring-pink border-pink'
+                                        ) }
+                                    >
+                                        { multiplier === '100' ? 'MAX' : multiplier + '%' }
+                                    </Button>
+                                ) ) }
+                            </div>
+                        </RowBetween>
+
+                        <Input.Numeric
+                            className='w-full px-4 py-4 pr-20 rounded-md bg-light-secondary dark:bg-dark-secondary focus:ring focus:ring-dark-purple'
+                            label=''
+                            value={ typedValue }
+                            onUserInput={ handleInput }
+                            id="add-liquidity-input-token"
+                        />
+
+                        <Typography variant="sm" className="text-light-text dark:text-light-text">
+                            { i18n._( t`Use one of the buttons to set a percentage or enter a value manually using the input field` ) }
+                        </Typography>
+                    </div>
+
 
                     <div className="w-full flex items-center justify-end">
                         <NavLink
                             href={ `/stable-pool/add/${String( liquidityToken?.symbol ).toLowerCase()}` }
                         >
-                            <a className="space-x-2 text-base cursor-pointer font text-secondary hover:text-high-emphesis">
+                            <a className="space-x-2 text-base cursor-pointer font text-dark dark:text-light font-medium hover:text-light-text dark:hover:text-dark-text">
                                 { i18n._( t`Add Liquidity` ) }
                             </a>
                         </NavLink>
@@ -234,7 +241,7 @@ const FarmListItemDetailsStable = ( { farm, onDismiss, handleDismiss } ) => {
 
                     <ButtonError
                         onClick={ () => { approved ? onDeposit() : approveACallback() } }
-                        color={ error ? 'gray' : 'blue' }
+                        color={ error ? 'gray' : 'gradient' }
                         disabled={ !!error }
                         error={ error && !!parsedAmount }
                     >
@@ -253,6 +260,8 @@ const FarmListItemDetailsStable = ( { farm, onDismiss, handleDismiss } ) => {
                         </> }
                     </ButtonError>
                 </div>
+
+
                 <div className={ classNames( COLUMN_CONTAINER, view === OnsenModalView.Position ? 'block' : 'hidden' ) }>
                     <InvestmentDetails farm={ farm } handleDismiss={ handleDismiss } />
                 </div>

@@ -52,11 +52,11 @@ const InvestmentDetails = ( { farm, handleDismiss } ) => {
 
     return (
         <>
-            { !isStableFarm && <HeadlessUiModal.BorderedContent className="flex flex-col gap-2 bg-dark-1000/40">
+            { !isStableFarm && <HeadlessUiModal.BorderedContent className="flex flex-col gap-2 bg-light dark:bg-dark !rounded-xl border-0 mt-4">
                 <PositionCard showUnwrapped={ true } pair={ pair } farm={ farm } />
             </HeadlessUiModal.BorderedContent>
             }
-            <HeadlessUiModal.BorderedContent className="flex flex-col gap-2 bg-dark-1000/40">
+            <HeadlessUiModal.BorderedContent className="flex flex-col gap-2 bg-light dark:bg-dark !rounded-xl border-0">
                 <MultiRewardsCard rewards={ pendingRewards } />
             </HeadlessUiModal.BorderedContent>
             <Alert

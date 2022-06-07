@@ -39,6 +39,7 @@ import { usePairContract } from 'app/hooks'
 import { useDerivedBurnInfo } from 'app/state/burn/hooks'
 import { useBurnState } from 'app/state/burn/hooks'
 import { ButtonConfirmed } from 'app/components/Button'
+import { TokenAmountCard } from 'app/components/TokenAmountCard'
 
 const DEFAULT_REMOVE_LIQUIDITY_SLIPPAGE_TOLERANCE = new Percent( 5, 1000 )
 
@@ -357,113 +358,100 @@ const PoolWithdraw = ( { currencyA, currencyB, header, handleDismiss } ) => {
 
     return (
         <>
-            <HeadlessUiModal.BorderedContent className="flex flex-col gap-4 bg-dark-1000/40 -z-10">
-                { header }
-                <AutoColumn gap="md">
-                    {/* <LiquidityHeader input={currencyA} output={currencyB} /> */ }
+            { header }
 
-                    <div>
-                        <RemovePercentInput
-                            value={ innerLiquidityPercentage }
-                            onUserInput={ setInnerLiquidityPercentage }
-                            id="liquidity-percent"
-                        />
+            <AutoColumn gap="md">
 
-                        <AutoColumn justify="space-between" className="py-2.5">
-                            <AutoRow justify={ 'flex-start' } style={ { padding: '0 1rem' } }>
-                                <button className="z-10 -mt-6 -mb-6 rounded-full cursor-default bg-light dark:bg-dark p-3px">
-                                    <div className="p-3 rounded-full bg-light-secondary dark:bg-dark-secondary">
-                                        <ArrowDownIcon width="32px" height="32px" />
-                                    </div>
-                                </button>
-                            </AutoRow>
-                        </AutoColumn>
+                <div>
 
-                        <div id="remove-liquidity-output" className="p-5 rounded bg-light-secondary dark:bg-dark-secondary">
-                            <div className="flex flex-col justify-between space-y-3">
-                                <div className="w-full text-white sm:w-2/5" style={ { margin: 'auto 0px' } }>
-                                    <AutoColumn>
-                                        <div>You will receive:</div>
-                                        { chainId && ( oneCurrencyIsWETH || oneCurrencyIsETH ) ? (
-                                            <RowBetween className="text-sm">
-                                                { oneCurrencyIsETH ? (
-                                                    <Link
-                                                        href={ `/remove/${currencyA?.isNative ? WNATIVE_ADDRESS[ chainId ] : currencyIdA}/${currencyB?.isNative ? WNATIVE_ADDRESS[ chainId ] : currencyIdB
-                                                            }` }
-                                                    >
-                                                        <a className="text-baseline text-blue opacity-80 hover:opacity-100 focus:opacity-100 whitespace-nowrap">
-                                                            Receive W{ NATIVE[ chainId ].symbol }
-                                                        </a>
-                                                    </Link>
-                                                ) : oneCurrencyIsWETH ? (
-                                                    <Link
-                                                        href={ `/remove/${currencyA?.equals( WNATIVE[ chainId ] ) ? 'EVMOS' : currencyIdA}/${currencyB?.equals( WNATIVE[ chainId ] ) ? 'EVMOS' : currencyIdB
-                                                            }` }
-                                                    >
-                                                        <a className="text-baseline text-blue opacity-80 hover:opacity-100 whitespace-nowrap">
-                                                            Receive { NATIVE[ chainId ].symbol }
-                                                        </a>
-                                                    </Link>
-                                                ) : null }
-                                            </RowBetween>
-                                        ) : null }
-                                    </AutoColumn>
+                    <RemovePercentInput
+                        value={ innerLiquidityPercentage }
+                        onUserInput={ setInnerLiquidityPercentage }
+                        id="liquidity-percent"
+                        className='bg-light dark:bg-dark rounded-xl p-4'
+                    />
+
+                    <AutoColumn>
+                        <AutoRow justify={ 'center' } className="p-1">
+                            <button className="z-10 -mt-4 -mb-4 rounded-2xl cursor-default bg-light-secondary dark:bg-dark-secondary p-1">
+                                <div className="p-2 rounded-xl bg-light dark:bg-dark">
+                                    <ArrowDownIcon width="14" height="14" />
                                 </div>
+                            </button>
+                        </AutoRow>
+                    </AutoColumn>
 
-                                <div className="flex flex-col space-y-3 md:flex-row md:space-x-6 md:space-y-0">
-                                    <div className="flex flex-row items-center w-full p-3 pr-8 space-x-3 rounded bg-light dark:bg-dark">
-                                        <CurrencyLogo currency={ currencyA } size="46px" />
-                                        <AutoColumn>
-                                            <div className="text-white truncate">{ formattedAmounts[ Field.CURRENCY_A ] || '-' }</div>
-                                            <div className="text-sm">{ currencyA?.symbol }</div>
-                                        </AutoColumn>
-                                    </div>
-                                    <div className="flex flex-row items-center w-full p-3 pr-8 space-x-3 rounded bg-light dark:bg-dark">
-                                        <CurrencyLogo currency={ currencyB } size="46px" />
-                                        <AutoColumn>
-                                            <div className="text-white truncate">{ formattedAmounts[ Field.CURRENCY_B ] || '-' }</div>
-                                            <div className="text-sm">{ currencyB?.symbol }</div>
-                                        </AutoColumn>
-                                    </div>
-                                </div>
+                    <div id="remove-liquidity-output" className="p-5 rounded bg-light dark:bg-dark">
+                        <div className="flex flex-col justify-between space-y-3">
+                            <div className="w-full text-white sm:w-2/5" style={ { margin: 'auto 0px' } }>
+                                <AutoColumn>
+                                    <div className='font-medium'>You will receive:</div>
+                                    { chainId && ( oneCurrencyIsWETH || oneCurrencyIsETH ) ? (
+                                        <RowBetween className="text-sm">
+                                            { oneCurrencyIsETH ? (
+                                                <Link
+                                                    href={ `/remove/${currencyA?.isNative ? WNATIVE_ADDRESS[ chainId ] : currencyIdA}/${currencyB?.isNative ? WNATIVE_ADDRESS[ chainId ] : currencyIdB
+                                                        }` }
+                                                >
+                                                    <a className="text-baseline text-blue opacity-80 hover:opacity-100 focus:opacity-100 whitespace-nowrap">
+                                                        Receive W{ NATIVE[ chainId ].symbol }
+                                                    </a>
+                                                </Link>
+                                            ) : oneCurrencyIsWETH ? (
+                                                <Link
+                                                    href={ `/remove/${currencyA?.equals( WNATIVE[ chainId ] ) ? 'EVMOS' : currencyIdA}/${currencyB?.equals( WNATIVE[ chainId ] ) ? 'EVMOS' : currencyIdB
+                                                        }` }
+                                                >
+                                                    <a className="text-baseline text-blue opacity-80 hover:opacity-100 whitespace-nowrap">
+                                                        Receive { NATIVE[ chainId ].symbol }
+                                                    </a>
+                                                </Link>
+                                            ) : null }
+                                        </RowBetween>
+                                    ) : null }
+                                </AutoColumn>
+                            </div>
+
+                            <div className="flex flex-col space-y-3 md:flex-row md:space-x-6 md:space-y-0">
+                                <TokenAmountCard amount={ parsedAmounts[ Field.CURRENCY_A ] } currency={ currencyA } />
+                                <TokenAmountCard amount={ parsedAmounts[ Field.CURRENCY_B ] } currency={ currencyB } />
                             </div>
                         </div>
                     </div>
+                </div>
 
-                    <div style={ { position: 'relative' } }>
-                        { !account ? (
-                            <Web3Connect />
-                        ) : isValid && approval !== ApprovalState.APPROVED && signatureData === null ? (
-                            <Button
-                                color="blue"
-                                onClick={ onAttemptToApprove }
-                                disabled={ approval !== ApprovalState.NOT_APPROVED || signatureData !== null }
-                            >
-                                { approval === ApprovalState.PENDING ? <Dots>{ i18n._( t`Approving` ) }</Dots> : i18n._( t`Approve` ) }
-                            </Button>
-                        ) : (
-                            <Button
-                                color={
-                                    !isValid && !!parsedAmounts[ Field.CURRENCY_A ] && !!parsedAmounts[ Field.CURRENCY_B ] ? 'red' : 'blue'
-                                }
-                                onClick={ () => {
-                                    setContent(
-                                        <ConfirmationModalContent
-                                            title={ i18n._( t`Confirm remove liquidity` ) }
-                                            onDismiss={ handleDismissConfirmation }
-                                            topContent={ modalHeader }
-                                            bottomContent={ modalBottom }
-                                        />
-                                    )
-                                } }
-                                disabled={ !isValid || ( signatureData === null && approval !== ApprovalState.APPROVED ) }
-                            >
-                                { error || i18n._( t`Confirm Withdrawal` ) }
-                            </Button>
-                        ) }
-                    </div>
-                </AutoColumn>
-            </HeadlessUiModal.BorderedContent>
+                <div style={ { position: 'relative' } }>
+                    { !account ? (
+                        <Web3Connect />
+                    ) : isValid && approval !== ApprovalState.APPROVED && signatureData === null ? (
+                        <Button
+                            color="blue"
+                            onClick={ onAttemptToApprove }
+                            disabled={ approval !== ApprovalState.NOT_APPROVED || signatureData !== null }
+                        >
+                            { approval === ApprovalState.PENDING ? <Dots>{ i18n._( t`Approving` ) }</Dots> : i18n._( t`Approve` ) }
+                        </Button>
+                    ) : (
+                        <Button
+                            color={ !isValid ? ( !!parsedAmounts[ Field.CURRENCY_A ] && !!parsedAmounts[ Field.CURRENCY_B ] ? 'red' : 'gray' ) : 'gradient' }
+                            onClick={ () => {
+                                setContent(
+                                    <ConfirmationModalContent
+                                        title={ i18n._( t`Confirm remove liquidity` ) }
+                                        onDismiss={ handleDismissConfirmation }
+                                        topContent={ modalHeader }
+                                        bottomContent={ modalBottom }
+                                    />
+                                )
+                            } }
+                            size='lg'
+                            disabled={ !isValid || ( signatureData === null && approval !== ApprovalState.APPROVED ) }
+                        >
+                            { error || i18n._( t`Confirm Withdrawal` ) }
+                        </Button>
+                    ) }
+                </div>
+            </AutoColumn>
         </>
     )
 }

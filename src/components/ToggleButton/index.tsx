@@ -5,11 +5,11 @@ import { Children, cloneElement, ComponentProps, FC, Fragment, isValidElement } 
 import { classNames } from '../../functions'
 
 const FILLED = {
-    group: 'border border-dark-800 rounded p-0.5 bg-light dark:bg-dark',
+    group: 'rounded-xl p-0.5',
     option: {
         // @ts-ignore TYPE NEEDS FIXING
         checked: ( checked ) => ( checked ? 'border-transparent border-gradient-r-blue-red-dark-900' : 'border-transparent' ),
-        default: 'py-1 rounded-lg border',
+        default: 'py-1 rounded-xl border',
     },
 }
 
@@ -18,7 +18,7 @@ const OUTLINED = {
     option: {
         // @ts-ignore TYPE NEEDS FIXING
         checked: ( checked ) => ( checked ? 'border-dark-700 bg-gradient-to-r from-blue to-pink' : 'border-dark-700' ),
-        default: 'py-3 rounded border',
+        default: 'py-3 rounded-xl border',
     },
 }
 
@@ -41,7 +41,7 @@ const ToggleButtonGroup: ToggleButtonGroup<Props> = ( {
 } ) => {
     return (
         // @ts-ignore TYPE NEEDS FIXING
-        <HeadlessRadioGroup { ...props } className={ classNames( className, `flex bg-dark-1000/40`, VARIANTS[ variant ].group ) }>
+        <HeadlessRadioGroup { ...props } className={ classNames( className, `flex bg-light dark:bg-dark-primary p-2`, VARIANTS[ variant ].group ) }>
             { Children.map( children, ( child ) => {
                 if ( isValidElement( child ) ) {
                     return cloneElement( child, {
