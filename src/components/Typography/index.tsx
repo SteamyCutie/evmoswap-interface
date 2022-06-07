@@ -1,7 +1,7 @@
 import React from 'react'
 import { classNames } from '../../functions'
 
-export type TypographyWeight = 400 | 500 | 700
+export type TypographyWeight = 400 | 500 | 600 | 700
 
 const WEIGHTS = {
     400: 'font-normal',
