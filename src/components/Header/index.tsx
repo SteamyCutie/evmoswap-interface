@@ -37,7 +37,7 @@ const AppBar = () => {
     const userEthBalance = useETHBalances( account ? [ account ] : [] )?.[ account ?? '' ]
 
     const navLinkStyle =
-        'p-2 text-base font-normal transition-all md:p-3 whitespace-nowrap !text-dark-primary dark:!text-light-primary'
+        'p-2 text-base font-normal transition-all md:p-3 whitespace-nowrap text-dark-primary dark:text-light-primary hover:text-light-text dark:hover:text-dark-text'
 
     const activeNavLinkStyle = '!font-semibold';
 
@@ -200,8 +200,7 @@ const AppBar = () => {
                                                 <Link href={ '/privatesale' }>
                                                     <a
                                                         id={ `prisale-nav-link` }
-                                                        className={ `${navLinkStyle} ${routeTag === 'privatesale' ? activeNavLinkStyle : ''
-                                                            }` }
+                                                        className={ `${navLinkStyle} ${routeTag === 'privatesale' ? activeNavLinkStyle : ''}` }
                                                     >
                                                         { ' ' }
                                                         { i18n._( t`Private sale` ) }
@@ -213,7 +212,7 @@ const AppBar = () => {
                                                 <Link href={ '/airdrops' }>
                                                     <a
                                                         id={ `airdrops-nav-link` }
-                                                        className="p-2 text-baseline text-primary hover:text-high-emphesis focus:text-high-emphesis md:p-3 whitespace-nowrap"
+                                                        className={ `${navLinkStyle} ${routeTag === 'airdrops' ? activeNavLinkStyle : ''}` }
                                                     >
                                                         { ' ' }
                                                         { i18n._( t`Airdrop` ) }
