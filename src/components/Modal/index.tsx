@@ -13,6 +13,15 @@ interface ModalProps {
     padding?: number
     maxWidth?: number
     className?: string
+    disableBackdrop?: boolean
+}
+
+export function applyModalFilter ( isOpen ) {
+    console.log( document.documentElement.classList, isOpen )
+    if ( isOpen )
+        document.documentElement.classList.add( 'modal-open' )
+    else
+        document.documentElement.classList.remove( 'modal-open' )
 }
 
 export default function Modal ( {
@@ -25,15 +34,15 @@ export default function Modal ( {
     padding = 5,
     maxWidth = 500,
     className = '',
+    disableBackdrop = false
 }: ModalProps ) {
 
     //@TODO: reverse this and add  backdrop-blur-md to Dialog and Dialog.Overlay when 'backdrop-filter' is widely supported.
     useEffect( () => {
-        if ( isOpen )
-            document.documentElement.classList.add( 'modal-open' )
-        else
-            document.documentElement.classList.remove( 'modal-open' )
-    }, [ isOpen ] )
+
+        if ( !disableBackdrop )
+            applyModalFilter( isOpen )
+    }, [ isOpen, disableBackdrop ] )
     return (
         <>
             <Transition appear show={ isOpen } as={ Fragment }>

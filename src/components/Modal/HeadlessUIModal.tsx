@@ -121,7 +121,6 @@ const HeadlessUiModalControlled: FC<ControlledModalProps> = ( {
                     >
                         <Dialog.Overlay
                             className={ classNames(
-                                isDesktop ? 'backdrop-blur-[10px]  bg-[rgb(0,0,0,0.4)]' : ' bg-[rgb(0,0,0,0.8)]',
                                 'fixed inset-0 filter'
                             ) }
                         />
@@ -144,10 +143,10 @@ const HeadlessUiModalControlled: FC<ControlledModalProps> = ( {
                     >
                         <div
                             className={ classNames(
-                                transparent ? '' : 'bg-light dark:bg-dark border border-dark-800',
+                                transparent ? '' : 'bg-light-secondary dark:bg-dark-secondary border border-light-stroke dark:border-dark-stroke',
                                 isDesktop ? MAX_WIDTH_CLASS_MAPPING[ maxWidth ] : '',
                                 isDesktop ? `w-full` : 'w-[85vw] max-h-[85vh] overflow-y-auto mx-auto',
-                                'inline-block align-bottom rounded-xl text-left overflow-hidden transform p-4'
+                                'inline-block align-bottom rounded-2.5xl text-left overflow-hidden transform p-6'
                             ) }
                         >
                             { children }
