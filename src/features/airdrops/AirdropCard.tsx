@@ -93,7 +93,8 @@ export default function AirdropCard ( { airdrop, evmoPrice, className = '' }: { 
                         <li>
                             <RowBetween>
                                 <Typography>{ i18n._( t`Collect your EMOs` ) }</Typography>
-                                <Typography weight={ 600 }>{ collectData.collectedAmount?.toFixed( 4 ) } ({ `~ ${usdPrice( collectData.collectedAmount?.toExact() )}` })</Typography>
+                                <Typography weight={ 600 }>{ claimableAmount?.toFixed( 4 ) } ({ `~ ${usdPrice( claimableAmount?.toExact() )}` })</Typography>
+                                {/*<Typography weight={ 600 }>{ collectData.collectedAmount?.toFixed( 4 ) } ({ `~ ${usdPrice( collectData.collectedAmount?.toExact() )}` })</Typography>*/ }
                             </RowBetween>
                         </li>
                         <li>
