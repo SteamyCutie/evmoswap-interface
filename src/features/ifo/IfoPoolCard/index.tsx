@@ -247,10 +247,10 @@ const IfoPoolCard: React.FC<IfoCardProps> = ( { poolId, ifo, publicIfoData, wall
         <div className="space-y-6 rounded-3xl bg-light-secondary dark:bg-dark-secondary">
             {/* <div className="flex flex-row justify-between p-6 rounded-t item-center bg-dark-600"> */ }
             <div
-                className={ `flex flex-row justify-between px-6 py-4 items-center rounded-t-3xl item-center bg-gradient-to-b ${poolId === PoolIds.poolBasic ? 'from-[#6c4999] to-[#6d4db2]' : 'from-[#00707f] to-[#19778c]'
+                className={ `flex flex-row justify-between px-6 py-4 items-center rounded-t-3xl item-center bg-gradient-to-b ${poolId === PoolIds.poolBasic ? 'from-blue to-light-blue' : 'from-blue to-light-blue'
                     }` }
             >
-                <div className="flex flex-row items-center text-2xl font-bold text-high-emphesis">
+                <div className="flex flex-row items-center text-2xl font-bold text-white">
                     { config.title }
                     {/* <QuestionHelper text={config.tooltip} /> */ }
                 </div>
@@ -276,7 +276,7 @@ const IfoPoolCard: React.FC<IfoCardProps> = ( { poolId, ifo, publicIfoData, wall
             <div className="flex gap-3 px-4">
                 <CurrencyLogo currency={ offerToken } size={ '48px' } />
                 <div className="flex flex-col overflow-hidden">
-                    <div className="text-2xl leading-7 tracking-[-0.01em] font-bold truncate text-high-emphesis">
+                    <div className="text-2xl leading-7 tracking-[-0.01em] font-bold truncate ">
                         { ifo[ poolId ].saleAmount } { offerToken.symbol }
                     </div>
                     <div className="text-sm font-bold leading-5 text-secondary">

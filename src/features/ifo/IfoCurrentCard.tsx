@@ -110,7 +110,7 @@ export const IfoCurrentCard = ( {
                 </Button>
             </div>
             { isOpen && (
-                <div className="w-full rounded rounded-t-none bg-light dark:bg-dark">
+                <div className="w-full rounded rounded-t-none bg-light dark:bg-dark border border-light-stroke dark:border-dark-stroke">
                     { publicIfoData.status === 'finished' && (
                         <div className="flex-row items-center w-full overflow-hidden">
                             <div className="flex rounded-[50%] w-[100%] translate-y-[-50%] scale-150 bg-[#372f47] h-[100px] justify-center items-end pb-4 md:pb-3 text-sm md:text-[16px] font-extrabold text-white/70">
@@ -224,25 +224,25 @@ export const IfoCurrentCard = ( {
                                 <div className="text-[14px] text-high-emphesis">{ ifo.description }</div>
                                 <div className="flex items-center gap-4 pb-4">
                                     <a href={ ifo.articleUrl } target="_blank" rel="noreferrer">
-                                        <GlobeAltIcon width={ 16 } className="text-low-emphesis" />
+                                        <GlobeAltIcon width={ 16 } className="" />
                                     </a>
                                     <a href={ getExplorerLink( chainId, ifo.address[ chainId ], 'address' ) } target="_blank" rel="noreferrer">
-                                        <BlocksIcon width={ 16 } className="text-low-emphesis" />
+                                        <BlocksIcon width={ 16 } className="" />
                                     </a>
                                     <a href={ ifo.telegramUrl } target="_blank" rel="noreferrer">
-                                        <TelegramIcon width={ 16 } className="text-low-emphesis" />
+                                        <TelegramIcon width={ 16 } className="" />
                                     </a>
                                     <a href={ ifo.twitterUrl } target="_blank" rel="noreferrer">
-                                        <TwitterIcon width={ 16 } className="text-low-emphesis" />
+                                        <TwitterIcon width={ 16 } className="" />
                                     </a>
                                     <a href={ ifo.discordUrl } target="_blank" rel="noreferrer">
-                                        <DiscordIcon width={ 16 } className="text-low-emphesis" />
+                                        <DiscordIcon width={ 16 } className="" />
                                     </a>
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <div className="grid items-center gap-2 px-8 pb-6 md:flex md:gap-4">
+                    <div className="flex flex-col items-center gap-2 px-8 pb-6 md:flex md:gap-4">
                         <div className="flex items-center space-x-2">
                             { ifo.twitterUrl && (
                                 <a
@@ -251,7 +251,7 @@ export const IfoCurrentCard = ( {
                                     rel="noreferrer"
                                     className="duration-100 ease-in transform-all hover:scale-[1.05] active:scale-[0.98]"
                                 >
-                                    <TwitterIcon width={ 24 } className="text-low-emphesis" />
+                                    <TwitterIcon width={ 24 } className="" />
                                 </a>
                             ) }
                             { ifo.articleUrl && (
@@ -261,7 +261,7 @@ export const IfoCurrentCard = ( {
                                     rel="noreferrer"
                                     className="duration-100 ease-in transform-all hover:scale-[1.05] active:scale-[0.98]"
                                 >
-                                    <NewspaperIcon width={ 24 } className="text-low-emphesis" />
+                                    <NewspaperIcon width={ 24 } className="" />
                                 </a>
                             ) }
                             { ifo.telegramUrl && (
@@ -271,7 +271,7 @@ export const IfoCurrentCard = ( {
                                     rel="noreferrer"
                                     className="duration-100 ease-in transform-all hover:scale-[1.05] active:scale-[0.98]"
                                 >
-                                    <TelegramIcon width={ 24 } className="text-low-emphesis" />
+                                    <TelegramIcon width={ 24 } className="" />
                                 </a>
                             ) }
                             { ifo.discordUrl && (
@@ -281,7 +281,7 @@ export const IfoCurrentCard = ( {
                                     rel="noreferrer"
                                     className="duration-100 ease-in transform-all hover:scale-[1.05] active:scale-[0.98]"
                                 >
-                                    <DiscordIcon width={ 24 } className="text-low-emphesis" />
+                                    <DiscordIcon width={ 24 } className="" />
                                 </a>
                             ) }
                         </div>

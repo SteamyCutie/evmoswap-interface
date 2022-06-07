@@ -4,8 +4,8 @@ import Button from 'app/components/Button'
 
 export const IfoInfoCard = () => {
     return (
-        <div className="px-4 py-6 mx-auto rounded sm:py-12 sm:px-8 lg:px-12 bg-light dark:bg-dark">
-            <h2 className="mb-4 md:mb-8 text-3xl font-extrabold text-center text-high-emphesis sm:text-4xl">How it works</h2>
+        <div className="px-4 py-6 mx-auto rounded sm:py-12 sm:px-8 lg:px-12 bg-light-secondary dark:bg-dark-secondary">
+            <h2 className="mb-4 md:mb-8 text-3xl font-extrabold text-center md:text-4xl">How it works</h2>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4 p-4">
                 <div className="flex space-x-6 items-center">
                     <div

@@ -38,17 +38,17 @@ export default function Ifo (): JSX.Element {
 
             <div className="col-span-4 space-y-6 lg:col-span-3">
                 {/* Hero */ }
-                <div className="flex-row items-center justify-between w-full p-8 space-y-2 rounded md:flex bg-light dark:bg-dark">
+                <div className="flex-row items-center justify-between w-full p-8 space-y-2 md:flex bg-light-secondary dark:bg-dark-secondary">
                     <div className="space-y-2 md:block">
-                        <Typography variant="h2" className="text-high-emphesis" weight={ 700 }>
+                        <Typography variant="h2" className="" weight={ 700 }>
                             { i18n._( t`Initial Evmos Offerings` ) }
                         </Typography>
                         <Typography variant="sm" weight={ 400 }>
                             { i18n._( t`Buy new tokens launching on Evmos Chain.` ) }
                         </Typography>
                         <a href="https://forms.gle/rg2ac5xAQKR8d6Ff6" target="_blank" rel="noreferrer">
-                            <div className="flex items-center gap-2 mt-2 text-sm font-bold font-Poppins">
-                                <div className="text-light-blue">{ i18n._( t`Apply for IEO` ) }</div>
+                            <div className="flex items-center gap-4 mt-2 text-sm font-bold font-Poppins">
+                                <div className="text-blue">{ i18n._( t`Apply for IEO` ) }</div>
                                 <ArrowRightIcon height={ 14 } className="" />
                             </div>
                         </a>

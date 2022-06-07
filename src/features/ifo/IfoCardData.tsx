@@ -130,7 +130,7 @@ const IfoCardData: React.FC<Props> = ( { ifo } ) => {
                         <div className="grid w-full grid-cols-1 gap-4 md:grid-cols-2">
                             <div className="space-y-6 rounded-3xl bg-light-secondary dark:bg-dark-secondary">
                                 <div className="flex flex-row justify-between px-6 py-4 items-center rounded-t-3xl item-center bg-gradient-to-b from-[#6c4999] to-[#6d4db2]">
-                                    <div className="flex flex-row items-center text-2xl font-bold text-high-emphesis">
+                                    <div className="flex flex-row items-center text-2xl font-bold ">
                                         Base Sale
                                         <div className="mt-1 ml-1">
                                             <QuestionHelper text="Every person can only commit a limited amount, but may expect a higher return per token committed." />
@@ -146,7 +146,7 @@ const IfoCardData: React.FC<Props> = ( { ifo } ) => {
                                         style={ { backgroundImage: `url('/images/ifo/${ifo.id}.svg')` } }
                                     ></div>
                                     <div className="flex flex-col overflow-hidden">
-                                        <div className="text-2xl leading-7 tracking-[-0.01em] font-bold truncate text-high-emphesis">
+                                        <div className="text-2xl leading-7 tracking-[-0.01em] font-bold truncate ">
                                             { ifo.poolBasic.saleAmount }
                                         </div>
                                         <div className="text-sm font-bold leading-5 text-secondary">
@@ -183,26 +183,26 @@ const IfoCardData: React.FC<Props> = ( { ifo } ) => {
                                 <div className="flex flex-col flex-grow px-4 pb-4 space-y-2">
                                     <div className="flex justify-between gap-0.5">
                                         <div className="text-sm font-medium leading-4 currentColor">Your committed:</div>
-                                        <div className="text-sm font-medium leading-4 text-high-emphesis">{ basicYourCommitted }</div>
+                                        <div className="text-sm font-medium leading-4 ">{ basicYourCommitted }</div>
                                     </div>
                                     <div className="flex justify-between gap-0.5">
                                         <div className="text-sm font-medium leading-4 currentColor">Total committed:</div>
-                                        <div className="text-sm font-medium leading-4 text-high-emphesis">{ basicTotalCommitted }</div>
+                                        <div className="text-sm font-medium leading-4 ">{ basicTotalCommitted }</div>
                                     </div>
                                     <div className="flex justify-between gap-0.5">
                                         <div className="text-sm font-medium leading-4 currentColor">Funds to raise:</div>
-                                        <div className="text-sm font-medium leading-4 text-high-emphesis">{ ifo.poolBasic.raiseAmount }</div>
+                                        <div className="text-sm font-medium leading-4 ">{ ifo.poolBasic.raiseAmount }</div>
                                     </div>
                                     <div className="flex justify-between gap-0.5">
                                         <div className="text-sm font-medium leading-4 currentColor">Price per { ifo.name }:</div>
-                                        <div className="text-sm font-medium leading-4 text-high-emphesis">${ ifo.tokenOfferingPrice }</div>
+                                        <div className="text-sm font-medium leading-4 ">${ ifo.tokenOfferingPrice }</div>
                                     </div>
                                 </div>
                             </div>
 
                             <div className="space-y-6 rounded-3xl bg-light-secondary dark:bg-dark-secondary">
-                                <div className="flex flex-row justify-between px-6 py-4 items-center rounded-t-3xl item-center bg-gradient-to-b from-[#00707f] to-[#19778c]">
-                                    <div className="flex flex-row items-center text-2xl font-bold text-high-emphesis">
+                                <div className="flex flex-row justify-between px-6 py-4 items-center rounded-t-3xl item-center bg-gradient-to-b from-blue to-light-blue">
+                                    <div className="flex flex-row items-center text-2xl font-bold ">
                                         Unlimited Sale
                                         <div className="mt-1 ml-1">
                                             <QuestionHelper text="Every person can only commit a limited amount, but may expect a higher return per token committed." />
@@ -218,7 +218,7 @@ const IfoCardData: React.FC<Props> = ( { ifo } ) => {
                                         style={ { backgroundImage: `url('/images/ifo/${ifo.id}.svg')` } }
                                     ></div>
                                     <div className="flex flex-col overflow-hidden">
-                                        <div className="text-2xl leading-7 tracking-[-0.01em] font-bold truncate text-high-emphesis">
+                                        <div className="text-2xl leading-7 tracking-[-0.01em] font-bold truncate ">
                                             { ifo.poolUnlimited.saleAmount }
                                         </div>
                                         <div className="text-sm font-bold leading-5 text-secondary">
@@ -255,29 +255,29 @@ const IfoCardData: React.FC<Props> = ( { ifo } ) => {
                                 <div className="flex flex-col flex-grow px-4 pb-4 space-y-2">
                                     <div className="flex justify-between gap-0.5">
                                         <div className="text-sm font-medium leading-4 currentColor">Your committed:</div>
-                                        <div className="text-sm font-medium leading-4 text-high-emphesis">{ unLimitedYourLPCommitted }</div>
+                                        <div className="text-sm font-medium leading-4 ">{ unLimitedYourLPCommitted }</div>
                                     </div>
                                     <div className="flex justify-between gap-0.5">
                                         <div className="text-sm font-medium leading-4 currentColor">Additional fee:</div>
-                                        <div className="text-sm font-medium leading-4 text-high-emphesis">{ unLimitedTaxRate }</div>
+                                        <div className="text-sm font-medium leading-4 ">{ unLimitedTaxRate }</div>
                                     </div>
                                     <div className="flex justify-between gap-0.5">
                                         <div className="text-sm font-medium leading-4 currentColor">Total committed:</div>
-                                        <div className="text-sm font-medium leading-4 text-high-emphesis">{ unLimitedTotalCommitted }</div>
+                                        <div className="text-sm font-medium leading-4 ">{ unLimitedTotalCommitted }</div>
                                     </div>
                                     <div className="flex justify-between gap-0.5">
                                         <div className="text-sm font-medium leading-4 currentColor">Funds to raise:</div>
-                                        <div className="text-sm font-medium leading-4 text-high-emphesis">
+                                        <div className="text-sm font-medium leading-4 ">
                                             { ifo.poolUnlimited.raiseAmount }
                                         </div>
                                     </div>
                                     <div className="flex justify-between gap-0.5">
                                         <div className="text-sm font-medium leading-4 currentColor">Price per { ifo.name }:</div>
-                                        <div className="text-sm font-medium leading-4 text-high-emphesis">${ ifo.tokenOfferingPrice }</div>
+                                        <div className="text-sm font-medium leading-4 ">${ ifo.tokenOfferingPrice }</div>
                                     </div>
                                     <div className="flex justify-between gap-0.5">
                                         <div className="text-sm font-medium leading-4 currentColor">Price per { ifo.name } with fee:</div>
-                                        <div className="text-sm font-medium leading-4 text-high-emphesis">
+                                        <div className="text-sm font-medium leading-4 ">
                                             { unLimitedPricePerTokenWithFee }
                                         </div>
                                     </div>

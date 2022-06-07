@@ -7,9 +7,9 @@ export const IfoIdeaCard = () => {
         window.scrollTo( 0, 0 )
     }
     return (
-        <div className="px-8 py-12 mx-auto rounded sm:py-12 sm:px-8 lg:px-12 bg-light dark:bg-dark">
-            <h2 className="mb-4 text-3xl font-extrabold text-center md:mb-8 text-high-emphesis sm:text-4xl">
-                OUR IEO IDEOLOGY
+        <div className="px-8 py-12 mx-auto rounded sm:py-12 sm:px-8 lg:px-12 bg-light-secondary dark:bg-dark-secondary">
+            <h2 className="mb-4 text-3xl font-extrabold text-center md:mb-8 md:text-4xl">
+                Our IEO Ideology
             </h2>
             <div className="grid items-start grid-cols-1 gap-8 p-8 md:grid-cols-3">
                 <div className="grid items-center gap-4 justify-items-center">
