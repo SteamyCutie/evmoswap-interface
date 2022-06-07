@@ -32,7 +32,7 @@ import BigNumber from 'bignumber.js'
 import { BIG_ONE, BIG_TEN } from 'app/functions/bigNumber'
 
 const tabStyle = 'flex justify-center items-center h-full w-full rounded-lg cursor-pointer text-sm md:text-base'
-const activeTabStyle = `${tabStyle} text-high-emphaise font-bold bg-light dark:bg-dark`
+const activeTabStyle = `${tabStyle} text-high-emphaise font-semibold bg-light dark:bg-dark`
 const inactiveTabStyle = `${tabStyle} text-secondary`
 
 export default function Prisale () {
@@ -158,34 +158,34 @@ export default function Prisale () {
                 <div className="flex justify-between h-[84px] gap-1 mb-5 md:h-24 md:gap-4">
                     <div className="w-1/2 h-full px-4 py-2 my-auto space-y-1 text-left rounded-lg md:py-4 sm:space-y-2 md:px-10 bg-light-secondary dark:bg-dark-secondary">
                         { currentTime - privateSaleStart.current < 0 ? (
-                            <div className="inline-block text-2xl font-bold text-white align-middle lg:text-3xl">
+                            <div className="inline-block text-2xl font-semibold align-middle lg:text-3xl">
                                 Private sale upcoming
                             </div>
                         ) : privateSaleEnd.current - currentTime > 0 ? (
                             <>
                                 <div className="text-base md:text-lg">Remaining time</div>
-                                <div className="text-sm font-bold text-white md:text-xl lg:text-2xl">{ `${remainingDay} Day ${remainingHour} Hour ${remainingMin} Mins` }</div>
+                                <div className="text-sm font-semibold md:text-xl lg:text-2xl">{ `${remainingDay} Day ${remainingHour} Hour ${remainingMin} Mins` }</div>
                             </>
                         ) : privateSaleEnd.current && ( privateSaleEnd.current - currentTime < 0 ) ? (
-                            <div className="inline-block text-xl font-bold text-white align-middle md:text-2xl lg:text-3xl">
+                            <div className="inline-block text-xl font-semibold align-middle md:text-2xl lg:text-3xl">
                                 Private sale ended
                             </div>
                         ) : (
-                            <div className="inline-block text-xl font-bold text-white align-middle md:text-2xl lg:text-3xl">
+                            <div className="inline-block text-xl font-semibold align-middle md:text-2xl lg:text-3xl">
                                 <Dots>Loading</Dots>
                             </div>
                         ) }
                     </div>
                     <div className="w-1/2 h-full px-4 py-2 my-auto space-y-1 text-left rounded-lg md:py-4 md:px-10 bg-light-secondary dark:bg-dark-secondary">
                         <div className="text-base md:text-lg">Remaining Tokens</div>
-                        <div className="text-base font-bold text-white md:text-xl lg:text-2xl">{ ( ( total_purchased.current[ 0 ] - total_purchased.current[ 1 ] ) / 1e18 ).toFixed() }</div>
+                        <div className="text-base font-semibold md:text-xl lg:text-2xl">{ ( ( total_purchased.current[ 0 ] - total_purchased.current[ 1 ] ) / 1e18 ).toFixed() }</div>
                     </div>
                 </div>
                 <div className="py-5 rounded-lg px-7 bg-light-secondary dark:bg-dark-secondary">
                     <div className="flex items-center justify-between">
                         <div className="space-y-1">
                             <div className="text-sm">Private sale</div>
-                            <div className="text-lg text-white">Buy { prisaleToken[ chainId ].symbol } (Token price $0.045)</div>
+                            <div className="text-lg">Buy { prisaleToken[ chainId ].symbol } (Token price $0.045)</div>
                         </div>
                         <div className="space-y-2">
                             { account && isWhitelisted.current ? (
@@ -238,16 +238,16 @@ export default function Prisale () {
 
                     <div className="justify-center md:flex md:gap-5">
                         <div className="px-5 py-9 border-[1px] border-gray-700 rounded-xl space-y-4 md:w-1/2">
-                            <div className="grid grid-cols-2 px-1 py-[3px] rounded-xl bg-dark-700">
+                            <div className="grid grid-cols-2 px-1 py-[3px] rounded-xl bg-light dark:bg-dark">
                                 <div
-                                    className={ `text-center my-auto py-4 rounded-xl hover:cursor-pointer hover:text-white ${toggle ? 'text-white font-bold bg-dark-850' : ''
+                                    className={ `text-center my-auto py-2 rounded-xl hover:cursor-pointer hover:${toggle ? 'font-semibold bg-blue text-white' : ' font-semibold'
                                         }` }
                                     onClick={ () => setToggle( true ) }
                                 >
                                     Use EVMOS
                                 </div>
                                 <div
-                                    className={ `text-center my-auto py-4 rounded-xl hover:cursor-pointer hover:text-white ${toggle ? '' : 'text-white font-bold bg-dark-850'
+                                    className={ `text-center my-auto py-2 rounded-xl hover:cursor-pointer hover:${toggle ? ' font-semibold' : 'font-semibold bg-blue text-white'
                                         }` }
                                     onClick={ () => setToggle( false ) }
                                 >
@@ -255,7 +255,9 @@ export default function Prisale () {
                                 </div>
                             </div>
                             <div className="flex justify-between gap-1 px-1">
-                                { i18n._( t`Balance: ` ) } { toggle ? nativeBalance.toFixed( 6 ) : usdcBalance.toFixed( 6 ) }
+                                <div className='font-medium'>
+                                    { i18n._( t`Balance: ` ) } { toggle ? nativeBalance.toFixed( 6 ) : usdcBalance.toFixed( 6 ) }
+                                </div>
                                 <button
                                     className="text-light-blue"
                                     onClick={ () => {
@@ -266,7 +268,7 @@ export default function Prisale () {
                                 </button>
                             </div>
                             <NumericalInput
-                                className="w-full px-4 py-4 pr-20 rounded bg-dark-700 focus:ring focus:ring-light-purple"
+                                className="w-full px-4 py-4 pr-20 rounded bg-light dark:bg-dark focus:ring focus:ring-light-stroke dark:focus:ring-dark-stroke"
                                 value={ investValue }
                                 onUserInput={ setInvestValue }
                             />
@@ -318,15 +320,15 @@ export default function Prisale () {
                                     </Button>
                                 ) }
                             </div>
-                            { showLimitTips && <div className='p-2 text-center text-white rounded-lg bg-red'>Maximum Allowed Exceeded</div> }
+                            { showLimitTips && <div className='p-2 text-center rounded-lg bg-red'>Maximum Allowed Exceeded</div> }
                         </div>
                         <div className="px-5 py-9 border-[1px] border-gray-700 rounded-xl space-y-6 md:w-1/2">
                             <div className="rounded-lg border-[1px] border-gray-700 space-y-1 py-2 px-4">
-                                <div className="text-base text-white">{ i18n._( t`Purchased ${prisaleToken[ chainId ].symbol}` ) }</div>
+                                <div className="text-base ">{ i18n._( t`Purchased ${prisaleToken[ chainId ].symbol}` ) }</div>
                                 <div className="text-base">{ ( purchasedToken.current / 1e18 ).toFixed() }(${ ( purchasedToken.current / 1e18 * ( tokenPrice.current / 1e6 ) ).toFixed() })</div>
                             </div>
                             <div className="rounded-lg border-[1px] border-gray-700 py-2 space-y-1 px-4">
-                                <div className="text-base text-white">{ i18n._( t`Unclaimed ${prisaleToken[ chainId ].symbol}` ) }</div>
+                                <div className="text-base ">{ i18n._( t`Unclaimed ${prisaleToken[ chainId ].symbol}` ) }</div>
                                 <div className="text-base">{ ( purchasedToken.current / 1e18 - claimedToken.current / 1e18 ).toFixed( 2 ) }</div>
                             </div>
                             { new Date().getTime() / 1e3 <= privateSaleEnd.current ? (
