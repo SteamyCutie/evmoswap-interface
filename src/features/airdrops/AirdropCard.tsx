@@ -73,33 +73,33 @@ export default function AirdropCard ( { airdrop, evmoPrice, className = '' }: { 
 
     return (
 
-        <div className={ classNames( 'flex flex-col  bg-light dark:bg-dark bg-opacity-80 rounded-b', className ) }>
-            <div className="flex flex-row items-center justify-between w-full p-6 bg-light-secondary dark:bg-dark-secondary text-lg rounded-t text-high-emphesis font-black">
+        <div className={ classNames( 'flex flex-col  bg-light dark:bg-dark rounded-2xl border-2 border-light-stroke dark:border-dark-stroke', className ) }>
+            <div className="flex flex-row items-center justify-between w-full p-6 bg-light-secondary dark:bg-dark-secondary text-lg rounded-t-2xl text-dark dark:text-light font-bold">
                 { i18n._( t`${airdrop.title}` ) }
             </div>
-            <div className="p-6 text-white h-full">
+            <div className="p-6 text-dark dark:text-light h-full font-medium text-base">
                 <Typography>{ i18n._( t`Airdrop amount` ) }: { formatNumber( airdrop.amount, false, false ) }</Typography>
                 <Typography>{ i18n._( t`Airdrop rules` ) }: { airdrop.description }</Typography>
 
                 { !isLinear &&
-                    <RowBetween className="my-4">
+                    <RowBetween className="my-4 mt-8">
                         <Typography>{ i18n._( t`Your claimable` ) }</Typography>
-                        <Typography>{ claimableAmount?.toFixed( 4 ) } ({ `~ ${usdPrice( claimableAmount.toExact() )}` })</Typography>
+                        <Typography weight={ 600 }>{ claimableAmount?.toFixed( 4 ) } ({ `~ ${usdPrice( claimableAmount.toExact() )}` })</Typography>
                     </RowBetween>
                 }
 
                 { isLinear &&
-                    <ol className="m-4 list-decimal">
+                    <ol className="m-4 mt-8 list-decimal">
                         <li>
                             <RowBetween>
                                 <Typography>{ i18n._( t`Collect your EMOs` ) }</Typography>
-                                <Typography>{ collectData.collectedAmount?.toFixed( 4 ) } ({ `~ ${usdPrice( collectData.collectedAmount?.toExact() )}` })</Typography>
+                                <Typography weight={ 600 }>{ collectData.collectedAmount?.toFixed( 4 ) } ({ `~ ${usdPrice( collectData.collectedAmount?.toExact() )}` })</Typography>
                             </RowBetween>
                         </li>
                         <li>
                             <RowBetween>
                                 <Typography>{ i18n._( t`Your claimable EMOs` ) }</Typography>
-                                <Typography>{ collectData.vestClaimable?.toFixed( 4 ) } ({ `~ ${usdPrice( collectData.vestClaimable?.toExact() )}` })</Typography>
+                                <Typography weight={ 600 }>{ collectData.vestClaimable?.toFixed( 4 ) } ({ `~ ${usdPrice( collectData.vestClaimable?.toExact() )}` })</Typography>
                             </RowBetween>
                         </li>
                     </ol>
@@ -112,7 +112,7 @@ export default function AirdropCard ( { airdrop, evmoPrice, className = '' }: { 
                 }
 
                 {
-                    !airdrop.startStatus && <Alert type='information' title='' message={ i18n._( t`Not yet started` ) } className='my-2 py-3 md:py-3 md:pl-4 md:pr-4 text-center' dismissable={ false } />
+                    !airdrop.startStatus && <Alert type='information' title='' message={ i18n._( t`Not yet started` ) } className='my-2 py-3 md:py-3 md:pl-4 md:pr-4 flex justify-center' dismissable={ false } />
                 }
 
 
@@ -139,7 +139,7 @@ export default function AirdropCard ( { airdrop, evmoPrice, className = '' }: { 
                                         loading={ pendingCollect }
                                         onClick={ handleCollect }
                                         className={ classNames( 'disabled:cursor-not-allowed', canCollect ? 'bg-blue-600' : '' ) }
-                                        color={ !canCollect ? 'gray' : 'blue' }
+                                        color={ !canCollect ? 'gray' : 'gradient' }
                                         disabled={ !canCollect || pendingCollect }>
                                         { i18n._( t`Collect` ) }
                                     </Button>
@@ -149,7 +149,7 @@ export default function AirdropCard ( { airdrop, evmoPrice, className = '' }: { 
                                     onClick={ handleClaim }
                                     loading={ pending }
                                     className={ classNames( 'disabled:cursor-not-allowed', canClaim ? 'bg-blue-600' : '' ) }
-                                    color={ !canClaim ? 'gray' : 'blue' }
+                                    color={ !canClaim ? 'gray' : 'gradient' }
                                     disabled={ !canClaim || pending }>
                                     {
                                         i18n._( t`${canClaim ? 'Claim' : 'Claimed!'}` )
@@ -165,7 +165,7 @@ export default function AirdropCard ( { airdrop, evmoPrice, className = '' }: { 
                                 onClick={ handleClaim }
                                 loading={ pending }
                                 className={ classNames( 'disabled:cursor-not-allowed', canClaim ? 'bg-blue-600' : '' ) }
-                                color={ !canClaim ? 'gray' : 'blue' }
+                                color={ !canClaim ? 'gray' : 'gradient' }
                                 disabled={ !canClaim || pending }>
                                 {
                                     i18n._( t`${canClaim ? 'Claim' : 'Claimed!'}` )

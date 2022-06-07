@@ -25,7 +25,7 @@ export default function Airdrops (): JSX.Element {
                 />
             </Head>
             <TridentHeader className="sm:!flex-row justify-center items-center" pattern="bg-bubble">
-                <Typography variant="h2" className="text-high-emphesis" weight={ 700 }>
+                <Typography variant="h2" weight={ 700 }>
                     { i18n._( t`EMO Airdrops` ) }
                 </Typography>
             </TridentHeader>
