@@ -18,7 +18,7 @@ import { useOnClickOutside } from '../../hooks/useOnClickOutside'
 import { CogIcon } from '../Icon'
 import { Divider } from '../Divider/Divider'
 
-export default function SettingsTab ( { placeholderSlippage }: { placeholderSlippage?: Percent } ) {
+export default function SettingsTab ( { placeholderSlippage, direction = "right" }: { placeholderSlippage?: Percent, direction?: string } ) {
     const { i18n } = useLingui()
 
     const node = useRef<HTMLDivElement>( null )
@@ -34,6 +34,11 @@ export default function SettingsTab ( { placeholderSlippage }: { placeholderSlip
 
     useOnClickOutside( node, open ? toggle : undefined )
 
+    const directions = {
+        right: "md:left-0",
+        left: ""
+    }
+
     return (
         <div className="relative flex" ref={ node }>
             <div
@@ -45,7 +50,7 @@ export default function SettingsTab ( { placeholderSlippage }: { placeholderSlip
             </div>
 
             { open && (
-                <div className="absolute z-50 right-2 md:left-0 -mr-3 md:ml-3 min-w-20 md:m-w-22 md:-mr-5 bg-white dark:bg-dark-primary border-2 border-light-stroke dark:border-dark-stroke rounded-xl w-64 shadow-lg">
+                <div className={ `${directions?.[ direction ]} absolute z-50 -mr-3 md:ml-0 md:-mr-5 min-w-20 md:m-w-22 right-2 bg-white dark:bg-dark-primary border-2 border-light-stroke dark:border-dark-stroke rounded-xl w-64 shadow-lg` }>
                     <div className="p-4 space-y-2">
                         <Typography className="text-dark-primary dark:text-light-primary pb-1 font-semibold transition-all">
                             { i18n._( t`Transaction Settings` ) }
@@ -101,7 +106,7 @@ export default function SettingsTab ( { placeholderSlippage }: { placeholderSlip
                 </div>
             ) }
 
-            <Modal isOpen={ showConfirmation } onDismiss={ () => setShowConfirmation( false ) }>
+            <Modal isOpen={ showConfirmation } onDismiss={ () => setShowConfirmation( false ) } disableBackdrop={ true }>
                 <div className="space-y-4">
                     <ModalHeader title={ i18n._( t`Are you sure?` ) } onClose={ () => setShowConfirmation( false ) } />
                     <Typography variant="base">
