@@ -38,7 +38,7 @@ export default function Stake () {
 
     const tabStyle =
         'flex justify-center items-center text-center h-full w-full rounded-lg cursor-pointer text-sm md:text-sm lg:text-base'
-    const activeTabStyle = `${tabStyle} text-high-emphesis font-bold bg-light dark:bg-dark`
+    const activeTabStyle = `${tabStyle} text-white font-bold bg-blue`
     const inactiveTabStyle = `${tabStyle} text-secondary`
 
     const router = useRouter()

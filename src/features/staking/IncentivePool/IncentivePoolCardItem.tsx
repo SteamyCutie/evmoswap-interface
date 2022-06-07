@@ -31,6 +31,7 @@ import Typography from 'app/components/Typography'
 import { ExternalLink as LinkIcon } from 'react-feather'
 import ExternalLink from 'app/components/ExternalLink'
 import QuestionHelper from 'app/components/QuestionHelper'
+import { Divider } from 'app/components/Divider/Divider'
 
 const IncentivePoolCardItem = ( { pool, ...rest } ) => {
     const { i18n } = useLingui()
@@ -53,9 +54,9 @@ const IncentivePoolCardItem = ( { pool, ...rest } ) => {
     const [ activeTab, setActiveTab ] = useState( 0 )
 
     const tabStyle =
-        'flex justify-center items-center text-center h-full w-full rounded-lg px-2 py-1 cursor-pointer text-sm text-sm'
-    const activeTabStyle = `${tabStyle} text-high-emphesis font-bold bg-blue/80`
-    const inactiveTabStyle = `${tabStyle} text-secondary`
+        'flex justify-center items-center text-center h-full w-full rounded-xl px-2 py-1 cursor-pointer text-sm text-sm'
+    const activeTabStyle = `${tabStyle} font-medium text-white bg-blue`
+    const inactiveTabStyle = `${tabStyle} font-bold`
 
     const typedDepositValue = tryParseAmount( depositValue, stakingToken )
     const typedWithdrawValue = tryParseAmount( withdrawValue, stakingToken )
@@ -162,7 +163,7 @@ const IncentivePoolCardItem = ( { pool, ...rest } ) => {
         //     </div>
         //   )}
         // </Disclosure>
-        <div className="grid select-none bg-light dark:bg-dark text-[#C3C6C7] rounded text-left text-sm">
+        <div className="grid select-none bg-light-secondary dark:bg-dark-secondary rounded-2xl text-left text-sm">
             <div className="grid p-6 pb-3 gap-y-2">
                 <div className="flex items-center justify-between">
                     <p>
@@ -222,9 +223,9 @@ const IncentivePoolCardItem = ( { pool, ...rest } ) => {
                     </div>
                 </div>
             </div>
-            <hr className="w-full border-[#303336]" />
+            <Divider />
             <div className="grid p-6 py-3 gap-y-2 mb-1">
-                <div className="flex m-auto mb-2 rounded md:m-0 w-full h-12 bg-light-secondary dark:bg-dark-secondary">
+                <div className="flex m-auto mb-2 rounded md:m-0 w-full h-12 bg-light dark:bg-dark">
                     <div className="w-6/12 h-full p-1" onClick={ () => setActiveTab( 0 ) }>
                         <div className={ activeTab === 0 ? activeTabStyle : inactiveTabStyle }>
                             <p>Staking</p>
@@ -254,7 +255,7 @@ const IncentivePoolCardItem = ( { pool, ...rest } ) => {
                     ) }
                     <div className="relative flex items-center mb-2 w-full">
                         <NumericalInput
-                            className="w-full px-3 py-2 pr-4 rounded-lg bg-dark-700 focus:ring focus:ring-dark-purple"
+                            className="w-full px-3 py-2 pr-4 rounded-md  bg-light dark:bg-dark focus:ring focus:ring-light-stroke dark:focus:ring-dark-stroke"
                             value={ depositValue }
                             onUserInput={ setDepositValue }
                         />
@@ -274,7 +275,7 @@ const IncentivePoolCardItem = ( { pool, ...rest } ) => {
                                         )
                                     }
                                 } }
-                                className="absolute border-0 right-2 rounded focus:ring focus:ring-light-purple"
+                                className="absolute border-0 right-2 rounded focus:ring focus:ring-light-stroke dark:focus:ring-dark-stroke"
                             >
                                 { i18n._( t`MAX` ) }
                             </Button>
@@ -294,7 +295,7 @@ const IncentivePoolCardItem = ( { pool, ...rest } ) => {
                         <Button
                             className="w-full"
                             style={ { paddingTop: '0.5rem', paddingBottom: '0.5rem' } }
-                            color="blue"
+                            color="gradient"
                             disabled={
                                 pendingTx ||
                                 !typedDepositValue ||
@@ -333,7 +334,7 @@ const IncentivePoolCardItem = ( { pool, ...rest } ) => {
                     ) }
                     <div className="relative flex items-center w-full mb-2">
                         <NumericalInput
-                            className="w-full px-3 py-2 pr-4 rounded-lg bg-dark-700 focus:ring focus:ring-light-purple"
+                            className="w-full px-3 py-2 pr-4 rounded-md  bg-light dark:bg-dark focus:ring focus:ring-light-stroke dark:focus:ring-dark-stroke"
                             value={ withdrawValue }
                             onUserInput={ setWithdrawValue }
                         />
@@ -347,7 +348,7 @@ const IncentivePoolCardItem = ( { pool, ...rest } ) => {
                                         setWithdrawValue( amount?.toFixed( stakingToken?.decimals ) )
                                     }
                                 } }
-                                className="absolute border-0 right-2 focus:ring focus:ring-light-purple"
+                                className="absolute border-0 right-2 focus:ring focus:ring-light-stroke dark:focus:ring-dark-stroke"
                             >
                                 { i18n._( t`MAX` ) }
                             </Button>
@@ -356,7 +357,7 @@ const IncentivePoolCardItem = ( { pool, ...rest } ) => {
                     <Button
                         className="w-full"
                         style={ { paddingTop: '0.5rem', paddingBottom: '0.5rem' } }
-                        color="blue"
+                        color="gradient"
                         disabled={ pendingTx || !typedWithdrawValue || amount?.lessThan( typedWithdrawValue ) }
                         onClick={ async () => {
                             setPendingTx( true )
@@ -377,7 +378,7 @@ const IncentivePoolCardItem = ( { pool, ...rest } ) => {
                     </Button>
                 </div>
             </div>
-            <hr className="w-full border-[#303336]" />
+            <Divider />
             <div className="grid p-6 pt-3 gap-y-1">
                 <div className="flex items-center justify-between">
                     <p>{ i18n._( t`Ends in` ) }</p>
