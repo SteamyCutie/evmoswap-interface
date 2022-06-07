@@ -61,6 +61,7 @@ module.exports = {
                 },
                 yellow: {
                     DEFAULT: '#EC8F04',
+                    light: '#F2CC06'
                 },
                 pink: {
                     DEFAULT: '#f338c3',

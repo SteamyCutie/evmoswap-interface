@@ -16,10 +16,11 @@ import { ChevronRightIcon } from '@heroicons/react/solid'
 import { useBuyGemEMO, useSellGemEMO } from './useGemEMO'
 import { useSingleCallResult } from 'app/state/multicall/hooks'
 import Loader from 'app/components/Loader'
+import { RowBetween } from 'app/components/Row'
 
 const GEmoControl = () => {
-    const styleCard = 'grid w-full p-4 md:p-6 rounded-xl bg-light dark:bg-dark/60 gap-3'
-    const styleItem = 'grid p-8 py-6 rounded-xl bg-light dark:bg-dark w-full text-center uppercase'
+    const styleCard = 'flex flex-col gap-3 w-full rounded-xl bg-light-secondary dark:bg-dark-secondary gap-3'
+    const styleItem = 'flex flex-col p-8 py-6 rounded-xl bg-light dark:bg-dark w-full text-center justify-start'
 
     const convertRate = 0.7
     const returnFee = 0.02
@@ -81,22 +82,26 @@ const GEmoControl = () => {
     }, [ addTransaction, earningToken?.symbol, handleSell, returnValue, stakingToken?.symbol ] )
 
     return (
-        <div className="grid items-start justify-center w-full grid-cols-1 gap-4 bg-center bg-no-repeat bg-cover md:gap-0 md:grid-cols-2 rounded-2xl md:flex">
-            <div className={ `${styleCard} md:rounded-r-none md:pr-3` }>
-                <div className={ styleItem }>
-                    <p className="font-extrabold">Convert</p>
-                    <p className="flex items-center justify-center text-sm font-extrabold text-yellow">
+        <div className="grid grid-cols-1 md:grid-cols-2 justify-center w-full gap-4 bg-center bg-no-repeat bg-cover rounded-2xl">
+
+            {/** Deposit */ }
+            <div className={ `${styleCard} md:rounded-r-none md:pr-3 mt-8` }>
+                <div className={ `${styleItem} font-medium text-lg` }>
+                    <p className="">Convert</p>
+                    <p className="flex items-center justify-center font-bold text-yellow-light">
                         EMO <ChevronRightIcon width={ 24 } /> GEMO
                     </p>
                 </div>
-                <div className={ styleItem }>
-                    <div className="mb-2 text-sm text-right normal-case">
-                        { stakeBalance ? Number( stakeBalance?.toFixed( stakingToken.decimals ) ).toFixed( 2 ) : 0 } { stakingToken?.symbol }{ ' ' }
-                        Available
-                    </div>
+                <div className={ `${styleItem} h-full space-y-6` }>
+                    <RowBetween>
+                        <div className='font-medium'>Available</div>
+                        <div className='font-bold'>
+                            { stakeBalance ? Number( stakeBalance?.toFixed( stakingToken.decimals ) ).toFixed( 2 ) : 0 } { stakingToken?.symbol }{ ' ' }
+                        </div>
+                    </RowBetween>
                     <div className="relative flex items-center w-full mb-4">
                         <NumericalInput
-                            className="w-full px-4 py-4 pr-20 rounded bg-dark-700 focus:ring focus:ring-dark-purple"
+                            className="w-full px-4 py-4 pr-20 rounded-md text-2xl font-semibold focus:ring focus:ring-light-stroke dark:focus:ring-dark-stroke bg-light-secondary dark:bg-dark-secondary"
                             value={ depositValue }
                             onUserInput={ setDepositValue }
                         />
@@ -114,7 +119,7 @@ const GEmoControl = () => {
                                         )
                                     }
                                 } }
-                                className="absolute border-0 right-4 focus:ring focus:ring-light-purple"
+                                className="absolute border-0 right-4 focus:ring focus:ring-light-stroke dark:focus:ring-dark-stroke"
                             >
                                 { i18n._( t`MAX` ) }
                             </Button>
@@ -125,6 +130,7 @@ const GEmoControl = () => {
                         <Button
                             className="w-full"
                             color="gradient"
+                            size="lg"
                             disabled={ approvalDepositState === ApprovalState.PENDING }
                             onClick={ approveDeposit }
                         >
@@ -140,7 +146,8 @@ const GEmoControl = () => {
                     ) : (
                         <Button
                             className="w-full"
-                            color="blue"
+                            color={ typedDepositValue?.greaterThan( ZERO ) ? "gradient" : "gray" }
+                            size="lg"
                             disabled={
                                 pendingConvert ||
                                 !typedDepositValue ||
@@ -155,39 +162,54 @@ const GEmoControl = () => {
                                     <Dots>{ i18n._( t`Confirming` ) }</Dots>
                                 </div>
                             ) : (
-                                i18n._( t`Convert` )
+                                i18n._( t`${typedDepositValue?.greaterThan( ZERO ) ? 'Convert' : 'Enter an amount'}` )
                             ) }
                         </Button>
                     ) }
-                    <div className="mt-8 font-extrabold">Output GEMO { Number( Number( depositValue ) * convertRate ).toFixed( 2 ) }</div>
-                    <div className="mb-2 text-sm font-extrabold normal-case">
-                        * Current max conversion is { maxValue === initMax ? initMax : 'unlimited' }
+
+                    <div className='font-medium text-sm'>
+                        <RowBetween className="mt-8">
+                            <div >Output GEMO</div>
+                            <div className='font-semibold'> { Number( Number( depositValue ) * convertRate ).toFixed( 2 ) }</div>
+                        </RowBetween>
+
+                        <RowBetween className="mt-2">
+                            <div>Current max conversion</div>
+                            <div className='font-semibold'> { maxValue === initMax ? initMax : 'unlimited' }</div>
+                        </RowBetween>
                     </div>
-                    <div className="flex items-center gap-4 mt-4 text-sm text-left normal-case">
+
+                    <div className="flex items-center gap-4 mt-4 text-sm text-left leading-4">
                         <Checkbox
                             checked={ maxValue !== initMax }
                             color="blue"
                             set={ () => setMaxValue( maxValue === initMax ? 1000000000 : initMax ) }
+                            className="!rounded-md"
                         />
                         I understand what I am doing and want to enable unlimited conversion.
                     </div>
                 </div>
             </div>
-            <div className={ `${styleCard} md:rounded-l-none md:pl-3` }>
-                <div className={ styleItem }>
-                    <p className="font-extrabold">Return</p>
-                    <p className="flex items-center justify-center text-sm font-extrabold text-yellow">
+
+
+            {/** Returned */ }
+            <div className={ `${styleCard} md:rounded-l-none md:pl-3 mt-8` }>
+                <div className={ `${styleItem} font-medium text-lg` }>
+                    <p className="">Return</p>
+                    <p className="flex items-center justify-center font-bold text-yellow-light">
                         GEMO <ChevronRightIcon width={ 24 } /> EMO
                     </p>
                 </div>
-                <div className={ styleItem }>
-                    <div className="mb-2 text-sm text-right normal-case">
-                        { earnBalance ? Number( earnBalance?.toFixed( earningToken.decimals ) ).toFixed( 2 ) : 0 } { earningToken?.symbol }{ ' ' }
-                        Available
-                    </div>
+                <div className={ `${styleItem}  h-full space-y-6` }>
+                    <RowBetween>
+                        <div className='font-medium'>Available</div>
+                        <div className='font-bold'>
+                            { earnBalance ? Number( earnBalance?.toFixed( earningToken.decimals ) ).toFixed( 2 ) : 0 } { earningToken?.symbol }{ ' ' }
+                        </div>
+                    </RowBetween>
                     <div className="relative flex items-center w-full mb-4">
                         <NumericalInput
-                            className="w-full px-4 py-4 pr-20 rounded bg-dark-700 focus:ring focus:ring-dark-purple"
+                            className="w-full px-4 py-4 pr-20 rounded-md text-2xl font-semibold focus:ring focus:ring-light-stroke dark:focus:ring-dark-stroke bg-light-secondary dark:bg-dark-secondary"
                             value={ returnValue }
                             onUserInput={ setReturnValue }
                         />
@@ -201,7 +223,7 @@ const GEmoControl = () => {
                                         setReturnValue( earnBalance?.toFixed( earningToken?.decimals ) )
                                     }
                                 } }
-                                className="absolute border-0 right-4 focus:ring focus:ring-light-purple"
+                                className="absolute border-0 right-4 focus:ring focus:ring-light-stroke dark:focus:ring-dark-stroke"
                             >
                                 { i18n._( t`MAX` ) }
                             </Button>
@@ -211,6 +233,7 @@ const GEmoControl = () => {
                     { approvalReturnState === ApprovalState.NOT_APPROVED || approvalReturnState === ApprovalState.PENDING ? (
                         <Button
                             className="w-full"
+                            size="lg"
                             color="gradient"
                             disabled={ approvalReturnState === ApprovalState.PENDING }
                             onClick={ approveReturn }
@@ -224,7 +247,8 @@ const GEmoControl = () => {
                     ) : (
                         <Button
                             className="w-full"
-                            color="blue"
+                            color={ typedReturnValue?.greaterThan( ZERO ) ? "gradient" : "gray" }
+                            size="lg"
                             disabled={ pendingReturn || !typedReturnValue || Number( earnBalance ) < Number( typedReturnValue.toFixed() ) }
                             onClick={ sell }
                         >
@@ -234,14 +258,22 @@ const GEmoControl = () => {
                                     <Dots>{ i18n._( t`Confirming` ) }</Dots>
                                 </div>
                             ) : (
-                                i18n._( t`Return` )
+                                i18n._( t`${Number( returnValue ) ? 'Return' : 'Enter an amount'}` )
                             ) }
                         </Button>
                     ) }
-                    <div className="mt-8 font-extrabold">
-                        Output EMO { Number( Number( returnValue ) * ( 1 - returnFee ) ).toFixed( 2 ) }
+
+                    <div className='font-medium text-sm'>
+                        <RowBetween className="mt-8">
+                            <div>Output EMO</div>
+                            <div className='font-semibold'> { Number( Number( returnValue ) * ( 1 - returnFee ) ).toFixed( 2 ) }</div>
+                        </RowBetween>
+
+                        <RowBetween className="mt-2">
+                            <div>After 2% reflect fees</div>
+                        </RowBetween>
                     </div>
-                    <div className="mb-2 text-sm font-extrabold normal-case md:mb-16">*After 2% reflect fees</div>
+
                 </div>
             </div>
         </div>
