@@ -37,7 +37,7 @@ const AppBar = () => {
     const userEthBalance = useETHBalances( account ? [ account ] : [] )?.[ account ?? '' ]
 
     const navLinkStyle =
-        'p-2 text-base font-normal transition-all md:p-3 whitespace-nowrap text-dark-primary dark:text-light-primary hover:text-light-text dark:hover:text-dark-text'
+        'p-2 text-base font-normal transition-all md:p-3 whitespace-nowrap !text-dark dark:!text-light hover:!text-dark/60 dark:hover:!text-light/80'
 
     const activeNavLinkStyle = '!font-semibold';
 
