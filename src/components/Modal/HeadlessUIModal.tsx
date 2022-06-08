@@ -11,7 +11,7 @@ import ModalError, { ModalActionErrorProps } from 'app/components/Modal/Error'
 import ModalHeader, { ModalHeaderProps } from 'app/components/Modal/Header'
 import SubmittedModalContent, { SubmittedModalContentProps } from 'app/components/Modal/SubmittedModalContent'
 import { classNames } from 'app/functions'
-import { cloneElement, FC, isValidElement, ReactNode, useCallback, useMemo, useState } from 'react'
+import { cloneElement, FC, isValidElement, ReactNode, useCallback, useEffect, useMemo, useState } from 'react'
 import React, { Fragment } from 'react'
 
 const MAX_WIDTH_CLASS_MAPPING = {
@@ -24,6 +24,7 @@ const MAX_WIDTH_CLASS_MAPPING = {
 }
 
 import useDesktopMediaQuery from '../../hooks/useDesktopMediaQuery'
+import { applyModalFilter } from '.'
 
 interface TriggerProps {
     open: boolean
@@ -92,6 +93,7 @@ interface ControlledModalProps {
     transparent?: boolean
     maxWidth?: 'sm' | 'md' | 'lg' | 'xl' | '2xl' | '3xl'
     unmount?: boolean
+    disableBackdrop?: boolean
 }
 
 const HeadlessUiModalControlled: FC<ControlledModalProps> = ( {
@@ -102,9 +104,16 @@ const HeadlessUiModalControlled: FC<ControlledModalProps> = ( {
     transparent = false,
     maxWidth = 'lg',
     unmount,
+    disableBackdrop = false
 } ) => {
     // const isDesktop = useDesktopMediaQuery()
     const isDesktop = window.innerWidth > 1024 ? true : false
+
+    useEffect( () => {
+        if ( !disableBackdrop )
+            applyModalFilter( isOpen )
+    }, [ isOpen, disableBackdrop ] )
+
     return (
         <Transition appear show={ isOpen } as={ Fragment } afterLeave={ afterLeave } unmount={ unmount }>
             <Dialog as="div" className="fixed z-50 inset-0" onClose={ onDismiss } unmount={ unmount }>
