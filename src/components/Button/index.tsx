@@ -18,7 +18,7 @@ const FILLED = {
     gray: 'shadow-sm focus:ring-2 focus:ring-offset-2 bg-opacity-90 w-full bg-grey-light dark:bg-light-text text-light hover:bg-opacity-100 focus:ring-offset-dark-700 focus:ring-dark-900 disabled:bg-opacity-90',
     green: 'bg-green bg-opacity-90 w-full text-light-primary hover:bg-opacity-100 disabled:bg-opacity-90',
     gradient:
-        'w-full text-light-primary bg-gradient-to-r from-blue-special to-pink-special opacity-100 hover:opacity-80 disabled:bg-opacity-80',
+        'w-full text-light-primary bg-gradient-to-r from-blue-light to-pink-light opacity-100 hover:opacity-80 disabled:bg-opacity-80',
 }
 
 const OUTLINED = {

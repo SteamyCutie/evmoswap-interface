@@ -50,6 +50,7 @@ module.exports = {
                     DEFAULT: '#0085FF',
                     'special': '#0085FF',
                     600: '#418AE8',
+                    light: '#379FFF',
                 },
                 green: {
                     DEFAULT: '#7cff6b',
@@ -67,7 +68,8 @@ module.exports = {
                     DEFAULT: '#f338c3',
                     red: '#FE5A75',
                     special: '#FE3DD4E1',
-                    900: '#B102AA'
+                    900: '#B102AA',
+                    light: '#FE3DD4'
                 },
                 grey: {
                     DEFAULT: '#AFAFC5',
