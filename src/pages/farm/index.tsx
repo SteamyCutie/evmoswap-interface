@@ -13,7 +13,7 @@ import NavLink from 'app/components/NavLink'
 import SearchPools from 'app/components/SearchPools'
 import Head from 'next/head'
 
-const tabStyle = 'flex justify-center items-center h-full w-full rounded-lg cursor-pointer px-2 py-1 md:px-8 md:py-3 text-xs md:text-base whitespace-nowrap font-medium'
+const tabStyle = 'flex justify-center items-center text-center h-full w-full rounded-lg cursor-pointer px-2 py-1 md:px-8 md:py-3 text-sm md:text-base font-medium leading-tight'
 const activeTabStyle = `${tabStyle} text-white font-semibold bg-blue`
 const inactiveTabStyle = `${tabStyle} text-dark dark:text-light`
 

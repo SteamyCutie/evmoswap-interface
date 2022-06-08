@@ -88,7 +88,7 @@ const FarmListItem: FC<FarmListItem> = ( { farm, onClick } ) => {
                         <div className='flex flex-col font-semibold'>
                             {
                                 pendingRewards.map( ( reward, index ) => (
-                                    <div>{ `${reward?.toFixed( 2 )} ${reward?.currency?.symbol}` }</div>
+                                    <div key={ index }>{ `${reward?.toFixed( 2 )} ${reward?.currency?.symbol}` }</div>
                                 ) )
                             }
                         </div>

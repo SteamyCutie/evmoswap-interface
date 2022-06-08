@@ -17,7 +17,6 @@ interface ModalProps {
 }
 
 export function applyModalFilter ( isOpen ) {
-    console.log( document.documentElement.classList, isOpen )
     if ( isOpen )
         document.documentElement.classList.add( 'modal-open' )
     else

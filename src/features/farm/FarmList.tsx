@@ -8,13 +8,12 @@ import { classNames } from 'app/functions'
 import { useInfiniteScroll } from './hooks'
 import useSortableData from 'app/hooks/useSortableData'
 import { useActiveWeb3React } from 'app/services/web3'
-import React, { FC, useCallback, useEffect, useState } from 'react'
+import React, { FC, useCallback, useState } from 'react'
 import InfiniteScroll from 'react-infinite-scroll-component'
 
 import FarmListItem from './FarmListItem'
 import { FarmType } from 'app/constants/farms'
 import FarmListItemDetailsStable from './FarmListItemDetailsStable'
-import { applyModalFilter } from 'app/components/Modal'
 
 export const TABLE_WRAPPER_DIV_CLASSNAME =
     'overflow-x-auto border border-light-stroke dark:border-dark-stroke rounded-xl bg-light dark:bg-dark p-2'
@@ -52,10 +51,6 @@ const FarmList = ( { farms } ) => {
     const handleDismiss = useCallback( () => {
         setOpen( false )
     }, [] )
-
-    useEffect( () => {
-        applyModalFilter( open )
-    }, [ open ] )
 
     return (
         <>

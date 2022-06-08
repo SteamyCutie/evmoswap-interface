@@ -1,12 +1,9 @@
 import { getAddress } from '@ethersproject/address'
 import { BigNumber } from '@ethersproject/bignumber'
-import { MinusIcon, PlusIcon } from '@heroicons/react/solid'
 import { i18n } from '@lingui/core'
 import { t } from '@lingui/macro'
 import { ChainId, Token } from '@evmoswap/core-sdk'
 import Button from 'app/components/Button'
-import HeadlessUiModal from 'app/components/Modal/HeadlessUIModal'
-import Switch from 'app/components/Switch'
 import Typography from 'app/components/Typography'
 import Web3Connect from 'app/components/Web3Connect'
 import { useFarmListItemDetailsModal } from './FarmListItemDetails'
@@ -20,10 +17,9 @@ import React, { useState } from 'react'
 import { Chef } from './enum'
 import { useUserInfo } from './hooks'
 import useMasterChef from './useMasterChef'
-import NumericalInput from 'app/components/NumericalInput'
 import Dots from 'app/components/Dots'
 import { MASTERCHEF_ADDRESS } from 'app/constants/addresses'
-import Settings from 'app/components/Settings'
+import { SettingsTabControlled as Settings } from 'app/components/Settings'
 import RemovePercentInput from 'app/components/RemovePercentInput'
 
 const APPROVAL_ADDRESSES = {
@@ -39,7 +35,10 @@ const APPROVAL_ADDRESSES = {
 const ManageBar = ( { farm, handleDismiss } ) => {
     const { account, chainId } = useActiveWeb3React()
     const { setContent } = useFarmListItemDetailsModal()
+
     const [ toggle, setToggle ] = useState( true )
+    const [ toggleSettings, setToggleSettings ] = useState( false )
+
     const [ depositValue, setDepositValue ] = useState<string>()
     const [ withdrawValue, setWithdrawValue ] = useState<string>()
     const { deposit, withdraw } = useMasterChef( farm.chef )
@@ -86,7 +85,14 @@ const ManageBar = ( { farm, handleDismiss } ) => {
                         <button className={ `${toggle ? activeNavLinkStyle : navLinkStyle}` } onClick={ () => setToggle( true ) }>{ i18n._( t`Stake liquidity` ) }</button>
                         <button className={ `${!toggle ? activeNavLinkStyle : navLinkStyle}` } onClick={ () => setToggle( false ) }>{ i18n._( t`Unstake liquidity` ) }</button>
                     </div>
-                    <Settings direction="left" />
+                    <Settings
+                        isOpened={ toggleSettings }
+                        toggle={ () => {
+                            setToggleSettings( !toggleSettings )
+                        } }
+                        direction="left"
+                        className="!mr-5"
+                    />
                 </div>
             </div>
 
