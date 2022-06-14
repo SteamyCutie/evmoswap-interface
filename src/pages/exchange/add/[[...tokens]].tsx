@@ -240,7 +240,7 @@ export default function Add () {
                         </div>
                     </div>
                 </div>
-                <div className="pt-6 text-sm text-dark-primary/80 dark:text-light-primary/30">
+                <div className="pt-6 text-sm text-dark-primary/80 dark:text-light-primary/30 max-w-md">
                     { i18n._(
                         t`Output is estimated. If the price changes by more than ${allowedSlippage.toSignificant(
                             4
@@ -358,7 +358,7 @@ export default function Add () {
                             onDismiss={ handleDismissConfirmation }
                             attemptingTxn={ attemptingTxn }
                             hash={ txHash }
-                            className={ `!max-w-lg` }
+                            className={ `` }
                             content={ () => (
                                 <ConfirmationModalContent
                                     title={ noLiquidity ? i18n._( t`You are creating a pool` ) : i18n._( t`You will receive` ) }

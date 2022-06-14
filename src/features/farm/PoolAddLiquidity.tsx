@@ -109,7 +109,7 @@ const PoolDeposit = ( { currencyA, currencyB, header, handleDismiss } ) => {
 
     const modalHeader = () => {
         return (
-            <div className="pt-3 text-base text-secondary">
+            <div className="pt-3 text-base text-secondary max-w-md">
                 { i18n._( t`Output is estimated. If the price changes by more than ${allowedSlippage.toSignificant(
                     4
                 )}% your transaction

@@ -148,7 +148,7 @@ const PoolWithdraw = ( { currencyA, currencyB, header, handleDismiss } ) => {
     function modalHeader () {
         return (
             <div className="grid gap-4 px-2">
-                <div className="justify-start text-sm text-secondary">
+                <div className="justify-start text-sm text-secondary max-w-md">
                     { t`Output is estimated. If the price changes by more than ${allowedSlippage.toSignificant(
                         4
                     )}% your transaction will revert.` }

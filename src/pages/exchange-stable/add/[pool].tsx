@@ -235,7 +235,7 @@ export default function Add () {
                     <div>{ minToMint?.toSignificant( 6 ) }</div>
                     <div>{ lpToken?.symbol }</div>
                 </div>
-                <div className="pt-3 text-sm text-light-text dark:text-dark-text">
+                <div className="pt-3 text-sm text-light-text dark:text-dark-text max-w-md">
                     { i18n._(
                         t`Output is estimated. If the price changes by more than ${allowedSlippage.toSignificant(
                             4

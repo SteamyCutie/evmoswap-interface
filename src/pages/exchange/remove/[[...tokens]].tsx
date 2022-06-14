@@ -351,7 +351,7 @@ export default function Remove () {
                         {/*<div className="ml-3 text-base">{ currencyB?.symbol }</div>*/ }
                     </div>
                 </div>
-                <div className="justify-start text-sm text-light-text dark:text-dark-text">
+                <div className="justify-start text-sm text-light-text dark:text-dark-text max-w-md">
                     { t`Output is estimated. If the price changes by more than ${allowedSlippage.toSignificant(
                         4
                     )}% your transaction will revert.` }
@@ -491,7 +491,7 @@ export default function Remove () {
                                 />
                             ) }
                             pendingText={ pendingText }
-                            className="!max-w-lg"
+                            className=""
                         />
                         <div className="grid gap-3">
                             { <LiquidityHeader input={ currencyA } output={ currencyB } /> }

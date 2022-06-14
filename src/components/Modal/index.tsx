@@ -59,10 +59,10 @@ export default function Modal ( {
                         >
                             <div
                                 className="transition-all transform flex justify-center"
-                                style={ {
-                                    width: isMobile ? `100%` : '90vw',
-                                    maxWidth: `${maxWidth}px`,
-                                } }
+                            /*style={ {
+                                width: isMobile ? `100%` : '90vw',
+                                maxWidth: `${maxWidth}px`,
+                            } }*/
                             >
                                 {/* <div className="w-full p-px rounded bg-gradient-to-r from-blue to-red"> */ }
                                 <div className={ classNames(

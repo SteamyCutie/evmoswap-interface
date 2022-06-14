@@ -263,7 +263,7 @@ export default function Remove () {
                         )
                     } ) }
                 </div>
-                <div className="justify-start text-sm opacity-80 dark:opacity-50 transition-all">
+                <div className="justify-start text-sm opacity-80 dark:opacity-50 transition-all max-w-md">
                     { t`Output is estimated. If the price changes by more than ${allowedSlippage.toSignificant(
                         4
                     )}% your transaction will revert.` }

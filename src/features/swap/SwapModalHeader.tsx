@@ -91,7 +91,7 @@ export default function SwapModalHeader ( {
                     </span>
                 </div>
             ) : null }
-            <div className="justify-start text-sm text-dark-primary dark:text-light-primary transition-all">
+            <div className="justify-start text-sm text-dark-primary dark:text-light-primary transition-all max-w-md">
                 { trade.tradeType === TradeType.EXACT_INPUT ? (
                     <>
                         { i18n._( t`Output is estimated. You will receive at least` ) }{ ' ' }
