@@ -27,7 +27,7 @@ export default function CommonBases ( {
                 Common bases
                 <QuestionHelper text="These tokens are commonly paired with other tokens." />
             </div>
-            <div className="flex flex-wrap">
+            <div className="flex flex-wrap max-w-md">
                 { bases.map( ( currency: Currency ) => {
                     const isSelected = selectedCurrency?.equals( currency )
                     return (
