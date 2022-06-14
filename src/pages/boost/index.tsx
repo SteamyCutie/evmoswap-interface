@@ -126,6 +126,8 @@ export default function Boostv3 () {
     const currentBlockTime = useCurrentBlockTimestamp();
     const blockTimestamp = currentBlockTime ? currentBlockTime.mul( 1000 ).toNumber() : Date.now();
 
+    const nextVestingGroup = currentBlockTime ? currentBlockTime.div( SECS_IN_WEEK ).add( 1 ).mul( SECS_IN_WEEK ).mul( 1000 ).toNumber() : undefined;
+
     const lockDays = Number( week ? week : lockPeriod.week ) * 7
     const newLockTime = Math.floor( getUnixTime( addDays( blockTimestamp, lockDays ) ) / SECS_IN_WEEK ) * SECS_IN_WEEK;
     const maxedLockedPeriod = ( Number( week ) === MAX_WEEK || lockPeriod.week === MAX_WEEK ) && newLockTime === lockEnd;
@@ -403,10 +405,12 @@ export default function Boostv3 () {
                 <div className="flex flex-col space-y-2 text-center  border rounded-2xl border-light-stroke/50 dark:border-dark-stroke/50 bg-light-secondary dark:bg-dark-secondary">
                     <div className={ classNames( 'rounded-t p-4', vestingRows.length ? '' : 'rounded-b' ) }>
                         <h2 className="text-blue-special font-medium text-slg">{ i18n._( `Vests are grouped by week` ) }</h2>
-                        <p className="text-dark dark:text-light my-3 text-2xl md:text-3xl font-bold">
-                            { i18n._( `Next vesting group starts on` ) }
-                            <span>{ format( addDays( blockTimestamp, DAYS_IN_WEEK ), " dd MMM yyyy 'at' hh:mm aaaaa'm' " ) }</span>
-                        </p>
+                        { nextVestingGroup &&
+                            <p className="text-dark dark:text-light my-3 text-2xl md:text-3xl font-bold">
+                                { i18n._( `Next vesting group starts on` ) }
+                                <span>{ format( nextVestingGroup, " dd MMM yyyy 'at' hh:mm aaaaa'm' " ) }</span>
+                            </p>
+                        }
                         <p className="text-base text-secondary">
                             { i18n._( `Invest in Vaults and Claim the rewards to add them to the closest starting vesting group` ) }
                         </p>
