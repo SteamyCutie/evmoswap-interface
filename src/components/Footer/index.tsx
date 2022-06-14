@@ -22,6 +22,8 @@ const Footer = () => {
             { name: `${i18n._( t`Defi Llama` )}`, href: 'https://defillama.com/protocol/evmoswap' },
             { name: `${i18n._( t`DexScreener` )}`, href: 'https://dexscreener.com/evmos/evmoswap' },
             { name: `${i18n._( t`GeckoTerminal` )}`, href: 'https://geckoterminal.com/evmos/evmoswap/pools' },
+            { name: `${i18n._( t`CoinGecko` )}`, href: 'https://www.coingecko.com/coins/evmoswap' },
+
         ],
 
         developers: [
