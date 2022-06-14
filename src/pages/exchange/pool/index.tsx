@@ -94,7 +94,7 @@ export default function Pool () {
             </Head>
 
             <div className="py-4 mb-3 space-y-3">
-                <Back text={ i18n._( t`Back to liquidity` ) } path={ `/add/${currencyId( NATIVE[ chainId ] )}` } />
+                <Back text={ i18n._( t`Back to liquidity` ) } path={ `/add/${NATIVE[ chainId ] ? currencyId( NATIVE[ chainId ] ) : ''}` } />
                 <div className="text-3xl font-semibold text-dark dark:text-light transition-all">
                     { i18n._( t`My Liquidity Positions` ) }
                 </div>

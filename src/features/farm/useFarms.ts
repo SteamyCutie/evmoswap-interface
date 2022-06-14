@@ -13,6 +13,8 @@ const useFarms = () => {
 
     const fetchAllFarms = useCallback( async () => {
         // Reset pools list
+        if ( !FARMS[ chainId ] ) return
+
         const farmingPools = Object.keys( FARMS[ chainId ] ).map( ( key ) => {
             return { ...FARMS[ chainId ][ key ], lpToken: key }
         } )

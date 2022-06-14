@@ -43,8 +43,8 @@ const GEmoControl = () => {
     const stakeBalance = useTokenBalance( account, stakingToken )
     const earnBalance = useTokenBalance( account, earningToken )
 
-    const [ approvalDepositState, approveDeposit ] = useApproveCallback( typedDepositValue, treasuryContract.address )
-    const [ approvalReturnState, approveReturn ] = useApproveCallback( typedReturnValue, treasuryContract.address )
+    const [ approvalDepositState, approveDeposit ] = useApproveCallback( typedDepositValue, treasuryContract?.address )
+    const [ approvalReturnState, approveReturn ] = useApproveCallback( typedReturnValue, treasuryContract?.address )
     const addTransaction = useTransactionAdder()
 
     const initMax = 50

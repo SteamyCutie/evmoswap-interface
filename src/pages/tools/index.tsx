@@ -14,6 +14,7 @@ import QuestionHelper from 'app/components/QuestionHelper'
 import { DAI, EvmoSwap, USDC, USDT } from 'app/config/tokens'
 import Link from 'next/link'
 import { FAUCET_ADDRESS } from 'app/constants/addresses'
+import { isAddress } from 'app/functions'
 
 export default function Tools () {
     const { chainId } = useActiveWeb3React()
@@ -27,10 +28,11 @@ export default function Tools () {
     }
 
     const faucetContract = useFaucetContract()
-    const faucetAddress = FAUCET_ADDRESS[ chainId ]
-    const daiBalance = Number( useTokenBalance( faucetAddress ?? undefined, DAI[ chainId ] )?.toSignificant( 8 ) )
-    const usdcBalance = Number( useTokenBalance( faucetAddress ?? undefined, USDC[ chainId ] )?.toSignificant( 8 ) )
-    const usdtBalance = Number( useTokenBalance( faucetAddress ?? undefined, USDT[ chainId ] )?.toSignificant( 8 ) )
+    const faucetAddress = isAddress( FAUCET_ADDRESS[ chainId ] ) ? FAUCET_ADDRESS[ chainId ] : undefined
+
+    const daiBalance = Number( useTokenBalance( faucetAddress, DAI[ chainId ] )?.toSignificant( 8 ) )
+    const usdcBalance = Number( useTokenBalance( faucetAddress, USDC[ chainId ] )?.toSignificant( 8 ) )
+    const usdtBalance = Number( useTokenBalance( faucetAddress, USDT[ chainId ] )?.toSignificant( 8 ) )
     const handleFaucetToken = async ( token: string ) => {
         try {
             const args = [ faucetTokenAddress[ token ] ]

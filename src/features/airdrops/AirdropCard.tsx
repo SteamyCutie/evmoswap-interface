@@ -30,7 +30,7 @@ export default function AirdropCard ( { airdrop, evmoPrice, className = '' }: { 
     const [ pendingCollect, setPendingCollect ] = useState( false );
     const [ error, setError ] = useState( '' );
 
-    const usdPrice = ( amount ) => formatBalanceNumber( Number( amount ) * evmoPrice, 2, 4 ).concat( ' USD' );
+    const usdPrice = ( amount ) => formatBalanceNumber( isNaN( amount ) ? 0 : Number( amount ) * evmoPrice, 2, 4 ).concat( ' USD' );
 
     const handleClaim = async () => {
 
@@ -84,7 +84,7 @@ export default function AirdropCard ( { airdrop, evmoPrice, className = '' }: { 
                 { !isLinear &&
                     <RowBetween className="my-4 mt-8">
                         <Typography>{ i18n._( t`Your claimable` ) }</Typography>
-                        <Typography weight={ 600 }>{ claimableAmount?.toFixed( 4 ) } ({ `~ ${usdPrice( claimableAmount.toExact() )}` })</Typography>
+                        <Typography weight={ 600 }>{ claimableAmount?.toFixed( 4 ) } ({ `~ ${usdPrice( claimableAmount?.toExact() )}` })</Typography>
                     </RowBetween>
                 }
 
@@ -123,7 +123,7 @@ export default function AirdropCard ( { airdrop, evmoPrice, className = '' }: { 
 
                         {
                             /** Not elegible button */
-                            !claimableAmount.greaterThan( ZERO ) &&
+                            !claimableAmount?.greaterThan( ZERO ) &&
                             <Button
                                 className='disabled:cursor-not-allowed'
                                 color={ 'gray' }
@@ -134,7 +134,7 @@ export default function AirdropCard ( { airdrop, evmoPrice, className = '' }: { 
 
 
                         { /** linear action buttons */
-                            claimableAmount.greaterThan( ZERO ) && isLinear && <>
+                            claimableAmount?.greaterThan( ZERO ) && isLinear && <>
                                 { canCollect &&
                                     <Button
                                         loading={ pendingCollect }
@@ -161,7 +161,7 @@ export default function AirdropCard ( { airdrop, evmoPrice, className = '' }: { 
 
                         {
                             /** once action buttons */
-                            claimableAmount.greaterThan( ZERO ) && !isLinear &&
+                            claimableAmount?.greaterThan( ZERO ) && !isLinear &&
                             <Button
                                 onClick={ handleClaim }
                                 loading={ pending }

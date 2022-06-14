@@ -71,7 +71,7 @@ export const IfoCurrentCard = ( {
 
     useEffect( () => {
         let _timer = setInterval( () => {
-            if ( publicIfoData.startTimeNum <= 0 ) return
+            if ( !publicIfoData || publicIfoData.startTimeNum <= 0 ) return
             let startOffset = publicIfoData.startTimeNum * 1000 - Date.now()
             if ( startOffset >= 0 ) setStartTime( startOffset )
 
@@ -80,9 +80,9 @@ export const IfoCurrentCard = ( {
             if ( endOffset >= 0 ) setEndTime( endOffset )
         }, 1000 )
         setTimer( _timer )
-    }, [ publicIfoData.startTimeNum, publicIfoData.endTimeNum ] )
+    }, [ publicIfoData?.startTimeNum, publicIfoData?.endTimeNum ] )
 
-    if ( !didMount ) {
+    if ( !didMount || !publicIfoData ) {
         return null
     }
 

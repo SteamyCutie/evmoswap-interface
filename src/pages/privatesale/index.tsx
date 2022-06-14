@@ -40,6 +40,7 @@ export default function Prisale () {
     const { account, chainId } = useActiveWeb3React()
     const addTransaction = useTransactionAdder()
 
+    const prisaleTokenSymbol = prisaleToken[ chainId ]?.symbol;
     const [ toggle, setToggle ] = useState( true )
     const [ investValue, setInvestValue ] = useState( '' )
     const userEthBalanceBignumber = useETHBalances( account ? [ account ] : [] )?.[ account ?? '' ]
@@ -110,7 +111,7 @@ export default function Prisale () {
                 gasLimit: gasLimit.mul( 150 ).div( 100 ),
             } )
             addTransaction( tx, {
-                summary: `${i18n._( t`Buy` )} ${prisaleToken[ chainId ].symbol}`,
+                summary: `${i18n._( t`Buy` )} ${prisaleTokenSymbol}`,
             } )
         } catch ( error ) {
             console.error( error )
@@ -125,7 +126,7 @@ export default function Prisale () {
             const tx = await prisaleContract.purchaseTokenWithETH( { value: msgValue } )
 
             addTransaction( tx, {
-                summary: `${i18n._( t`Buy` )} ${prisaleToken[ chainId ].symbol}`,
+                summary: `${i18n._( t`Buy` )} ${prisaleTokenSymbol}`,
             } )
         } catch ( error ) {
             console.error( error )
@@ -138,7 +139,7 @@ export default function Prisale () {
         try {
             const tx = await prisaleContract.claim()
             addTransaction( tx, {
-                summary: `${i18n._( t`Claim` )} ${prisaleToken[ chainId ].symbol}`,
+                summary: `${i18n._( t`Claim` )} ${prisaleTokenSymbol}`,
             } )
         } catch ( error ) {
             console.error( error )
@@ -185,7 +186,7 @@ export default function Prisale () {
                     <div className="flex items-center justify-between">
                         <div className="space-y-1">
                             <div className="text-sm">Private sale</div>
-                            <div className="text-lg">Buy { prisaleToken[ chainId ].symbol } (Token price $0.045)</div>
+                            <div className="text-lg">Buy { prisaleTokenSymbol } (Token price $0.045)</div>
                         </div>
                         <div className="space-y-2">
                             { account && isWhitelisted.current ? (
@@ -300,23 +301,23 @@ export default function Prisale () {
                                     </Button>
                                 ) : lowerLimitError ? (
                                     <Button color="gray" size="sm" className="h-12" disabled={ true }>
-                                        Buy ${ prisaleToken[ chainId ].symbol } Now
+                                        Buy ${ prisaleTokenSymbol } Now
                                     </Button>
                                 ) : upperLimitError ? (
                                     <Button color="blue" size="sm" className="h-12" onClick={ () => { setshowLimitTips( true ) } }>
-                                        Buy ${ prisaleToken[ chainId ].symbol } Now
+                                        Buy ${ prisaleTokenSymbol } Now
                                     </Button>
                                 ) : toggle ? (
                                     <Button color="blue" size="sm" className="h-12" onClick={ handleBuyTokenWithNATIVE }>
-                                        Buy ${ prisaleToken[ chainId ].symbol } Now
+                                        Buy ${ prisaleTokenSymbol } Now
                                     </Button>
                                 ) : approvalState === ApprovalState.NOT_APPROVED || approvalState === ApprovalState.PENDING ? (
                                     <Button color="gray" size="sm" className="h-12" disabled={ true }>
-                                        Buy ${ prisaleToken[ chainId ].symbol } Now
+                                        Buy ${ prisaleTokenSymbol } Now
                                     </Button>
                                 ) : (
                                     <Button color="blue" size="sm" className="h-12" onClick={ handleBuyTokenWithUSDC }>
-                                        Buy ${ prisaleToken[ chainId ].symbol } Now
+                                        Buy ${ prisaleTokenSymbol } Now
                                     </Button>
                                 ) }
                             </div>
@@ -324,11 +325,11 @@ export default function Prisale () {
                         </div>
                         <div className="px-5 py-9 border-[1px] border-gray-700 rounded-xl space-y-6 md:w-1/2">
                             <div className="rounded-lg border-[1px] border-gray-700 space-y-1 py-2 px-4">
-                                <div className="text-base ">{ i18n._( t`Purchased ${prisaleToken[ chainId ].symbol}` ) }</div>
+                                <div className="text-base ">{ i18n._( t`Purchased ${prisaleTokenSymbol}` ) }</div>
                                 <div className="text-base">{ ( purchasedToken.current / 1e18 ).toFixed() }(${ ( purchasedToken.current / 1e18 * ( tokenPrice.current / 1e6 ) ).toFixed() })</div>
                             </div>
                             <div className="rounded-lg border-[1px] border-gray-700 py-2 space-y-1 px-4">
-                                <div className="text-base ">{ i18n._( t`Unclaimed ${prisaleToken[ chainId ].symbol}` ) }</div>
+                                <div className="text-base ">{ i18n._( t`Unclaimed ${prisaleTokenSymbol}` ) }</div>
                                 <div className="text-base">{ ( purchasedToken.current / 1e18 - claimedToken.current / 1e18 ).toFixed( 2 ) }</div>
                             </div>
                             { new Date().getTime() / 1e3 <= privateSaleEnd.current ? (
@@ -337,7 +338,7 @@ export default function Prisale () {
                                 </Button>
                             ) : claimableToken.current ? (
                                 <Button color="gradient" size="sm" className="h-12 opacity-90" onClick={ handleClaim }>
-                                    Claim Your ${ prisaleToken[ chainId ].symbol }s ({ ( claimableToken.current / 1e18 ).toFixed( 2 ) })
+                                    Claim Your ${ prisaleTokenSymbol }s ({ ( claimableToken.current / 1e18 ).toFixed( 2 ) })
                                 </Button>
                             ) : vestingStart.current == 0 ? (
                                 <Button color="gray" size="sm" className="h-12 opacity-90" disabled={ true }>

@@ -41,7 +41,7 @@ export function useFarmPendingRewardsAmount ( farm ) {
     let amountsRaw = [];
 
     //base rewards from masterchef
-    const baseRewards = useSingleCallResult( contract, 'pendingTokens', [ String( farm.pid ), String( account ) ] )?.result;
+    const baseRewards = useSingleCallResult( contract, 'pendingTokens', account ? [ String( farm.pid ), String( account ) ] : [ undefined ] )?.result;
     if ( baseRewards?.tokens && baseRewards?.amounts )
         baseRewards.tokens.map( ( token, index ) => {
             tokenAddresses.push( token );

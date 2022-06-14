@@ -333,7 +333,7 @@ export function PositionCard ( { pair, farm, showUnwrapped = false, border }: Po
                             <div>
                                 { currency0.symbol }/{ currency1.symbol }
                             </div>
-                            <div className="font-bold">${ ( Number( userPoolBalance.toExact() ) * farm?.lpPrice ).toFixed( 2 ) }</div>
+                            <div className="font-bold">${ ( Number( userPoolBalance?.toExact() ) * farm?.lpPrice ).toFixed( 2 ) }</div>
                         </div>
                     </div>
                     <div className="flex flex-col space-y-3 md:flex-row md:space-x-6 md:space-y-0">
