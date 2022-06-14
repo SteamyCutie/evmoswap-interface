@@ -95,7 +95,7 @@ export default function Alert ( {
             <div className="flex items-center">
                 { showIcon && <div className="flex-shrink-0">{ icon }</div> }
                 <div className={ !showIcon ? 'ml-0' : 'ml-3' }>
-                    <p className="text-sm transition-all md:text-sm">{ message }</p>
+                    <div className="text-sm transition-all md:text-sm">{ message }</div>
                 </div>
             </div>
             { dismissable && (
