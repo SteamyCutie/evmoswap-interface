@@ -23,7 +23,7 @@ const Footer = () => {
             { name: `${i18n._( t`DexScreener` )}`, href: 'https://dexscreener.com/evmos/evmoswap' },
             { name: `${i18n._( t`GeckoTerminal` )}`, href: 'https://geckoterminal.com/evmos/evmoswap/pools' },
             { name: `${i18n._( t`CoinGecko` )}`, href: 'https://www.coingecko.com/coins/evmoswap' },
-
+            { name: `${i18n._( t`DeBank` )}`, href: 'https://debank.com/projects/evmos_swap' },
         ],
 
         developers: [
