@@ -53,13 +53,12 @@ const FarmListItem: FC<FarmListItem> = ( { farm, onClick } ) => {
         return pendingRewards.map( ( r ) => r?.currency )
     }, [ pendingRewards ] );
 
-    const liquidityToken = new Token(
-        // @ts-ignore TYPE NEEDS FIXING
+    const liquidityToken = chainId ? new Token(
         chainId,
         getAddress( farm.lpToken ),
         farm.token1 ? 18 : farm.token0 ? farm.token0.decimals : 18,
         'ELP'
-    )
+    ) : undefined;
 
     const { stakedAmount: userPoolBalance } = useUserInfo( farm, liquidityToken )
 

@@ -4,12 +4,11 @@ import { currencyId } from '../../functions/currency'
 import { useActiveWeb3React } from '../../services/web3'
 
 export default function LiquidityHeader ( { input = undefined, output = undefined }: any ): JSX.Element {
-    const { chainId } = useActiveWeb3React()
 
     const navLinkStyle =
-        'rounded-lg text-dark-text text-base hover:text-dark-text/60 dark:text-light-text dark:hover:text-light-text/60 transition-all'
+        'rounded-lg text-dark-text text-base hover:text-dark-text/60 dark:text-light-text dark:hover:text-light-text/60 transition-all font-bold'
 
-    const activeNavLinkStyle = 'font-bold !text-dark dark:!text-light';
+    const activeNavLinkStyle = '!text-dark dark:!text-light';
 
     return (
         <div className="flex p-2 pb-1 pt-2 md:pb-2 md:pt-4 space-x-8 rounded-md transition-all">

@@ -122,7 +122,7 @@ export default function CurrencyInput ( {
                             />
                             { !hideBalance && currency && selectedCurrencyBalance ? (
                                 <div className="flex flex-col">
-                                    <div onClick={ onMax } className="text-sm font-medium text-right cursor-pointer text-low-emphesis">
+                                    <div onClick={ onMax } className="text-base font-semibold text-right cursor-pointer text-low-emphesis">
                                         { renderBalance ? (
                                             renderBalance( selectedCurrencyBalance )
                                         ) : (

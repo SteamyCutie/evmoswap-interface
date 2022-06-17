@@ -318,7 +318,7 @@ export default function Zap () {
                                     { i18n._( t`Unsupported Asset` ) }
                                 </Button>
                             ) : !account ? (
-                                <Web3Connect size="lg" color="blue" className="w-full" />
+                                <Web3Connect size="lg" color="gradient" className="w-full" />
                             ) : // !userHasSpecifiedInputOutput ? (
                                 //   <div style={{ textAlign: 'center' }}>
                                 //     <div className="mb-1">{i18n._(t`Insufficient liquidity for this trade`)}</div>

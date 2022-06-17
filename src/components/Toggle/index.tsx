@@ -15,13 +15,13 @@ export default function Toggle ( { id, isActive, toggle }: ToggleProps ) {
             onChange={ toggle }
             className={ classNames(
                 'bg-light-secondary dark:bg-dark-secondary',
-                'relative inline-flex flex-shrink-0 h-[25px] w-[72px] border-2 border-transparent rounded-md cursor-pointer transition-colors ease-in-out duration-200 focus:outline-none'
+                'relative inline-flex flex-shrink-0 h-[25px] w-full border-2 border-transparent rounded-md cursor-pointer transition-colors ease-in-out duration-200 focus:outline-none'
             ) }
         >
             <span className="sr-only">Use setting</span>
             <span
                 className={ classNames(
-                    'pointer-events-none relative h-[21px] w-[33px] flex text-sm items-center justify-center rounded transform ring-0 transition ease-in-out duration-200 font-medium',
+                    'pointer-events-none relative h-[21px] w-1/2 flex text-sm items-center justify-center rounded transform ring-0 transition ease-in-out duration-200 font-medium',
                     isActive
                         ? 'bg-blue-special dark:bg-blue-special text-white dark:text-white translate-x-[33px]'
                         : 'translate-x-0 text-dark-primary dark:text-white bg-white dark:bg-dark-primary '

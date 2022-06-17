@@ -87,8 +87,8 @@ export default function TransactionSettings ( { placeholderSlippage }: Transacti
     }
 
     return (
-        <div className="grid gap-4">
-            <div className="grid gap-2">
+        <div className="flex flex-col space-y-4">
+            <div className="flex flex-col space-y-2 w-full">
                 <div className="flex items-center">
                     <Typography variant="xs" className="text-dark-primary dark:text-light-primary transition-all">
                         { i18n._( t`Slippage tolerance` ) }
@@ -100,7 +100,7 @@ export default function TransactionSettings ( { placeholderSlippage }: Transacti
                         ) }
                     />
                 </div>
-                <div className="flex items-center justify-between gap-2 max-w-[85%]">
+                <div className="flex items-center justify-between">
                     <div
                         className={ classNames(
                             !!slippageError
@@ -110,7 +110,7 @@ export default function TransactionSettings ( { placeholderSlippage }: Transacti
                                     : userSlippageTolerance !== 'auto'
                                         ? 'border-blue-special'
                                         : 'border-transparent',
-                            'border p-1 rounded bg-light-secondary dark:bg-dark-secondary transition-all'
+                            'border px-1 py-auto rounded bg-light-secondary dark:bg-dark-secondary transition-all w-[70%] h-[30px]'
                         ) }
                         tabIndex={ -1 }
                     >
@@ -145,13 +145,13 @@ export default function TransactionSettings ( { placeholderSlippage }: Transacti
                         </div>
                     </div>
                     <Button
-                        size="sm"
+                        size="xs"
                         color={ userSlippageTolerance === 'auto' ? 'blue-special' : 'gray' }
                         variant={ userSlippageTolerance === 'auto' ? 'filled' : 'outlined' }
                         onClick={ () => {
                             parseSlippageInput( '' )
                         } }
-                        className="w-[30%] !font-medium"
+                        className="w-[26%] !font-medium rounded-[5px]"
                     >
                         { i18n._( t`Auto` ) }
                     </Button>
@@ -175,7 +175,7 @@ export default function TransactionSettings ( { placeholderSlippage }: Transacti
                 ) : null }
             </div>
 
-            <div className="grid gap-2">
+            <div className="flex flex-col space-y-2">
                 <div className="flex items-center">
                     <Typography variant="xs" className="text-dark-primary dark:text-light-primary transition-all">
                         { i18n._( t`Transaction deadline` ) }
@@ -183,35 +183,35 @@ export default function TransactionSettings ( { placeholderSlippage }: Transacti
 
                     <QuestionHelper text={ i18n._( t`Your transaction will revert if it is pending for more than this long.` ) } />
                 </div>
-                <div className="flex items-center">
-                    <div
-                        className="p-2 rounded bg-light-secondary dark:bg-dark-secondary transition-all flex  w-[60%]"
-                        tabIndex={ -1 }
-                    >
-                        <input
-                            className={ classNames(
-                                deadlineError ? 'text-red' : 'text-light-text dark:text-dark-text text-lg',
-                                'bg-transparent placeholder-low-emphesis transition-all font-medium'
-                            ) }
-                            placeholder={ ( DEFAULT_DEADLINE_FROM_NOW / 60 ).toString() }
-                            value={
-                                deadlineInput.length > 0
-                                    ? deadlineInput
-                                    : deadline === DEFAULT_DEADLINE_FROM_NOW
-                                        ? ''
-                                        : ( deadline / 60 ).toString()
-                            }
-                            onChange={ ( e ) => parseCustomDeadline( e.target.value ) }
-                            onBlur={ () => {
-                                setDeadlineInput( '' )
-                                setDeadlineError( false )
-                            } }
-                            color={ deadlineError ? 'red' : '' }
-                        />
-                        <Typography variant="xs" className="text-dark-primary dark:text-light-primary transition-all text-base absolute left-[40%] mt-1">
-                            { i18n._( t`minutes` ) }
-                        </Typography>
-                    </div>
+
+                <div
+                    className="flex relative w-[70%]"
+                    tabIndex={ -1 }
+                >
+                    <input
+                        className={ classNames(
+                            deadlineError ? 'text-red' : 'text-light-text dark:text-dark-text text-lg',
+                            'placeholder-low-emphesis transition-all font-medium',
+                            'px-2 rounded bg-light-secondary dark:bg-dark-secondary w-full h-[30px]'
+                        ) }
+                        placeholder={ ( DEFAULT_DEADLINE_FROM_NOW / 60 ).toString() }
+                        value={
+                            deadlineInput.length > 0
+                                ? deadlineInput
+                                : deadline === DEFAULT_DEADLINE_FROM_NOW
+                                    ? ''
+                                    : ( deadline / 60 ).toString()
+                        }
+                        onChange={ ( e ) => parseCustomDeadline( e.target.value ) }
+                        onBlur={ () => {
+                            setDeadlineInput( '' )
+                            setDeadlineError( false )
+                        } }
+                        color={ deadlineError ? 'red' : '' }
+                    />
+                    <Typography variant="xs" className="text-dark-primary dark:text-light-primary transition-all text-base absolute right-[10%] top-[10%]">
+                        { i18n._( t`minutes` ) }
+                    </Typography>
                 </div>
             </div>
         </div>

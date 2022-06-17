@@ -40,6 +40,11 @@ const StablePoolItem = ( { poolId }: { poolId: string } ) => {
 
                     {/** Action Buttons */ }
                     <div className={ classNames( 'grid gap-4', 'grid-cols-2' ) }>
+                        <NavLink href={ `/stable-pool/remove/${pool.slug}` }>
+                            <Button id="add-pool-button" color="red" size='lg' variant='outlined'>
+                                { i18n._( t`Remove` ) }
+                            </Button>
+                        </NavLink>
                         <NavLink href={ `/stable-pool/add/${pool.slug}` }>
                             <Button
                                 id="add-pool-button"
@@ -50,11 +55,7 @@ const StablePoolItem = ( { poolId }: { poolId: string } ) => {
                                 { i18n._( t`Add` ) }
                             </Button>
                         </NavLink>
-                        <NavLink href={ `/stable-pool/remove/${pool.slug}` }>
-                            <Button id="add-pool-button" color="red" size='lg' variant='outlined'>
-                                { i18n._( t`Remove` ) }
-                            </Button>
-                        </NavLink>
+
                     </div>
                 </div>
             </Accordion>

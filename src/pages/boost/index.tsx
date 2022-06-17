@@ -322,7 +322,7 @@ export default function Boostv3 () {
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 md:gap-4 lg:gap-6 mt-4 md:grid-cols-3">
                     <BoostRewardCard title={ i18n._( t`Vesting` ) } value={ `${totalActiveVesting?.toFixed( 2 )} ${token.symbol}` }>
                         <div>
-                            <p className="text-dark dark:text-light mb-5 text-base">
+                            <p className="text-dark dark:text-light mb-5 font-normal text-base">
                                 + { CurrencyAmount.fromRawAmount( token, pendingFarmsRewards.toString() ).toFixed( 2 ) } { token.symbol }{ ' ' }
                                 { i18n._( t`waiting to be vested` ) }
                             </p>
@@ -432,26 +432,17 @@ export default function Boostv3 () {
                                             vestingRows.map( ( row: VestingRow, index ) => (
                                                 <tr key={ index }>
                                                     <td
-                                                        className={ classNames(
-                                                            'p-4 border-b border-dark-800',
-                                                            index == vestingRows.length - 1 ? 'border-none' : ''
-                                                        ) }
+                                                        className='p-4 border-none'
                                                     >
                                                         { row.expired ? i18n._( t`Vest Complete` ) : row.unlockTime }
                                                     </td>
                                                     <td
-                                                        className={ classNames(
-                                                            'p-4 border-b border-dark-800',
-                                                            index == vestingRows.length - 1 ? 'border-none' : ''
-                                                        ) }
+                                                        className='p-4 border-none'
                                                     >
                                                         { row.amount.toFixed( 6 ) } { token.symbol }
                                                     </td>
                                                     <td
-                                                        className={ classNames(
-                                                            'p-4 border-b border-dark-800',
-                                                            index == vestingRows.length - 1 ? 'border-none' : ''
-                                                        ) }
+                                                        className='p-4 border-none'
                                                     >
                                                         <div className="h-full w-full flex space-x-8 items-center">
                                                             <Button
@@ -875,7 +866,7 @@ const BoostRewardCard = ( props: BoostRewardCardProps ) => {
             ) }
         >
             <div className="flex flex-col">
-                <h2 className="flex items-center place-self-center text-lg text-secondary dark:text-secondary-dark transition-all">
+                <h2 className="flex items-center place-self-center text-xl text-secondary dark:text-secondary-dark transition-all text-[#868686]">
                     { title } { icon }
                 </h2>
                 <p className="font-bold text-2xl md:text-3.5xl my-3 text-dark dark:text-light">{ value }</p>
@@ -890,7 +881,7 @@ const StatButton = ( props: StatButtonProps ) => {
     return (
         <div className="bg-white dark:bg-dark hover:bg-darker px-0 py-4 justify-evenly h-auto rounded-2xl">
             <div className="flex flex-col space-y-2 text-center items-center">
-                <div className="px-1 text-dark dark:text-light text-xl xl:text-2xl md:truncate font-semibold">
+                <div className="px-1 text-dark dark:text-light text-xl xl:text-2xl md:truncate font-bold">
                     { value }
                 </div>
                 <div className="px-1 text-primary text-sm md:truncate text-secondary dark:text-secondary-dark font-medium">{ title }</div>

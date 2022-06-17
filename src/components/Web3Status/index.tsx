@@ -105,7 +105,7 @@ const Web3StatusInner = () => {
             </div>
         )
     } else {
-        return <Web3Connect className="text-sm" size='default' />
+        return <Web3Connect className="text-sm" size='sm' />
     }
 }
 

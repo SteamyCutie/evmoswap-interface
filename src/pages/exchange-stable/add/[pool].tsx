@@ -367,7 +367,7 @@ export default function Add () {
                             />
 
                             { !account ? (
-                                <Web3Connect size="lg" color="blue" className="w-full" />
+                                <Web3Connect size="lg" color="gradient" className="w-full" />
                             ) : (
                                 <AutoColumn gap={ 'md' }>
                                     { !allTokenApproved && !!balances?.length && (

@@ -96,11 +96,11 @@ const Menu = () => {
                         <Popover.Panel
                             static
                             className={ classNames(
-                                'absolute w-screen md:max-w-sm h-screen  z-10  overflow-y-scroll',
+                                'absolute w-screen md:max-w-sm min-h-screen h-auto z-10 overflow-hidden',
                                 'top-8 md:-top-8 mt-2 -mr-3 md:-mr-0 md:mt-0 -right-1 md:-right-5',
                                 'md:border-l md:border-0.5 md:border-dark/10 md:dark:border-light/10',
                                 '-translate-y-full md:translate-y-0',
-                                'bg-light dark:bg-dark md:bg-transparent md:dark:bg-transparent',
+                                'bg-light dark:bg-dark md:bg-transparent md:dark:bg-transparent'
                             ) }
                         >
                             <div className="flex justify-between py-3 md:py-4 mb-1 mt-2 bg-light dark:bg-dark px-8 md:px-6">

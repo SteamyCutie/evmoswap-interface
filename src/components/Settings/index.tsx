@@ -156,7 +156,7 @@ export function SettingsTabContent ( {
                     <Divider />
 
                     <div className="flex items-center justify-between">
-                        <div className="flex items-center">
+                        <div className="flex items-center w-[70%]">
                             <Typography variant="xs" className="text-dark-primary dark:text-light-primary transition-all">
                                 { i18n._( t`Toggle Expert Mode` ) }
                             </Typography>
@@ -164,34 +164,38 @@ export function SettingsTabContent ( {
                                 text={ i18n._( t`Bypasses confirmation modals and allows high slippage trades. Use at your own risk.` ) }
                             />
                         </div>
-                        <Toggle
-                            id="toggle-expert-mode-button"
-                            isActive={ expertMode }
-                            toggle={
-                                expertMode
-                                    ? () => {
-                                        toggleExpertMode()
-                                        setShowConfirmation( false )
-                                    }
-                                    : () => {
-                                        toggle()
-                                        setShowConfirmation( true )
-                                    }
-                            }
-                        />
+                        <div className='w-[26%]'>
+                            <Toggle
+                                id="toggle-expert-mode-button"
+                                isActive={ expertMode }
+                                toggle={
+                                    expertMode
+                                        ? () => {
+                                            toggleExpertMode()
+                                            setShowConfirmation( false )
+                                        }
+                                        : () => {
+                                            toggle()
+                                            setShowConfirmation( true )
+                                        }
+                                }
+                            />
+                        </div>
                     </div>
                     <div className="flex items-center justify-between">
-                        <div className="flex items-center">
+                        <div className="flex items-center w-[70%]">
                             <Typography variant="xs" className="text-dark-primary dark:text-light-primary transition-all">
                                 { i18n._( t`Disable Multihops` ) }
                             </Typography>
                             <QuestionHelper text={ i18n._( t`Restricts swaps to direct pairs only.` ) } />
                         </div>
-                        <Toggle
-                            id="toggle-disable-multihop-button"
-                            isActive={ singleHopOnly }
-                            toggle={ () => ( singleHopOnly ? setSingleHopOnly( false ) : setSingleHopOnly( true ) ) }
-                        />
+                        <div className='w-[26%]'>
+                            <Toggle
+                                id="toggle-disable-multihop-button"
+                                isActive={ singleHopOnly }
+                                toggle={ () => ( singleHopOnly ? setSingleHopOnly( false ) : setSingleHopOnly( true ) ) }
+                            />
+                        </div>
                     </div>
                 </div>
             </div> }

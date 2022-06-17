@@ -85,7 +85,7 @@ export default function Farms (): JSX.Element {
                     </Typography>
                 </div>
                 <div className="flex gap-3 w-full md:w-auto">
-                    <Button id="btn-create-new-pool" size="sm" color='gradient' variant='outlined' className='w-full md:w-56 h-10'>
+                    <Button id="btn-create-new-pool" size="sm" color='gradient' variant='outlined' className='w-full md:w-56 h-12'>
                         <a href="https://forms.gle/rg2ac5xAQKR8d6Ff6" target="_blank" rel="noreferrer">
                             { i18n._( t`Apply for Yield` ) }
                         </a>

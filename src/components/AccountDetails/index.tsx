@@ -101,6 +101,8 @@ const AccountDetails: FC<AccountDetailsProps> = ( {
         if ( chainId ) dispatch( clearAllTransactions( { chainId } ) )
     }, [ dispatch, chainId ] )
 
+    const hasTransaction = !!pendingTransactions.length || !!confirmedTransactions.length;
+
     return (
         <div className="space-y-3">
             <div className="space-y-3">
@@ -171,12 +173,12 @@ const AccountDetails: FC<AccountDetailsProps> = ( {
                 <div className="flex items-center justify-between mt-4">
                     <Typography weight={ 700 }>{ i18n._( t`Recent Transactions` ) }</Typography>
                     <div>
-                        <Button variant="outlined" color="gray" size="xs" className='!font-medium !border-[0.6px]' onClick={ clearAllTransactionsCallback }>
+                        <Button variant="outlined" color={ hasTransaction ? "blue" : "gray" } size="xs" className='!font-medium !border-[0.6px]' onClick={ clearAllTransactionsCallback }>
                             { i18n._( t`Clear all` ) }
                         </Button>
                     </div>
                 </div>
-                { !!pendingTransactions.length || !!confirmedTransactions.length ? (
+                { hasTransaction ? (
                     <>
                         { renderTransactions( pendingTransactions ) }
                         { renderTransactions( confirmedTransactions ) }

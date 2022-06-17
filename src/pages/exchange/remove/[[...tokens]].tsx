@@ -576,7 +576,7 @@ export default function Remove () {
 
                             <div style={ { position: 'relative' } }>
                                 { !account ? (
-                                    <Web3Connect size="lg" color="blue" className="w-full" />
+                                    <Web3Connect size="lg" color="gradient" className="w-full" />
                                 ) : (
                                     <div className="grid grid-cols-2 gap-4">
                                         <ButtonError

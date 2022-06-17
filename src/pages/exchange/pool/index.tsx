@@ -103,37 +103,30 @@ export default function Pool () {
             <DoubleGlowShadow>
                 <div className="gap-4 p-3 md:p-4 lg:p-6 transition-all rounded-3xl z-0">
                     <PoolsNav />
-                    <div className="grid grid-flow-row gap-3 ">
-                        { !account ? (
-                            <Web3Connect size="lg" color="gradient" className="w-full" />
-                        ) : v2IsLoading ? (
+                    <div className="grid grid-flow-row gap-4 ">
+                        { account && ( v2IsLoading ? (
                             <Empty className="text-base">
                                 <Dots>{ i18n._( t`Loading` ) }</Dots>
                             </Empty>
                         ) : allV2PairsWithLiquidity?.length > 0 ? (
-                            <>
-                                {/* <div className="flex items-center justify-center">
-                  <ExternalLink
-                    href={"https://analytics.sushi.com/user/" + account}
-                  >
-                    Account analytics and accrued fees <span> ↗</span>
-                  </ExternalLink>
-                </div> */}
-                                <div className="bg-light-primary dark:bg-dark-primary transition-all border-2 rounded-2xl border-light-stroke dark:border-dark-stroke p-2">
-                                    { allV2PairsWithLiquidity.map( ( v2Pair ) => (
+                            <div className='flex flex-col space-y-2'>
+                                { allV2PairsWithLiquidity.map( ( v2Pair ) => (
+                                    <div className="bg-light-primary dark:bg-dark-primary transition-all border-2 rounded-2xl border-light-stroke dark:border-dark-stroke p-2">
                                         <FullPositionCard
                                             key={ v2Pair.liquidityToken.address }
                                             pair={ v2Pair }
                                             stakedBalance={ CurrencyAmount.fromRawAmount( v2Pair.liquidityToken, '0' ) }
-                                        />
-                                    ) ) }
-                                </div>
-                            </>
+                                        /></div>
+                                ) ) }
+                            </div>
                         ) : (
                             <Empty className="flex text-base text-center text-dark-primary/80 dark:text-light-primary/80 transition-all">
                                 <div className="px-4 py-2">{ i18n._( t`No liquidity was found. ` ) }</div>
                             </Empty>
-                        ) }
+                        )
+                        )
+
+                        }
                         <div
                             className={ classNames(
                                 'grid gap-4 pt-2 transition-all',
@@ -166,6 +159,8 @@ export default function Pool () {
                                 </Button>
                             ) }
                         </div>
+
+                        { !account && <Web3Connect size="lg" color="gradient" className="w-full" /> }
                     </div>
                 </div>
             </DoubleGlowShadow>

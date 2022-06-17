@@ -206,7 +206,7 @@ export default function CurrencyInputPanel ( {
                             ) }
                             { !hideBalance && currency && selectedCurrencyBalance ? (
                                 <div className="flex flex-col">
-                                    <div onClick={ onMax } className="text-sm font-medium text-right cursor-pointer text-low-emphesis">
+                                    <div onClick={ onMax } className="text-base font-semibold text-right cursor-pointer text-low-emphesis">
                                         {
                                             <div className="text-light-text dark:text-dark-text transition-all">
                                                 { i18n._( t`~ $` ) } { Number( currencyPrice?.valueInUSD?.toFixed( 18 ) * Number( value ) ).toFixed( 4 ) }

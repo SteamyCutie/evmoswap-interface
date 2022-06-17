@@ -27,8 +27,8 @@ const ManageSwapPair = ( { farm, handleDismiss } ) => {
     const allowedSlippage = useUserSlippageToleranceWithDefault( DEFAULT_ADD_V2_SLIPPAGE_TOLERANCE ) // custom from users
 
     const navLinkStyle =
-        'rounded-lg text-dark-text text-base hover:text-dark-text/60 dark:text-light-text dark:hover:text-light-text/60 transition-all'
-    const activeNavLinkStyle = `${navLinkStyle} font-bold !text-dark dark:!text-light`
+        'rounded-lg text-dark-text text-base hover:text-dark-text/60 dark:text-light-text dark:hover:text-light-text/60 transition-all font-bold'
+    const activeNavLinkStyle = `${navLinkStyle} !text-dark dark:!text-light`
 
     const header = useMemo(
         () => (

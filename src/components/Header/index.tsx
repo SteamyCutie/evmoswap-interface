@@ -234,7 +234,7 @@ const AppBar = () => {
                       </div>
                     )} */}
 
-                                        <div className={ `flex w-auto text-sm transition-all ${account ? 'rounded-xl border border-transparent border-gradient-r-blue-pink-special-light-primary dark:border-gradient-r-blue-pink-special-dark-primary p-0.5' : ''}` }>
+                                        <div className={ `flex w-auto text-sm transition-all  h-12 ${account ? 'rounded-xl border border-transparent border-gradient-r-blue-pink-special-light-primary dark:border-gradient-r-blue-pink-special-dark-primary p-0.5' : ''}` }>
                                             <div
                                                 className={ `flex items-center justify-between h-full rounded-xl cursor-pointer pointer-events-auto select-none` }
                                             >

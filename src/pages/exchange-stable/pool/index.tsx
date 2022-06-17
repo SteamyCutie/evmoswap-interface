@@ -25,7 +25,7 @@ export default function StablePools () {
     const { i18n } = useLingui()
     const { account, chainId } = useActiveWeb3React()
     const pools = STABLE_POOLS[ chainId ]
-    const poolIds = Object.keys( pools )
+    const poolIds = pools ? Object.keys( pools ) : []
 
     return (
         <Container id="pool-page" className="py-4 space-y-6 md:py-8 lg:py-12" maxWidth="2xl">
@@ -39,26 +39,33 @@ export default function StablePools () {
             </Head>
 
             <div className="py-4 mb-3 space-y-3">
-                <Back text={ i18n._( t`Back to liquidity` ) } path={ `/stable-pool/add/${pools[ '0' ].slug}` } />
+                <Back text={ i18n._( t`Back to liquidity` ) } path={ `/stable-pool/add/${pools?.[ '0' ]?.slug}` } />
                 <div className="text-3xl font-semibold text-dark dark:text-light transition-all">
                     { i18n._( t`My Liquidity Positions` ) }
                 </div>
             </div>
 
             <DoubleGlowShadow>
-                <div className="gap-4 p-3 md:p-4 lg:p-6 transition-all rounded-3xl z-0">
+                <div className="grid gap-4 p-3 md:p-4 lg:p-6 transition-all rounded-3xl z-0">
 
                     <PoolsNav />
 
-                    { !account && <Web3Connect size="lg" color="blue" className="w-full" /> }
                     { !poolIds.length && (
                         <Empty className="flex text-lg text-center text-low-emphesis">
                             <div className="px-4 py-2">{ i18n._( t`No liquidity was found. ` ) }</div>
                         </Empty>
                     ) }
-                    { poolIds.map( ( pAddress, index ) => (
-                        <StablePoolItem key={ index } poolId={ pAddress } />
-                    ) ) }
+                    { poolIds.length &&
+                        <div className='flex flex-col space-y-2'>
+                            { poolIds.map( ( pAddress, index ) => (
+                                <StablePoolItem key={ index } poolId={ pAddress } />
+                            ) ) }
+                            { poolIds.map( ( pAddress, index ) => (
+                                <StablePoolItem key={ index } poolId={ pAddress } />
+                            ) ) }
+                        </div>
+                    }
+                    { !account && <Web3Connect size="lg" color="gradient" className="w-full" /> }
                 </div>
             </DoubleGlowShadow>
         </Container>

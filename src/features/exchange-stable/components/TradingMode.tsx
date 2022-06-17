@@ -30,7 +30,7 @@ export default function TradingMode ( { mode }: { mode: TRADING_MODE } ) {
                         <QuestionHelper text={ i18n._( t`Standard AMM, most efficient for trading assets with uncorrelated values` ) }>
                             <div className="flex items-center justify-center space-x-2 outline-none">
                                 <span className="w-3 h-3 rounded-full bg-pink-900"></span>
-                                <span className="text-sm font-extrabold transition-all text-dark-primary dark:text-light-primary">
+                                <span className="text-sm transition-all text-dark-primary dark:text-light-primary">
                                     { i18n._( t`Standard AMM` ) }
                                 </span>
                             </div>
@@ -42,7 +42,7 @@ export default function TradingMode ( { mode }: { mode: TRADING_MODE } ) {
                         <QuestionHelper text={ i18n._( t`Stable AMM, best for trading assets with correlated values` ) }>
                             <div className="flex items-center justify-center space-x-2 outline-none">
                                 <span className="w-3 h-3 rounded-full bg-yellow"></span>
-                                <span className="text-sm font-extrabold text-dark-primary dark:text-light-primary mt-0.5 transition-all">
+                                <span className="text-sm text-dark-primary dark:text-light-primary mt-0.5 transition-all">
                                     { i18n._( t`Stable AMM` ) }
                                 </span>
                             </div>

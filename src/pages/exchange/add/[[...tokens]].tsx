@@ -428,7 +428,7 @@ export default function Add () {
                                     { i18n._( t`Unsupported Asset` ) }
                                 </Button>
                             ) : !account ? (
-                                <Web3Connect size="lg" color="gradient" className="w-full py-4 font-bold" />
+                                <Web3Connect size="lg" color="gradient" className="w-full font-bold" />
                             ) : (
                                 ( approvalA === ApprovalState.NOT_APPROVED ||
                                     approvalA === ApprovalState.PENDING ||
@@ -498,17 +498,19 @@ export default function Add () {
                             ) }
                         </div>
 
-                        <div className='mt-10'>{ !addIsUnsupported ? (
+
+                        { !addIsUnsupported ? (
                             pair && !noLiquidity && pairState !== PairState.INVALID ? (
-                                <MinimalPositionCard showUnwrapped={ oneCurrencyIsWETH } pair={ pair } />
+                                <div className='mt-10'><MinimalPositionCard showUnwrapped={ oneCurrencyIsWETH } pair={ pair } /></div>
                             ) : null
                         ) : (
-                            <UnsupportedCurrencyFooter
-                                show={ addIsUnsupported }
-                                currencies={ [ currencies.CURRENCY_A, currencies.CURRENCY_B ] }
-                            />
+                            <div className='mt-10'>
+                                <UnsupportedCurrencyFooter
+                                    show={ addIsUnsupported }
+                                    currencies={ [ currencies.CURRENCY_A, currencies.CURRENCY_B ] }
+                                />
+                            </div>
                         ) }
-                        </div>
                     </div>
                 </DoubleGlowShadow>
             </Container>
