@@ -14,13 +14,17 @@ import InfiniteScroll from 'react-infinite-scroll-component'
 import FarmListItem from './FarmListItem'
 import { FarmType } from 'app/constants/farms'
 import FarmListItemDetailsStable from './FarmListItemDetailsStable'
+import { Divider } from 'app/components/Divider/Divider'
 
 export const TABLE_WRAPPER_DIV_CLASSNAME =
-    'overflow-x-auto border border-light-stroke dark:border-dark-stroke rounded-xl bg-light dark:bg-dark p-2'
+    'overflow-hidden border border-light-stroke dark:border-dark-stroke rounded-xl bg-light dark:bg-dark p-2'
 export const TABLE_TR_TH_CLASSNAME = ( i, length ) =>
     classNames(
         'text-secondary text-base py-3',
-        i === 1 ? 'ml-0 md:ml-10' : ''
+        i === length - 1 ? 'w-auto' : 'md:w-[13%]',
+        i === 0 ? 'md:!w-[24%]' : '',
+        i === 1 ? 'md:!w-[18%]' : '',
+
     )
 
 const SortIcon: FC<{ id?: string; direction?: 'ascending' | 'descending'; active: boolean }> = ( {
@@ -55,7 +59,7 @@ const FarmList = ( { farms } ) => {
     return (
         <>
             <div className={ classNames( TABLE_WRAPPER_DIV_CLASSNAME ) }>
-                <div className="hidden md:grid md:grid-cols-6 md:min-w-[1024px] bg-light-secondary dark:bg-dark-secondary m-4 px-6 rounded-md font-medium">
+                <div className="hidden md:flex md:w-full bg-light-secondary dark:bg-dark-secondary rounded-md font-medium md:px-6">
                     <div
                         className={ classNames( 'flex gap-1 items-center cursor-pointer', TABLE_TR_TH_CLASSNAME( 0, 6 ) ) }
                         onClick={ () => requestSort( 'pair.token0.symbol' ) }
@@ -109,7 +113,7 @@ const FarmList = ( { farms } ) => {
                         {/*<SortIcon id={ sortConfig.key } direction={ sortConfig.direction } active={ sortConfig.key === 'roiPerYear' } />*/ }
                     </div>
                 </div>
-                <div className="md:min-w-[768px] m-2 md:m-4 px-2 md:px-4">
+                <div className="md:min-w-[768px] md:px-6">
                     <InfiniteScroll
                         dataLength={ numDisplayed }
                         next={ () => setNumDisplayed( numDisplayed + 5 ) }
@@ -117,11 +121,18 @@ const FarmList = ( { farms } ) => {
                         loader={ null }
                     >
                         { items.slice( 0, numDisplayed ).map( ( farm, index ) => (
-                            <FarmListItem
-                                key={ index }
-                                farm={ farm }
-                                onClick={ () => handleOpen( farm ) }
-                            />
+                            <>
+                                <FarmListItem
+                                    key={ index }
+                                    farm={ farm }
+                                    onClick={ () => handleOpen( farm ) }
+                                />
+                                { index + 1 !== items.length &&
+                                    <div className='block md:hidden'>
+                                        <Divider />
+                                    </div>
+                                }
+                            </>
                         ) ) }
                     </InfiniteScroll>
                     { !farms.length && <div className='text-center w-full'>{ i18n._( t`No data found` ) }</div> }
