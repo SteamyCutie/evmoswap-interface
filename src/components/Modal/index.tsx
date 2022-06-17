@@ -11,6 +11,7 @@ interface ModalProps {
     initialFocusRef?: React.RefObject<any>
     children?: React.ReactNode
     padding?: number
+    minWidth?: number
     maxWidth?: number
     className?: string
     disableBackdrop?: boolean
@@ -31,7 +32,8 @@ export default function Modal ( {
     initialFocusRef,
     children,
     padding = 5,
-    maxWidth = 500,
+    minWidth = 400,
+    maxWidth = 510,
     className = '',
     disableBackdrop = false
 }: ModalProps ) {
@@ -59,10 +61,15 @@ export default function Modal ( {
                         >
                             <div
                                 className="transition-all transform flex justify-center"
-                            /*style={ {
-                                width: isMobile ? `100%` : '90vw',
-                                maxWidth: `${maxWidth}px`,
-                            } }*/
+                                style={ isMobile ? {
+                                    width: `100%`,
+                                    padding: `${padding}px`
+                                } : {
+                                    width: 'auto',
+                                    minWidth: `${minWidth}px`,
+                                    //maxWidth: `${maxWidth}px`,
+                                    padding: `${padding}px`
+                                } }
                             >
                                 {/* <div className="w-full p-px rounded bg-gradient-to-r from-blue to-red"> */ }
                                 <div className={ classNames(

@@ -195,7 +195,7 @@ const TransactionConfirmationModal: FC<ConfirmationModalProps> = ( {
 
     // confirmation screen
     return (
-        <Modal isOpen={ isOpen } onDismiss={ onDismiss } maxHeight={ 90 } className={ `md:-mt-32 ${hash ? 'max-w-sm ' : ''} ${className}` }>
+        <Modal isOpen={ isOpen } onDismiss={ onDismiss } maxHeight={ 90 } className={ `md:-mt-32 ${hash ? '' : ''} ${className}` }>
             { attemptingTxn ? (
                 <div className="mb-2">
                     <ConfirmationPendingContent onDismiss={ onDismiss } pendingText={ pendingText } />
