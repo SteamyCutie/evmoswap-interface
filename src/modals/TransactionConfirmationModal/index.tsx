@@ -35,7 +35,7 @@ export const ConfirmationPendingContent: FC<ConfirmationPendingContentProps> = (
                 <Lottie animationData={ loadingRollingCircleLight } className="flex dark:hidden" autoplay loop />
                 <Lottie animationData={ loadingRollingCircleDark } className="hidden dark:flex" autoplay loop />
             </div>
-            <div className="flex flex-col items-center justify-center gap-3">
+            <div className="flex flex-col items-center justify-center gap-3 max-w-lg">
                 <div className="text-md font-medium text-dark dark:text-light">{ i18n._( t`Waiting for Confirmation` ) }</div>
                 <div className="text-xl font-semibold mt-2 mb-4">{ pendingText }</div>
                 <div className="text-sm font-medim text-light-text dark:text-dark-text">{ i18n._( t`Confirm this transaction in your wallet` ) }</div>
@@ -156,7 +156,7 @@ export const TransactionErrorContent: FC<TransactionErrorContentProps> = ( { mes
                 </div>
                 <div className="flex flex-col items-center justify-center gap-3">
 
-                    <div className="text-xl font-semibold text-dark dark:text-light">{ message }</div>
+                    <div className="text-xl font-semibold text-dark dark:text-light max-w-lg text-center">{ message }</div>
                 </div>
             </div>
             <div>
