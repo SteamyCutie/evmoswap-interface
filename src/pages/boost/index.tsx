@@ -6,8 +6,6 @@ import Container from '../../components/Container'
 import { useActiveWeb3React } from '../../services/web3'
 import { useTokenBalance } from '../../state/wallet/hooks'
 import { t } from '@lingui/macro'
-import Image from 'next/image'
-import ButtonNew from 'app/components/Button/index.new'
 import Web3Connect from 'app/components/Web3Connect'
 import Button from 'app/components/Button'
 import Input from 'app/components/Input'
@@ -34,7 +32,6 @@ import {
 } from 'app/features/boost/hooks/balances'
 import useCurrentBlockTimestamp from 'app/hooks/useCurrentBlockTimestamp'
 import QuestionHelper from 'app/components/QuestionHelper'
-import Typography from 'app/components/Typography'
 import { Divider } from 'app/components/Divider/Divider'
 import { CheckIcon } from '@heroicons/react/solid'
 import Alert from 'app/components/Alert'
@@ -310,13 +307,6 @@ export default function Boostv3 () {
                 <meta key="description" name="description" content="Boost EvmoSwap" />
             </Head>
             <div className="flex flex-col justify-start flex-grow w-full h-full px-4 md:px-6 py-4 space-y-6">
-
-                <Alert type="warning" message={ <Typography variant="base" color="red" className="text-red" weight={ 400 }>
-                    Emergency Withdraw your locked EMOs<br />
-                    1. Please go to <a className='text-yellow' href="https://legacy.evmoswap.org/veEMO" target="_blank" rel="noreferrer">https://legacy.evmoswap.org/veEMO</a>, First Harvest lock rewards, then Emergency Withdraw your EMOs.<br />
-                    2. Then re-lock your EMOs again on this page.
-                </Typography>
-                } />
 
                 {/** Top action cards */ }
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 md:gap-4 lg:gap-6 mt-4 md:grid-cols-3">

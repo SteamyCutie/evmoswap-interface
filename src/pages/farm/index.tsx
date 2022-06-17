@@ -76,13 +76,6 @@ export default function Farms (): JSX.Element {
                     <Typography weight={ 400 } className="text-light-text dark:text-dark-text">
                         { i18n._( t`Earn fees and rewards by depositing and staking your tokens to the platform.` ) }
                     </Typography>
-
-                    <Typography variant="base" color="red" className="mt-4 text-red" weight={ 400 }>
-                        1. Please go to <a className='text-yellow' href="https://legacy.evmoswap.org/farm" target="_blank" rel="noreferrer">https://legacy.evmoswap.org/farm</a>, Unstake your LPs.
-                    </Typography>
-                    <Typography variant="base" color="red" className="text-red" weight={ 400 }>
-                        2. Staked your LPs in the below pools.
-                    </Typography>
                 </div>
                 <div className="flex gap-3 w-full md:w-auto">
                     <Button id="btn-create-new-pool" size="sm" color='gradient' variant='outlined' className='w-full md:w-56 h-12'>
