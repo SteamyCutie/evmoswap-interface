@@ -171,10 +171,9 @@ export default function FullPositionCard ( { pair, border, stakedBalance }: Posi
 
     return (
         <div>
-            <Button
-                variant="empty"
+            <button
                 className={ classNames(
-                    'flex items-center justify-between w-full p-4 cursor-pointer transition-all rounded-none'
+                    'flex items-center justify-between w-full p-4 cursor-pointer rounded-none focus:outline-none'
                 ) }
                 onClick={ () => setShowMore( !showMore ) }
             >
@@ -186,7 +185,7 @@ export default function FullPositionCard ( { pair, border, stakedBalance }: Posi
                         { !currency0 || !currency1 ? <Dots>{ i18n._( t`Loading` ) }</Dots> : `${currency0.symbol} / ${currency1.symbol}` }
                     </div>
                 </div>
-                <div className="flex items-center space-x-1 text-sm transition-all text-dark-primary dark:text-light-primary ">
+                <div className="flex items-center space-x-1 text-sm font-medium transition-all text-dark-primary dark:text-light-primary ">
                     <p>{ i18n._( t`Manage` ) }</p>
                     <ChevronDownIcon
                         width={ 16 }
@@ -195,7 +194,7 @@ export default function FullPositionCard ( { pair, border, stakedBalance }: Posi
                         style={ { transform: `rotate(${showMore ? 180 : 0}deg)` } }
                     />
                 </div>
-            </Button>
+            </button>
 
             { showMore && <Divider /> }
 

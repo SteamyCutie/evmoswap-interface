@@ -60,9 +60,6 @@ export default function StablePools () {
                             { poolIds.map( ( pAddress, index ) => (
                                 <StablePoolItem key={ index } poolId={ pAddress } />
                             ) ) }
-                            { poolIds.map( ( pAddress, index ) => (
-                                <StablePoolItem key={ index } poolId={ pAddress } />
-                            ) ) }
                         </div>
                     }
                     { !account && <Web3Connect size="lg" color="gradient" className="w-full" /> }

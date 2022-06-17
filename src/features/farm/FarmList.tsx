@@ -113,7 +113,7 @@ const FarmList = ( { farms } ) => {
                         {/*<SortIcon id={ sortConfig.key } direction={ sortConfig.direction } active={ sortConfig.key === 'roiPerYear' } />*/ }
                     </div>
                 </div>
-                <div className="md:min-w-[768px] md:px-6">
+                <div className="md:px-6">
                     <InfiniteScroll
                         dataLength={ numDisplayed }
                         next={ () => setNumDisplayed( numDisplayed + 5 ) }
