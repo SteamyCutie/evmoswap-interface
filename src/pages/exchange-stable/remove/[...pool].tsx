@@ -56,8 +56,7 @@ export default function Remove () {
     //pool pooled Tokens details
     const poolTokensInfo = poolInfo.pooledTokensInfo
     const poolBalances = poolTokensInfo?.balances;
-    const tokens = poolTokensInfo.tokens || []
-
+    const tokens = useMemo( () => { return poolTokensInfo.tokens ?? [] }, [ poolTokensInfo ] );
 
 
     //handle inputs data
@@ -100,19 +99,21 @@ export default function Remove () {
         let tempMintsWithSlippage = tempMints;
         let summaryTexts = [];
 
-        if ( singleMode ) {
+        if ( tokens ) {
+            if ( singleMode ) {
 
-            tempMints[ selectTokenIndex ] = CurrencyAmount.fromRawAmount( tokens[ selectTokenIndex ], estimatedSLPs ?? "0" );
-            tempMintsWithSlippage[ selectTokenIndex ] = CurrencyAmount.fromRawAmount( tokens[ selectTokenIndex ], calculateSlippageAmount( tempMints[ selectTokenIndex ], allowedSlippage )[ 0 ] )
-            summaryTexts.push( ` ${tempMintsWithSlippage[ selectTokenIndex ]?.toSignificant( 3 )} ${tokens[ selectTokenIndex ]?.symbol}` )
-        }
-        else if ( Array.isArray( estimatedSLPs ) ) {
+                tempMints[ selectTokenIndex ] = CurrencyAmount.fromRawAmount( tokens[ selectTokenIndex ], estimatedSLPs ?? "0" );
+                tempMintsWithSlippage[ selectTokenIndex ] = CurrencyAmount.fromRawAmount( tokens[ selectTokenIndex ], calculateSlippageAmount( tempMints[ selectTokenIndex ], allowedSlippage )[ 0 ] )
+                summaryTexts.push( ` ${tempMintsWithSlippage[ selectTokenIndex ]?.toSignificant( 3 )} ${tokens[ selectTokenIndex ]?.symbol}` )
+            }
+            else if ( Array.isArray( estimatedSLPs ) ) {
 
-            estimatedSLPs.map( ( estimate, index ) => {
-                tempMints[ index ] = CurrencyAmount.fromRawAmount( tokens[ index ], estimate ?? "0" )
-                tempMintsWithSlippage[ index ] = CurrencyAmount.fromRawAmount( tokens[ index ], calculateSlippageAmount( tempMintsWithSlippage[ index ], allowedSlippage )[ 0 ] )
-                summaryTexts.push( ` ${tempMintsWithSlippage[ index ]?.toSignificant( 3 )} ${tokens[ index ]?.symbol}` )
-            } )
+                estimatedSLPs.map( ( estimate, index ) => {
+                    tempMints[ index ] = CurrencyAmount.fromRawAmount( tokens[ index ], estimate ?? "0" )
+                    tempMintsWithSlippage[ index ] = CurrencyAmount.fromRawAmount( tokens[ index ], calculateSlippageAmount( tempMintsWithSlippage[ index ], allowedSlippage )[ 0 ] )
+                    summaryTexts.push( ` ${tempMintsWithSlippage[ index ]?.toSignificant( 3 )} ${tokens[ index ]?.symbol}` )
+                } )
+            }
         }
         return [ tempMints, tempMintsWithSlippage, summaryTexts ];
     }, [ estimatedSLPs, allowedSlippage, selectTokenIndex, tokens, singleMode ] )

@@ -111,9 +111,9 @@ export default function Pool () {
                         ) : allV2PairsWithLiquidity?.length > 0 ? (
                             <div className='flex flex-col space-y-2'>
                                 { allV2PairsWithLiquidity.map( ( v2Pair ) => (
-                                    <div className="bg-light-primary dark:bg-dark-primary transition-all border-2 rounded-2xl border-light-stroke dark:border-dark-stroke p-2">
+                                    <div key={ v2Pair.liquidityToken.address }
+                                        className="bg-light-primary dark:bg-dark-primary transition-all border-2 rounded-2xl border-light-stroke dark:border-dark-stroke p-2">
                                         <FullPositionCard
-                                            key={ v2Pair.liquidityToken.address }
                                             pair={ v2Pair }
                                             stakedBalance={ CurrencyAmount.fromRawAmount( v2Pair.liquidityToken, '0' ) }
                                         /></div>
