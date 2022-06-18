@@ -13,67 +13,70 @@
 *,
 *:before,
 *:after {
-  box-sizing: inherit;
+    box-sizing: inherit;
 }
 
 html {
-  height: 100%;
-  box-sizing: border-box;
-  touch-action: manipulation;
-  font-feature-settings: 'case' 1, 'rlig' 1, 'calt' 0;
-  text-rendering: optimizeLegibility;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  scroll-behavior: smooth;
+    height: 100%;
+    box-sizing: border-box;
+    touch-action: manipulation;
+    font-feature-settings: 'case' 1, 'rlig' 1, 'calt' 0;
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    scroll-behavior: smooth;
 }
 
 html,
 body {
-  font-family: var(--font-sans);
-  text-rendering: optimizeLegibility;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  background-color: var(--primary);
-  color: var(--text-primary);
-  font-size: var(--font-size);
-  line-height: var(--line-height);
+    font-family: var(--font-sans);
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    background-color: var(--primary);
+    color: var(--text-primary);
+    font-size: var(--font-size);
+    line-height: var(--line-height);
 }
-html.dark, html.dark body{
+
+html.dark,
+html.dark body {
     background-color: var(--primary-dark);
 }
 
 body {
-  position: relative;
-  margin: 0;
-  min-height: 100%;
-  overflow-y: scroll;
-  overflow-x: hidden;
+    position: relative;
+    margin: 0;
+    min-height: 100%;
+    overflow-y: scroll;
+    overflow-x: hidden;
 }
 
 a {
-  -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+    -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
 }
 
 button:focus {
-  outline: none;
+    outline: none;
 }
 
 input:focus {
-  box-shadow: none;
-  outline: none;
+    box-shadow: none;
+    outline: none;
 }
 
-input::placeholder, textarea::placeholder{
+input::placeholder,
+textarea::placeholder {
     color: #383838;
 }
 
 .striped-background {
-  background: repeating-linear-gradient(45deg, #161522, #161522 10px, #0d0415 10px, #0d0415 20px);
+    background: repeating-linear-gradient(45deg, #161522, #161522 10px, #0d0415 10px, #0d0415 20px);
 }
 
 *::-webkit-scrollbar {
-  /* width: var(--scrollbar-width); */
-  width: 6px;
+    /* width: var(--scrollbar-width); */
+    width: 6px;
 }
 
 /* ::-webkit-scrollbar-track-piece:start {
@@ -85,28 +88,36 @@ input::placeholder, textarea::placeholder{
 } */
 
 *::-webkit-scrollbar-track {
-  background: #fff8;
+    background: #fff8;
 }
 
 *::-webkit-scrollbar-thumb {
-  background-clip: padding-box;
-  background: #E6E6E7;
+    background-clip: padding-box;
+    background: #E6E6E7;
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #1A1A1A;
+    background: #1A1A1A;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #1A1A1AE1;
+    background: #1A1A1AE1;
 }
 
 ::-webkit-scrollbar-thumb:active {
-  background-color: #1A1A1A;
+    background-color: #1A1A1A;
 }
 
 /** use till backdrop-filter is widely supported **/
-.modal-open body>div:first-child{
+.modal-open body>div:first-child {
     filter: blur(8px);
-  -webkit-filter: blur(8px);
+    -webkit-filter: blur(8px);
+}
+
+.main-wrapper {
+    background-image: url('/star-light.svg');
+}
+
+.dark .main-wrapper {
+    background-image: url('/star-dark.svg');
 }
