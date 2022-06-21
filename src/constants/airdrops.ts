@@ -60,6 +60,7 @@ export const airdrops: Airdrop[] = [
             [ ChainId.EVMOS ]: '0x38Fc97b864Ce599f4096B1C0DD811597a3d38C62',
         },
         type: AirdropType.ONCE,
+        startStatus: true,
         mappingSource: 'https://raw.githubusercontent.com/evmoswap/mrkl-drop-data-chunks/main/chunks/TestnetWinnerPhase1'
     },
     {
@@ -70,6 +71,7 @@ export const airdrops: Airdrop[] = [
             [ ChainId.EVMOS ]: '0xEc4f2B5408C964D6dC234255B67d5a0796F969c6',
         },
         type: AirdropType.ONCE,
+        startStatus: true,
         mappingSource: 'https://raw.githubusercontent.com/evmoswap/mrkl-drop-data-chunks/main/chunks/EarlySupporterPhase2'
     },
     {
@@ -80,6 +82,7 @@ export const airdrops: Airdrop[] = [
             [ ChainId.EVMOS ]: '0x8D2E9C105aC9eA49c092512039c7ACD2c6f43Dcf',
         },
         type: AirdropType.ONCE,
+        startStatus: true,
         mappingSource: 'https://raw.githubusercontent.com/evmoswap/mrkl-drop-data-chunks/main/chunks/TestnetWinnerPhase2'
     },
     {
@@ -90,8 +93,10 @@ export const airdrops: Airdrop[] = [
             [ ChainId.EVMOS ]: '0xb6B48151d41B23BA3BC14E72b09b79485476bae9',
         },
         type: AirdropType.ONCE,
+        startStatus: true,
         mappingSource: 'https://raw.githubusercontent.com/evmoswap/mrkl-drop-data-chunks/main/chunks/EarlySupporterPhase3'
     },
+    
     {
         title: 'Testnet Winner Airdrop Phase 3',
         amount: '200000',
@@ -100,6 +105,7 @@ export const airdrops: Airdrop[] = [
             [ ChainId.EVMOS ]: '0x4134aDd0B3BF56023F2F1A69dF5F53E104b5aB11',
         },
         type: AirdropType.ONCE,
+        startStatus: true,
         mappingSource: 'https://raw.githubusercontent.com/evmoswap/mrkl-drop-data-chunks/main/chunks/TestnetWinnerPhase3'
     },
 ]

@@ -365,7 +365,7 @@ export default function Boostv3 () {
 
                     <BoostRewardCard
                         title={ i18n._( t`Locker Extra Rewards` ) }
-                        value={ `${lockerExtraRewards.toFixed( 2 )} ${'EVMOS'}` }
+                        value={ `${lockerExtraRewards.toFixed( 2 )} ${'EMO'}` }
                     >
                         { !account ? (
                             <Web3Connect color="gradient" className="truncate !rounded-md" size="default" />
