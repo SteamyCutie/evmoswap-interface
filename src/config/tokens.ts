@@ -98,6 +98,8 @@ export const XEMO: ChainTokenMap = {
 }
 
 export const GEMO: ChainTokenMap = {
+  [ChainId.EVMOS]: new Token(ChainId.EVMOS, GEMO_ADDRESS[ChainId.EVMOS], 18, 'GEMO', 'Gem EMO'),
+  [ChainId.EVMOS_TESTNET]: new Token(ChainId.EVMOS_TESTNET, GEMO_ADDRESS[ChainId.EVMOS_TESTNET], 18, 'GEMO', 'Gem EMO'),
   [ChainId.BSC_TESTNET]: new Token(ChainId.BSC_TESTNET, GEMO_ADDRESS[ChainId.BSC_TESTNET], 18, 'GEMO', 'Gem EMO'),
 }
 
