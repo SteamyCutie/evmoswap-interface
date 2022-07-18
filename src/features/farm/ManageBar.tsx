@@ -109,7 +109,7 @@ const ManageBar = ( { farm, handleDismiss } ) => {
                     className="w-full !p-0"
                     value={ toggle ? depositValue : withdrawValue }
                     onUserInput={ toggle ? setDepositValue : setWithdrawValue }
-                    showPercent={ true }
+                    showPercent={ false }
                     inputClassName="text-3xl"
                     label={
                         <div className="flex items-center justify-between mb-2">
@@ -168,7 +168,7 @@ const ManageBar = ( { farm, handleDismiss } ) => {
                         <Button
                             className="w-full"
                             size='lg'
-                            color={ !isDepositValid ? ( !!parsedDepositValue ? 'red' : 'gray' ) : 'blue' }
+                            color={ !isDepositValid ? ( !!parsedDepositValue ? 'red' : 'gray' ) : 'gradient' }
                             // disabled={pendingTx || !typedDepositValue || balance?.lessThan(typedDepositValue)}
                             disabled={ !isDepositValid }
                             onClick={ async () => {
