@@ -57,6 +57,8 @@ export const SUPPORTED_NETWORKS: {
             decimals: 18,
         },
         rpcUrls: [ 'https://eth.bd.evmos.org:8545' ],
+        // rpcUrls: [ 'https://evmos-mainnet.gateway.pokt.network/v1/lb/62c4395e578dfa0039949cfa'],
+        
         blockExplorerUrls: [ 'https://evm.evmos.org' ],
     },
     [ ChainId.EVMOS_TESTNET ]: {

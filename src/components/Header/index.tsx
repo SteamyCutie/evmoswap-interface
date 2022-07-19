@@ -249,7 +249,7 @@ const AppBar = () => {
                                             </div>
                                         </div>
 
-                                        <More />
+                                        {/* <More /> */}
                                     </div>
                                 </div>
                                 <div className="flex -mr-2 sm:hidden">

@@ -5,6 +5,7 @@ import { NetworkConnector } from '../entities/connectors/NetworkConnector'
 
 export const RPC = {
   [ChainId.EVMOS]: 'https://eth.bd.evmos.org:8545',
+  // [ChainId.EVMOS]: 'https://evmos-mainnet.gateway.pokt.network/v1/lb/62c4395e578dfa0039949cfa',
   [ChainId.EVMOS_TESTNET]: 'https://eth.bd.evmos.dev:8545',
   [ChainId.ETHEREUM]: 'https://mainnet.infura.io/v3/6120c21d46cb482d9cdabe463da74dd5',
   [ChainId.BSC]: 'https://bsc-dataseed.binance.org/',
