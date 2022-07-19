@@ -108,7 +108,8 @@ const ManageBar = ( { farm, handleDismiss } ) => {
                     id="staking-input"
                     className="w-full !p-0"
                     value={ toggle ? depositValue : withdrawValue }
-                    onUserInput={ toggle ? setDepositValue : setWithdrawValue }
+                    //onUserInput={ toggle ? setDepositValue : setWithdrawValue }
+                    onUserInput={ () => { } }
                     showPercent={ false }
                     inputClassName="text-3xl"
                     label={
