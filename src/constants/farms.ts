@@ -111,6 +111,18 @@ export const FARMS: AddressMap = {
             isZap: false,
             farmType: FarmType.STABLE,
         },
+
+        '0x45bD482896109DE74fBf1C1D8addcB9Cb79198a6': {
+            id: 4,
+            pid: 5,
+            symbol: 'ELP',
+            name: 'ATOM-EVMOS',
+            token0: { id: '0xC5e00D3b04563950941f7137B5AfA3a534F0D6d6', name: 'Cosmos Hub', symbol: 'ATOM', decimals: 6 },
+            token1: { id: '0xD4949664cD82660AaE99bEdc034a0deA8A0bd517', name: 'WEVMOS Token', symbol: 'EVMOS', decimals: 18 },
+            isVote: false,
+            isZap: false,
+        },
+        
     },
 
     [ ChainId.EVMOS_TESTNET ]: {
