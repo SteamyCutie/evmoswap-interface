@@ -122,6 +122,18 @@ export const FARMS: AddressMap = {
             isVote: false,
             isZap: false,
         },
+
+        '0x0350b8794CD37E2aF683286f065320586e584b99': {
+            id: 5,
+            pid: 6,
+            symbol: 'ELP',
+            name: 'GRDN-EVMOS',
+            token0: { id: '0x0A88F465eA5079C39d88EA796A018604E2C00d56', name: 'GRDN', symbol: 'GRDN', decimals: 18 },
+            token1: { id: '0xD4949664cD82660AaE99bEdc034a0deA8A0bd517', name: 'WEVMOS Token', symbol: 'EVMOS', decimals: 18 },
+            isVote: false,
+            isZap: false,
+            farmType: FarmType.DOUBLE
+        },
         
     },
 
