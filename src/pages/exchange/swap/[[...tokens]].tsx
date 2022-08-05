@@ -425,6 +425,24 @@ const Swap = () => {
                     content="EvmoSwap allows for swapping of ERC20 compatible tokens across multiple networks"
                 />
             </Head>
+            <Alert className='mb-4' message={
+                <>
+                    <p className="text-xl font-bold">{ 'Warning: Nomad Assets on Evmos' }</p>
+                    <p className='font-bold mt-2'>
+                        { i18n._(
+                            t`1. The Nomad Bridge contract on Ethereum mainnet was exploited. We are working with the Nomad and Evmos teams and will keep you updated.`
+                        ) }
+                    </p>
+                    <p className='font-bold mt-2'>
+                        { i18n._(
+                            t`2. At present, the value of madXXXX assets exchanged does not match. Please be careful to avoid losing funds.`
+                        ) }
+                    </p>
+                </>
+            }
+                type="warning"
+                dismissable={ false }
+            />
             <TokenWarningModal
                 isOpen={ importTokensNotInDefault.length > 0 && !dismissTokenWarning }
                 tokens={ importTokensNotInDefault }
