@@ -430,7 +430,7 @@ const Swap = () => {
                     <p className="text-xl font-bold">{ 'Warning: Nomad Assets on Evmos' }</p>
                     <p className='font-bold mt-2'>
                         { i18n._(
-                            t`1. The Nomad Bridge contract on Ethereum mainnet was exploited. We are working with the Nomad and Evmos teams and will keep you updated.`
+                            t`1. The Nomad Bridge contract on Ethereum mainnet was exploited. We have been following up the latest news in the community.`
                         ) }
                     </p>
                     <p className='font-bold mt-2'>
